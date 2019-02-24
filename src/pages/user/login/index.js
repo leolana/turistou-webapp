@@ -50,6 +50,15 @@ class Login extends Component {
                   <h4 className="text-uppercase">
                     <strong>Please log in</strong>
                   </h4>
+                  <div>
+                    Do not you have a register?
+                    <Link
+                      to="/user/signup"
+                      className="utils__link--blue utils__link--underlined ml-2"
+                    >
+                      Sign up
+                    </Link>
+                  </div>
                   <br />
                   <Form layout="vertical" hideRequiredMark onSubmit={this.onSubmit}>
                     <Form.Item label="Email">
