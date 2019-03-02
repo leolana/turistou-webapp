@@ -7,7 +7,7 @@ import styles from './style.module.scss'
 
 @Form.create()
 @connect(({ user }) => ({ user }))
-class Login extends Component {
+class Signup extends Component {
   onSubmit = event => {
     event.preventDefault()
     const { form, dispatch } = this.props
@@ -29,7 +29,7 @@ class Login extends Component {
     } = this.props
     return (
       <div>
-        <Helmet title="Login" />
+        <Helmet title="Sign up" />
         <div className={styles.title}>
           <h1>
             <strong>Faça seu cadastro na Turistou</strong>
@@ -105,4 +105,4 @@ class Login extends Component {
   }
 }
 
-export default Login
+export default Signup

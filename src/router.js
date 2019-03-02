@@ -27,6 +27,11 @@ const routes = [
     exact: true,
   },
   {
+    path: '/user/complete',
+    component: loadable(() => import('pages/user/signup/step2.js')),
+    exact: true,
+  },
+  {
     path: '/user/forgot',
     component: loadable(() => import('pages/user/forgot')),
     exact: true,
