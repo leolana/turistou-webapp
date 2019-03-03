@@ -27,8 +27,13 @@ const routes = [
     exact: true,
   },
   {
-    path: '/user/complete',
+    path: '/user/completeStep2',
     component: loadable(() => import('pages/user/signup/step2.js')),
+    exact: true,
+  },
+  {
+    path: '/user/completeStep3',
+    component: loadable(() => import('pages/user/signup/step3.js')),
     exact: true,
   },
   {
