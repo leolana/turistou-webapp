@@ -2,12 +2,13 @@ import React, { Component } from 'react'
 import { Form, Input, Button } from 'antd'
 import { Helmet } from 'react-helmet'
 import { connect } from 'react-redux'
+import MaskedInput from 'react-text-mask'
 
 import styles from './style.module.scss'
 
 @Form.create()
 @connect(({ user }) => ({ user }))
-class Complete extends Component {
+class Step3 extends Component {
   onSubmit = event => {
     event.preventDefault()
     const { form, dispatch } = this.props
@@ -51,7 +52,12 @@ class Complete extends Component {
                             message: 'Por favor, preencha o endereço completo da empresa',
                           },
                         ],
-                      })(<Input size="default" />)}
+                      })(
+                        <MaskedInput
+                          className="ant-input"
+                          mask={[/\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/]}
+                        />,
+                      )}
                     </Form.Item>
                     <Form.Item label="Logradouro">
                       {form.getFieldDecorator('address', {
@@ -61,7 +67,7 @@ class Complete extends Component {
                             message: 'Por favor, preencha o endereço completo da empresa',
                           },
                         ],
-                      })(<Input size="default" />)}
+                      })(<Input size="default" maxLength="150" />)}
                     </Form.Item>
                     <Form.Item label="Bairro">
                       {form.getFieldDecorator('area', {
@@ -71,7 +77,7 @@ class Complete extends Component {
                             message: 'Por favor, preencha o endereço completo da empresa',
                           },
                         ],
-                      })(<Input size="default" />)}
+                      })(<Input size="default" maxLength="150" />)}
                     </Form.Item>
                     <Form.Item label="Número">
                       {form.getFieldDecorator('number', {
@@ -81,12 +87,12 @@ class Complete extends Component {
                             message: 'Por favor, preencha o endereço completo da empresa',
                           },
                         ],
-                      })(<Input size="default" type="number" />)}
+                      })(<Input size="default" type="number" maxLength="7" />)}
                     </Form.Item>
                     <Form.Item label="Complemento">
                       {form.getFieldDecorator('complement', {
                         rules: [{ required: false }],
-                      })(<Input size="default" />)}
+                      })(<Input size="default" maxLength="20" />)}
                     </Form.Item>
                     <Form.Item label="UF">
                       {form.getFieldDecorator('fu', {
@@ -96,7 +102,7 @@ class Complete extends Component {
                             message: 'Por favor, preencha o endereço completo da empresa',
                           },
                         ],
-                      })(<Input size="default" />)}
+                      })(<Input size="default" maxLength="2" />)}
                     </Form.Item>
                     <Form.Item label="Cidade">
                       {form.getFieldDecorator('city', {
@@ -106,7 +112,7 @@ class Complete extends Component {
                             message: 'Por favor, preencha o endereço completo da empresa',
                           },
                         ],
-                      })(<Input size="default" />)}
+                      })(<Input size="default" maxLength="150" />)}
                     </Form.Item>
                     <div className="mb-3">
                       <Button
@@ -129,4 +135,4 @@ class Complete extends Component {
   }
 }
 
-export default Complete
+export default Step3

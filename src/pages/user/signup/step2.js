@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
-import { Form, Input, Button, Radio, DatePicker } from 'antd'
+import { Form, Button, Radio, DatePicker } from 'antd'
 import { Helmet } from 'react-helmet'
 import { connect } from 'react-redux'
+import MaskedInput from 'react-text-mask'
 
 import styles from './style.module.scss'
 
@@ -9,7 +10,7 @@ const RadioGroup = Radio.Group
 
 @Form.create()
 @connect(({ user }) => ({ user }))
-class Complete extends Component {
+class Step2 extends Component {
   onSubmit = event => {
     event.preventDefault()
     const { form, dispatch } = this.props
@@ -50,7 +51,27 @@ class Complete extends Component {
                     <Form.Item label="CPF">
                       {form.getFieldDecorator('cpf', {
                         rules: [{ required: true, message: 'Por favor, insira teu CPF' }],
-                      })(<Input size="default" />)}
+                      })(
+                        <MaskedInput
+                          className="ant-input"
+                          mask={[
+                            /\d/,
+                            /\d/,
+                            /\d/,
+                            '.',
+                            /\d/,
+                            /\d/,
+                            /\d/,
+                            '.',
+                            /\d/,
+                            /\d/,
+                            /\d/,
+                            '-',
+                            /\d/,
+                            /\d/,
+                          ]}
+                        />,
+                      )}
                     </Form.Item>
                     <Form.Item label="Sexo">
                       {form.getFieldDecorator('sex', {
@@ -61,6 +82,7 @@ class Complete extends Component {
                       {form.getFieldDecorator('birthdate', {
                         rules: [{ required: true }],
                       })(<DatePicker size="default" format={dateFormat} />)}
+                      {/* TODO: translate DatePicker */}
                       {/* TODO: start DatePicker in year view */}
                     </Form.Item>
                     <div className="mb-3">
@@ -84,4 +106,4 @@ class Complete extends Component {
   }
 }
 
-export default Complete
+export default Step2
