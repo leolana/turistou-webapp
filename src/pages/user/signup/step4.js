@@ -10,6 +10,11 @@ const RadioGroup = Radio.Group
 @Form.create()
 @connect(({ user }) => ({ user }))
 class Step4 extends Component {
+  constructor() {
+    super()
+    this.state = { identityType: 'F' }
+  }
+
   onSubmit = event => {
     event.preventDefault()
     const { form, dispatch } = this.props
@@ -24,12 +29,17 @@ class Step4 extends Component {
     })
   }
 
+  onChangeIdentityType = event => {
+    this.setState({ identityType: event.target.value })
+  }
+
   render() {
     const typeIdOptions = [
       { value: 'F', label: 'Pessoa física' },
       { value: 'J', label: 'Pessoa jurídica' },
     ]
     const dateFormat = 'DD/MM/YYYY'
+    const { identityType } = this.state
     const {
       form,
       user: { fetching },
@@ -51,55 +61,54 @@ class Step4 extends Component {
               <div className={styles.inner}>
                 <div className={styles.form}>
                   <Form layout="vertical" hideRequiredMark onSubmit={this.onSubmit}>
-                    {/* TODO: start as person */}
-                    <Form.Item label="Identificação">
+                    <Form.Item label="">
                       {form.getFieldDecorator('identityType', {
                         rules: [
                           {
                             required: true,
-                            message: 'Por favor, indique teu tipo de identificação',
+                            message: 'Por favor, indique o tipo de identificação',
                           },
                         ],
                       })(
                         <RadioGroup
                           options={typeIdOptions}
                           size="default"
+                          defaultValue="F"
                           onChange={this.onChangeIdentityType}
                         />,
                       )}
                     </Form.Item>
 
-                    {/* TODO: hide when is person */}
                     {/* TODO: add select boxes */}
-                    <div>
-                      <h5>Pessoa jurídica</h5>
-                      <Form.Item label="Razão social">
-                        {form.getFieldDecorator('companyName', {
-                          rules: [
-                            {
-                              required: true,
-                              message: 'Por favor, indique a razão social da empresa',
-                            },
-                          ],
-                        })(<Input size="default" />)}
-                      </Form.Item>
-                      <Form.Item label="Nome fantasia">
-                        {form.getFieldDecorator('tradeName', {
-                          rules: [
-                            { required: true, message: 'Por favor, indique o nome da empresa' },
-                          ],
-                        })(<Input size="default" />)}
-                      </Form.Item>
-                      <Form.Item label="CNPJ">
-                        {form.getFieldDecorator('cnpj', {
-                          rules: [
-                            { required: true, message: 'Por favor, indique o CNPJ da empresa' },
-                          ],
-                        })(<Input size="default" />)}
-                      </Form.Item>
-                    </div>
+                    {identityType === 'J' && (
+                      <div>
+                        <Form.Item label="Razão social">
+                          {form.getFieldDecorator('companyName', {
+                            rules: [
+                              {
+                                required: true,
+                                message: 'Por favor, indique a razão social da empresa',
+                              },
+                            ],
+                          })(<Input size="default" />)}
+                        </Form.Item>
+                        <Form.Item label="Nome fantasia">
+                          {form.getFieldDecorator('tradeName', {
+                            rules: [
+                              { required: true, message: 'Por favor, indique o nome da empresa' },
+                            ],
+                          })(<Input size="default" />)}
+                        </Form.Item>
+                        <Form.Item label="CNPJ">
+                          {form.getFieldDecorator('cnpj', {
+                            rules: [
+                              { required: true, message: 'Por favor, indique o CNPJ da empresa' },
+                            ],
+                          })(<Input size="default" />)}
+                        </Form.Item>
+                      </div>
+                    )}
 
-                    <h5>Pessoa física</h5>
                     <Form.Item label="Cadastrur">
                       {form.getFieldDecorator('cadastur', {
                         rules: [
