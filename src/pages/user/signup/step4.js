@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Form, Input, Button, Radio, DatePicker, Select } from 'antd'
 import { Helmet } from 'react-helmet'
 import { connect } from 'react-redux'
+import MaskedInput from 'react-text-mask'
 
 import styles from './style.module.scss'
 
@@ -118,21 +119,46 @@ class Step4 extends Component {
                                 message: 'Por favor, indique a razão social da empresa',
                               },
                             ],
-                          })(<Input size="default" />)}
+                          })(<Input size="default" maxLength="200" />)}
                         </Form.Item>
                         <Form.Item label="Nome fantasia">
                           {form.getFieldDecorator('tradeName', {
                             rules: [
                               { required: true, message: 'Por favor, indique o nome da empresa' },
                             ],
-                          })(<Input size="default" />)}
+                          })(<Input size="default" maxLength="200" />)}
                         </Form.Item>
                         <Form.Item label="CNPJ">
                           {form.getFieldDecorator('cnpj', {
                             rules: [
                               { required: true, message: 'Por favor, indique o CNPJ da empresa' },
                             ],
-                          })(<Input size="default" />)}
+                          })(
+                            <MaskedInput
+                              size="default"
+                              className="ant-input"
+                              mask={[
+                                /\d/,
+                                /\d/,
+                                '.',
+                                /\d/,
+                                /\d/,
+                                /\d/,
+                                '.',
+                                /\d/,
+                                /\d/,
+                                /\d/,
+                                '/',
+                                /\d/,
+                                /\d/,
+                                /\d/,
+                                /\d/,
+                                '-',
+                                /\d/,
+                                /\d/,
+                              ]}
+                            />,
+                          )}
                         </Form.Item>
                       </div>
                     )}
@@ -160,7 +186,28 @@ class Step4 extends Component {
                         rules: [
                           { required: true, message: 'Por favor, insira teu número de cadastur' },
                         ],
-                      })(<Input size="default" />)}
+                      })(
+                        <MaskedInput
+                          size="default"
+                          className="ant-input"
+                          mask={[
+                            /\d/,
+                            /\d/,
+                            '.',
+                            /\d/,
+                            /\d/,
+                            /\d/,
+                            /\d/,
+                            /\d/,
+                            /\d/,
+                            '.',
+                            /\d/,
+                            /\d/,
+                            '-',
+                            /\d/,
+                          ]}
+                        />,
+                      )}
                     </Form.Item>
                     <Form.Item label="Validade do cadastur">
                       {form.getFieldDecorator('cadasturDue', {
