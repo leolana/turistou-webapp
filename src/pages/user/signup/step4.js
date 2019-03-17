@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
-import { Form, Input, Button, Radio, DatePicker } from 'antd'
+import { Form, Input, Button, Radio, DatePicker, Select } from 'antd'
 import { Helmet } from 'react-helmet'
 import { connect } from 'react-redux'
 
 import styles from './style.module.scss'
 
 const RadioGroup = Radio.Group
+const SelectOption = Select.Option
 
 @Form.create()
 @connect(({ user }) => ({ user }))
@@ -37,6 +38,16 @@ class Step4 extends Component {
     const typeIdOptions = [
       { value: 'F', label: 'Pessoa física' },
       { value: 'J', label: 'Pessoa jurídica' },
+    ]
+    const personType = [
+      { value: 1, label: 'Guia de turismo' },
+      { value: 2, label: 'Agente de turismo' },
+      { value: 0, label: 'Outros' },
+    ]
+    const corporateType = [
+      { value: 1, label: 'Microempreendedor' },
+      { value: 2, label: 'Agencia de turismo' },
+      { value: 0, label: 'Outros' },
     ]
     const dateFormat = 'DD/MM/YYYY'
     const { identityType } = this.state
@@ -73,15 +84,32 @@ class Step4 extends Component {
                         <RadioGroup
                           options={typeIdOptions}
                           size="default"
-                          defaultValue="F"
+                          initialValue="F"
                           onChange={this.onChangeIdentityType}
                         />,
                       )}
                     </Form.Item>
 
-                    {/* TODO: add select boxes */}
                     {identityType === 'J' && (
                       <div>
+                        <Form.Item label="Tipo de empresa">
+                          {form.getFieldDecorator('companyType', {
+                            rules: [
+                              {
+                                required: true,
+                                message: 'Por favor, selecione um tipo de empresa',
+                              },
+                            ],
+                          })(
+                            <Select>
+                              {corporateType.map(opt => (
+                                <SelectOption key={opt.value} value={opt.value}>
+                                  {opt.label}
+                                </SelectOption>
+                              ))}
+                            </Select>,
+                          )}
+                        </Form.Item>
                         <Form.Item label="Razão social">
                           {form.getFieldDecorator('companyName', {
                             rules: [
@@ -107,6 +135,24 @@ class Step4 extends Component {
                           })(<Input size="default" />)}
                         </Form.Item>
                       </div>
+                    )}
+
+                    {identityType === 'F' && (
+                      <Form.Item label="Profissão">
+                        {form.getFieldDecorator('personType', {
+                          rules: [
+                            { required: true, message: 'Por favor, selecione um tipo de trabalho' },
+                          ],
+                        })(
+                          <Select>
+                            {personType.map(opt => (
+                              <SelectOption key={opt.value} value={opt.value}>
+                                {opt.label}
+                              </SelectOption>
+                            ))}
+                          </Select>,
+                        )}
+                      </Form.Item>
                     )}
 
                     <Form.Item label="Cadastrur">
