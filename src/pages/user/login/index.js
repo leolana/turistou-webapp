@@ -31,15 +31,19 @@ class Login extends Component {
         <Helmet title="Login" />
         <div className={styles.title}>
           <h1>
-            <strong>WELCOME TO CLEAN UI ADMIN TEMPLATE</strong>
+            <strong>Bem-vindo a Turistou Organize</strong>
           </h1>
           <p>
-            Pluggable enterprise-level react application framework.
+            Faça o login para gerenciar suas excursões.
             <br />
-            An excellent front-end solution for web applications built upon Ant Design and UmiJS.
+            Desfrute da ferramenta que auxilia e otimiza seu trabalho.
             <br />
-            Credentials for testing purposes - <strong>admin@mediatec.org</strong> /{' '}
-            <strong>cleanui</strong>
+            O Alex deve escrever textos melhores do que os meus para por aqui =p.
+            <br />
+            Conte conosco e ajude-nos a melhorar:{' '}
+            <Link className="utils__link--blue" to="/faq">
+              FAQ
+            </Link>
           </p>
         </div>
         <div className={styles.block}>
@@ -48,15 +52,15 @@ class Login extends Component {
               <div className={styles.inner}>
                 <div className={styles.form}>
                   <h4 className="text-uppercase">
-                    <strong>Please log in</strong>
+                    <strong>Log in</strong>
                   </h4>
                   <div>
-                    Do not you have a register?
+                    Ainda não é registrado?
                     <Link
                       to="/user/signup"
                       className="utils__link--blue utils__link--underlined ml-2"
                     >
-                      Sign up
+                      Registre-se
                     </Link>
                   </div>
                   <br />
@@ -75,7 +79,7 @@ class Login extends Component {
                     </Form.Item>
                     <div className="mb-2">
                       <Link to="/user/forgot" className="utils__link--blue utils__link--underlined">
-                        Forgot password
+                        Esqueci a senha
                       </Link>
                     </div>
                     <div className="form-actions">
@@ -85,7 +89,7 @@ class Login extends Component {
                         htmlType="submit"
                         loading={fetching}
                       >
-                        Login
+                        Entrar
                       </Button>
                     </div>
                   </Form>
