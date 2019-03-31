@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
 import { Form, Button, Radio, DatePicker } from 'antd'
 import { Helmet } from 'react-helmet'
 import { connect } from 'react-redux'
@@ -80,7 +81,12 @@ class Step2 extends Component {
                     </Form.Item>
                     <Form.Item label="Data de nascimento">
                       {form.getFieldDecorator('birthdate', {
-                        rules: [{ required: true }],
+                        rules: [
+                          {
+                            required: true,
+                            message: 'Por favor, selecione uma data de nascimento',
+                          },
+                        ],
                       })(<DatePicker size="default" format={dateFormat} />)}
                       {/* TODO: translate DatePicker */}
                       {/* TODO: start DatePicker in year view */}
@@ -92,7 +98,10 @@ class Step2 extends Component {
                         htmlType="submit"
                         loading={fetching}
                       >
-                        Próxima etapa
+                        Salvar
+                      </Button>
+                      <Button type="default" className="width-150 mr-4" loading={fetching}>
+                        <Link to="/user/completeStep3">Próxima etapa</Link>
                       </Button>
                     </div>
                   </Form>

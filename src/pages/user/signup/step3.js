@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
 import { Form, Input, Button } from 'antd'
 import { Helmet } from 'react-helmet'
 import { connect } from 'react-redux'
@@ -121,7 +122,10 @@ class Step3 extends Component {
                         htmlType="submit"
                         loading={fetching}
                       >
-                        Próxima etapa
+                        Salvar
+                      </Button>
+                      <Button type="default" className="width-150 mr-4" loading={fetching}>
+                        <Link to="/user/completeStep4">Próxima etapa</Link>
                       </Button>
                     </div>
                   </Form>

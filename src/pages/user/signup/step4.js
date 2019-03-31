@@ -224,8 +224,17 @@ class Step4 extends Component {
                         htmlType="submit"
                         loading={fetching}
                       >
-                        Próxima etapa
+                        Salvar
                       </Button>
+                      {/* <Button
+                        type="default"
+                        className="width-150 mr-4"
+                        loading={fetching}
+                      >
+                        <Link to="/user/completeStep4">
+                          Próxima etapa
+                        </Link>
+                      </Button> */}
                     </div>
                   </Form>
                 </div>

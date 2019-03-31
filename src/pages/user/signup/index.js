@@ -70,7 +70,12 @@ class Signup extends Component {
                     </Form.Item>
                     <Form.Item label="Celular">
                       {form.getFieldDecorator('cellphone', {
-                        rules: [{ required: false }],
+                        rules: [
+                          {
+                            required: true,
+                            message: 'Por favor, insira um número de telefone celular',
+                          },
+                        ],
                       })(
                         <MaskedInput
                           className="ant-input"
@@ -113,6 +118,9 @@ class Signup extends Component {
                       >
                         Cadastrar
                       </Button>
+                      <Link className="mr-4" to="/user/completeStep2">
+                        Próxima etapa
+                      </Link>
                       <Link to="/user/login" className="utils__link--blue utils__link--underlined">
                         Já sou cadastrado
                       </Link>
