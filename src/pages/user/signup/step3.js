@@ -44,7 +44,7 @@ class Step3 extends Component {
             <div className="col-xl-12">
               <div className={styles.inner}>
                 <div className={styles.form}>
-                  <Form layout="vertical" hideRequiredMark onSubmit={this.onSubmit}>
+                  <Form layout="vertical" onSubmit={this.onSubmit}>
                     <Form.Item label="CEP">
                       {form.getFieldDecorator('zipcode', {
                         rules: [

@@ -27,7 +27,7 @@ class Step2 extends Component {
   }
 
   render() {
-    const sexOptions = [{ value: 'F', label: 'Feminino' }, { value: 'M', label: 'Masculino' }]
+    const genderOptions = [{ value: 'F', label: 'Feminino' }, { value: 'M', label: 'Masculino' }]
     const dateFormat = 'DD/MM/YYYY'
     const {
       form,
@@ -48,7 +48,7 @@ class Step2 extends Component {
             <div className="col-xl-12">
               <div className={styles.inner}>
                 <div className={styles.form}>
-                  <Form layout="vertical" hideRequiredMark onSubmit={this.onSubmit}>
+                  <Form layout="vertical" onSubmit={this.onSubmit}>
                     <Form.Item label="CPF">
                       {form.getFieldDecorator('cpf', {
                         rules: [{ required: true, message: 'Por favor, insira teu CPF' }],
@@ -74,10 +74,10 @@ class Step2 extends Component {
                         />,
                       )}
                     </Form.Item>
-                    <Form.Item label="Sexo">
-                      {form.getFieldDecorator('sex', {
+                    <Form.Item label="Gênero">
+                      {form.getFieldDecorator('gender', {
                         rules: [{ required: false }],
-                      })(<RadioGroup options={sexOptions} size="default" />)}
+                      })(<RadioGroup options={genderOptions} size="default" />)}
                     </Form.Item>
                     <Form.Item label="Data de nascimento">
                       {form.getFieldDecorator('birthdate', {
