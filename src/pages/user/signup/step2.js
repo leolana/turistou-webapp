@@ -101,7 +101,7 @@ class Step2 extends Component {
                         Salvar
                       </Button>
                       <Button type="default" className="width-150 mr-4" loading={fetching}>
-                        <Link to="/user/completeStep3">Próxima etapa</Link>
+                        <Link to="/user/signup3">Próxima etapa</Link>
                       </Button>
                     </div>
                   </Form>

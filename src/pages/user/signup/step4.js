@@ -231,7 +231,7 @@ class Step4 extends Component {
                         className="width-150 mr-4"
                         loading={fetching}
                       >
-                        <Link to="/user/completeStep4">
+                        <Link to="/user/signup4">
                           Próxima etapa
                         </Link>
                       </Button> */}

@@ -118,7 +118,7 @@ class Signup extends Component {
                       >
                         Cadastrar
                       </Button>
-                      <Link className="mr-4" to="/user/completeStep2">
+                      <Link className="mr-4" to="/user/signup2">
                         Próxima etapa
                       </Link>
                       <Link to="/user/login" className="utils__link--blue utils__link--underlined">
