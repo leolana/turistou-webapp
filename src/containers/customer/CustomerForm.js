@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Form, Input, DatePicker, Button, Row, Col, InputNumber } from 'antd'
-import MaskedInput from 'react-text-mask'
+import MaskedInput from 'react-editmask'
 import RadioGroup from 'antd/lib/radio/group'
 
 @Form.create()
@@ -32,27 +32,7 @@ class CustomerForm extends Component {
               <Form.Item label="CPF">
                 {form.getFieldDecorator('cpf', {
                   rules: [{ required: false }],
-                })(
-                  <MaskedInput
-                    className="ant-input"
-                    mask={[
-                      /\d/,
-                      /\d/,
-                      /\d/,
-                      '.',
-                      /\d/,
-                      /\d/,
-                      /\d/,
-                      '.',
-                      /\d/,
-                      /\d/,
-                      /\d/,
-                      '-',
-                      /\d/,
-                      /\d/,
-                    ]}
-                  />,
-                )}
+                })(<MaskedInput className="ant-input" mask="ddd/.ddd/.ddd-dd" />)}
               </Form.Item>
             </Col>
             <Col span={3}>
@@ -69,12 +49,7 @@ class CustomerForm extends Component {
               <Form.Item label="RG">
                 {form.getFieldDecorator('rg', {
                   rules: [{ required: false }],
-                })(
-                  <MaskedInput
-                    className="ant-input"
-                    mask={[/\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '-', /\d/]}
-                  />,
-                )}
+                })(<MaskedInput className="ant-input" mask="dd/.ddd/.ddd-d" />)}
               </Form.Item>
             </Col>
             {/* TODO: validation for age?? */}
@@ -133,12 +108,7 @@ class CustomerForm extends Component {
               <Form.Item label="CEP">
                 {form.getFieldDecorator('zipcode', {
                   rules: [{ required: false }],
-                })(
-                  <MaskedInput
-                    className="ant-input"
-                    mask={[/\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/]}
-                  />,
-                )}
+                })(<MaskedInput className="ant-input" mask="ddddd-ddd" />)}
               </Form.Item>
             </Col>
             <Col span={12}>
@@ -149,10 +119,12 @@ class CustomerForm extends Component {
               </Form.Item>
             </Col>
             <Col span={2}>
+              {/* TODO: uppercas */}
               <Form.Item label="UF">
                 {form.getFieldDecorator('fu', {
                   rules: [{ required: false }],
                 })(<Input size="default" maxLength="2" />)}
+                {/* })(<MaskedInput className="ant-input" mask="UU" size="default" />)} */}
               </Form.Item>
             </Col>
           </Row>
@@ -165,55 +137,14 @@ class CustomerForm extends Component {
               <Form.Item label="Celular">
                 {form.getFieldDecorator('cellphone', {
                   rules: [{ required: true, message: 'Por favor, insira o número celular' }],
-                })(
-                  <MaskedInput
-                    className="ant-input"
-                    mask={[
-                      '(',
-                      /[1-9]/,
-                      /[1-9]/,
-                      ')',
-                      ' ',
-                      /\d/,
-                      /\d/,
-                      /\d/,
-                      /\d/,
-                      /\d/,
-                      '-',
-                      /\d/,
-                      /\d/,
-                      /\d/,
-                      /\d/,
-                    ]}
-                  />,
-                )}
+                })(<MaskedInput className="ant-input" mask="(dd) ddddd-dddd" />)}
               </Form.Item>
             </Col>
             <Col span={4}>
               <Form.Item label="Telefone">
                 {form.getFieldDecorator('telephone', {
                   rules: [{ required: false }],
-                })(
-                  <MaskedInput
-                    className="ant-input"
-                    mask={[
-                      '(',
-                      /[1-9]/,
-                      /[1-9]/,
-                      ')',
-                      ' ',
-                      /\d/,
-                      /\d/,
-                      /\d/,
-                      /\d/,
-                      '-',
-                      /\d/,
-                      /\d/,
-                      /\d/,
-                      /\d/,
-                    ]}
-                  />,
-                )}
+                })(<MaskedInput className="ant-input" mask="(dd) dddd-dddd" />)}
               </Form.Item>
             </Col>
             <Col span={10}>
@@ -258,31 +189,10 @@ class CustomerForm extends Component {
               </Form.Item>
             </Col>
             <Col span={6}>
-              <Form.Item label="Celular do contato de emergência">
+              <Form.Item label="Telefone do contato de emergência">
                 {form.getFieldDecorator('emergencyCellphone', {
                   rules: [{ required: false }],
-                })(
-                  <MaskedInput
-                    className="ant-input"
-                    mask={[
-                      '(',
-                      /[1-9]/,
-                      /[1-9]/,
-                      ')',
-                      ' ',
-                      /\d/,
-                      /\d/,
-                      /\d/,
-                      /\d/,
-                      /\d/,
-                      '-',
-                      /\d/,
-                      /\d/,
-                      /\d/,
-                      /\d/,
-                    ]}
-                  />,
-                )}
+                })(<MaskedInput className="ant-input" mask="(dd) d?dddd-dddd" />)}
               </Form.Item>
             </Col>
           </Row>
