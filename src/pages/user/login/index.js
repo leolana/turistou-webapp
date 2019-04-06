@@ -82,10 +82,10 @@ class Login extends Component {
                         Esqueci a senha
                       </Link>
                     </div>
-                    <div className="form-actions">
+                    <div className="form-actions text-center">
                       <Button
                         type="primary"
-                        className="width-150 mr-4"
+                        className="width-200"
                         htmlType="submit"
                         loading={fetching}
                       >
