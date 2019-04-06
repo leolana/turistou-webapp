@@ -52,6 +52,10 @@ const routes = [
     path: '/dashboard/alpha',
     component: loadable(() => import('pages/dashboard/alpha')),
   },
+  {
+    path: '/dashboard/clients',
+    component: loadable(() => import('pages/client')),
+  },
 ]
 
 class Router extends React.Component {

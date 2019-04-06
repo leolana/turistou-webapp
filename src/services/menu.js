@@ -16,10 +16,16 @@ export async function getLeftMenuData() {
       divider: true,
     },
     {
-      title: 'Dashboard Alpha',
-      key: 'dashboardAlpha',
+      title: 'Dashboard',
+      key: 'dashboard',
       url: '/dashboard/alpha',
       icon: 'icmn icmn-home',
+    },
+    {
+      title: 'Clientes',
+      key: 'Clients',
+      url: '/dashboard/clients',
+      icon: 'icmn icmn-users',
     },
   ]
 }
@@ -43,9 +49,14 @@ export async function getTopMenuData() {
       icon: 'icmn icmn-stack',
       children: [
         {
-          title: 'Dashboard Alpha',
-          key: 'dashboardAlpha',
+          title: 'Dashboard',
+          key: 'dashboard',
           url: '/dashboard/alpha',
+        },
+        {
+          title: 'Clientes',
+          key: 'clients',
+          url: '/dashboard/clients',
         },
       ],
     },
