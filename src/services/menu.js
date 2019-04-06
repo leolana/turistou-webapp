@@ -23,8 +23,8 @@ export async function getLeftMenuData() {
     },
     {
       title: 'Clientes',
-      key: 'Clients',
-      url: '/dashboard/clients',
+      key: 'customers',
+      url: '/dashboard/customers',
       icon: 'icmn icmn-users',
     },
   ]
@@ -55,8 +55,8 @@ export async function getTopMenuData() {
         },
         {
           title: 'Clientes',
-          key: 'clients',
-          url: '/dashboard/clients',
+          key: 'customers',
+          url: '/dashboard/customers',
         },
       ],
     },

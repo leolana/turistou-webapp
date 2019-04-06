@@ -9,14 +9,14 @@ import './index.scss'
 
 @Form.create()
 @connect(({ user }) => ({ user }))
-class ClientEntry extends Component {
+class CustomerEntry extends Component {
   onSubmit = event => {
     event.preventDefault()
     const { form, dispatch } = this.props
     form.validateFields((error, values) => {
       if (!error) {
         dispatch({
-          type: 'client/SAVE',
+          type: 'customer/SAVE',
           payload: values,
         })
       }
@@ -44,7 +44,7 @@ class ClientEntry extends Component {
             </div>
           </div>
           <div className="card-body">
-            <Form layout="vertical" className="client-form" onSubmit={this.onSubmit}>
+            <Form layout="vertical" className="customer-form" onSubmit={this.onSubmit}>
               {/* TODO: Refine all messages required field */}
               {/* TODO: djust layout form */}
               <section className="code-box-meta markdown">
@@ -351,4 +351,4 @@ class ClientEntry extends Component {
   }
 }
 
-export default ClientEntry
+export default CustomerEntry
