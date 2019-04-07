@@ -3,17 +3,13 @@ import { Form, Input, DatePicker, Button, Row, Col, InputNumber, Divider } from 
 import MaskedInput from 'react-editmask'
 import RadioGroup from 'antd/lib/radio/group'
 import MASK from 'constants/mask'
+import { genderOptions } from 'constants/options'
 
 @Form.create()
 class CustomerForm extends Component {
   render() {
     const { form, fetching } = this.props
     const dateFormat = 'DD/MM/YYYY'
-    const genderOptions = [
-      { value: 'F', label: 'Feminino' },
-      { value: 'M', label: 'Masculino' },
-      { value: '-', label: 'Outro' },
-    ]
     return (
       <Form layout="vertical" className="customer-form" onSubmit={this.onSubmit}>
         {/* TODO: Refine all messages required field */}

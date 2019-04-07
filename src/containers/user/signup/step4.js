@@ -4,7 +4,9 @@ import { Helmet } from 'react-helmet'
 import { connect } from 'react-redux'
 import MaskedInput from 'react-editmask'
 
-import MASK from '../../../constants/mask'
+import MASK from 'constants/mask'
+import { typeUserOptions, corporateType, personType } from 'constants/options'
+
 import styles from './style.module.scss'
 
 const RadioGroup = Radio.Group
@@ -37,20 +39,6 @@ class Step4 extends Component {
   }
 
   render() {
-    const typeIdOptions = [
-      { value: 'F', label: 'Pessoa física' },
-      { value: 'J', label: 'Pessoa jurídica' },
-    ]
-    const personType = [
-      { value: 1, label: 'Guia de turismo' },
-      { value: 2, label: 'Agente de turismo' },
-      { value: 0, label: 'Outros' },
-    ]
-    const corporateType = [
-      { value: 1, label: 'Microempreendedor' },
-      { value: 2, label: 'Agencia de turismo' },
-      { value: 0, label: 'Outros' },
-    ]
     const dateFormat = 'DD/MM/YYYY'
     const { identityType } = this.state
     const {
@@ -84,7 +72,7 @@ class Step4 extends Component {
                         ],
                       })(
                         <RadioGroup
-                          options={typeIdOptions}
+                          options={typeUserOptions}
                           size="default"
                           initialValue="F"
                           onChange={this.onChangeIdentityType}

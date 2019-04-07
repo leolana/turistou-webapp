@@ -6,6 +6,8 @@ import { connect } from 'react-redux'
 import MaskedInput from 'react-editmask'
 
 import MASK from 'constants/mask'
+import { genderOptions } from 'constants/options'
+
 import styles from './style.module.scss'
 
 const RadioGroup = Radio.Group
@@ -28,7 +30,6 @@ class Step2 extends Component {
   }
 
   render() {
-    const genderOptions = [{ value: 'F', label: 'Feminino' }, { value: 'M', label: 'Masculino' }]
     const dateFormat = 'DD/MM/YYYY'
     const {
       form,
