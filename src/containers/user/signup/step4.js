@@ -2,8 +2,9 @@ import React, { Component } from 'react'
 import { Form, Input, Button, Radio, DatePicker, Select } from 'antd'
 import { Helmet } from 'react-helmet'
 import { connect } from 'react-redux'
-import MaskedInput from 'react-text-mask'
+import MaskedInput from 'react-editmask'
 
+import MASK from '../../../constants/mask'
 import styles from './style.module.scss'
 
 const RadioGroup = Radio.Group
@@ -133,32 +134,7 @@ class Step4 extends Component {
                             rules: [
                               { required: true, message: 'Por favor, indique o CNPJ da empresa' },
                             ],
-                          })(
-                            <MaskedInput
-                              size="default"
-                              className="ant-input"
-                              mask={[
-                                /\d/,
-                                /\d/,
-                                '.',
-                                /\d/,
-                                /\d/,
-                                /\d/,
-                                '.',
-                                /\d/,
-                                /\d/,
-                                /\d/,
-                                '/',
-                                /\d/,
-                                /\d/,
-                                /\d/,
-                                /\d/,
-                                '-',
-                                /\d/,
-                                /\d/,
-                              ]}
-                            />,
-                          )}
+                          })(<MaskedInput size="default" className="ant-input" mask={MASK.cnpj} />)}
                         </Form.Item>
                       </div>
                     )}
@@ -186,28 +162,7 @@ class Step4 extends Component {
                         rules: [
                           { required: true, message: 'Por favor, insira teu número de cadastur' },
                         ],
-                      })(
-                        <MaskedInput
-                          size="default"
-                          className="ant-input"
-                          mask={[
-                            /\d/,
-                            /\d/,
-                            '.',
-                            /\d/,
-                            /\d/,
-                            /\d/,
-                            /\d/,
-                            /\d/,
-                            /\d/,
-                            '.',
-                            /\d/,
-                            /\d/,
-                            '-',
-                            /\d/,
-                          ]}
-                        />,
-                      )}
+                      })(<MaskedInput size="default" className="ant-input" mask={MASK.cadastur} />)}
                     </Form.Item>
                     <Form.Item label="Validade do cadastur">
                       {form.getFieldDecorator('cadasturDue', {
