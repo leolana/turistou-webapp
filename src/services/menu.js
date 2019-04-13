@@ -22,6 +22,12 @@ export async function getLeftMenuData() {
       icon: 'icmn icmn-home',
     },
     {
+      title: 'Excursões',
+      key: 'excursions',
+      url: '/dashboard/excursions',
+      icon: 'icmn icmn-truck',
+    },
+    {
       title: 'Clientes',
       key: 'customers',
       url: '/dashboard/customers',

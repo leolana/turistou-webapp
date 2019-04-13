@@ -56,6 +56,10 @@ const routes = [
     path: '/dashboard/customers',
     component: loadable(() => import('containers/customer')),
   },
+  {
+    path: '/dashboard/excursions',
+    component: loadable(() => import('containers/excursion')),
+  },
 ]
 
 class Router extends React.Component {
