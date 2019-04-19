@@ -27,7 +27,7 @@ class Transport extends Component {
           <FormItem label="Capacidade">
             {form.getFieldDecorator('capacity', {
               rules: [{ required: false }],
-            })(<InputNumber size="default" maxLength="3" />)}
+            })(<InputNumber size="default" max="999" />)}
           </FormItem>
         </Col>
         {/* <Col md={6}>

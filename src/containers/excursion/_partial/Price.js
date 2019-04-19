@@ -19,7 +19,7 @@ class Price extends Component {
           <FormItem label="Valor">
             {form.getFieldDecorator('passagePrice', {
               rules: [{ required: false }],
-            })(<InputNumber size="default" maxLength="5" />)}
+            })(<InputNumber size="default" max="99999" />)}
           </FormItem>
         </Col>
 

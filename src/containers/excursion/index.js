@@ -1,11 +1,19 @@
 import React, { Component } from 'react'
-import { Helmet } from 'react-helmet'
 import { connect } from 'react-redux'
+import { Helmet } from 'react-helmet'
+
 import ExcursionForm from './ExcursionForm'
-// import './index.scss'
+import ExcursionSteps from './ExcursionSteps'
+
+import './index.scss'
 
 @connect(({ user }) => ({ user }))
 class Excursion extends Component {
+  constructor() {
+    super()
+    this.state = { step: 0 }
+  }
+
   onSubmit = event => {
     event.preventDefault()
     const { form, dispatch } = this.props
@@ -20,6 +28,7 @@ class Excursion extends Component {
   }
 
   render() {
+    const { step } = this.state
     return (
       <div>
         <Helmet title="Excursão" />
@@ -33,7 +42,8 @@ class Excursion extends Component {
             </div>
           </div>
           <div className="card-body">
-            <ExcursionForm {...this.props} />
+            <ExcursionSteps step={step} {...this.props} />
+            <ExcursionForm step={step} {...this.props} />
           </div>
         </div>
       </div>

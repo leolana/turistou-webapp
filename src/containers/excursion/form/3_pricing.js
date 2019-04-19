@@ -24,7 +24,7 @@ class ExcursionPricing extends Component {
           <Form.Item label="Valor inteira (padrão)">
             {form.getFieldDecorator('defaultPassagePrice', {
               rules: [{ required: false }],
-            })(<InputNumber size="default" maxLength="5" />)}
+            })(<InputNumber size="default" max="99999" />)}
           </Form.Item>
         </Col>
         <Col xs={24} md={6}>

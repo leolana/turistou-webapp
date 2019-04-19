@@ -9,9 +9,10 @@ const customDot = (dot, { index }) => (
 
 class ExcursionSteps extends Component {
   render() {
+    const { step } = this.props
     return (
       <div>
-        <Steps current={0} progressDot={customDot}>
+        <Steps current={step} progressDot={customDot}>
           <Steps.Step title="Detalhes da viagem" />
           <Steps.Step title="Pontos de parada" />
           <Steps.Step title="Valores das passagens" />
