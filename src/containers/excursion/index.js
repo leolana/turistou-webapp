@@ -9,11 +9,6 @@ import './index.scss'
 
 @connect(({ user }) => ({ user }))
 class Excursion extends Component {
-  constructor() {
-    super()
-    this.state = { step: 0 }
-  }
-
   onSubmit = event => {
     event.preventDefault()
     const { form, dispatch } = this.props
@@ -28,7 +23,6 @@ class Excursion extends Component {
   }
 
   render() {
-    const { step } = this.state
     return (
       <div>
         <Helmet title="Excursão" />
@@ -42,8 +36,8 @@ class Excursion extends Component {
             </div>
           </div>
           <div className="card-body">
-            <ExcursionSteps step={step} {...this.props} />
-            <ExcursionForm step={step} {...this.props} />
+            <ExcursionSteps className="mb-5" {...this.props} />
+            <ExcursionForm {...this.props} />
           </div>
         </div>
       </div>
