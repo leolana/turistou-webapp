@@ -12,7 +12,7 @@ class StopAddress extends Component {
           <FormItem label="Ponto de parada">
             {form.getFieldDecorator('stopAddress', {
               rules: [{ required: false }],
-            })(<Input size="default" maxLength="200" />)}
+            })(<Input size="default" maxLength={200} />)}
           </FormItem>
         </Col>
       </Row>

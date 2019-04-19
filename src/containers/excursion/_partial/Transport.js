@@ -13,21 +13,21 @@ class Transport extends Component {
           <FormItem label="Trasporte">
             {form.getFieldDecorator('transport', {
               rules: [{ required: false }],
-            })(<Input size="default" maxLength="30" />)}
+            })(<Input size="default" maxLength={30} />)}
           </FormItem>
         </Col>
         <Col xs={24} md={6}>
           <FormItem label="Placa">
             {form.getFieldDecorator('plate', {
               rules: [{ required: false }],
-            })(<Input size="default" maxLength="30" />)}
+            })(<Input size="default" maxLength={30} />)}
           </FormItem>
         </Col>
         <Col xs={24} md={6}>
           <FormItem label="Capacidade">
             {form.getFieldDecorator('capacity', {
               rules: [{ required: false }],
-            })(<InputNumber size="default" max="999" />)}
+            })(<InputNumber size="default" maxLength={3} />)}
           </FormItem>
         </Col>
         {/* <Col md={6}>

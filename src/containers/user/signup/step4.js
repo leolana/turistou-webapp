@@ -108,14 +108,14 @@ class Step4 extends Component {
                                 message: 'Por favor, indique a razão social da empresa',
                               },
                             ],
-                          })(<Input size="default" maxLength="200" />)}
+                          })(<Input size="default" maxLength={200} />)}
                         </Form.Item>
                         <Form.Item label="Nome fantasia">
                           {form.getFieldDecorator('tradeName', {
                             rules: [
                               { required: true, message: 'Por favor, indique o nome da empresa' },
                             ],
-                          })(<Input size="default" maxLength="200" />)}
+                          })(<Input size="default" maxLength={200} />)}
                         </Form.Item>
                         <Form.Item label="CNPJ">
                           {form.getFieldDecorator('cnpj', {

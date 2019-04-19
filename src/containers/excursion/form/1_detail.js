@@ -12,7 +12,7 @@ class ExcursionDetail extends Component {
           <Form.Item label="Destino">
             {form.getFieldDecorator('destination', {
               rules: [{ required: true, message: 'Por favor, insira o destino' }],
-            })(<Input size="default" maxLength="50" />)}
+            })(<Input size="default" maxLength={50} />)}
           </Form.Item>
         </Col>
 
@@ -20,7 +20,7 @@ class ExcursionDetail extends Component {
           <Form.Item label="Endereço de partida">
             {form.getFieldDecorator('departurePoint', {
               rules: [{ required: false }],
-            })(<Input size="default" maxLength="15" />)}
+            })(<Input size="default" maxLength={15} />)}
           </Form.Item>
         </Col>
         <Col xs={24} sm={12} md={6}>
@@ -41,7 +41,7 @@ class ExcursionDetail extends Component {
           <Form.Item label="Endereço de chegada">
             {form.getFieldDecorator('departurePoint', {
               rules: [{ required: false }],
-            })(<Input size="default" maxLength="15" />)}
+            })(<Input size="default" maxLength={15} />)}
           </Form.Item>
         </Col>
 

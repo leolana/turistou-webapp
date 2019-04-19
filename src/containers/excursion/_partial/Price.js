@@ -12,14 +12,14 @@ class Price extends Component {
           <FormItem label="Tipo de passagem">
             {form.getFieldDecorator('passageDescription', {
               rules: [{ required: false }],
-            })(<Input size="default" maxLength="30" />)}
+            })(<Input size="default" maxLength={30} />)}
           </FormItem>
         </Col>
         <Col xs={24} sm={12}>
           <FormItem label="Valor">
             {form.getFieldDecorator('passagePrice', {
               rules: [{ required: false }],
-            })(<InputNumber size="default" max="99999" />)}
+            })(<InputNumber size="default" maxLength={5} />)}
           </FormItem>
         </Col>
 
@@ -34,7 +34,7 @@ class Price extends Component {
           <FormItem label="Idade">
             {form.getFieldDecorator('fromAge', {
               rules: [{ required: false }],
-            })(<InputNumber size="default" max="100000" />)}
+            })(<InputNumber size="default" maxLength={6} />)}
           </FormItem>
         </Col>
         <Col xs={24} sm={6}>
@@ -48,7 +48,7 @@ class Price extends Component {
           <FormItem label="Idade">
             {form.getFieldDecorator('untilAge', {
               rules: [{ required: false }],
-            })(<InputNumber size="default" max="200" />)}
+            })(<InputNumber size="default" maxLength={3} />)}
           </FormItem>
         </Col>
       </Row>
