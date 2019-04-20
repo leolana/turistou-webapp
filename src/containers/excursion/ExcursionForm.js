@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { Form, Button } from 'antd'
 
 import ExcursionDetail from './form/1_detail'
+import ExcursionStopPoint from './form/2_stopPoint'
 import ExcursionPricing from './form/3_pricing'
 import ExcursionTransport from './form/4_transport'
 
@@ -11,7 +12,7 @@ class ExcursionForm extends Component {
   constructor(props) {
     super(props)
 
-    this.state = { step: props.step || 0 }
+    this.state = { step: 0 }
 
     this.prevStep = this.prevStep.bind(this)
     this.nextStep = this.nextStep.bind(this)
@@ -41,7 +42,7 @@ class ExcursionForm extends Component {
       <Form layout="vertical" className="customer-form" onSubmit={this.onSubmit}>
         {/* TODO: Refine all messages required field */}
         {step === 0 && <ExcursionDetail {...this.props} />}
-        {step === 1 && <ExcursionPricing {...this.props} />}
+        {step === 1 && <ExcursionStopPoint {...this.props} />}
         {step === 2 && <ExcursionPricing {...this.props} />}
         {step === 3 && <ExcursionTransport {...this.props} />}
 
@@ -60,7 +61,4 @@ class ExcursionForm extends Component {
     )
   }
 }
-function mapToProps(state) {
-  return { step: state.step }
-}
-export default connect(mapToProps)(ExcursionForm)
+export default connect()(ExcursionForm)

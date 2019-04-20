@@ -17,9 +17,7 @@ class ExcursionStopPoint extends Component {
   }
 
   removeStopPoint = index => {
-    console.log('index', index)
     let { stopPoints } = this.state
-    console.log('stopPoints', stopPoints)
     stopPoints = stopPoints.filter(x => index !== x)
     this.setState({ stopPoints })
   }

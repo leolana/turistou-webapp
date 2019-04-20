@@ -1,56 +1,61 @@
 import React, { Component } from 'react'
-import { Row, Col, Form, Switch, InputNumber, Icon, Button } from 'antd'
-// import Price from '../_partial/Price';
+import { Row, Col, Icon, Button, Form, InputNumber, Input } from 'antd'
+import Price from '../_partial/Price'
 
 class ExcursionPricing extends Component {
   constructor() {
     super()
-    this.state = { uniquePrice: true, amountCustomPrices: 0 }
+    this.state = { prices: [] }
   }
 
-  onChangeUniquePrice = value => {
-    let { amountCustomPrices } = this.state
-    amountCustomPrices = amountCustomPrices || 1
+  addPrice = () => {
+    const { prices } = this.state
+    const last = prices.length ? prices[prices.length - 1] : -1
+    prices.push(last + 1)
+    this.setState({ prices })
+  }
 
-    this.setState({ uniquePrice: value, amountCustomPrices })
+  removePrice = index => {
+    let { prices } = this.state
+    prices = prices.filter(x => index !== x)
+    this.setState({ prices })
   }
 
   render() {
     const { form } = this.props
-    const { uniquePrice } = this.state
+    const { prices } = this.state
+
     return (
       <Row>
         <Col xs={24} md={6}>
           <Form.Item label="Valor inteira (padrão)">
             {form.getFieldDecorator('defaultPassagePrice', {
               rules: [{ required: false }],
-            })(<InputNumber size="default" maxLength={5} />)}
+            })(<InputNumber className="ant-input" size="default" maxLength={5} />)}
           </Form.Item>
         </Col>
         <Col xs={24} md={6}>
-          <Form.Item label="Mesmo valor para todas as idades">
-            {form.getFieldDecorator('uniquePrice', {
+          <Form.Item label="Valor inteira (padrão)">
+            {form.getFieldDecorator('defaultPassagePrice', {
               rules: [{ required: false }],
-            })(<Switch defaultChecked onChange={this.onChangeUniquePrice} />)}
+            })(<Input size="default" maxLength={5} />)}
           </Form.Item>
         </Col>
-        <Col md={12}>
-          {!uniquePrice && (
-            // TODO:
-            <Button type="dashed" onClick={this.onClickPlusPrice} className="float-right">
-              <Icon type="plus" />
-            </Button>
-          )}
+        <Col xs={0} md={12} />
+
+        <Col xs={24}>
+          {prices.map(x => (
+            <Price key={x} index={x} removePrice={this.removePrice} {...this.props} />
+          ))}
+        </Col>
+
+        <Col md={8} pull={8} push={8}>
+          <Button className="w-100" type="dashed" onClick={this.addPrice}>
+            <Icon type="plus" />
+            Adicionar preço
+          </Button>
         </Col>
       </Row>
-      // TODO: prices
-      // <Row>
-      //   {!uniquePrice && (
-      //     <Col md={12}>
-      //       <Price form={form} {...this.props} />
-      //     </Col>
-      //   )}
-      // </Row>
     )
   }
 }

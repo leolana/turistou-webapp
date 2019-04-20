@@ -16,9 +16,7 @@ class ExcursionTransport extends Component {
   }
 
   removeTransport = index => {
-    console.log('index', index)
     let { transports } = this.state
-    console.log('transports', transports)
     transports = transports.filter(x => index !== x)
     this.setState({ transports })
   }
