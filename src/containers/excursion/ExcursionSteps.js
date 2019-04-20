@@ -11,7 +11,7 @@ class ExcursionSteps extends Component {
   render() {
     const { step } = this.props
     return (
-      <Steps current={step} progressDot={customDot} className="mb-5">
+      <Steps current={step} initial={1} progressDot={customDot} className="mb-5">
         <Steps.Step title="Detalhes da viagem" />
         <Steps.Step title="Pontos de parada" />
         <Steps.Step title="Valores das passagens" />

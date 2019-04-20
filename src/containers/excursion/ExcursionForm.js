@@ -12,7 +12,7 @@ class ExcursionForm extends Component {
   constructor(props) {
     super(props)
 
-    this.state = { step: 0 }
+    this.state = { step: 1 }
 
     this.prevStep = this.prevStep.bind(this)
     this.nextStep = this.nextStep.bind(this)
@@ -41,10 +41,10 @@ class ExcursionForm extends Component {
     return (
       <Form layout="vertical" className="customer-form" onSubmit={this.onSubmit}>
         {/* TODO: Refine all messages required field */}
-        {step === 0 && <ExcursionDetail {...this.props} />}
-        {step === 1 && <ExcursionStopPoint {...this.props} />}
-        {step === 2 && <ExcursionPricing {...this.props} />}
-        {step === 3 && <ExcursionTransport {...this.props} />}
+        {step === 1 && <ExcursionDetail {...this.props} />}
+        {step === 2 && <ExcursionStopPoint {...this.props} />}
+        {step === 3 && <ExcursionPricing {...this.props} />}
+        {step === 4 && <ExcursionTransport {...this.props} />}
 
         <div className="form-actions">
           <Button className="mr-2" onClick={this.prevStep}>
