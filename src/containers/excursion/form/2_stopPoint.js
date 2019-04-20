@@ -11,7 +11,8 @@ class ExcursionStopPoint extends Component {
 
   addStopPoint = () => {
     const { stopPoints } = this.state
-    stopPoints.push(stopPoints.length)
+    const last = stopPoints.length ? stopPoints[stopPoints.length - 1] : -1
+    stopPoints.push(last + 1)
     this.setState({ stopPoints })
   }
 
@@ -34,7 +35,7 @@ class ExcursionStopPoint extends Component {
           ))}
         </Col>
         <Col md={8} pull={8} push={8}>
-          <Button type="dashed" onClick={this.addStopPoint}>
+          <Button className="w-100" type="dashed" onClick={this.addStopPoint}>
             <Icon type="plus" />
             Adicionar ponto de parada
           </Button>
