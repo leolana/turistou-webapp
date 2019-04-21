@@ -8,7 +8,7 @@ import ExcursionSteps from './ExcursionSteps'
 import './index.scss'
 
 @connect(({ user }) => ({ user }))
-class Excursion extends Component {
+class ExcursionBox extends Component {
   onSubmit = event => {
     event.preventDefault()
     const { form, dispatch } = this.props
@@ -45,4 +45,4 @@ class Excursion extends Component {
   }
 }
 
-export default Excursion
+export default ExcursionBox

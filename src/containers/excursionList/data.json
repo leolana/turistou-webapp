@@ -1,0 +1,36 @@
+{
+  "tableData": [
+    {
+      "id": 1,
+      "destination": "Belo Horizonte",
+      "departure": "2019-03-10T10:00:00.000Z",
+      "regress": "2019-03-17T18:00:00.000Z",
+      "vacacy": 0,
+      "capacity": 42
+    },
+    {
+      "id": 2,
+      "destination": "Belo Horizonte",
+      "departure": "2019-03-20T10:00:00.000Z",
+      "regress": "2019-03-27T18:00:00.000Z",
+      "vacacy": 3,
+      "capacity": 50
+    },
+    {
+      "id": 3,
+      "destination": "Belo Horizonte",
+      "departure": "2019-04-10T10:00:00.000Z",
+      "regress": "2019-04-17T18:00:00.000Z",
+      "vacacy": 12,
+      "capacity": 30
+    },
+    {
+      "id": 4,
+      "destination": "Belo Horizonte",
+      "departure": "2019-04-20T10:00:00.000Z",
+      "regress": "2019-04-27T18:00:00.000Z",
+      "vacacy": 40,
+      "capacity": 42
+    }
+  ]
+}

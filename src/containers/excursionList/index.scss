@@ -1,0 +1,9 @@
+.table-action-buttons {
+  .ant-btn {
+    margin-right: 5px;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}

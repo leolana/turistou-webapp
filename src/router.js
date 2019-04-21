@@ -58,7 +58,11 @@ const routes = [
   },
   {
     path: '/dashboard/excursions',
-    component: loadable(() => import('containers/excursion')),
+    component: loadable(() => import('containers/excursionList')),
+  },
+  {
+    path: '/dashboard/excursion/new',
+    component: loadable(() => import('containers/excursionBox')),
   },
 ]
 
