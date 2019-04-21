@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Button, Icon, Row, Col } from 'antd'
-import StopAddress from '../_partial/StopAddress'
+import StopAddress from './StopAddress'
 
 class ExcursionStopPoint extends Component {
   constructor() {

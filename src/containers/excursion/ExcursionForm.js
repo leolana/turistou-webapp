@@ -2,10 +2,10 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Form, Button } from 'antd'
 
-import ExcursionDetail from './form/1_detail'
-import ExcursionStopPoint from './form/2_stopPoint'
-import ExcursionPricing from './form/3_pricing'
-import ExcursionTransport from './form/4_transport'
+import ExcursionDetail from './form/ExcursionDetail'
+import ExcursionStopPoint from './form/ExcursionStopPoint'
+import ExcursionPricing from './form/ExcursionPricing'
+import ExcursionTransport from './form/ExcursionTransport'
 
 @Form.create()
 class ExcursionForm extends Component {

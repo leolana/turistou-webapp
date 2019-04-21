@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Row, Col, Button, Icon } from 'antd'
-import Transport from '../_partial/Transport'
+import Transport from './Transport'
 
 class ExcursionTransport extends Component {
   constructor() {

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Row, Col, Icon, Button, Form, InputNumber, Input } from 'antd'
-import Price from '../_partial/Price'
+import Price from './Price'
 
 class ExcursionPricing extends Component {
   constructor() {
