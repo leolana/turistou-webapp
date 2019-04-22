@@ -1,5 +1,11 @@
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
 .table-action-buttons {
-  .ant-btn {
+  button,
+  a {
     margin-right: 5px;
 
     &:last-child {

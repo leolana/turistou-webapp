@@ -5,6 +5,7 @@ import { Helmet } from 'react-helmet'
 import ExcursionForm from './ExcursionForm'
 import ExcursionSteps from './ExcursionSteps'
 
+import 'costom.scss'
 import './index.scss'
 
 @connect(({ user }) => ({ user }))

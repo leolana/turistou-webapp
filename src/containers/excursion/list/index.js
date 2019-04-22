@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
 import { Table, Button, Icon } from 'antd'
+import { Link } from 'react-router-dom'
 // import Authorize from 'components/LayoutComponents/Authorize'
 import { Helmet } from 'react-helmet'
 
-import './index.scss'
+import 'costom.scss'
 
-import { tableData as mockData } from './data.json'
+import { tableData as mockData } from 'mock/excursions'
 
 class ExcursionList extends Component {
   constructor() {
@@ -21,15 +22,25 @@ class ExcursionList extends Component {
       return x
     })
     this.state = { tableData }
+
+    this.handleAddPassager = this.handleAddPassager.bind(this)
   }
 
-  renderActionsButtons = () => (
+  handleAddPassager(id) {
+    this.setState({ editingId: id })
+    const { editingId } = this.state
+    console.log(editingId)
+  }
+
+  renderActionsButtons = id => (
     <div className="table-action-buttons">
+      <Link to={`excursion/${id}/passagers`}>
+        <Button ghost size="small" type="primary">
+          <Icon type="user-add" />
+        </Button>
+      </Link>
       <Button ghost size="small" type="primary">
-        <Icon type="user-add" />
-      </Button>
-      <Button ghost size="small" type="primary">
-        <Icon type="user" />
+        <Icon type="usergroup-add" />
       </Button>
       <Button ghost size="small" type="primary">
         <Icon type="edit" />
@@ -45,7 +56,7 @@ class ExcursionList extends Component {
 
     const tableColumns = [
       {
-        dataIndex: 'action',
+        dataIndex: 'id',
         key: 'id',
         render: this.renderActionsButtons,
       },
@@ -53,12 +64,11 @@ class ExcursionList extends Component {
         title: 'Vagas',
         dataIndex: 'vacacy',
         key: 'vacacy',
-        render: (x, a) => <span className={a.textStyle}>{x}</span>,
-      },
-      {
-        title: 'Capacidade',
-        dataIndex: 'capacity',
-        key: 'capacity',
+        render: (x, a) => (
+          <span className={a.textStyle}>
+            {x} / {a.capacity}
+          </span>
+        ),
       },
       {
         title: 'Destino',

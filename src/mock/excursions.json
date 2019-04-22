@@ -6,7 +6,27 @@
       "departure": "2019-03-10T10:00:00.000Z",
       "regress": "2019-03-17T18:00:00.000Z",
       "vacacy": 0,
-      "capacity": 42
+      "capacity": 42,
+      "passType": [
+        {
+          "description": "default",
+          "ageFrom": null,
+          "ageUntil": null,
+          "price": 450
+        },
+        {
+          "description": "Criança",
+          "ageFrom": null,
+          "ageUntil": 5,
+          "price": 0
+        },
+        {
+          "description": "Idoso",
+          "ageFrom": 70,
+          "ageUntil": null,
+          "price": 300
+        }
+      ]
     },
     {
       "id": 2,

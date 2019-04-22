@@ -58,12 +58,20 @@ const routes = [
   },
   {
     path: '/dashboard/excursions',
-    component: loadable(() => import('containers/excursionList')),
+    component: loadable(() => import('containers/excursion/list')),
   },
   {
     path: '/dashboard/excursion/new',
-    component: loadable(() => import('containers/excursionBox')),
+    component: loadable(() => import('containers/excursion/box')),
   },
+  {
+    path: '/dashboard/excursion/:id/passagers',
+    component: loadable(() => import('containers/excursion/passagers')),
+  },
+  // {
+  //   path: '/dashboard/excursion/:id/edit',
+  //   component: loadable(() => import('containers/excursionEdit')),
+  // },
 ]
 
 class Router extends React.Component {
