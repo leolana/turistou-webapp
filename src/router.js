@@ -52,26 +52,34 @@ const routes = [
     path: '/dashboard/alpha',
     component: loadable(() => import('containers/dashboard/alpha')),
   },
+
+  // Customers
   {
-    path: '/dashboard/customers',
+    path: '/customer/list',
     component: loadable(() => import('containers/customer')),
   },
   {
-    path: '/dashboard/excursions',
+    path: '/customer/',
+    component: loadable(() => import('containers/customer')),
+  },
+  {
+    path: '/customer/:id',
+    component: loadable(() => import('containers/customer')),
+  },
+
+  // Excursion
+  {
+    path: '/excursion/:id/passager/',
+    component: loadable(() => import('containers/passager/box')),
+  },
+  {
+    path: '/excursion/list',
     component: loadable(() => import('containers/excursion/list')),
   },
   {
-    path: '/dashboard/excursion/new',
+    path: '/excursion/',
     component: loadable(() => import('containers/excursion/box')),
   },
-  {
-    path: '/dashboard/excursion/:id/passagers',
-    component: loadable(() => import('containers/excursion/passagers')),
-  },
-  // {
-  //   path: '/dashboard/excursion/:id/edit',
-  //   component: loadable(() => import('containers/excursionEdit')),
-  // },
 ]
 
 class Router extends React.Component {

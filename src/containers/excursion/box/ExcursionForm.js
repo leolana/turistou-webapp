@@ -22,16 +22,12 @@ class ExcursionForm extends Component {
     const { step } = this.state
     const prevStep = step - 1
     this.setState({ step: prevStep })
-
-    console.log('prevStep', prevStep)
   }
 
   nextStep() {
     const { step } = this.state
     const nextStep = step + 1
     this.setState({ step: nextStep })
-
-    console.log('nextStep', nextStep)
   }
 
   render() {
@@ -47,12 +43,8 @@ class ExcursionForm extends Component {
         {step === 4 && <ExcursionTransport {...this.props} />}
 
         <div className="form-actions">
-          <Button className="mr-2" onClick={this.prevStep}>
-            Voltar
-          </Button>
-          <Button className="mr-2" onClick={this.nextStep}>
-            Próximo
-          </Button>
+          <Button onClick={this.prevStep}>Voltar</Button>
+          <Button onClick={this.nextStep}>Próximo</Button>
           <Button type="primary" htmlType="submit" loading={fetching}>
             Salvar
           </Button>

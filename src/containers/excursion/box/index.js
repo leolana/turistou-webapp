@@ -32,12 +32,11 @@ class ExcursionBox extends Component {
             <div className="utils__title">
               <strong>Nova excursão</strong>
             </div>
-            <div className="utils__titleDescription">
-              {/* Block with important Recently Referrals information */}
-            </div>
+          </div>
+          <div className="card-header">
+            <ExcursionSteps className="mb-5" {...this.props} />
           </div>
           <div className="card-body">
-            <ExcursionSteps className="mb-5" {...this.props} />
             <ExcursionForm {...this.props} />
           </div>
         </div>

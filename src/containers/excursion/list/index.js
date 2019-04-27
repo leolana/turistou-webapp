@@ -34,7 +34,7 @@ class ExcursionList extends Component {
 
   renderActionsButtons = id => (
     <div className="table-action-buttons">
-      <Link to={`excursion/${id}/passagers`}>
+      <Link to={`${id}/passager`}>
         <Button ghost size="small" type="primary">
           <Icon type="user-add" />
         </Button>
