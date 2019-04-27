@@ -106,6 +106,7 @@ class ExcursionList extends Component {
               </div>
               <div className="card-body">
                 <Table
+                  rowKey="id"
                   className="utils__scrollTable"
                   scroll={{ x: '100%' }}
                   columns={tableColumns}
