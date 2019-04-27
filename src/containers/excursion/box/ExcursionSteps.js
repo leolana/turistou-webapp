@@ -11,7 +11,7 @@ class ExcursionSteps extends Component {
   render() {
     const { step } = this.props
     return (
-      <Steps current={step} initial={1} progressDot={customDot} className="mb-5">
+      <Steps current={step} initial={1} progressDot={customDot}>
         <Steps.Step title="Detalhes da viagem" />
         <Steps.Step title="Pontos de parada" />
         <Steps.Step title="Valores das passagens" />
@@ -20,5 +20,9 @@ class ExcursionSteps extends Component {
     )
   }
 }
+const mapStateToProps = store => {
+  console.log('step', store.step.step)
+  return { step: store.step.step }
+}
 
-export default connect()(ExcursionSteps)
+export default connect(mapStateToProps)(ExcursionSteps)

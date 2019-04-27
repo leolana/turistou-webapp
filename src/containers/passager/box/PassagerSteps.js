@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import { Steps, Popover } from 'antd'
 
 // TODO: hover com detalhes?
@@ -7,13 +8,8 @@ const customDot = (dot, { index }) => (
 )
 
 class PassagerSteps extends Component {
-  constructor() {
-    super()
-    this.state = { step: 1 }
-  }
-
   render() {
-    const { step } = this.state
+    const { step } = this.props
 
     return (
       <Steps current={step} initial={1} progressDot={customDot} className="mb-5">
@@ -25,4 +21,8 @@ class PassagerSteps extends Component {
   }
 }
 
-export default PassagerSteps
+const mapStateToProps = store => {
+  console.log('step', store)
+  return { step: store.step.step }
+}
+export default connect(mapStateToProps)(PassagerSteps)

@@ -9,15 +9,7 @@ import 'costom.scss'
 const pageTitle = 'Novo passageiro'
 
 class ExcursionPassagers extends Component {
-  constructor() {
-    super()
-
-    this.state = { step: 1 }
-  }
-
   render() {
-    const { step } = this.state
-
     return (
       <div>
         <Helmet title={pageTitle} />
@@ -28,10 +20,10 @@ class ExcursionPassagers extends Component {
             </div>
           </div>
           <div className="card-header">
-            <PassagerSteps step={step} {...this.props} />
+            <PassagerSteps {...this.props} />
           </div>
           <div className="card-body">
-            <PassagerForm step={step} {...this.props} />
+            <PassagerForm {...this.props} />
           </div>
         </div>
       </div>
