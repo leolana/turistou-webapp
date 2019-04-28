@@ -3,11 +3,12 @@ import { connect } from 'react-redux'
 import { Form, Button } from 'antd'
 
 import actions from 'redux/step/actions'
-import PassagerChoice from './form/PassagerChoice'
-import PassagerPayment from './form/PassagerPayment'
+import PassengerChoice from './form/PassengerChoice'
+import PassengerPayment from './form/PassengerPayment'
+import PassengerPlace from './form/PassengerPlace'
 
 @Form.create()
-class PassagerForm extends Component {
+class PassengerForm extends Component {
   constructor() {
     super()
 
@@ -43,9 +44,10 @@ class PassagerForm extends Component {
     const { step } = this.state
 
     return (
-      <Form layout="vertical" className="passager-form">
-        {step === 1 && <PassagerChoice {...this.props} />}
-        {step === 2 && <PassagerPayment {...this.props} />}
+      <Form layout="vertical" className="passenger-form">
+        {step === 1 && <PassengerChoice {...this.props} />}
+        {step === 2 && <PassengerPayment {...this.props} />}
+        {step === 3 && <PassengerPlace {...this.props} />}
 
         <div className="form-actions">
           <Button onClick={this.prevStep}>Voltar</Button>
@@ -58,4 +60,4 @@ class PassagerForm extends Component {
   }
 }
 
-export default connect()(PassagerForm)
+export default connect()(PassengerForm)

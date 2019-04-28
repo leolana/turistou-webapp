@@ -9,7 +9,7 @@ const passagePrices = [
   { id: 2, description: 'Idoso', price: '189,90' },
 ]
 
-class PassagerChoice extends Component {
+class PassengerChoice extends Component {
   constructor() {
     super()
     this.state = { price: null }
@@ -38,7 +38,7 @@ class PassagerChoice extends Component {
               {form.getFieldDecorator('customer', {
                 rules: [{ required: false }],
               })(
-                <Select size="default" maxLength={15}>
+                <Select size="default">
                   {tableData.map(x => (
                     <Select.Option key={x.id} value={x.id}>
                       {x.name} - {x.city}
@@ -72,4 +72,4 @@ class PassagerChoice extends Component {
   }
 }
 
-export default PassagerChoice
+export default PassengerChoice

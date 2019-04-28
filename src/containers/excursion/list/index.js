@@ -23,10 +23,10 @@ class ExcursionList extends Component {
     })
     this.state = { tableData }
 
-    this.handleAddPassager = this.handleAddPassager.bind(this)
+    this.handleAddPassenger = this.handleAddPassenger.bind(this)
   }
 
-  handleAddPassager(id) {
+  handleAddPassenger(id) {
     this.setState({ editingId: id })
     const { editingId } = this.state
     console.log(editingId)
@@ -34,7 +34,7 @@ class ExcursionList extends Component {
 
   renderActionsButtons = id => (
     <div className="table-action-buttons">
-      <Link to={`${id}/passager`}>
+      <Link to={`${id}/passenger`}>
         <Button ghost size="small" type="primary">
           <Icon type="user-add" />
         </Button>

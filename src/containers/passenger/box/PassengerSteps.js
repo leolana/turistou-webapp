@@ -7,7 +7,7 @@ const customDot = (dot, { index }) => (
   <Popover content={<span>{index + 1}ª etapa</span>}>{dot}</Popover>
 )
 
-class PassagerSteps extends Component {
+class PassengerSteps extends Component {
   render() {
     const { step } = this.props
 
@@ -15,7 +15,7 @@ class PassagerSteps extends Component {
       <Steps current={step} initial={1} progressDot={customDot} className="mb-5">
         <Steps.Step title="Passageiro" />
         <Steps.Step title="Cobrança" />
-        <Steps.Step title="Acentos" />
+        <Steps.Step title="Assentos" />
       </Steps>
     )
   }
@@ -25,4 +25,4 @@ const mapStateToProps = store => {
   console.log('step', store)
   return { step: store.step.step }
 }
-export default connect(mapStateToProps)(PassagerSteps)
+export default connect(mapStateToProps)(PassengerSteps)

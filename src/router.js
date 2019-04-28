@@ -69,8 +69,8 @@ const routes = [
 
   // Excursion
   {
-    path: '/excursion/:id/passager/',
-    component: loadable(() => import('containers/passager/box')),
+    path: '/excursion/:id/passenger/',
+    component: loadable(() => import('containers/passenger/box')),
   },
   {
     path: '/excursion/list',
