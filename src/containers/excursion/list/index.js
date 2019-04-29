@@ -22,26 +22,20 @@ class ExcursionList extends Component {
       return x
     })
     this.state = { tableData }
-
-    this.handleAddPassenger = this.handleAddPassenger.bind(this)
-  }
-
-  handleAddPassenger(id) {
-    this.setState({ editingId: id })
-    const { editingId } = this.state
-    console.log(editingId)
   }
 
   renderActionsButtons = id => (
     <div className="table-action-buttons">
       <Link to={`${id}/passenger`}>
-        <Button ghost size="small" type="primary">
+        <Button ghost size="small" type="primary" title="Adicionar passageiro">
           <Icon type="user-add" />
         </Button>
       </Link>
-      <Button ghost size="small" type="primary">
-        <Icon type="usergroup-add" />
-      </Button>
+      <Link to={`${id}/passenger/list`}>
+        <Button ghost size="small" type="primary" title="Lista de passageiros">
+          <Icon type="usergroup-add" />
+        </Button>
+      </Link>
       <Button ghost size="small" type="primary">
         <Icon type="edit" />
       </Button>
@@ -80,13 +74,13 @@ class ExcursionList extends Component {
         dataIndex: 'departure',
         key: 'departure',
         sorter: (a, b) => a.age - b.age,
-        render: x => new Date(x).toLocaleString(),
+        render: x => new Date(x).toLocaleDateString(),
       },
       {
         title: 'Retorno',
         dataIndex: 'regress',
         key: 'regress',
-        render: x => new Date(x).toLocaleString(),
+        render: x => new Date(x).toLocaleDateString(),
       },
     ]
 

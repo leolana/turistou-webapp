@@ -67,11 +67,17 @@ const routes = [
     component: loadable(() => import('containers/customer')),
   },
 
-  // Excursion
+  // Passengers
+  {
+    path: '/excursion/:id/passenger/list',
+    component: loadable(() => import('containers/passenger/list')),
+  },
   {
     path: '/excursion/:id/passenger/',
     component: loadable(() => import('containers/passenger/box')),
   },
+
+  // Excursion
   {
     path: '/excursion/list',
     component: loadable(() => import('containers/excursion/list')),
