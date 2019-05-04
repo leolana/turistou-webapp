@@ -2,11 +2,24 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Helmet } from 'react-helmet'
 
+import FormSteps from 'components/Step/FormSteps'
 import ExcursionForm from './ExcursionForm'
-import ExcursionSteps from './ExcursionSteps'
+
+import ExcursionDetail from './form/ExcursionDetail'
+import ExcursionStopPoint from './form/ExcursionStopPoint'
+import ExcursionPricing from './form/ExcursionPricing'
+import ExcursionTransport from './form/ExcursionTransport'
 
 import 'costom.scss'
 import './index.scss'
+
+const pageTitle = 'Nova excursão'
+const formSteps = [
+  { component: ExcursionDetail, title: 'Detalhes da viagem' },
+  { component: ExcursionStopPoint, title: 'Pontos de parada' },
+  { component: ExcursionPricing, title: 'Valores das passagens' },
+  { component: ExcursionTransport, title: 'Transportes' },
+]
 
 @connect(({ user }) => ({ user }))
 class ExcursionBox extends Component {
@@ -26,18 +39,18 @@ class ExcursionBox extends Component {
   render() {
     return (
       <div>
-        <Helmet title="Excursão" />
+        <Helmet title={pageTitle} />
         <div className="card">
           <div className="card-header">
             <div className="utils__title">
-              <strong>Nova excursão</strong>
+              <strong>{pageTitle}</strong>
             </div>
           </div>
           <div className="card-header">
-            <ExcursionSteps className="mb-5" {...this.props} />
+            <FormSteps formSteps={formSteps} {...this.props} />
           </div>
           <div className="card-body">
-            <ExcursionForm {...this.props} />
+            <ExcursionForm formSteps={formSteps} {...this.props} />
           </div>
         </div>
       </div>

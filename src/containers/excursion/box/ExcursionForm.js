@@ -2,28 +2,19 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Form, Button } from 'antd'
 
-import StepButtonsActions from 'components/Step/buttons'
-
-import ExcursionDetail from './form/ExcursionDetail'
-import ExcursionStopPoint from './form/ExcursionStopPoint'
-import ExcursionPricing from './form/ExcursionPricing'
-import ExcursionTransport from './form/ExcursionTransport'
+import FormStepButtonsActions from 'components/Step/FormStepButtonsActions'
 
 @Form.create()
 class ExcursionForm extends Component {
   render() {
-    const { fetching, current: step } = this.props
+    const { fetching, current: step, formSteps } = this.props
 
     return (
       <Form layout="vertical" className="customer-form" onSubmit={this.onSubmit}>
-        {/* TODO: Refine all messages required field */}
-        {step === 1 && <ExcursionDetail {...this.props} />}
-        {step === 2 && <ExcursionStopPoint {...this.props} />}
-        {step === 3 && <ExcursionPricing {...this.props} />}
-        {step === 4 && <ExcursionTransport {...this.props} />}
+        {formSteps.map((x, i) => step === i && <x.component key={x.title} {...this.props} />)}
 
         <div className="form-actions">
-          <StepButtonsActions lastStep={4} />
+          <FormStepButtonsActions lastStep={formSteps.length - 1} />
           <Button type="primary" htmlType="submit" loading={fetching}>
             Salvar
           </Button>

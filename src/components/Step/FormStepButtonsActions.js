@@ -4,12 +4,11 @@ import { connect } from 'react-redux'
 
 import actions from 'redux/step/actions'
 
-class StepButtonsActions extends Component {
+class FormStepButtonsActions extends Component {
   constructor(props) {
     super(props)
 
     this.dispatchStep = this.dispatchStep.bind(this)
-    this.dispatchStep(1)
   }
 
   dispatchStep(step) {
@@ -24,7 +23,7 @@ class StepButtonsActions extends Component {
     const { current: step, lastStep } = this.props
     return (
       <div>
-        <Button onClick={() => this.dispatchStep(step - 1)} disabled={step === 1}>
+        <Button onClick={() => this.dispatchStep(step - 1)} disabled={step === 0}>
           Voltar
         </Button>
         <Button onClick={() => this.dispatchStep(step + 1)} disabled={step === lastStep}>
@@ -39,4 +38,4 @@ const mapStateToProps = store => ({
   current: store.step.current,
 })
 
-export default connect(mapStateToProps)(StepButtonsActions)
+export default connect(mapStateToProps)(FormStepButtonsActions)

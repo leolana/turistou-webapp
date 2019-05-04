@@ -4,7 +4,7 @@ export function* SET_STATE() {
   yield put({
     type: 'step/SET_STATE',
     payload: {
-      step: 1,
+      current: 0,
     },
   })
 }
