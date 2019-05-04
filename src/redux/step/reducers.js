@@ -1,7 +1,7 @@
 import actions from './actions'
 
 const initialState = {
-  step: 1,
+  current: 1,
 }
 
 export default function stepReducer(state = initialState, action) {

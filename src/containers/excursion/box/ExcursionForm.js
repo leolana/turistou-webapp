@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Form, Button } from 'antd'
-import actions from 'redux/step/actions'
+
+import StepButtonsActions from 'components/Step/buttons'
 
 import ExcursionDetail from './form/ExcursionDetail'
 import ExcursionStopPoint from './form/ExcursionStopPoint'
@@ -10,41 +11,8 @@ import ExcursionTransport from './form/ExcursionTransport'
 
 @Form.create()
 class ExcursionForm extends Component {
-  constructor(props) {
-    super(props)
-
-    this.state = { step: 1 }
-
-    this.prevStep = this.prevStep.bind(this)
-    this.nextStep = this.nextStep.bind(this)
-    this.dispatchStep = this.dispatchStep.bind(this)
-  }
-
-  dispatchStep(step) {
-    const { dispatch } = this.props
-    dispatch({
-      type: actions.SET_STATE,
-      payload: { step },
-    })
-  }
-
-  prevStep() {
-    const { step } = this.state
-    const prevStep = step - 1
-    this.setState({ step: prevStep })
-    this.dispatchStep(prevStep)
-  }
-
-  nextStep() {
-    const { step } = this.state
-    const nextStep = step + 1
-    this.setState({ step: nextStep })
-    this.dispatchStep(nextStep)
-  }
-
   render() {
-    const { fetching } = this.props
-    const { step } = this.state
+    const { fetching, current: step } = this.props
 
     return (
       <Form layout="vertical" className="customer-form" onSubmit={this.onSubmit}>
@@ -55,8 +23,7 @@ class ExcursionForm extends Component {
         {step === 4 && <ExcursionTransport {...this.props} />}
 
         <div className="form-actions">
-          <Button onClick={this.prevStep}>Voltar</Button>
-          <Button onClick={this.nextStep}>Próximo</Button>
+          <StepButtonsActions lastStep={4} />
           <Button type="primary" htmlType="submit" loading={fetching}>
             Salvar
           </Button>
@@ -65,4 +32,9 @@ class ExcursionForm extends Component {
     )
   }
 }
-export default connect()(ExcursionForm)
+
+const mapStateToProps = store => ({
+  current: store.step.current,
+})
+
+export default connect(mapStateToProps)(ExcursionForm)
