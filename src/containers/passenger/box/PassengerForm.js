@@ -3,18 +3,13 @@ import { connect } from 'react-redux'
 import { Form, Button } from 'antd'
 
 import actions from 'redux/step/actions'
-import PassengerChoice from './form/PassengerChoice'
-import PassengerPayment from './form/PassengerPayment'
-import PassengerPlace from './form/PassengerPlace'
+import FormStepButtonsActions from 'components/Step/FormStepButtonsActions'
 
 @Form.create()
 class PassengerForm extends Component {
   constructor() {
     super()
 
-    this.state = { step: 1 }
-    this.prevStep = this.prevStep.bind(this)
-    this.nextStep = this.nextStep.bind(this)
     this.dispatchStep = this.dispatchStep.bind(this)
   }
 
@@ -26,33 +21,17 @@ class PassengerForm extends Component {
     })
   }
 
-  prevStep() {
-    const { step } = this.state
-    const prevStep = step - 1
-    this.setState({ step: prevStep })
-    this.dispatchStep(prevStep)
-  }
-
-  nextStep() {
-    const { step } = this.state
-    const nextStep = step + 1
-    this.setState({ step: nextStep })
-    this.dispatchStep(nextStep)
-  }
-
   render() {
-    const { step } = this.state
+    const { fetching, current: step, formSteps } = this.props
 
     return (
       <Form layout="vertical" className="passenger-form">
-        {step === 1 && <PassengerChoice {...this.props} />}
-        {step === 2 && <PassengerPayment {...this.props} />}
-        {step === 3 && <PassengerPlace {...this.props} />}
+        {formSteps.map((x, i) => step === i && <x.component key={x.title} {...this.props} />)}
 
         <div className="form-actions">
-          <Button onClick={this.prevStep}>Voltar</Button>
-          <Button onClick={this.nextStep} type="primary" htmlType="submit">
-            Próximo
+          <FormStepButtonsActions lastStep={formSteps.length - 1} />
+          <Button type="primary" htmlType="submit" loading={fetching}>
+            Salvar
           </Button>
         </div>
       </Form>
@@ -60,4 +39,8 @@ class PassengerForm extends Component {
   }
 }
 
-export default connect()(PassengerForm)
+const mapStateToProps = store => ({
+  current: store.step.current,
+})
+
+export default connect(mapStateToProps)(PassengerForm)

@@ -1,12 +1,21 @@
 import React, { Component } from 'react'
 import { Helmet } from 'react-helmet'
 
+import FormSteps from 'components/Step/FormSteps'
 import PassengerForm from './PassengerForm'
-import PassengerSteps from './PassengerSteps'
+
+import PassengerChoice from './form/PassengerChoice'
+import PassengerPayment from './form/PassengerPayment'
+import PassengerPlace from './form/PassengerPlace'
 
 import 'costom.scss'
 
 const pageTitle = 'Novo passageiro'
+const formSteps = [
+  { title: 'Passageiro', component: PassengerChoice },
+  { title: 'Cobrança', component: PassengerPayment },
+  { title: 'Assento', component: PassengerPlace },
+]
 
 class ExcursionPassengers extends Component {
   render() {
@@ -20,10 +29,10 @@ class ExcursionPassengers extends Component {
             </div>
           </div>
           <div className="card-header">
-            <PassengerSteps {...this.props} />
+            <FormSteps formSteps={formSteps} {...this.props} />
           </div>
           <div className="card-body">
-            <PassengerForm {...this.props} />
+            <PassengerForm formSteps={formSteps} {...this.props} />
           </div>
         </div>
       </div>
