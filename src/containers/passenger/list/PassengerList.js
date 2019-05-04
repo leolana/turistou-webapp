@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Table, Button, Icon, Tag } from 'antd'
 
 import { tableData, statuses, statusesCode } from 'mock/passengers'
 
-const passengers = tableData.map(x => {
+const passengersList = tableData.map(x => {
   const paymentPercentual = x.paid / x.total
   if (paymentPercentual === 1) x.paidColor = 'text-success'
   else if (paymentPercentual > 0.5) x.paidColor = 'text-warning'
@@ -14,6 +15,11 @@ const passengers = tableData.map(x => {
 })
 
 class PassengerList extends Component {
+  constructor() {
+    super()
+    this.filterData = this.filterData.bind(this)
+  }
+
   renderActionsButtons = id => (
     <div className="table-action-buttons">
       <Link to={`${id}`}>
@@ -29,6 +35,17 @@ class PassengerList extends Component {
       </Button>
     </div>
   )
+
+  filterData() {
+    const { statusId, startPay, fullPay } = this.props
+    let filteredData = passengersList
+
+    if (statusId) filteredData = filteredData.filter(x => x.status === statusId)
+    if (fullPay) filteredData = filteredData.filter(x => x.paid === x.total)
+    else if (startPay) filteredData = filteredData.filter(x => x.paid > 0)
+
+    return filteredData
+  }
 
   render() {
     const tableColumns = [
@@ -46,6 +63,13 @@ class PassengerList extends Component {
           const { description, type } = statuses.find(s => s.id === statusId)
           return <Tag className={`text-white bg-${type} mr-0`}>{description}</Tag>
         },
+        filters: [
+          { text: 'Reservados', value: 1 },
+          { text: 'Em espera', value: 2 },
+          { text: 'Desistentes', value: 3 },
+        ],
+        filterMultiple: false,
+        onFilter: (value, record) => record.status === value,
       },
       {
         title: 'Nome',
@@ -80,17 +104,26 @@ class PassengerList extends Component {
         render: x => x && new Date(x).toLocaleDateString(),
       },
     ]
+    const filteredData = this.filterData()
 
     return (
-      <Table
-        rowKey="id"
-        className="utils__scrollTable"
-        scroll={{ x: '100%' }}
-        columns={tableColumns}
-        dataSource={passengers}
-        pagination={false}
-      />
+      <div>
+        <Table
+          rowKey="id"
+          className="utils__scrollTable"
+          scroll={{ x: '100%' }}
+          columns={tableColumns}
+          dataSource={filteredData}
+          pagination={false}
+        />
+      </div>
     )
   }
 }
-export default PassengerList
+
+const mapStateToProps = state => {
+  const { statusId, startPay, fullPay } = state.passenger
+  return { statusId, startPay, fullPay }
+}
+
+export default connect(mapStateToProps)(PassengerList)

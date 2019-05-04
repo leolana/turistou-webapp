@@ -2,11 +2,15 @@ import React, { Component } from 'react'
 import { Helmet } from 'react-helmet'
 
 import PassengerList from './PassengerList'
+import PassengerFilter from './PassengerFilter'
 
 const pageTitle = 'Passageiros da excursão'
 
-export default class Passenger extends Component {
+class Passenger extends Component {
   render() {
+    const { match } = this.props
+    const { id } = match.params
+
     return (
       <div>
         <Helmet title={pageTitle} />
@@ -17,6 +21,7 @@ export default class Passenger extends Component {
             </div>
           </div>
           <div className="card-body">
+            <PassengerFilter id={id} />
             <PassengerList />
           </div>
         </div>
@@ -24,3 +29,4 @@ export default class Passenger extends Component {
     )
   }
 }
+export default Passenger

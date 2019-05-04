@@ -21,8 +21,7 @@ class PassengerSteps extends Component {
   }
 }
 
-const mapStateToProps = store => {
-  console.log('step', store)
-  return { step: store.step.step }
-}
+const mapStateToProps = store => ({
+  step: store.step.step,
+})
 export default connect(mapStateToProps)(PassengerSteps)
