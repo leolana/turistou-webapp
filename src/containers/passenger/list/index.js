@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
+import { Row, Button, Col } from 'antd'
 
 import PassengerList from './PassengerList'
 import PassengerFilter from './PassengerFilter'
@@ -16,9 +18,18 @@ class Passenger extends Component {
         <Helmet title={pageTitle} />
         <div className="card">
           <div className="card-header">
-            <div className="utils__title">
-              <strong>{pageTitle}</strong>
-            </div>
+            <Row>
+              <Col xs={18}>
+                <div className="utils__title">
+                  <strong>{pageTitle}</strong>
+                </div>
+              </Col>
+              <Col xs={6}>
+                <Button className="pull-right">
+                  <Link to="./">Adicionar passageiro</Link>
+                </Button>
+              </Col>
+            </Row>
           </div>
           <div className="card-body">
             <PassengerFilter id={id} />

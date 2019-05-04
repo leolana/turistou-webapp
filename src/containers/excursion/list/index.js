@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Table, Button, Icon } from 'antd'
+import { Table, Button, Icon, Row, Col, Modal } from 'antd'
 import { Link } from 'react-router-dom'
 // import Authorize from 'components/LayoutComponents/Authorize'
 import { Helmet } from 'react-helmet'
@@ -7,6 +7,8 @@ import { Helmet } from 'react-helmet'
 import 'costom.scss'
 
 import { tableData as mockData } from 'mock/excursions'
+
+const pageTitle = 'Próximas excursões'
 
 class ExcursionList extends Component {
   constructor() {
@@ -24,6 +26,23 @@ class ExcursionList extends Component {
     this.state = { tableData }
   }
 
+  delete = id => {
+    console.log('delete', id)
+    // TODO: exclude...
+  }
+
+  handleDelete(id) {
+    Modal.error({
+      title: 'Deseja excluir esta excursão?',
+      content: 'Esta ação não podera ser desfeita',
+      okText: 'Sim',
+      okType: 'danger',
+      onOk: () => this.delete(id),
+      okCancel: true,
+      cancelText: 'Não',
+    })
+  }
+
   renderActionsButtons = id => (
     <div className="table-action-buttons">
       <Link to={`${id}/passenger`}>
@@ -39,7 +58,7 @@ class ExcursionList extends Component {
       <Button ghost size="small" type="primary">
         <Icon type="edit" />
       </Button>
-      <Button ghost size="small" type="danger">
+      <Button ghost size="small" type="danger" onClick={() => this.handleDelete(id)}>
         <Icon type="delete" />
       </Button>
     </div>
@@ -86,17 +105,23 @@ class ExcursionList extends Component {
 
     return (
       <div>
-        <Helmet title="Excursões" />
+        <Helmet title={pageTitle} />
         <div className="row">
           <div className="col-lg-12">
             <div className="card">
               <div className="card-header">
-                <div className="utils__title">
-                  <strong>Próximas excursões</strong>
-                </div>
-                {/* <div className="utils__titleDescription">
-                  Block with important Recently Referrals information
-                </div> */}
+                <Row>
+                  <Col xs={18}>
+                    <div className="utils__title">
+                      <strong>{pageTitle}</strong>
+                    </div>
+                  </Col>
+                  <Col xs={6}>
+                    <Button className="pull-right">
+                      <Link to="./">Adicionar nova excursão</Link>
+                    </Button>
+                  </Col>
+                </Row>
               </div>
               <div className="card-body">
                 <Table

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { Table, Button, Icon, Tag } from 'antd'
+import { Table, Button, Icon, Tag, Modal } from 'antd'
 
 import { tableData, statuses, statusesCode } from 'mock/passengers'
 
@@ -20,6 +20,23 @@ class PassengerList extends Component {
     this.filterData = this.filterData.bind(this)
   }
 
+  delete = id => {
+    console.log('delete', id)
+    // TODO: exclude...
+  }
+
+  handleDelete(id) {
+    Modal.error({
+      title: 'Passageiro desistiu da excursão?',
+      content: 'Esta ação colocará o passageiro na lista de desistência',
+      okText: 'Sim',
+      okType: 'danger',
+      onOk: () => this.delete(id),
+      okCancel: true,
+      cancelText: 'Não',
+    })
+  }
+
   renderActionsButtons = id => (
     <div className="table-action-buttons">
       <Link to={`${id}`}>
@@ -30,7 +47,7 @@ class PassengerList extends Component {
       <Button ghost size="small" type="primary">
         <Icon type="swap" />
       </Button>
-      <Button ghost size="small" type="danger">
+      <Button ghost size="small" type="danger" onClick={() => this.handleDelete(id)}>
         <Icon type="user-delete" />
       </Button>
     </div>
@@ -63,13 +80,6 @@ class PassengerList extends Component {
           const { description, type } = statuses.find(s => s.id === statusId)
           return <Tag className={`text-white bg-${type} mr-0`}>{description}</Tag>
         },
-        filters: [
-          { text: 'Reservados', value: 1 },
-          { text: 'Em espera', value: 2 },
-          { text: 'Desistentes', value: 3 },
-        ],
-        filterMultiple: false,
-        onFilter: (value, record) => record.status === value,
       },
       {
         title: 'Nome',
