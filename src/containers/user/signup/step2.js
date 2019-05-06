@@ -3,7 +3,10 @@ import { Link } from 'react-router-dom'
 import { Form, Button, Radio, DatePicker } from 'antd'
 import { Helmet } from 'react-helmet'
 import { connect } from 'react-redux'
-import MaskedInput from 'react-text-mask'
+import MaskedInput from 'react-editmask'
+
+import MASK from 'constants/mask'
+import { genderOptions } from 'constants/options'
 
 import styles from './style.module.scss'
 
@@ -27,7 +30,6 @@ class Step2 extends Component {
   }
 
   render() {
-    const genderOptions = [{ value: 'F', label: 'Feminino' }, { value: 'M', label: 'Masculino' }]
     const dateFormat = 'DD/MM/YYYY'
     const {
       form,
@@ -52,27 +54,7 @@ class Step2 extends Component {
                     <Form.Item label="CPF">
                       {form.getFieldDecorator('cpf', {
                         rules: [{ required: true, message: 'Por favor, insira teu CPF' }],
-                      })(
-                        <MaskedInput
-                          className="ant-input"
-                          mask={[
-                            /\d/,
-                            /\d/,
-                            /\d/,
-                            '.',
-                            /\d/,
-                            /\d/,
-                            /\d/,
-                            '.',
-                            /\d/,
-                            /\d/,
-                            /\d/,
-                            '-',
-                            /\d/,
-                            /\d/,
-                          ]}
-                        />,
-                      )}
+                      })(<MaskedInput className="ant-input" mask={MASK.cpf} />)}
                     </Form.Item>
                     <Form.Item label="Gênero">
                       {form.getFieldDecorator('gender', {

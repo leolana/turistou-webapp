@@ -3,8 +3,9 @@ import { Form, Input, Button } from 'antd'
 import { Helmet } from 'react-helmet'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-import MaskedInput from 'react-text-mask'
+import MaskedInput from 'react-editmask'
 
+import MASK from 'constants/mask'
 import styles from './style.module.scss'
 
 @Form.create()
@@ -76,28 +77,7 @@ class Signup extends Component {
                             message: 'Por favor, insira um número de telefone celular',
                           },
                         ],
-                      })(
-                        <MaskedInput
-                          className="ant-input"
-                          mask={[
-                            '(',
-                            /[1-9]/,
-                            /[1-9]/,
-                            ')',
-                            ' ',
-                            /\d/,
-                            /\d/,
-                            /\d/,
-                            /\d/,
-                            /\d/,
-                            '-',
-                            /\d/,
-                            /\d/,
-                            /\d/,
-                            /\d/,
-                          ]}
-                        />,
-                      )}
+                      })(<MaskedInput className="ant-input" mask={MASK.cellphone} />)}
                     </Form.Item>
                     <Form.Item label="Senha">
                       {form.getFieldDecorator('password', {
