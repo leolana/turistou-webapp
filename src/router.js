@@ -5,7 +5,7 @@ import Loadable from 'react-loadable'
 
 import Loader from 'components/LayoutComponents/Loader'
 import IndexLayout from 'layouts'
-import NotFoundPage from 'pages/404'
+import NotFoundPage from 'containers/404'
 
 const loadable = loader =>
   Loadable({
@@ -18,43 +18,43 @@ const routes = [
   // System Pages
   {
     path: '/user/login',
-    component: loadable(() => import('pages/user/login')),
+    component: loadable(() => import('containers/user/login')),
     exact: true,
   },
   {
     path: '/user/signup',
-    component: loadable(() => import('pages/user/signup')),
+    component: loadable(() => import('containers/user/signup')),
     exact: true,
   },
   {
     path: '/user/signup2',
-    component: loadable(() => import('pages/user/signup/step2')),
+    component: loadable(() => import('containers/user/signup/step2')),
     exact: true,
   },
   {
     path: '/user/signup3',
-    component: loadable(() => import('pages/user/signup/step3')),
+    component: loadable(() => import('containers/user/signup/step3')),
     exact: true,
   },
   {
     path: '/user/signup4',
-    component: loadable(() => import('pages/user/signup/step4')),
+    component: loadable(() => import('containers/user/signup/step4')),
     exact: true,
   },
   {
     path: '/user/forgot',
-    component: loadable(() => import('pages/user/forgot')),
+    component: loadable(() => import('containers/user/forgot')),
     exact: true,
   },
 
   // Dashboards
   {
     path: '/dashboard/alpha',
-    component: loadable(() => import('pages/dashboard/alpha')),
+    component: loadable(() => import('containers/dashboard/alpha')),
   },
   {
-    path: '/dashboard/clients',
-    component: loadable(() => import('pages/client')),
+    path: '/dashboard/customers',
+    component: loadable(() => import('containers/customer')),
   },
 ]
 
