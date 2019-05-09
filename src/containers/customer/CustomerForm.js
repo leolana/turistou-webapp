@@ -20,7 +20,7 @@ class CustomerForm extends Component {
             <Form.Item label="Nome">
               {form.getFieldDecorator('name', {
                 rules: [{ required: true, message: 'Por favor, insira teu nome' }],
-              })(<Input size="default" maxLength="15" />)}
+              })(<Input size="default" maxLength={15} />)}
             </Form.Item>
           </Col>
 
@@ -37,7 +37,7 @@ class CustomerForm extends Component {
               {/* TODO: input only letters and force to uppdercase */}
               {form.getFieldDecorator('uf_cpf', {
                 rules: [{ required: false }],
-              })(<Input size="default" maxLength="2" />)}
+              })(<Input size="default" maxLength={2} />)}
             </Form.Item>
           </Col>
 
@@ -73,21 +73,21 @@ class CustomerForm extends Component {
             <Form.Item label="Logradouro">
               {form.getFieldDecorator('address', {
                 rules: [{ required: false }],
-              })(<Input size="default" maxLength="150" />)}
+              })(<Input size="default" maxLength={150} />)}
             </Form.Item>
           </Col>
           <Col span={8}>
             <Form.Item label="Bairro">
               {form.getFieldDecorator('area', {
                 rules: [{ required: false }],
-              })(<Input size="default" maxLength="150" />)}
+              })(<Input size="default" maxLength={150} />)}
             </Form.Item>
           </Col>
           <Col span={4}>
             <Form.Item label="Número">
               {form.getFieldDecorator('number', {
                 rules: [{ required: false }],
-              })(<InputNumber size="default" maxLength="7" />)}
+              })(<InputNumber size="default" maxLength={7} />)}
             </Form.Item>
           </Col>
 
@@ -95,7 +95,7 @@ class CustomerForm extends Component {
             <Form.Item label="Complemento">
               {form.getFieldDecorator('complement', {
                 rules: [{ required: false }],
-              })(<Input size="default" maxLength="20" />)}
+              })(<Input size="default" maxLength={20} />)}
             </Form.Item>
           </Col>
           <Col span={4}>
@@ -109,7 +109,7 @@ class CustomerForm extends Component {
             <Form.Item label="Cidade">
               {form.getFieldDecorator('city', {
                 rules: [{ required: false }],
-              })(<Input size="default" maxLength="150" />)}
+              })(<Input size="default" maxLength={150} />)}
             </Form.Item>
           </Col>
           <Col span={2}>
@@ -117,7 +117,7 @@ class CustomerForm extends Component {
             <Form.Item label="UF">
               {form.getFieldDecorator('fu', {
                 rules: [{ required: false }],
-              })(<Input size="default" maxLength="2" />)}
+              })(<Input size="default" maxLength={2} />)}
             </Form.Item>
           </Col>
         </Row>
@@ -142,14 +142,14 @@ class CustomerForm extends Component {
             <Form.Item label="E-mail">
               {form.getFieldDecorator('email', {
                 rules: [{ required: true, message: 'Por favor, insira um endereço de e-mail' }],
-              })(<Input size="default" type="email" maxLength="255" />)}
+              })(<Input size="default" type="email" maxLength={255} />)}
             </Form.Item>
           </Col>
           <Col span={6}>
             <Form.Item label="Profissão">
               {form.getFieldDecorator('occupation', {
                 rules: [{ required: false }],
-              })(<Input size="default" maxLength="30" />)}
+              })(<Input size="default" maxLength={30} />)}
             </Form.Item>
           </Col>
         </Row>
@@ -160,21 +160,21 @@ class CustomerForm extends Component {
             <Form.Item label="Plano de saúde">
               {form.getFieldDecorator('healthPlan', {
                 rules: [{ required: false }],
-              })(<Input size="default" maxLength="30" />)}
+              })(<Input size="default" maxLength={30} />)}
             </Form.Item>
           </Col>
           <Col span={8}>
             <Form.Item label="Alergia a medicamentos">
               {form.getFieldDecorator('allergy', {
                 rules: [{ required: false }],
-              })(<Input size="default" maxLength="200" />)}
+              })(<Input size="default" maxLength={200} />)}
             </Form.Item>
           </Col>
           <Col span={6}>
             <Form.Item label="Nome do contato de emergência">
               {form.getFieldDecorator('emergencyName', {
                 rules: [{ required: false }],
-              })(<Input size="default" maxLength="30" />)}
+              })(<Input size="default" maxLength={30} />)}
             </Form.Item>
           </Col>
           <Col span={6}>

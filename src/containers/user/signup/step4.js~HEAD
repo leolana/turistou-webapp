@@ -2,7 +2,10 @@ import React, { Component } from 'react'
 import { Form, Input, Button, Radio, DatePicker, Select } from 'antd'
 import { Helmet } from 'react-helmet'
 import { connect } from 'react-redux'
-import MaskedInput from 'react-text-mask'
+import MaskedInput from 'react-editmask'
+
+import MASK from 'constants/mask'
+import { typeUserOptions, corporateType, personType } from 'constants/options'
 
 import styles from './style.module.scss'
 
@@ -36,20 +39,6 @@ class Step4 extends Component {
   }
 
   render() {
-    const typeIdOptions = [
-      { value: 'F', label: 'Pessoa física' },
-      { value: 'J', label: 'Pessoa jurídica' },
-    ]
-    const personType = [
-      { value: 1, label: 'Guia de turismo' },
-      { value: 2, label: 'Agente de turismo' },
-      { value: 0, label: 'Outros' },
-    ]
-    const corporateType = [
-      { value: 1, label: 'Microempreendedor' },
-      { value: 2, label: 'Agencia de turismo' },
-      { value: 0, label: 'Outros' },
-    ]
     const dateFormat = 'DD/MM/YYYY'
     const { identityType } = this.state
     const {
@@ -83,7 +72,7 @@ class Step4 extends Component {
                         ],
                       })(
                         <RadioGroup
-                          options={typeIdOptions}
+                          options={typeUserOptions}
                           size="default"
                           initialValue="F"
                           onChange={this.onChangeIdentityType}
@@ -133,32 +122,7 @@ class Step4 extends Component {
                             rules: [
                               { required: true, message: 'Por favor, indique o CNPJ da empresa' },
                             ],
-                          })(
-                            <MaskedInput
-                              size="default"
-                              className="ant-input"
-                              mask={[
-                                /\d/,
-                                /\d/,
-                                '.',
-                                /\d/,
-                                /\d/,
-                                /\d/,
-                                '.',
-                                /\d/,
-                                /\d/,
-                                /\d/,
-                                '/',
-                                /\d/,
-                                /\d/,
-                                /\d/,
-                                /\d/,
-                                '-',
-                                /\d/,
-                                /\d/,
-                              ]}
-                            />,
-                          )}
+                          })(<MaskedInput size="default" className="ant-input" mask={MASK.cnpj} />)}
                         </Form.Item>
                       </div>
                     )}
@@ -186,28 +150,7 @@ class Step4 extends Component {
                         rules: [
                           { required: true, message: 'Por favor, insira teu número de cadastur' },
                         ],
-                      })(
-                        <MaskedInput
-                          size="default"
-                          className="ant-input"
-                          mask={[
-                            /\d/,
-                            /\d/,
-                            '.',
-                            /\d/,
-                            /\d/,
-                            /\d/,
-                            /\d/,
-                            /\d/,
-                            /\d/,
-                            '.',
-                            /\d/,
-                            /\d/,
-                            '-',
-                            /\d/,
-                          ]}
-                        />,
-                      )}
+                      })(<MaskedInput size="default" className="ant-input" mask={MASK.cadastur} />)}
                     </Form.Item>
                     <Form.Item label="Validade do cadastur">
                       {form.getFieldDecorator('cadasturDue', {

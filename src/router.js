@@ -42,26 +42,6 @@ const routes = [
     exact: true,
   },
   {
-    path: '/user/signup',
-    component: loadable(() => import('pages/user/signup')),
-    exact: true,
-  },
-  {
-    path: '/user/signup2',
-    component: loadable(() => import('pages/user/signup/step2')),
-    exact: true,
-  },
-  {
-    path: '/user/signup3',
-    component: loadable(() => import('pages/user/signup/step3')),
-    exact: true,
-  },
-  {
-    path: '/user/signup4',
-    component: loadable(() => import('pages/user/signup/step4')),
-    exact: true,
-  },
-  {
     path: '/user/forgot',
     component: loadable(() => import('containers/user/forgot')),
     exact: true,
@@ -75,6 +55,40 @@ const routes = [
   {
     path: '/dashboard/customers',
     component: loadable(() => import('containers/customer')),
+  },
+
+  // Customers
+  {
+    path: '/customer/list',
+    component: loadable(() => import('containers/customer')),
+  },
+  {
+    path: '/customer/',
+    component: loadable(() => import('containers/customer')),
+  },
+  {
+    path: '/customer/:id',
+    component: loadable(() => import('containers/customer')),
+  },
+
+  // Passengers
+  {
+    path: '/excursion/:id/passenger/list',
+    component: loadable(() => import('containers/passenger/list')),
+  },
+  {
+    path: '/excursion/:id/passenger/',
+    component: loadable(() => import('containers/passenger/box')),
+  },
+
+  // Excursion
+  {
+    path: '/excursion/list',
+    component: loadable(() => import('containers/excursion/list')),
+  },
+  {
+    path: '/excursion/',
+    component: loadable(() => import('containers/excursion/box')),
   },
 ]
 

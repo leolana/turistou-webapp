@@ -1,0 +1,23 @@
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+
+  .ant-btn {
+    margin-left: 5px;
+  }
+}
+
+.table-action-buttons {
+  button,
+  a {
+    margin-right: 5px;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}
+
+.ant-input-number {
+  width: auto;
+}

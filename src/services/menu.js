@@ -7,12 +7,15 @@ export async function getLeftMenuData() {
       icon: 'icmn icmn-home',
     },
     {
-      divider: true,
+      title: 'Excursões',
+      key: 'excursions',
+      url: '/excursion/list',
+      icon: 'icmn icmn-truck',
     },
     {
       title: 'Clientes',
       key: 'customers',
-      url: '/dashboard/customers',
+      url: '/customer',
       icon: 'icmn icmn-users',
     },
   ]
@@ -44,7 +47,7 @@ export async function getTopMenuData() {
         {
           title: 'Clientes',
           key: 'customers',
-          url: '/dashboard/customers',
+          url: '/customer',
         },
       ],
     },

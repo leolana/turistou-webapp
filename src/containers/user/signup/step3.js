@@ -65,7 +65,7 @@ class Step3 extends Component {
                             message: 'Por favor, preencha o endereço completo da empresa',
                           },
                         ],
-                      })(<Input size="default" maxLength="150" />)}
+                      })(<Input size="default" maxLength={150} />)}
                     </Form.Item>
                     <Form.Item label="Bairro">
                       {form.getFieldDecorator('area', {
@@ -75,7 +75,7 @@ class Step3 extends Component {
                             message: 'Por favor, preencha o endereço completo da empresa',
                           },
                         ],
-                      })(<Input size="default" maxLength="150" />)}
+                      })(<Input size="default" maxLength={150} />)}
                     </Form.Item>
                     <Form.Item label="Número">
                       {form.getFieldDecorator('number', {
@@ -85,12 +85,12 @@ class Step3 extends Component {
                             message: 'Por favor, preencha o endereço completo da empresa',
                           },
                         ],
-                      })(<InputNumber size="default" maxLength="7" />)}
+                      })(<InputNumber size="default" maxLength={7} />)}
                     </Form.Item>
                     <Form.Item label="Complemento">
                       {form.getFieldDecorator('complement', {
                         rules: [{ required: false }],
-                      })(<Input size="default" maxLength="20" />)}
+                      })(<Input size="default" maxLength={20} />)}
                     </Form.Item>
                     <Form.Item label="UF">
                       {form.getFieldDecorator('fu', {
@@ -100,7 +100,7 @@ class Step3 extends Component {
                             message: 'Por favor, preencha o endereço completo da empresa',
                           },
                         ],
-                      })(<Input size="default" maxLength="2" />)}
+                      })(<Input size="default" maxLength={2} />)}
                     </Form.Item>
                     <Form.Item label="Cidade">
                       {form.getFieldDecorator('city', {
@@ -110,7 +110,7 @@ class Step3 extends Component {
                             message: 'Por favor, preencha o endereço completo da empresa',
                           },
                         ],
-                      })(<Input size="default" maxLength="150" />)}
+                      })(<Input size="default" maxLength={150} />)}
                     </Form.Item>
                     <div className="mb-3">
                       <Button
