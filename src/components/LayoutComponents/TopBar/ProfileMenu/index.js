@@ -7,7 +7,7 @@ import styles from './style.module.scss'
 @connect(({ user }) => ({ user }))
 class ProfileMenu extends React.Component {
   state = {
-    count: 7,
+    count: 0,
   }
 
   logout = () => {
@@ -34,18 +34,18 @@ class ProfileMenu extends React.Component {
           <strong>
             <FormattedMessage id="topBar.profileMenu.hello" />, {user.name || 'Anonymous'}
           </strong>
-          <div>
+          {/* <div>
             <strong className="mr-1">
               <FormattedMessage id="topBar.profileMenu.billingPlan" />:{' '}
             </strong>
             Professional
-          </div>
-          <div>
+          </div> */}
+          {/* <div>
             <strong>
               <FormattedMessage id="topBar.profileMenu.role" />:{' '}
             </strong>
             {user.role}
-          </div>
+          </div> */}
         </Menu.Item>
         <Menu.Divider />
         <Menu.Item>
@@ -54,11 +54,11 @@ class ProfileMenu extends React.Component {
               <FormattedMessage id="topBar.profileMenu.email" />:{' '}
             </strong>
             {user.email}
-            <br />
+            {/* <br />
             <strong>
               <FormattedMessage id="topBar.profileMenu.phone" />:{' '}
             </strong>
-            {user.phone || '-'}
+            {user.phone || '-'} */}
           </div>
         </Menu.Item>
         <Menu.Divider />
