@@ -2,6 +2,12 @@
   "name": "turistou-webapp-cra",
   "version": "0.1.0",
   "private": true,
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ],
   "scripts": {
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
@@ -12,26 +18,10 @@
     "tslint": "tslint \"src/**/*.{ts,tsx}\"",
     "stylelint": "stylelint \"src/**/*.{scss,less}\""
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run lint-staged"
-    }
-  },
-  "lint-staged": {
-    "src/**/*.{js,jsx,ts,tsx,scss,less}": [
-      "prettier --write",
-      "git add"
-    ],
-    "src/**/*.{js,jsx}": [
-      "eslint"
-    ],
-    "src/**/*.{scss,less}": [
-      "stylelint"
-    ]
-  },
   "dependencies": {
     "@rowno/sparkline": "^3.0.1",
     "antd": "^3.12.1",
+    "auth0-js": "^9.10.2",
     "bootstrap-css-only": "^4.2.1",
     "classnames": "^2.2.6",
     "connected-react-router": "^6.1.0",
@@ -78,10 +68,23 @@
     "stylelint-config-prettier": "^4.0.0",
     "stylelint-config-standard": "^18.2.0"
   },
-  "browserslist": [
-    ">0.2%",
-    "not dead",
-    "not ie <= 11",
-    "not op_mini all"
-  ]
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint-staged"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,ts,tsx,scss,less}": [
+      "prettier --write",
+      "git add"
+    ],
+    "src/**/*.{js,jsx}": [
+      "eslint --fix",
+      "git add"
+    ],
+    "src/**/*.{scss,less}": [
+      "stylelint",
+      "git add"
+    ]
+  }
 }
