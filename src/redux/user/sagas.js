@@ -1,7 +1,7 @@
 import { all, takeEvery, put, call } from 'redux-saga/effects'
 import { notification } from 'antd'
-import { login, currentAccount, logout } from 'services/user'
-import actions from './actions'
+import auth from 'services/auth'
+import actions from 'redux/user/actions'
 
 export function* LOGIN({ payload }) {
   const { email, password } = payload
@@ -11,7 +11,7 @@ export function* LOGIN({ payload }) {
       loading: true,
     },
   })
-  const success = yield call(login, email, password)
+  const success = yield call(auth.login, email, password)
   if (success) {
     notification.success({
       message: 'Logged In',
@@ -30,7 +30,7 @@ export function* LOAD_CURRENT_ACCOUNT() {
       loading: true,
     },
   })
-  const response = yield call(currentAccount)
+  const response = {}
   if (response) {
     const { uid: id, email, photoURL: avatar } = response
     yield put({
@@ -54,7 +54,7 @@ export function* LOAD_CURRENT_ACCOUNT() {
 }
 
 export function* LOGOUT() {
-  yield call(logout)
+  yield call(auth.logout)
   yield put({
     type: 'user/SET_STATE',
     payload: {
