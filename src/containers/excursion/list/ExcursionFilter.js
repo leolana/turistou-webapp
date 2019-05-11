@@ -3,6 +3,8 @@ import { connect } from 'react-redux'
 import actions from 'redux/excursion/actions'
 import { Form, Radio, Input, Row, Col, Icon } from 'antd'
 
+import { EXCURSION_STATUS } from 'constants/excursionStatus'
+
 class ExcursionFilter extends Component {
   constructor() {
     super()
@@ -33,14 +35,14 @@ class ExcursionFilter extends Component {
     return (
       <Form layout="inline">
         <Row>
-          <Col md={10}>
+          <Col md={12}>
             <Radio.Group className="mb-1" onChange={this.handleChangeStatus}>
-              <Radio.Button value={0}>Todas</Radio.Button>
-              <Radio.Button value={1}>Atuais</Radio.Button>
-              <Radio.Button value={2}>Concluídas</Radio.Button>
+              {EXCURSION_STATUS.map(x => (
+                <Radio.Button value={x.id}>{x.description}</Radio.Button>
+              ))}
             </Radio.Group>
           </Col>
-          <Col md={14}>
+          <Col md={12}>
             <Input
               type="text"
               addonBefore={<Icon type="search" />}

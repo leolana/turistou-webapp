@@ -1,10 +1,13 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Table, Button, Icon, Modal } from 'antd'
+import { DateTime } from 'luxon'
 
+import { EXCURSION_STATUS_ENUM } from 'constants/excursionStatus'
 import { tableData as mockData } from 'mock/excursions'
 
-export default class ExcursionList extends Component {
+class ExcursionList extends Component {
   constructor() {
     super()
     const tableData = mockData.map(x => {
@@ -18,12 +21,16 @@ export default class ExcursionList extends Component {
       return x
     })
     this.state = { tableData }
+
+    this.applyFilterOnTable = this.applyFilterOnTable.bind(this)
   }
 
   delete = id => {
     console.log('delete', id)
     // TODO: exclude...
-    // const { tableData } = this.state;
+    let { tableData } = this.state
+    tableData = tableData.filter(x => x.id !== id)
+    this.setState({ tableData })
   }
 
   handleDelete(id) {
@@ -59,8 +66,43 @@ export default class ExcursionList extends Component {
     </div>
   )
 
+  applyFilterOnTable(tableData) {
+    const { query, statusId } = this.props
+
+    if (Number.isInteger(statusId) && EXCURSION_STATUS_ENUM.all !== statusId) {
+      const today = DateTime.local()
+      tableData = tableData.filter(excursion => {
+        const departure = DateTime.fromISO(excursion.departure)
+        const regress = DateTime.fromISO(excursion.regress)
+
+        switch (statusId) {
+          case EXCURSION_STATUS_ENUM.current:
+            return departure <= today && today <= regress
+          case EXCURSION_STATUS_ENUM.done:
+            return today >= regress
+          case EXCURSION_STATUS_ENUM.nexties:
+            return today <= departure
+          default:
+            return true
+        }
+      })
+    }
+    if (query) {
+      tableData = tableData.filter(excursion => {
+        const destination = excursion.destination.toLowerCase()
+        if (destination.includes(query.toLowerCase())) return true
+        return query.split(' ').every(q => {
+          const partialQuery = q.toLowerCase().trim()
+          return destination.includes(partialQuery)
+        })
+      })
+    }
+    return tableData
+  }
+
   render() {
-    const { tableData } = this.state
+    let { tableData } = this.state
+    tableData = this.applyFilterOnTable(tableData)
 
     const tableColumns = [
       {
@@ -110,3 +152,10 @@ export default class ExcursionList extends Component {
     )
   }
 }
+
+const mapStateToProps = state => ({
+  statusId: state.excursion.statusId,
+  query: state.excursion.query,
+})
+
+export default connect(mapStateToProps)(ExcursionList)
