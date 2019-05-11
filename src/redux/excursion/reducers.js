@@ -1,10 +1,11 @@
 import actions from './actions'
 
 const initialState = {
-  filter: 1,
+  statusId: 0,
+  query: '',
 }
 
-export default function stepReducer(state = initialState, action) {
+export default function reducer(state = initialState, action) {
   switch (action.type) {
     case actions.SET_STATE:
       return { ...state, ...action.payload }

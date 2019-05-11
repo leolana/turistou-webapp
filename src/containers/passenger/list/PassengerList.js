@@ -117,16 +117,14 @@ class PassengerList extends Component {
     const filteredData = this.filterData()
 
     return (
-      <div>
-        <Table
-          rowKey="id"
-          className="utils__scrollTable"
-          scroll={{ x: '100%' }}
-          columns={tableColumns}
-          dataSource={filteredData}
-          pagination={false}
-        />
-      </div>
+      <Table
+        rowKey="id"
+        className="utils__scrollTable"
+        scroll={{ x: '100%' }}
+        columns={tableColumns}
+        dataSource={filteredData}
+        pagination={false}
+      />
     )
   }
 }

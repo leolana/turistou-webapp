@@ -7,6 +7,7 @@ import { Helmet } from 'react-helmet'
 import 'costom.scss'
 
 import { tableData as mockData } from 'mock/excursions'
+import ExcursionFilter from './ExcursionFilter'
 
 const pageTitle = 'Próximas excursões'
 
@@ -124,6 +125,8 @@ class ExcursionList extends Component {
                 </Row>
               </div>
               <div className="card-body">
+                <ExcursionFilter />
+
                 <Table
                   rowKey="id"
                   className="utils__scrollTable"
@@ -132,6 +135,10 @@ class ExcursionList extends Component {
                   dataSource={tableData}
                   pagination={false}
                 />
+
+                <Button className="pull-right mt-3">
+                  <Link to="./">Adicionar nova excursão</Link>
+                </Button>
               </div>
             </div>
           </div>
