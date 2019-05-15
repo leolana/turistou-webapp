@@ -1,21 +1,6 @@
 export async function getLeftMenuData() {
   return [
     {
-      title: 'Settings',
-      key: 'settings',
-      icon: 'icmn icmn-cog utils__spin-delayed--pseudo-selector',
-    },
-    {
-      title: 'Documentation',
-      key: 'documentation',
-      url: 'https://docs.cleanuitemplate.com/react/getting-started',
-      target: '_blank',
-      icon: 'icmn icmn-books',
-    },
-    {
-      divider: true,
-    },
-    {
       title: 'Dashboard',
       key: 'dashboard',
       url: '/dashboard/alpha',
