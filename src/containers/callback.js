@@ -6,10 +6,8 @@ import auth from 'services/auth'
 class Callback extends Component {
   componentDidMount() {
     auth.handleAuthentication()
-    // const { history } = this.props;
-    // console.log("history");
-    // console.log(history);
-    // history.replace('/');
+    const { history } = this.props
+    history.push('/')
   }
 
   render() {

@@ -44,6 +44,7 @@ class Auth {
         console.log(err, authResult)
         if (err) return reject(err)
         if (!authResult || !authResult.idToken) {
+          console.log(err)
           return reject(err)
         }
         this.setSession(authResult)
@@ -65,7 +66,7 @@ class Auth {
     //     .then(() => true)
     this.auth0.logout({
       returnTo: 'http://localhost:3000',
-      clientID: '<YOUR_AUTH0_CLIENT_ID>',
+      clientID: '2Yy2DKuS9A8ZkfCtoUFoF9KvJjxxJ0Pk',
     })
   }
 
@@ -105,6 +106,5 @@ class Auth {
 }
 
 const auth = new Auth()
-auth.login()
 
 export default auth
