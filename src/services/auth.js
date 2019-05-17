@@ -1,5 +1,6 @@
 import auth0 from 'auth0-js'
 import { DateTime } from 'luxon'
+import { notification } from 'antd'
 
 class Auth {
   constructor() {
@@ -31,7 +32,18 @@ class Auth {
   //     })
   // }
   login() {
-    this.auth0.authorize()
+    return new Promise(async (resolve, reject) => {
+      try {
+        await this.auth0.authorize()
+        resolve(true)
+      } catch (error) {
+        notification.warning({
+          message: error.code,
+          description: error.message,
+        })
+        reject(error)
+      }
+    })
   }
 
   getIdToken() {
