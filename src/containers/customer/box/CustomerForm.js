@@ -4,8 +4,6 @@ import { Form, Button } from 'antd'
 
 import FormStepButtonsActions from 'components/Step/FormStepButtonsActions'
 
-import 'costom.scss'
-
 @Form.create()
 class CustomerForm extends Component {
   render() {

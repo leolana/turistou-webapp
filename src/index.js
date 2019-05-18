@@ -15,6 +15,7 @@ import * as serviceWorker from './serviceWorker'
 
 // app styles
 import './global.scss'
+import './costom.scss'
 
 const history = createHashHistory()
 const sagaMiddleware = createSagaMiddleware()

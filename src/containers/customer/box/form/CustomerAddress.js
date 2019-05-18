@@ -10,16 +10,16 @@ export default class CustomerAddress extends Component {
 
     return (
       <Row>
-        <Col span={12}>
-          <Form.Item label="Logradouro">
-            {form.getFieldDecorator('address', {
+        <Col span={4}>
+          <Form.Item label="CEP">
+            {form.getFieldDecorator('zipcode', {
               rules: [{ required: false }],
-            })(<Input size="default" maxLength={150} />)}
+            })(<MaskedInput className="ant-input" mask={MASK.zipcode} />)}
           </Form.Item>
         </Col>
-        <Col span={8}>
-          <Form.Item label="Bairro">
-            {form.getFieldDecorator('area', {
+        <Col span={16}>
+          <Form.Item label="Logradouro">
+            {form.getFieldDecorator('address', {
               rules: [{ required: false }],
             })(<Input size="default" maxLength={150} />)}
           </Form.Item>
@@ -32,28 +32,28 @@ export default class CustomerAddress extends Component {
           </Form.Item>
         </Col>
 
-        <Col span={6}>
+        <Col span={12}>
+          <Form.Item label="Bairro">
+            {form.getFieldDecorator('area', {
+              rules: [{ required: false }],
+            })(<Input size="default" maxLength={150} />)}
+          </Form.Item>
+        </Col>
+        <Col span={12}>
           <Form.Item label="Complemento">
             {form.getFieldDecorator('complement', {
               rules: [{ required: false }],
             })(<Input size="default" maxLength={20} />)}
           </Form.Item>
         </Col>
-        <Col span={4}>
-          <Form.Item label="CEP">
-            {form.getFieldDecorator('zipcode', {
-              rules: [{ required: false }],
-            })(<MaskedInput className="ant-input" mask={MASK.zipcode} />)}
-          </Form.Item>
-        </Col>
-        <Col span={12}>
+        <Col span={20}>
           <Form.Item label="Cidade">
             {form.getFieldDecorator('city', {
               rules: [{ required: false }],
             })(<Input size="default" maxLength={150} />)}
           </Form.Item>
         </Col>
-        <Col span={2}>
+        <Col span={4}>
           {/* TODO: uppercas */}
           <Form.Item label="UF">
             {form.getFieldDecorator('state', {
