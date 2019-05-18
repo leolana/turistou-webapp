@@ -6,6 +6,7 @@ const {
   addLessLoader,
   useEslintRc,
   addDecoratorsLegacy,
+  addBabelPresets
 } = require('customize-cra')
 
 module.exports = override(
@@ -14,6 +15,9 @@ module.exports = override(
   fixBabelImports('import', {
     libraryName: 'antd', libraryDirectory: 'es', style: true
   }),
+  ...addBabelPresets([
+    "@babel/preset-flow",
+  ]),
   addLessLoader({
     javascriptEnabled: true,
     modifyVars: antdTheme

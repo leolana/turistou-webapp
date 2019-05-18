@@ -2,13 +2,15 @@ import auth0 from 'auth0-js'
 import { DateTime } from 'luxon'
 import { notification } from 'antd'
 
+import config from '../config'
+
 class Auth {
   constructor() {
     this.auth0 = new auth0.WebAuth({
-      domain: 'turistou.auth0.com',
-      clientID: '2Yy2DKuS9A8ZkfCtoUFoF9KvJjxxJ0Pk',
-      redirectUri: 'http://localhost:3000/callback',
-      audience: 'https://turistou.auth0.com/userinfo',
+      domain: config.auth0.domain,
+      clientID: config.auth0.clientId,
+      redirectUri: `${config.app.url}/callback`,
+      audience: config.auth0.audience,
       responseType: 'token id_token',
       scope: 'openid email',
     })
@@ -20,17 +22,6 @@ class Auth {
     this.currentAccount = this.currentAccount.bind(this)
   }
 
-  // export async function login(email, password) {
-  //   return firebaseAuth()
-  //     .signInWithEmailAndPassword(email, password)
-  //     .then(() => true)
-  //     .catch(error => {
-  //       notification.warning({
-  //         message: error.code,
-  //         description: error.message,
-  //       })
-  //     })
-  // }
   login() {
     return new Promise(async (resolve, reject) => {
       try {
@@ -67,9 +58,8 @@ class Auth {
 
   setSession(authResult) {
     this.idToken = authResult.idToken
-    console.log(this.idToken)
     // set the time that the id token will expire at
-    this.expiresAt = authResult.expiresIn * 1000 + new Date().getTime()
+    this.expiresAt = authResult.expiresIn * 1000 + DateTime.local().valueOf()
   }
 
   logout() {
@@ -77,8 +67,8 @@ class Auth {
     //     .signOut()
     //     .then(() => true)
     this.auth0.logout({
-      returnTo: 'http://localhost:3000',
-      clientID: '2Yy2DKuS9A8ZkfCtoUFoF9KvJjxxJ0Pk',
+      returnTo: config.app.url,
+      clientID: config.auth0.clientId,
     })
   }
 

@@ -11,11 +11,13 @@
   "scripts": {
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
+    "prepublish": "yarn run build",
     "test": "react-app-rewired test",
     "lint-staged": "lint-staged",
     "prettier": "npx prettier --write \"src/**/*.{js,jsx,ts,tsx,scss,less}\"",
     "eslint": "npx eslint --ext .js,jsx src",
-    "stylelint": "stylelint \"src/**/*.{scss,less}\""
+    "stylelint": "stylelint \"src/**/*.{scss,less}\"",
+    "flow": "flow"
   },
   "dependencies": {
     "@commitlint/cli": "^7.6.1",
@@ -31,7 +33,7 @@
     "cz-conventional-changelog": "^2.1.0",
     "enquire-js": "^0.2.1",
     "eslint": "^5.16.0",
-    "firebase": "^6.0.2",
+    "flow-bin": "^0.98.1",
     "history": "^4.9.0",
     "lodash": "^4.17.11",
     "luxon": "^1.13.2",
@@ -61,7 +63,10 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-decorators": "^7.4.4",
+    "@babel/preset-flow": "^7.0.0",
+    "babel-cli": "^6.26.0",
     "babel-plugin-import": "^1.11.0",
+    "babel-preset-flow": "^6.23.0",
     "customize-cra": "^0.2.12",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-config-prettier": "^4.2.0",
