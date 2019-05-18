@@ -4,11 +4,11 @@ import { connect } from 'react-redux'
 import FormSteps from 'components/Step/FormSteps'
 
 import CustomerForm from './CustomerForm'
-import CustomerPersonal from './box/form/CustomerPersonal'
-import CustomerAddress from './box/form/CustomerAddress'
-import CustomerContact from './box/form/CustomerContact'
-import CustomerEmergency from './box/form/CustomerEmergency'
-import CustomerAdditionalInfo from './box/form/CustomerAdditionalInfo'
+import CustomerPersonal from './form/CustomerPersonal'
+import CustomerAddress from './form/CustomerAddress'
+import CustomerContact from './form/CustomerContact'
+import CustomerEmergency from './form/CustomerEmergency'
+import CustomerAdditionalInfo from './form/CustomerAdditionalInfo'
 
 import './index.scss'
 

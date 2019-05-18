@@ -54,17 +54,13 @@ const routes = [
   },
 
   // Customers
-  {
-    path: '/customer/list',
-    component: loadable(() => import('containers/customer')),
-  },
+  // {
+  //   path: '/customer/list',
+  //   component: loadable(() => import('containers/customer')),
+  // },
   {
     path: '/customer/',
-    component: loadable(() => import('containers/customer')),
-  },
-  {
-    path: '/customer/:id',
-    component: loadable(() => import('containers/customer')),
+    component: loadable(() => import('containers/customer/box')),
   },
 
   // Passengers
