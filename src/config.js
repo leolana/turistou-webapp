@@ -2,12 +2,12 @@ import { getOsEnv } from './services/environment'
 
 const config = {
   app: {
-    url: getOsEnv('APP_URI'),
+    url: getOsEnv('REACT_APP_URI'),
   },
   auth0: {
-    domain: getOsEnv('AUTH0_DOMAIN'),
-    clientId: getOsEnv('AUTH0_CLIENT_ID'),
-    audience: getOsEnv('AUTH0_AUDIENCE'),
+    domain: getOsEnv('REACT_APP_AUTH0_DOMAIN'),
+    clientId: getOsEnv('REACT_APP_AUTH0_CLIENT_ID'),
+    audience: getOsEnv('REACT_APP_AUTH0_AUDIENCE'),
   },
 }
 

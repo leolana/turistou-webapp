@@ -17,7 +17,7 @@
     "prettier": "npx prettier --write \"src/**/*.{js,jsx,ts,tsx,scss,less}\"",
     "eslint": "npx eslint --ext .js,jsx src",
     "stylelint": "stylelint \"src/**/*.{scss,less}\"",
-    "flow": "flow"
+    "flow": "$(npm bin)/flow"
   },
   "dependencies": {
     "@commitlint/cli": "^7.6.1",

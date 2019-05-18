@@ -62,12 +62,9 @@ class Auth {
     this.expiresAt = authResult.expiresIn * 1000 + DateTime.local().valueOf()
   }
 
-  logout() {
-    //   return firebaseAuth()
-    //     .signOut()
-    //     .then(() => true)
-    this.auth0.logout({
-      returnTo: config.app.url,
+  async logout() {
+    await this.auth0.logout({
+      returnTo: `${config.app.url}/user/login`,
       clientID: config.auth0.clientId,
     })
   }

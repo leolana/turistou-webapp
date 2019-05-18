@@ -3,8 +3,8 @@ import auth from 'services/auth'
 import Loader from 'components/LayoutComponents/Loader'
 
 class Login extends Component {
-  componentDidMount() {
-    return auth.login()
+  async componentDidMount() {
+    await auth.login()
   }
 
   render() {

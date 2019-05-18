@@ -10,9 +10,10 @@ flow-typed
 [lints]
 
 [options]
-all=true
+all=false
 
 module.system.node.resolve_dirname=node_modules
+module.name_mapper='.+\.s?css' -> 'CSSModule'
 
 esproposal.decorators=ignore
 esproposal.class_static_fields=enable
