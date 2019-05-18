@@ -1,8 +1,25 @@
 import React, { Component } from 'react'
 import { Helmet } from 'react-helmet'
 import { connect } from 'react-redux'
+import FormSteps from 'components/Step/FormSteps'
+
 import CustomerForm from './CustomerForm'
+import CustomerPersonal from './box/form/CustomerPersonal'
+import CustomerAddress from './box/form/CustomerAddress'
+import CustomerContact from './box/form/CustomerContact'
+import CustomerEmergency from './box/form/CustomerEmergency'
+import CustomerAdditionalInfo from './box/form/CustomerAdditionalInfo'
+
 import './index.scss'
+
+const pageTitle = 'Novo cliente'
+const formSteps = [
+  { component: CustomerPersonal, title: 'Dados pessoais' },
+  { component: CustomerAddress, title: 'Endereço' },
+  { component: CustomerContact, title: 'Contato' },
+  { component: CustomerEmergency, title: 'Emergência' },
+  { component: CustomerAdditionalInfo, title: 'Informações adicionais' },
+]
 
 @connect(({ user }) => ({ user }))
 class Customers extends Component {
@@ -22,18 +39,18 @@ class Customers extends Component {
   render() {
     return (
       <div>
-        <Helmet title="Login" />
+        <Helmet title={pageTitle} />
         <div className="card">
           <div className="card-header">
             <div className="utils__title">
-              <strong>Novo cliente</strong>
-            </div>
-            <div className="utils__titleDescription">
-              {/* Block with important Recently Referrals information */}
+              <strong>{pageTitle}</strong>
             </div>
           </div>
+          <div className="card-header">
+            <FormSteps formSteps={formSteps} {...this.props} />
+          </div>
           <div className="card-body">
-            <CustomerForm {...this.props} />
+            <CustomerForm formSteps={formSteps} {...this.props} />
           </div>
         </div>
       </div>
