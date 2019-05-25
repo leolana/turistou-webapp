@@ -11,7 +11,7 @@ class ExcursionStopPoint extends Component {
 
   addStopPoint = () => {
     const { stopPoints } = this.state
-    const last = stopPoints.length ? stopPoints[stopPoints.length - 1] : -1
+    const last = stopPoints.length ? stopPoints[stopPoints.length - 1] : 0
     stopPoints.push(last + 1)
     this.setState({ stopPoints })
   }

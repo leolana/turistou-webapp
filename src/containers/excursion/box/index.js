@@ -11,7 +11,6 @@ import ExcursionPricing from './form/ExcursionPricing'
 import ExcursionTransport from './form/ExcursionTransport'
 
 import 'costom.scss'
-import './index.scss'
 
 const pageTitle = 'Nova excursão'
 const formSteps = [

@@ -10,7 +10,7 @@ class ExcursionTransport extends Component {
 
   addTransport = () => {
     const { transports } = this.state
-    const last = transports.length ? transports[transports.length - 1] : -1
+    const last = transports.length ? transports[transports.length - 1] : 0
     transports.push(last + 1)
     this.setState({ transports })
   }

@@ -25,21 +25,21 @@ class ExcursionList extends Component {
     this.applyFilterOnTable = this.applyFilterOnTable.bind(this)
   }
 
-  delete = id => {
-    console.log('delete', id)
+  remove = id => {
+    console.log('remove', id)
     // TODO: exclude...
     let { tableData } = this.state
     tableData = tableData.filter(x => x.id !== id)
     this.setState({ tableData })
   }
 
-  handleDelete(id) {
+  handleRemove(id) {
     Modal.error({
       title: 'Deseja excluir esta excursão?',
       content: 'Esta ação não podera ser desfeita',
       okText: 'Sim',
       okType: 'danger',
-      onOk: () => this.delete(id),
+      onOk: () => this.remove(id),
       okCancel: true,
       cancelText: 'Não',
     })
@@ -60,7 +60,7 @@ class ExcursionList extends Component {
       <Button ghost size="small" type="primary">
         <Icon type="edit" />
       </Button>
-      <Button ghost size="small" type="danger" onClick={() => this.handleDelete(id)}>
+      <Button ghost size="small" type="danger" onClick={() => this.handleRemove(id)}>
         <Icon type="delete" />
       </Button>
     </div>
