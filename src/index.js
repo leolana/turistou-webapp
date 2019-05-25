@@ -10,6 +10,7 @@ import { createBrowserHistory } from 'history'
 import reducers from 'redux/reducers'
 import sagas from 'redux/sagas'
 import Router from 'router'
+
 import Localization from 'components/LayoutComponents/Localization'
 import * as serviceWorker from './serviceWorker'
 

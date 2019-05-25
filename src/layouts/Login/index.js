@@ -17,7 +17,7 @@ export default class LoginLayout extends React.PureComponent {
                 <div className="col-lg-12">
                   <div className={styles.logo}>
                     <Link to="/">
-                      <img src="resources/images/logo.png" alt="Clean UI React Admin Template" />
+                      <img src="/resources/images/logo.png" alt="Clean UI React Admin Template" />
                     </Link>
                   </div>
                 </div>

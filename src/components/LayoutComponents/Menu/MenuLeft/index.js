@@ -213,7 +213,7 @@ class MenuLeft extends React.Component {
         <div className={styles.logo}>
           <div className={styles.logoContainer}>
             <img
-              src={`resources/images/logo-inverse${menuSettings.collapsed ? '-mobile' : ''}.png`}
+              src={`/resources/images/logo-inverse${menuSettings.collapsed ? '-mobile' : ''}.png`}
               alt=""
             />
           </div>
