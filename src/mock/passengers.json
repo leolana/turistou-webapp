@@ -1,0 +1,108 @@
+{
+  "tableData": [
+    {
+      "id": 1,
+      "name": "Maria Aparecida da Silva",
+      "paid": 200.0,
+      "total": 200.0,
+      "nextTranche": "2019-05-10T00:00:00.000-0300",
+      "lastTranche": "2019-07-10T00:00:00.000-0300",
+      "status": 1
+    },
+    {
+      "id": 2,
+      "name": "Antônio Carlos Andrade",
+      "paid": 100.0,
+      "total": 200.0,
+      "nextTranche": "2019-05-10T00:00:00.000-0300",
+      "lastTranche": "2019-07-10T00:00:00.000-0300",
+      "status": 1
+    },
+    {
+      "id": 3,
+      "name": "Getúlio Andrade",
+      "paid": 79.0,
+      "total": 189.0,
+      "nextTranche": "2019-05-10T00:00:00.000-0300",
+      "lastTranche": "2019-07-10T00:00:00.000-0300",
+      "status": 1
+    },
+    {
+      "id": 4,
+      "name": "Júlia Ana Pereira",
+      "paid": 150.0,
+      "total": 190.0,
+      "nextTranche": "2019-05-10T00:00:00.000-0300",
+      "lastTranche": "2019-07-10T00:00:00.000-0300",
+      "status": 1
+    },
+    {
+      "id": 5,
+      "name": "Luíza Cavalcanti Costa",
+      "paid": 100.0,
+      "total": 200.0,
+      "nextTranche": "2019-05-10T00:00:00.000-0300",
+      "lastTranche": "2019-07-10T00:00:00.000-0300",
+      "status": 1
+    },
+    {
+      "id": 6,
+      "name": "Pierre Quinto",
+      "paid": 130.0,
+      "total": 200.0,
+      "nextTranche": "2019-05-10T00:00:00.000-0300",
+      "lastTranche": "2019-07-10T00:00:00.000-0300",
+      "status": 1
+    },
+    {
+      "id": 7,
+      "name": "Gertrudes de Almeida Costa e Silva",
+      "paid": 0,
+      "total": 189.0,
+      "status": 2
+    },
+    {
+      "id": 8,
+      "name": "Abigaliu Sant'Ana",
+      "paid": 0,
+      "total": 189.0,
+      "status": 2
+    },
+    {
+      "id": 9,
+      "name": "José Mercedes",
+      "paid": 100.0,
+      "total": 200.0,
+      "nextTranche": "2019-05-10T00:00:00.000-0300",
+      "lastTranche": "2019-07-10T00:00:00.000-0300",
+      "status": 3
+    }
+  ],
+  "statuses": [
+    {
+      "id": 1,
+      "description": "Reservado",
+      "type": "success"
+    },
+    {
+      "id": 2,
+      "description": "Em espera",
+      "type": "warning"
+    },
+    {
+      "id": 3,
+      "description": "Desistência",
+      "type": "danger"
+    }
+  ],
+  "statusesEnum": {
+    "1": "booked",
+    "2": "waiting",
+    "3": "canceled"
+  },
+  "statusesCode": {
+    "booked": 1,
+    "waiting": 2,
+    "canceled": 3
+  }
+}

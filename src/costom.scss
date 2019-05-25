@@ -1,0 +1,27 @@
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+
+  .ant-btn {
+    margin-left: 5px;
+  }
+}
+
+.button-side-field {
+  margin: 28px 10px 0;
+}
+
+.table-action-buttons {
+  button,
+  a {
+    margin-right: 5px;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}
+
+.ant-input-number {
+  width: 100% !important;
+}

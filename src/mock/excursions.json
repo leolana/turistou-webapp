@@ -1,0 +1,84 @@
+{
+  "tableData": [
+    {
+      "id": 1,
+      "destination": "Natal",
+      "departure": "2019-03-10T10:00:00.000Z",
+      "regress": "2019-03-25T18:00:00.000Z",
+      "vacacy": 0,
+      "capacity": 42,
+      "passType": [
+        {
+          "description": "default",
+          "ageFrom": null,
+          "ageUntil": null,
+          "price": 450
+        },
+        {
+          "description": "Criança",
+          "ageFrom": null,
+          "ageUntil": 5,
+          "price": 0
+        },
+        {
+          "description": "Idoso",
+          "ageFrom": 70,
+          "ageUntil": null,
+          "price": 300
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "destination": "Belo Horizonte",
+      "departure": "2019-03-20T10:00:00.000Z",
+      "regress": "2019-03-27T18:00:00.000Z",
+      "vacacy": 3,
+      "capacity": 50
+    },
+    {
+      "id": 3,
+      "destination": "Campos de Jordão",
+      "departure": "2019-04-10T10:00:00.000Z",
+      "regress": "2019-04-17T18:00:00.000Z",
+      "vacacy": 12,
+      "capacity": 30
+    },
+    {
+      "id": 4,
+      "destination": "Belo Horizonte",
+      "departure": "2019-04-30T10:00:00.000Z",
+      "regress": "2019-05-12T18:00:00.000Z",
+      "vacacy": 40,
+      "capacity": 42
+    },
+    {
+      "id": 5,
+      "destination": "Arraial do Cabo",
+      "departure": "2019-05-20T07:00:00.000Z",
+      "regress": "2019-05-30T07:00:00.000Z",
+      "vacacy": 40,
+      "capacity": 50,
+      "passType": [
+        {
+          "description": "default",
+          "ageFrom": null,
+          "ageUntil": null,
+          "price": 450
+        },
+        {
+          "description": "Criança",
+          "ageFrom": null,
+          "ageUntil": 5,
+          "price": 0
+        },
+        {
+          "description": "Idoso",
+          "ageFrom": 70,
+          "ageUntil": null,
+          "price": 300
+        }
+      ]
+    }
+  ]
+}

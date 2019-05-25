@@ -55,19 +55,19 @@ class Signup extends Component {
                     <Form.Item label="Nome">
                       {form.getFieldDecorator('name', {
                         rules: [{ required: true, message: 'Por favor, insira teu nome' }],
-                      })(<Input size="default" maxLength="15" />)}
+                      })(<Input size="default" maxLength={15} />)}
                     </Form.Item>
                     <Form.Item label="Sobrenome">
                       {form.getFieldDecorator('lastname', {
                         rules: [{ required: true, message: 'Por favor, insira teu sobrenome' }],
-                      })(<Input size="default" maxLength="50" />)}
+                      })(<Input size="default" maxLength={50} />)}
                     </Form.Item>
                     <Form.Item label="Email">
                       {form.getFieldDecorator('email', {
                         rules: [
                           { required: true, message: 'Por favor, insira um endereço de e-mail' },
                         ],
-                      })(<Input size="default" type="email" maxLength="255" />)}
+                      })(<Input size="default" type="email" maxLength={255} />)}
                     </Form.Item>
                     <Form.Item label="Celular">
                       {form.getFieldDecorator('cellphone', {
@@ -82,12 +82,12 @@ class Signup extends Component {
                     <Form.Item label="Senha">
                       {form.getFieldDecorator('password', {
                         rules: [{ required: true, message: 'Por favor, insira uma senha' }],
-                      })(<Input size="default" type="password" maxLength="100" />)}
+                      })(<Input size="default" type="password" maxLength={100} />)}
                     </Form.Item>
                     <Form.Item label="Confirmar senha">
                       {form.getFieldDecorator('passwordConfirm', {
                         rules: [{ required: true, message: 'Por favor, confirme a senha' }],
-                      })(<Input size="default" type="password" maxLength="100" />)}
+                      })(<Input size="default" type="password" maxLength={100} />)}
                     </Form.Item>
                     <div className="mb-3">
                       <Button
