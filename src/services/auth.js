@@ -19,7 +19,7 @@ class Auth {
     this.logout = this.logout.bind(this)
     this.handleAuthentication = this.handleAuthentication.bind(this)
     this.isAuthenticated = this.isAuthenticated.bind(this)
-    this.currentAccount = this.currentAccount.bind(this)
+    this.expiresAt = null
   }
 
   login() {
@@ -42,11 +42,14 @@ class Auth {
   }
 
   handleAuthentication() {
+    console.log('------------- handleAuthentication -------------')
     return new Promise((resolve, reject) => {
-      this.auth0.parseHash((err, authResult) => {
+      return this.auth0.parseHash((err, authResult) => {
+        console.log('---- err, authResult ---------')
         console.log(err, authResult)
         if (err) return reject(err)
         if (!authResult || !authResult.idToken) {
+          console.log('---- err ---------')
           console.log(err)
           return reject(err)
         }
@@ -57,9 +60,13 @@ class Auth {
   }
 
   setSession(authResult) {
+    console.log('----------- setSession ---------------')
+    console.log(authResult)
     this.idToken = authResult.idToken
     // set the time that the id token will expire at
+    console.log(authResult.expiresIn * 1000 + DateTime.local().valueOf())
     this.expiresAt = authResult.expiresIn * 1000 + DateTime.local().valueOf()
+    console.log(this.expiresAt)
   }
 
   async logout() {
@@ -67,6 +74,8 @@ class Auth {
       returnTo: `${config.app.url}/user/login`,
       clientID: config.auth0.clientId,
     })
+    this.idToken = null
+    this.expiresAt = null
   }
 
   silentAuth() {
@@ -79,25 +88,12 @@ class Auth {
     })
   }
 
-  currentAccount() {
-    let userLoaded = false
-    const getCurrentUser = auth => {
-      return new Promise((resolve, reject) => {
-        if (userLoaded) {
-          resolve(this.currentUser)
-        }
-        const unsubscribe = auth.onAuthStateChanged(user => {
-          userLoaded = true
-          unsubscribe()
-          resolve(user)
-        }, reject)
-      })
-    }
-
-    return getCurrentUser(this.auth0)
-  }
-
   isAuthenticated() {
+    console.log('------------ expiresAt -----------')
+    console.log(this.expiresAt)
+    if (!this.expiresAt) {
+      this.handleAuthentication()
+    }
     // Check whether the current time is past the token's expiry time
     const now = DateTime.local().valueOf()
     return now < this.expiresAt

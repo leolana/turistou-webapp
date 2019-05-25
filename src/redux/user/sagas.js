@@ -3,35 +3,54 @@ import { notification } from 'antd'
 import auth from 'services/auth'
 import actions from 'redux/user/actions'
 
-export function* LOGIN({ payload }) {
-  const { email, password } = payload
+export function* LOGIN() {
+  console.log('------------- LOGIN -------------')
+  yield call(auth.handleAuthentication)
+
   yield put({
     type: 'user/SET_STATE',
     payload: {
       loading: true,
     },
   })
-  const success = yield call(auth.login, email, password)
-  if (success) {
-    notification.success({
-      message: 'Logged In',
-      description: 'You have successfully logged in to Clean UI React Admin Template!',
-    })
-    yield put({
-      type: 'user/LOAD_CURRENT_ACCOUNT',
-    })
-  }
+
+  yield put({
+    type: 'user/LOAD_CURRENT_ACCOUNT',
+  })
+
+  notification.success({
+    message: 'Logged In',
+    description: 'You have successfully logged in to Clean UI React Admin Template!',
+  })
 }
 
 export function* LOAD_CURRENT_ACCOUNT() {
+  console.log('------------- LOAD_CURRENT_ACCOUNT -------------')
   yield put({
     type: 'user/SET_STATE',
     payload: {
       loading: true,
     },
   })
+  console.log('---------- isAuthenticated ------------')
+  const isAuthorized = yield call(auth.isAuthenticated)
+  console.log(isAuthorized)
+  if (!isAuthorized) {
+    yield put({
+      type: 'user/SET_STATE',
+      payload: {
+        id: '',
+        name: '',
+        role: '',
+        email: '',
+        avatar: '',
+        authorized: false,
+        loading: false,
+      },
+    })
+  }
   const response = {}
-  if (response) {
+  if (isAuthorized) {
     const { uid: id, email, photoURL: avatar } = response
     yield put({
       type: 'user/SET_STATE',

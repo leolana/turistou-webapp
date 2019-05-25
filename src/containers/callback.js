@@ -1,22 +1,19 @@
 import React, { Component } from 'react'
 import { withRouter } from 'react-router-dom'
-import { notification } from 'antd'
+import { connect } from 'react-redux'
 
 import Loader from 'components/LayoutComponents/Loader'
-import auth from 'services/auth'
 
+@connect(({ user }) => ({ user }))
 class Callback extends Component {
   async componentDidMount() {
-    await auth.handleAuthentication()
+    console.log('------------ callback ------------')
+    const { dispatch } = this.props
+    dispatch({
+      type: 'user/LOGIN',
+    })
     const { history } = this.props
     history.push('/')
-  }
-
-  componentWillUnmount() {
-    notification.success({
-      message: 'Logged In',
-      description: 'You have successfully logged in to Clean UI React Admin Template!',
-    })
   }
 
   render() {
