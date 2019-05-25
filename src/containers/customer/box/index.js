@@ -1,34 +1,35 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
 import { Helmet } from 'react-helmet'
-
+import { connect } from 'react-redux'
 import FormSteps from 'components/Step/FormSteps'
-import ExcursionForm from './ExcursionForm'
 
-import ExcursionDetail from './form/ExcursionDetail'
-import ExcursionStopPoint from './form/ExcursionStopPoint'
-import ExcursionPricing from './form/ExcursionPricing'
-import ExcursionTransport from './form/ExcursionTransport'
+import CustomerForm from './CustomerForm'
+import CustomerPersonal from './form/CustomerPersonal'
+import CustomerAddress from './form/CustomerAddress'
+import CustomerContact from './form/CustomerContact'
+import CustomerEmergency from './form/CustomerEmergency'
+import CustomerAdditionalInfo from './form/CustomerAdditionalInfo'
 
-import 'costom.scss'
+import './index.scss'
 
-const pageTitle = 'Nova excursão'
+const pageTitle = 'Novo cliente'
 const formSteps = [
-  { component: ExcursionDetail, title: 'Detalhes da viagem' },
-  { component: ExcursionStopPoint, title: 'Pontos de parada' },
-  { component: ExcursionPricing, title: 'Valores das passagens' },
-  { component: ExcursionTransport, title: 'Transportes' },
+  { component: CustomerPersonal, title: 'Dados pessoais' },
+  { component: CustomerAddress, title: 'Endereço' },
+  { component: CustomerContact, title: 'Contato' },
+  { component: CustomerEmergency, title: 'Emergência' },
+  { component: CustomerAdditionalInfo, title: 'Informações adicionais' },
 ]
 
 @connect(({ user }) => ({ user }))
-class ExcursionBox extends Component {
+class Customers extends Component {
   onSubmit = event => {
     event.preventDefault()
     const { form, dispatch } = this.props
     form.validateFields((error, values) => {
       if (!error) {
         dispatch({
-          type: 'excursion/SAVE',
+          type: 'customer/SAVE',
           payload: values,
         })
       }
@@ -49,7 +50,7 @@ class ExcursionBox extends Component {
             <FormSteps formSteps={formSteps} {...this.props} />
           </div>
           <div className="card-body">
-            <ExcursionForm formSteps={formSteps} {...this.props} />
+            <CustomerForm formSteps={formSteps} {...this.props} />
           </div>
         </div>
       </div>
@@ -57,4 +58,4 @@ class ExcursionBox extends Component {
   }
 }
 
-export default ExcursionBox
+export default Customers

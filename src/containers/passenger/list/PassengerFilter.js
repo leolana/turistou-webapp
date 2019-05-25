@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Form, Row, Col, Checkbox, Icon, Radio } from 'antd'
 import actions from 'redux/passenger/actions'
+import { Form, Row, Col, Checkbox, Icon, Radio } from 'antd'
 
 import { tableData } from 'mock/excursions'
 

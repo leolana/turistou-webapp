@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Row, Col, Icon, Button, Form, InputNumber, Input } from 'antd'
+import { Row, Col, Icon, Button, Form, InputNumber } from 'antd'
 import Price from './Price'
 
 class ExcursionPricing extends Component {
@@ -10,7 +10,7 @@ class ExcursionPricing extends Component {
 
   addPrice = () => {
     const { prices } = this.state
-    const last = prices.length ? prices[prices.length - 1] : -1
+    const last = prices.length ? prices[prices.length - 1] : 0
     prices.push(last + 1)
     this.setState({ prices })
   }
@@ -31,14 +31,7 @@ class ExcursionPricing extends Component {
           <Form.Item label="Valor inteira (padrão)">
             {form.getFieldDecorator('defaultPassagePrice', {
               rules: [{ required: false }],
-            })(<InputNumber className="ant-input" size="default" maxLength={5} />)}
-          </Form.Item>
-        </Col>
-        <Col xs={24} md={6}>
-          <Form.Item label="Valor inteira (padrão)">
-            {form.getFieldDecorator('defaultPassagePrice', {
-              rules: [{ required: false }],
-            })(<Input size="default" maxLength={5} />)}
+            })(<InputNumber className="ant-input" maxLength={5} />)}
           </Form.Item>
         </Col>
         <Col xs={0} md={12} />

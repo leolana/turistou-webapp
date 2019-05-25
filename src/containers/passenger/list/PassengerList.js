@@ -20,18 +20,18 @@ class PassengerList extends Component {
     this.filterData = this.filterData.bind(this)
   }
 
-  delete = id => {
+  remove = id => {
     console.log('delete', id)
     // TODO: exclude...
   }
 
-  handleDelete(id) {
+  handleRemove(id) {
     Modal.error({
       title: 'Passageiro desistiu da excursão?',
       content: 'Esta ação colocará o passageiro na lista de desistência',
       okText: 'Sim',
       okType: 'danger',
-      onOk: () => this.delete(id),
+      onOk: () => this.remove(id),
       okCancel: true,
       cancelText: 'Não',
     })
@@ -47,7 +47,7 @@ class PassengerList extends Component {
       <Button ghost size="small" type="primary">
         <Icon type="swap" />
       </Button>
-      <Button ghost size="small" type="danger" onClick={() => this.handleDelete(id)}>
+      <Button ghost size="small" type="danger" onClick={() => this.handleRemove(id)}>
         <Icon type="user-delete" />
       </Button>
     </div>
@@ -117,16 +117,14 @@ class PassengerList extends Component {
     const filteredData = this.filterData()
 
     return (
-      <div>
-        <Table
-          rowKey="id"
-          className="utils__scrollTable"
-          scroll={{ x: '100%' }}
-          columns={tableColumns}
-          dataSource={filteredData}
-          pagination={false}
-        />
-      </div>
+      <Table
+        rowKey="id"
+        className="utils__scrollTable"
+        scroll={{ x: '100%' }}
+        columns={tableColumns}
+        dataSource={filteredData}
+        pagination={false}
+      />
     )
   }
 }

@@ -55,23 +55,15 @@ const routes = [
     path: '/dashboard/alpha',
     component: loadable(() => import('containers/dashboard/alpha')),
   },
-  {
-    path: '/dashboard/customers',
-    component: loadable(() => import('containers/customer')),
-  },
 
   // Customers
-  {
-    path: '/customer/list',
-    component: loadable(() => import('containers/customer')),
-  },
+  // {
+  //   path: '/customer/list',
+  //   component: loadable(() => import('containers/customer')),
+  // },
   {
     path: '/customer/',
-    component: loadable(() => import('containers/customer')),
-  },
-  {
-    path: '/customer/:id',
-    component: loadable(() => import('containers/customer')),
+    component: loadable(() => import('containers/customer/box')),
   },
 
   // Passengers

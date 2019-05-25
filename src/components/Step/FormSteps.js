@@ -27,7 +27,7 @@ class FormSteps extends Component {
     return (
       <Steps current={step} progressDot={this.customDot}>
         {formSteps.map((x, i) => (
-          <Steps.Step onClick={() => this.dispatchStep(i)} title={x.title} />
+          <Steps.Step key={x.title} onClick={() => this.dispatchStep(i)} title={x.title} />
         ))}
       </Steps>
     )

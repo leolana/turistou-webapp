@@ -34,6 +34,10 @@ class Passenger extends Component {
           <div className="card-body">
             <PassengerFilter id={id} />
             <PassengerList />
+
+            <Button className="pull-right mt-3">
+              <Link to="./">Adicionar passageiro</Link>
+            </Button>
           </div>
         </div>
       </div>
