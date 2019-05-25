@@ -7,14 +7,14 @@ export default class CustomerAdditionalInfo extends Component {
 
     return (
       <Row>
-        <Col sm={12}>
+        <Col xs={24} sm={12}>
           <Form.Item label="Restrição alimentícia">
             {form.getFieldDecorator('foodRestriction', {
               rules: [{ required: false }],
             })(<Input size="default" maxLength={300} />)}
           </Form.Item>
         </Col>
-        <Col sm={12}>
+        <Col xs={24} sm={12}>
           <Form.Item label="Como o cliente conheceu a agência?">
             {form.getFieldDecorator('howHearAbout', {
               rules: [{ required: false }],

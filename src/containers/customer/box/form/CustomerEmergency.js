@@ -10,28 +10,28 @@ export default class CustomerEmergency extends Component {
 
     return (
       <Row>
-        <Col span={4}>
+        <Col xs={24} md={12}>
           <Form.Item label="Plano de saúde">
             {form.getFieldDecorator('healthPlan', {
               rules: [{ required: false }],
             })(<Input size="default" maxLength={30} />)}
           </Form.Item>
         </Col>
-        <Col span={8}>
+        <Col xs={24} md={12}>
           <Form.Item label="Alergia a medicamentos">
             {form.getFieldDecorator('allergy', {
               rules: [{ required: false }],
             })(<Input size="default" maxLength={200} />)}
           </Form.Item>
         </Col>
-        <Col span={6}>
+        <Col xs={24} sm={12} md={15} lg={18}>
           <Form.Item label="Nome do contato de emergência">
             {form.getFieldDecorator('emergencyName', {
               rules: [{ required: false }],
             })(<Input size="default" maxLength={50} />)}
           </Form.Item>
         </Col>
-        <Col span={6}>
+        <Col xs={24} sm={12} md={9} lg={6}>
           <Form.Item label="Telefone do contato de emergência">
             {form.getFieldDecorator('emergencyCellphone', {
               rules: [{ required: false }],

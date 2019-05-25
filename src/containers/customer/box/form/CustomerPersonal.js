@@ -12,7 +12,7 @@ export default class CustomerPersonal extends Component {
 
     return (
       <Row>
-        <Col span={24}>
+        <Col xs={24}>
           <Form.Item label="Nome">
             {form.getFieldDecorator('name', {
               rules: [{ required: true, message: 'Por favor, insira teu nome' }],
@@ -20,14 +20,14 @@ export default class CustomerPersonal extends Component {
           </Form.Item>
         </Col>
 
-        <Col span={4}>
+        <Col xs={24} sm={8} lg={4}>
           <Form.Item label="CPF">
             {form.getFieldDecorator('cpf', {
               rules: [{ required: false }],
             })(<MaskedInput className="ant-input" mask={MASK.cpf} />)}
           </Form.Item>
         </Col>
-        <Col span={3}>
+        <Col xs={24} sm={4} lg={2}>
           <Form.Item label="UF emissor">
             {form.getFieldDecorator('stateCpf', {
               rules: [{ required: false }],
@@ -35,7 +35,7 @@ export default class CustomerPersonal extends Component {
           </Form.Item>
         </Col>
 
-        <Col span={4}>
+        <Col xs={24} sm={6} lg={4}>
           <Form.Item label="RG">
             {form.getFieldDecorator('rg', {
               rules: [{ required: false }],
@@ -43,7 +43,7 @@ export default class CustomerPersonal extends Component {
           </Form.Item>
         </Col>
         {/* TODO: validation for age?? */}
-        <Col span={4}>
+        <Col xs={24} sm={6} lg={4}>
           <Form.Item label="Data de nascimento">
             {form.getFieldDecorator('birthdate', {
               rules: [{ required: false }],
@@ -52,7 +52,7 @@ export default class CustomerPersonal extends Component {
             {/* TODO: start DatePicker in year view */}
           </Form.Item>
         </Col>
-        <Col span={8}>
+        <Col xs={24} lg={8}>
           <Form.Item label="Gênero">
             {form.getFieldDecorator('gender', {
               rules: [{ required: false }],
