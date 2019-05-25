@@ -1,10 +1,9 @@
-import { all, takeEvery, put, call } from 'redux-saga/effects'
+import { all, takeEvery, put, call, takeLatest } from 'redux-saga/effects'
 import { notification } from 'antd'
-import auth from 'services/auth'
+import * as auth from 'services/auth'
 import actions from 'redux/user/actions'
 
 export function* LOGIN() {
-  console.log('------------- LOGIN -------------')
   yield call(auth.handleAuthentication)
 
   yield put({
@@ -25,33 +24,22 @@ export function* LOGIN() {
 }
 
 export function* LOAD_CURRENT_ACCOUNT() {
-  console.log('------------- LOAD_CURRENT_ACCOUNT -------------')
   yield put({
     type: 'user/SET_STATE',
     payload: {
       loading: true,
     },
   })
-  console.log('---------- isAuthenticated ------------')
-  const isAuthorized = yield call(auth.isAuthenticated)
-  console.log(isAuthorized)
-  if (!isAuthorized) {
-    yield put({
-      type: 'user/SET_STATE',
-      payload: {
-        id: '',
-        name: '',
-        role: '',
-        email: '',
-        avatar: '',
-        authorized: false,
-        loading: false,
-      },
-    })
+
+  let user = {}
+  try {
+    user = yield call(auth.handleAuthentication)
+  } catch (error) {
+    console.log(error)
   }
-  const response = {}
-  if (isAuthorized) {
-    const { uid: id, email, photoURL: avatar } = response
+  const isAuthenticated = yield call(auth.isAuthenticated)
+  if (isAuthenticated) {
+    const { uid: id, email, photoURL: avatar } = user
     yield put({
       type: 'user/SET_STATE',
       payload: {
@@ -91,7 +79,7 @@ export function* LOGOUT() {
 export default function* rootSaga() {
   yield all([
     takeEvery(actions.LOGIN, LOGIN),
-    takeEvery(actions.LOAD_CURRENT_ACCOUNT, LOAD_CURRENT_ACCOUNT),
+    takeLatest(actions.LOAD_CURRENT_ACCOUNT, LOAD_CURRENT_ACCOUNT),
     takeEvery(actions.LOGOUT, LOGOUT),
     LOAD_CURRENT_ACCOUNT(), // run once on app load to check user auth
   ])

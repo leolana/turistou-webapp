@@ -1,24 +1,25 @@
-import React, { Component } from 'react'
-import { withRouter } from 'react-router-dom'
+import React from 'react'
 import { connect } from 'react-redux'
+import { Redirect } from 'react-router'
 
 import Loader from 'components/LayoutComponents/Loader'
+import actions from 'redux/user/actions'
 
-@connect(({ user }) => ({ user }))
-class Callback extends Component {
-  async componentDidMount() {
-    console.log('------------ callback ------------')
-    const { dispatch } = this.props
-    dispatch({
-      type: 'user/LOGIN',
-    })
-    const { history } = this.props
-    history.push('/')
-  }
-
-  render() {
-    return <Loader />
+const mapStateToProps = state => {
+  return {
+    user: state.user,
   }
 }
 
-export default withRouter(Callback)
+// eslint-disable-next-line import/no-mutable-exports
+let Callback = ({ dispatch, user }) => {
+  if (user) return <Redirect to="/" />
+  dispatch({
+    type: actions.HANDLE_AUTHENTICATION_CALLBACK,
+  })
+
+  return <Loader />
+}
+Callback = connect(mapStateToProps)(Callback)
+
+export default Callback

@@ -8,7 +8,7 @@ import Loader from 'components/LayoutComponents/Loader'
 import IndexLayout from 'layouts'
 import NotFoundPage from 'containers/404'
 import Callback from 'containers/callback'
-import auth from 'services/auth'
+import * as auth from 'services/auth'
 
 const loadable = loader =>
   Loadable({
@@ -105,7 +105,9 @@ const mapStateToProps = ({ router }) => ({
 class Router extends React.Component {
   async componentDidMount() {
     const { pathname } = this.props
-    if (pathname === '/callback') return
+    if (pathname === '/callback') {
+      return
+    }
     try {
       await auth.silentAuth()
       this.forceUpdate()
