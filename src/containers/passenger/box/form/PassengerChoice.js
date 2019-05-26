@@ -33,7 +33,7 @@ class PassengerChoice extends Component {
     return (
       <div>
         <Row>
-          <Col>
+          <Col xs={24}>
             <Form.Item label="Cliente">
               {form.getFieldDecorator('customer', {
                 rules: [{ required: false }],
@@ -50,7 +50,7 @@ class PassengerChoice extends Component {
           </Col>
         </Row>
         <Row>
-          <Col md={18}>
+          <Col xs={24}>
             <Form.Item label="Tipos de passagem">
               {form.getFieldDecorator('passagePrice', { rules: [{ required: false }] })(
                 <Radio.Group
@@ -62,9 +62,10 @@ class PassengerChoice extends Component {
               )}
             </Form.Item>
           </Col>
-          <Col md={6}>
-            <div>Valor:</div>
-            R$ {price}
+          <Col xs={24}>
+            <div>
+              Valor: <b>R$ {price}</b>
+            </div>
           </Col>
         </Row>
       </div>
