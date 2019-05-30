@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Row, Col, Icon, Button, Form, InputNumber } from 'antd'
+import { Row, Col, Icon, Button, Form, InputNumber, Divider } from 'antd'
 import Price from './Price'
 
 class ExcursionPricing extends Component {
@@ -36,14 +36,16 @@ class ExcursionPricing extends Component {
         </Col>
         <Col xs={0} md={12} />
 
+        <Divider dashed />
+
         <Col xs={24}>
           {prices.map(x => (
             <Price key={x} index={x} removePrice={this.removePrice} {...this.props} />
           ))}
         </Col>
 
-        <Col md={8} pull={8} push={8}>
-          <Button className="w-100" type="dashed" onClick={this.addPrice}>
+        <Col xs={{ span: 16, offset: 4 }} md={{ span: 8, offset: 8 }}>
+          <Button block type="dashed" onClick={this.addPrice}>
             <Icon type="plus" />
             Adicionar preço
           </Button>

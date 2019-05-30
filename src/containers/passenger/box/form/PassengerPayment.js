@@ -52,7 +52,7 @@ class PassengerPayment extends Component {
 
         <Row>
           <Col xs={{ span: 16, offset: 4 }} md={{ span: 8, offset: 8 }}>
-            <Button className="w-100" type="dashed" onClick={this.addPayment}>
+            <Button block type="dashed" onClick={this.addPayment}>
               <Icon type="plus" /> Adicionar pagamento
             </Button>
           </Col>
