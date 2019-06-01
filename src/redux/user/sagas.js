@@ -1,26 +1,26 @@
-import { all, takeEvery, put, call } from 'redux-saga/effects'
+import { all, takeEvery, put, call, takeLatest } from 'redux-saga/effects'
 import { notification } from 'antd'
-import { login, currentAccount, logout } from 'services/user'
-import actions from './actions'
+import * as auth from 'services/auth'
+import actions from 'redux/user/actions'
 
-export function* LOGIN({ payload }) {
-  const { email, password } = payload
+export function* LOGIN() {
+  yield call(auth.handleAuthentication)
+
   yield put({
     type: 'user/SET_STATE',
     payload: {
       loading: true,
     },
   })
-  const success = yield call(login, email, password)
-  if (success) {
-    notification.success({
-      message: 'Logged In',
-      description: 'You have successfully logged in to Clean UI React Admin Template!',
-    })
-    yield put({
-      type: 'user/LOAD_CURRENT_ACCOUNT',
-    })
-  }
+
+  yield put({
+    type: 'user/LOAD_CURRENT_ACCOUNT',
+  })
+
+  notification.success({
+    message: 'Logged In',
+    description: 'You have successfully logged in to Clean UI React Admin Template!',
+  })
 }
 
 export function* LOAD_CURRENT_ACCOUNT() {
@@ -30,9 +30,16 @@ export function* LOAD_CURRENT_ACCOUNT() {
       loading: true,
     },
   })
-  const response = yield call(currentAccount)
-  if (response) {
-    const { uid: id, email, photoURL: avatar } = response
+
+  let user = {}
+  try {
+    user = yield call(auth.handleAuthentication)
+  } catch (error) {
+    console.log(error)
+  }
+  const isAuthenticated = yield call(auth.isAuthenticated)
+  if (isAuthenticated) {
+    const { uid: id, email, photoURL: avatar } = user
     yield put({
       type: 'user/SET_STATE',
       payload: {
@@ -54,7 +61,7 @@ export function* LOAD_CURRENT_ACCOUNT() {
 }
 
 export function* LOGOUT() {
-  yield call(logout)
+  yield call(auth.logout)
   yield put({
     type: 'user/SET_STATE',
     payload: {
@@ -72,7 +79,7 @@ export function* LOGOUT() {
 export default function* rootSaga() {
   yield all([
     takeEvery(actions.LOGIN, LOGIN),
-    takeEvery(actions.LOAD_CURRENT_ACCOUNT, LOAD_CURRENT_ACCOUNT),
+    takeLatest(actions.LOAD_CURRENT_ACCOUNT, LOAD_CURRENT_ACCOUNT),
     takeEvery(actions.LOGOUT, LOGOUT),
     LOAD_CURRENT_ACCOUNT(), // run once on app load to check user auth
   ])
