@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Table, Button, Icon, Tag, Modal } from 'antd'
 
-import { tableData, statuses, statusesCode } from 'mock/passengers'
+import { tableData, statuses, statusesCode, statusesEnum } from 'mock/passengers'
 
 const passengersList = tableData.map(x => {
   const paymentPercentual = x.paid / x.total
@@ -38,21 +38,55 @@ class PassengerList extends Component {
     })
   }
 
-  renderActionsButtons = id => (
-    <div className="table-action-buttons">
-      <Link to={`${id}`}>
-        <Button ghost size="small" type="primary">
-          <Icon type="dollar" />
-        </Button>
-      </Link>
-      <Button ghost size="small" type="primary">
-        <Icon type="swap" />
-      </Button>
-      <Button ghost size="small" type="danger" onClick={() => this.handleRemove(id)}>
-        <Icon type="user-delete" />
-      </Button>
-    </div>
-  )
+  renderActionsButtons = (id, statusId) => {
+    const actions = {
+      booked: (
+        <div className="table-action-buttons">
+          <Link to={`${id}`}>
+            <Button ghost size="small" type="primary" title="Atualizar pagamento">
+              <Icon type="dollar" />
+            </Button>
+          </Link>
+          <Button ghost size="small" type="primary" title="Trocar passageiro">
+            <Icon type="swap" />
+          </Button>
+          <Button
+            ghost
+            size="small"
+            type="danger"
+            title="Passageiro desistiu"
+            onClick={() => this.handleRemove(id)}
+          >
+            <Icon type="close" />
+          </Button>
+        </div>
+      ),
+      waiting: (
+        <div className="table-action-buttons">
+          <Button ghost size="small" type="primary" title="Reservar passageiro">
+            <Icon type="check" />
+          </Button>
+          <Button
+            ghost
+            size="small"
+            type="danger"
+            title="Remover passageiro"
+            onClick={() => this.handleRemove(id)}
+          >
+            <Icon type="close" />
+          </Button>
+        </div>
+      ),
+      canceled: (
+        <div className="table-action-buttons">
+          <Button ghost size="small" type="primary">
+            <Icon type="check" />
+          </Button>
+        </div>
+      ),
+    }
+    return actions[statusesEnum[statusId]]
+  }
 
   filterData() {
     const { statusId, query, startPay, fullPay } = this.props
@@ -76,7 +110,7 @@ class PassengerList extends Component {
       actions: {
         dataIndex: 'id',
         key: 'id',
-        render: this.renderActionsButtons,
+        render: id => this.renderActionsButtons(id, statusId),
       },
       status: {
         title: 'Situação',
@@ -144,7 +178,7 @@ class PassengerList extends Component {
         columns = ['actions', 'name', 'outstandingBalance']
         break
       default:
-        columns = ['actions', 'status', 'name']
+        columns = ['status', 'name']
     }
     const tableColumns = columns.map(x => allColumns[x])
     return tableColumns
