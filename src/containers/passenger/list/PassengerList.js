@@ -18,6 +18,7 @@ class PassengerList extends Component {
   constructor() {
     super()
     this.filterData = this.filterData.bind(this)
+    this.columnsForStatus = this.columnsForStatus.bind(this)
   }
 
   remove = id => {
@@ -63,35 +64,46 @@ class PassengerList extends Component {
     if (query)
       filteredData = filteredData.filter(x => {
         const queryPart = query.toLowerCase().split(' ')
-        return queryPart.every(q => x.name.toLowerCase().includes(q))
+        return queryPart.every(q => x.customer.name.toLowerCase().includes(q))
       })
 
     return filteredData
   }
 
-  render() {
-    const tableColumns = [
-      {
+  columnsForStatus() {
+    const { statusId } = this.props
+    const allColumns = {
+      actions: {
         dataIndex: 'id',
         key: 'id',
         render: this.renderActionsButtons,
       },
-      {
+      status: {
         title: 'Situação',
         dataIndex: 'status',
         key: 'status',
         className: 'text-center',
-        render: statusId => {
+        render: () => {
           const { description, type } = statuses.find(s => s.id === statusId)
           return <Tag className={`text-white bg-${type} mr-0`}>{description}</Tag>
         },
       },
-      {
+      name: {
         title: 'Nome',
-        dataIndex: 'name',
+        dataIndex: 'customer.name',
         key: 'name',
       },
-      {
+      telephone: {
+        title: 'Telefone',
+        dataIndex: 'customer.telephone',
+        key: 'telephone',
+      },
+      outstandingBalance: {
+        title: 'Saldo em aberto',
+        dataIndex: 'outstandingBalance',
+        key: 'outstandingBalance',
+      },
+      value: {
         title: 'Valor pago / Valor total',
         dataIndex: 'value',
         key: 'value',
@@ -106,19 +118,41 @@ class PassengerList extends Component {
           return ''
         },
       },
-      {
+      nextTranche: {
         title: 'Próxima parcela',
         dataIndex: 'nextTranche',
         key: 'nextTranche',
         render: x => x && new Date(x).toLocaleDateString(),
       },
-      {
+      lastTranche: {
         title: 'Última parcela',
         dataIndex: 'lastTranche',
         key: 'lastTranche',
         render: x => x && new Date(x).toLocaleDateString(),
       },
-    ]
+    }
+
+    let columns = null
+    switch (statusId) {
+      case statusesCode.booked:
+        columns = ['actions', 'name', 'value', 'nextTranche', 'lastTranche']
+        break
+      case statusesCode.waiting:
+        columns = ['actions', 'name', 'telephone']
+        break
+      case statusesCode.canceled:
+        columns = ['actions', 'name', 'outstandingBalance']
+        break
+      default:
+        columns = ['actions', 'status', 'name']
+    }
+    const tableColumns = columns.map(x => allColumns[x])
+    return tableColumns
+  }
+
+  render() {
+    const tableColumns = this.columnsForStatus()
+
     const filteredData = this.filterData()
 
     return (
