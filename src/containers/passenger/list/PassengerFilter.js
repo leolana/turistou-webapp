@@ -58,7 +58,7 @@ class PassengerFilter extends Component {
     const excursion = tableData.filter(x => x.id === +id)[0]
 
     return (
-      <Form layout="inline">
+      <Form layout="inline" className="form-filter">
         <Row>
           <Col md={24}>
             <h5>
@@ -79,7 +79,7 @@ class PassengerFilter extends Component {
             </Form.Item>
           </Col>
           */}
-          <Col sm={12} lg={8}>
+          <Col md={12}>
             <Radio.Group
               className="mb-1"
               onChange={this.handleChangeStatus}
@@ -99,7 +99,7 @@ class PassengerFilter extends Component {
               Pago 100%
             </Checkbox>
           </Col> */}
-          <Col sm={12} lg={16}>
+          <Col md={12}>
             <Input
               onChange={this.handleChangeFilter}
               addonBefore={<Icon type="search" />}

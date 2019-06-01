@@ -9,6 +9,10 @@
       padding-right: $pad;
     }
   }
+
+  &.form-filter {
+    margin-bottom: 8px;
+  }
 }
 
 .ant-input-number {
