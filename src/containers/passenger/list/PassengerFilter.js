@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import actions from 'redux/passenger/actions'
-import { Form, Row, Col, Checkbox, Icon, Radio } from 'antd'
+import { Form, Row, Col, Icon, Radio, Input } from 'antd'
 
 import { tableData } from 'mock/excursions'
 
@@ -13,6 +13,7 @@ class PassengerFilter extends Component {
     this.handleChangeStartPay = this.handleChangeStartPay.bind(this)
     this.handleChangeFullPay = this.handleChangeFullPay.bind(this)
     this.handleChangeStatus = this.handleChangeStatus.bind(this)
+    this.handleChangeFilter = this.handleChangeFilter.bind(this)
   }
 
   handleChangeStartPay(e) {
@@ -42,8 +43,18 @@ class PassengerFilter extends Component {
     })
   }
 
+  handleChangeFilter(e) {
+    const query = e.target.value
+    const { dispatch } = this.props
+    dispatch({
+      type: actions.SET_STATE,
+      payload: { query },
+    })
+  }
+
   render() {
-    const { id, startPay, fullPay, statusId } = this.props
+    // const { id, startPay, fullPay, statusId } = this.props
+    const { id, statusId } = this.props
     const excursion = tableData.filter(x => x.id === +id)[0]
 
     return (
@@ -68,7 +79,7 @@ class PassengerFilter extends Component {
             </Form.Item>
           </Col>
           */}
-          <Col md={8}>
+          <Col sm={12} lg={8}>
             <Radio.Group
               className="mb-1"
               onChange={this.handleChangeStatus}
@@ -79,13 +90,21 @@ class PassengerFilter extends Component {
               <Radio.Button value={3}>Desistente</Radio.Button>
             </Radio.Group>
           </Col>
-          <Col md={16}>
+          {/* TODO: Descomentar até achar um jeito melhor de acompanhar os filtros entre tabelas */}
+          {/* <Col md={16}>
             <Checkbox checked={startPay} onChange={this.handleChangeStartPay}>
-              Exibir somente que deram entrada
+              Deram entrada
             </Checkbox>
             <Checkbox checked={fullPay} onChange={this.handleChangeFullPay}>
-              Exibir somente que pagaram 100%
+              Pago 100%
             </Checkbox>
+          </Col> */}
+          <Col sm={12} lg={16}>
+            <Input
+              onChange={this.handleChangeFilter}
+              addonBefore={<Icon type="search" />}
+              placeholder="Filtrar pelo nome"
+            />
           </Col>
         </Row>
       </Form>
@@ -93,9 +112,4 @@ class PassengerFilter extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  const { statusId, startPay, fullPay } = state.passenger
-  return { statusId, startPay, fullPay }
-}
-
-export default connect(mapStateToProps)(PassengerFilter)
+export default connect()(PassengerFilter)

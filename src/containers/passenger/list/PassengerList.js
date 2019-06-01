@@ -54,12 +54,17 @@ class PassengerList extends Component {
   )
 
   filterData() {
-    const { statusId, startPay, fullPay } = this.props
+    const { statusId, query, startPay, fullPay } = this.props
     let filteredData = passengersList
 
     if (statusId) filteredData = filteredData.filter(x => x.status === statusId)
     if (fullPay) filteredData = filteredData.filter(x => x.paid === x.total)
     else if (startPay) filteredData = filteredData.filter(x => x.paid > 0)
+    if (query)
+      filteredData = filteredData.filter(x => {
+        const queryPart = query.toLowerCase().split(' ')
+        return queryPart.every(q => x.name.toLowerCase().includes(q))
+      })
 
     return filteredData
   }
@@ -130,8 +135,8 @@ class PassengerList extends Component {
 }
 
 const mapStateToProps = state => {
-  const { statusId, startPay, fullPay } = state.passenger
-  return { statusId, startPay, fullPay }
+  const { statusId, startPay, fullPay, query } = state.passenger
+  return { statusId, startPay, fullPay, query }
 }
 
 export default connect(mapStateToProps)(PassengerList)
