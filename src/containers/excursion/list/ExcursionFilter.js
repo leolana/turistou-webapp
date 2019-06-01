@@ -36,7 +36,12 @@ class ExcursionFilter extends Component {
       <Form layout="inline">
         <Row>
           <Col md={12}>
-            <Radio.Group className="mb-1" onChange={this.handleChangeStatus}>
+            <Radio.Group
+              className="mb-1"
+              onChange={this.handleChangeStatus}
+              buttonStyle="solid"
+              defaultValue={0}
+            >
               {EXCURSION_STATUS.map(x => (
                 <Radio.Button value={x.id}>{x.description}</Radio.Button>
               ))}
