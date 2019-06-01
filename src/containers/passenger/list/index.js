@@ -19,7 +19,7 @@ const menu = (
 const DropdownAdd = ({ placement }) => (
   <Dropdown overlay={menu} placement={placement || 'bottomRight'} className="float-right">
     <Button type="primary">
-      Adicionar passageiro <Icon type="ellipsis" rotate={90} />
+      Adicionar passageiro <Icon type="menu" />
     </Button>
   </Dropdown>
 )
