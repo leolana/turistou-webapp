@@ -111,19 +111,20 @@ class ExcursionList extends Component {
         render: this.renderActionsButtons,
       },
       {
+        title: 'Destino',
+        dataIndex: 'destination',
+        key: 'destination',
+      },
+      {
         title: 'Vagas',
         dataIndex: 'vacacy',
         key: 'vacacy',
+        className: 'text-center',
         render: (x, a) => (
           <span className={a.textStyle}>
             {x} / {a.capacity}
           </span>
         ),
-      },
-      {
-        title: 'Destino',
-        dataIndex: 'destination',
-        key: 'destination',
       },
       {
         title: 'Partida',
