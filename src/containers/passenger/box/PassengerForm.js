@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Form, Button } from 'antd'
+import { Form } from 'antd'
 
 import actions from 'redux/step/actions'
 import FormStepButtonsActions from 'components/Step/FormStepButtonsActions'
@@ -22,7 +22,7 @@ class PassengerForm extends Component {
   }
 
   render() {
-    const { fetching, current, formSteps } = this.props
+    const { current, formSteps } = this.props
 
     return (
       <Form layout="vertical" className="passenger-form">
@@ -30,9 +30,6 @@ class PassengerForm extends Component {
 
         <div className="form-actions">
           <FormStepButtonsActions lastStep={formSteps.length - 1} />
-          <Button type="primary" htmlType="submit" loading={fetching}>
-            Salvar
-          </Button>
         </div>
       </Form>
     )
