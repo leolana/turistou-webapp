@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import actions from 'redux/excursion/actions'
 import { Form, Radio, Input, Row, Col, Icon } from 'antd'
 
-import { EXCURSION_STATUS } from 'constants/excursionStatus'
+import { EXCURSION_STATUS, EXCURSION_STATUS_ENUM } from 'constants/excursionStatus'
 
 class ExcursionFilter extends Component {
   constructor() {
@@ -40,7 +40,7 @@ class ExcursionFilter extends Component {
               className="mb-1"
               onChange={this.handleChangeStatus}
               buttonStyle="solid"
-              defaultValue={0}
+              defaultValue={EXCURSION_STATUS_ENUM.nexties}
             >
               {EXCURSION_STATUS.map(x => (
                 <Radio.Button value={x.id}>{x.description}</Radio.Button>
