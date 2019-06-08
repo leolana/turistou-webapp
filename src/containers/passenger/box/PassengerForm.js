@@ -22,11 +22,11 @@ class PassengerForm extends Component {
   }
 
   render() {
-    const { fetching, current: step, formSteps } = this.props
+    const { fetching, current, formSteps } = this.props
 
     return (
       <Form layout="vertical" className="passenger-form">
-        {formSteps.map((x, i) => step === i && <x.component key={x.title} {...this.props} />)}
+        {formSteps.map((x, i) => current === i && <x.component key={x.title} {...this.props} />)}
 
         <div className="form-actions">
           <FormStepButtonsActions lastStep={formSteps.length - 1} />

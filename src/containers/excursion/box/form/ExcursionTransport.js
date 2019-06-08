@@ -32,8 +32,8 @@ class ExcursionTransport extends Component {
           ))}
         </Col>
 
-        <Col md={8} pull={8} push={8}>
-          <Button className="w-100" type="dashed" onClick={this.addTransport}>
+        <Col xs={{ span: 16, offset: 4 }} md={{ span: 8, offset: 8 }}>
+          <Button block type="dashed" onClick={this.addTransport}>
             <Icon type="plus" />
             Adicionar transport
           </Button>

@@ -32,8 +32,8 @@ class ExcursionStopPoint extends Component {
             <StopAddress key={x} index={x} removeStopPoint={this.removeStopPoint} {...this.props} />
           ))}
         </Col>
-        <Col md={8} pull={8} push={8}>
-          <Button className="w-100" type="dashed" onClick={this.addStopPoint}>
+        <Col xs={{ span: 16, offset: 4 }} md={{ span: 8, offset: 8 }}>
+          <Button block type="dashed" onClick={this.addStopPoint}>
             <Icon type="plus" />
             Adicionar ponto de parada
           </Button>

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Row, Col, Form, Select, InputNumber, DatePicker, Button, Icon, Modal } from 'antd'
+import { Row, Col, Form, Select, InputNumber, DatePicker, Button, Icon, Modal, Divider } from 'antd'
 
 import { paymentType } from 'constants/options'
 
@@ -7,14 +7,7 @@ const dateFormat = 'DD/MM/YYYY'
 const MAX_INSTALLMENT = 10
 const Installment = ({ form, price, index }) => (
   <div>
-    <Col md={6}>
-      <Form.Item label="Vencimento da primeira parcela">
-        {form.getFieldDecorator(`paymentFirstDue[${index}]`, {
-          rules: [{ required: false }],
-        })(<DatePicker size="default" format={dateFormat} />)}
-      </Form.Item>
-    </Col>
-    <Col md={6}>
+    <Col xs={24} sm={12} lg={7}>
       <Form.Item label="Parcelas">
         {form.getFieldDecorator(`installmentAmount[${index}]`, {
           rules: [{ required: false }],
@@ -25,7 +18,7 @@ const Installment = ({ form, price, index }) => (
               .map(x => (
                 <Select.Option key={x} value={x}>
                   {x === 1 ? (
-                    'Á vista'
+                    'À vista'
                   ) : (
                     <span>
                       {x}&times; ({(price / x).toFixed(2)})
@@ -35,6 +28,13 @@ const Installment = ({ form, price, index }) => (
               ))}
           </Select>,
         )}
+      </Form.Item>
+    </Col>
+    <Col xs={18} sm={10} lg={5}>
+      <Form.Item label="Primeira parcela">
+        {form.getFieldDecorator(`paymentFirstDue[${index}]`, {
+          rules: [{ required: false }],
+        })(<DatePicker size="default" format={dateFormat} />)}
       </Form.Item>
     </Col>
   </div>
@@ -79,7 +79,7 @@ class PaymentConditions extends Component {
 
     return (
       <Row>
-        <Col md={6}>
+        <Col xs={24} sm={12} lg={6}>
           <Form.Item label="Forma de pagamento">
             {form.getFieldDecorator(`paymentConditions[${index}]`, {
               rules: [{ required: false }],
@@ -94,7 +94,7 @@ class PaymentConditions extends Component {
             )}
           </Form.Item>
         </Col>
-        <Col md={4}>
+        <Col xs={isInstallable ? 24 : 18} sm={isInstallable ? 12 : 10} lg={4}>
           <Form.Item label="Valor">
             {form.getFieldDecorator(`paymentValue[${index}]`, {
               rules: [{ required: false }],
@@ -104,15 +104,17 @@ class PaymentConditions extends Component {
 
         {isInstallable && <Installment {...this.props} price={230.0} />}
 
-        <Col md={2} className="float-right">
+        <Col className="float-right" xs={6} sm={2} lg={2}>
           <Button
             type="danger"
-            className="button-side-field float-right"
+            className="button-side-field float-right mr-0"
             onClick={() => this.handleRemove(index)}
           >
             <Icon type="delete" />
           </Button>
         </Col>
+
+        <Divider dashed />
       </Row>
     )
   }

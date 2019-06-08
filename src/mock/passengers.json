@@ -2,7 +2,11 @@
   "tableData": [
     {
       "id": 1,
-      "name": "Maria Aparecida da Silva",
+      "customer": {
+        "name": "Maria Aparecida da Silva",
+        "telephone": "(15) 91234-5678",
+        "city": "Sorocaba"
+      },
       "paid": 200.0,
       "total": 200.0,
       "nextTranche": "2019-05-10T00:00:00.000-0300",
@@ -11,7 +15,11 @@
     },
     {
       "id": 2,
-      "name": "Antônio Carlos Andrade",
+      "customer": {
+        "name": "Antônio Carlos Andrade",
+        "telephone": "(15) 91234-5678",
+        "city": "Votorantim"
+      },
       "paid": 100.0,
       "total": 200.0,
       "nextTranche": "2019-05-10T00:00:00.000-0300",
@@ -20,7 +28,11 @@
     },
     {
       "id": 3,
-      "name": "Getúlio Andrade",
+      "customer": {
+        "name": "Getúlio Andrade",
+        "telephone": "(15) 91234-5678",
+        "city": "Sorocaba"
+      },
       "paid": 79.0,
       "total": 189.0,
       "nextTranche": "2019-05-10T00:00:00.000-0300",
@@ -29,7 +41,11 @@
     },
     {
       "id": 4,
-      "name": "Júlia Ana Pereira",
+      "customer": {
+        "name": "Júlia Ana Pereira",
+        "telephone": "(15) 91234-5678",
+        "city": "Sorocaba"
+      },
       "paid": 150.0,
       "total": 190.0,
       "nextTranche": "2019-05-10T00:00:00.000-0300",
@@ -38,7 +54,11 @@
     },
     {
       "id": 5,
-      "name": "Luíza Cavalcanti Costa",
+      "customer": {
+        "name": "Luíza Cavalcanti Costa",
+        "telephone": "(15) 91234-5678",
+        "city": "Sorocaba"
+      },
       "paid": 100.0,
       "total": 200.0,
       "nextTranche": "2019-05-10T00:00:00.000-0300",
@@ -47,7 +67,11 @@
     },
     {
       "id": 6,
-      "name": "Pierre Quinto",
+      "customer": {
+        "name": "Pierre Quinto",
+        "telephone": "(15) 91234-5678",
+        "city": "Votorantim"
+      },
       "paid": 130.0,
       "total": 200.0,
       "nextTranche": "2019-05-10T00:00:00.000-0300",
@@ -56,25 +80,38 @@
     },
     {
       "id": 7,
-      "name": "Gertrudes de Almeida Costa e Silva",
+      "customer": {
+        "name": "Gertrudes de Almeida Costa e Silva",
+        "telephone": "(15) 91234-5678",
+        "city": "Sorocaba"
+      },
       "paid": 0,
       "total": 189.0,
       "status": 2
     },
     {
       "id": 8,
-      "name": "Abigaliu Sant'Ana",
+      "customer": {
+        "name": "Abigaiu Sant'Ana",
+        "telephone": "(15) 91234-5678",
+        "city": "Sorocaba"
+      },
       "paid": 0,
       "total": 189.0,
       "status": 2
     },
     {
       "id": 9,
-      "name": "José Mercedes",
+      "customer": {
+        "name": "José Mercedes",
+        "telephone": "(15) 91234-5678",
+        "city": "Araçoiaba da Serra"
+      },
       "paid": 100.0,
       "total": 200.0,
       "nextTranche": "2019-05-10T00:00:00.000-0300",
       "lastTranche": "2019-07-10T00:00:00.000-0300",
+      "outstandingBalance": 80,
       "status": 3
     }
   ],

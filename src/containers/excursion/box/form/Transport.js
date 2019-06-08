@@ -8,28 +8,28 @@ class Transport extends Component {
 
     return (
       <Row>
-        <Col xs={24} md={12}>
+        <Col xs={24} sm={12}>
           <FormItem label="Trasporte">
             {form.getFieldDecorator(`transport[${index}]`, {
               rules: [{ required: false }],
             })(<Input size="default" maxLength={30} />)}
           </FormItem>
         </Col>
-        <Col xs={24} md={6}>
+        <Col xs={24} sm={6}>
           <FormItem label="Placa">
             {form.getFieldDecorator(`plate[${index}]`, {
               rules: [{ required: false }],
             })(<Input size="default" maxLength={30} />)}
           </FormItem>
         </Col>
-        <Col xs={20} md={4}>
+        <Col xs={20} sm={3} md={4}>
           <FormItem label="Capacidade">
             {form.getFieldDecorator(`capacity[${index}]`, {
               rules: [{ required: false }],
             })(<InputNumber size="default" maxLength={3} />)}
           </FormItem>
         </Col>
-        <Col xs={4} md={2}>
+        <Col xs={4} sm={3} md={2}>
           <Button
             type="danger"
             className="button-side-field float-right"
