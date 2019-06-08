@@ -14,18 +14,18 @@ class FormSteps extends Component {
 
   customDot = (dot, { index }) => <Popover content={<span>{index + 1}ª etapa</span>}>{dot}</Popover>
 
-  dispatchStep(step) {
+  dispatchStep(current) {
     const { dispatch } = this.props
     dispatch({
       type: actions.SET_STATE,
-      payload: { current: step },
+      payload: { current },
     })
   }
 
   render() {
-    const { current: step, formSteps } = this.props
+    const { current, formSteps } = this.props
     return (
-      <Steps current={step} progressDot={this.customDot}>
+      <Steps current={current} progressDot={this.customDot}>
         {formSteps.map((x, i) => (
           <Steps.Step key={x.title} onClick={() => this.dispatchStep(i)} title={x.title} />
         ))}

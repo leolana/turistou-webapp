@@ -32,7 +32,7 @@ class FormStepButtonsActions extends Component {
           </Button>
         )}
         {current === lastStep && (
-          <Button type="primary" submit={submit}>
+          <Button type="primary" ghost submit={submit}>
             Salvar e adicionar novo
           </Button>
         )}
