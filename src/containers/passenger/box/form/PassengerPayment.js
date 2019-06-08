@@ -34,11 +34,11 @@ class PassengerPayment extends Component {
     return (
       <div>
         <Row className="mb-5">
-          <Col md={12}>
+          <Col xs={24} md={12}>
             <b>Passageiro: </b>
             <span>{passengerName}</span>
           </Col>
-          <Col md={12}>
+          <Col xs={24} md={12}>
             <b>Tipo de passagem: </b>
             <span>
               {passage.type} (R$ {passage.price})
@@ -51,8 +51,8 @@ class PassengerPayment extends Component {
         ))}
 
         <Row>
-          <Col md={8} pull={8} push={8}>
-            <Button className="w-100" type="dashed" onClick={this.addPayment}>
+          <Col xs={{ span: 16, offset: 4 }} md={{ span: 8, offset: 8 }}>
+            <Button block type="dashed" onClick={this.addPayment}>
               <Icon type="plus" /> Adicionar pagamento
             </Button>
           </Col>

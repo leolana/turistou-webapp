@@ -10,8 +10,6 @@ import CustomerContact from './form/CustomerContact'
 import CustomerEmergency from './form/CustomerEmergency'
 import CustomerAdditionalInfo from './form/CustomerAdditionalInfo'
 
-import './index.scss'
-
 const pageTitle = 'Novo cliente'
 const formSteps = [
   { component: CustomerPersonal, title: 'Dados pessoais' },

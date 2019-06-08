@@ -10,24 +10,24 @@ class PassengerPlace extends Component {
     return (
       <div>
         <Row className="mb-5">
-          <Col md={12}>
+          <Col xs={24} md={12}>
             <b>Passageiro: </b>
             <span>Fulano da Silva</span>
           </Col>
-          <Col md={12}>
+          <Col xs={24} md={12}>
             <b>Tipo de passagem: </b>
             <span>Normal</span>
           </Col>
         </Row>
 
         <Row>
-          <Col md={6}>
+          <Col xs={24} sm={8} lg={6}>
             <Form.Item label="Escolha do assento">
               {form.getFieldDecorator('busSeat', { rules: [{ required: false }] })(
                 <Select size="default">
                   {busSeats.map(x => (
                     <Select.Option key={x.number} value={x.number} disabled={!x.free}>
-                      {x.number} {x.free ? '' : ' - Reservado'}
+                      Poltrona {x.number} {x.free ? '' : ' - Reservado'}
                     </Select.Option>
                   ))}
                 </Select>,
@@ -35,7 +35,7 @@ class PassengerPlace extends Component {
             </Form.Item>
           </Col>
 
-          <Col md={18}>
+          <Col xs={24} sm={16} lg={18}>
             <Form.Item label="Ponto de embarque">
               {form.getFieldDecorator('stopPoint', { rules: [{ required: false }] })(
                 <Select size="default">
