@@ -1,4 +1,4 @@
-const EXCURSION_STATUS = [
+export const EXCURSION_STATUS = [
   {
     id: 0,
     key: 'all',
@@ -21,13 +21,10 @@ const EXCURSION_STATUS = [
   },
 ]
 
-const EXCURSION_STATUS_ENUM = (() => {
+export const EXCURSION_STATUS_ENUM = (() => {
   const statusEnum = {}
   EXCURSION_STATUS.forEach(x => {
     statusEnum[x.key] = x.id
   })
   return statusEnum
 })()
-
-exports.EXCURSION_STATUS = EXCURSION_STATUS
-exports.EXCURSION_STATUS_ENUM = EXCURSION_STATUS_ENUM
