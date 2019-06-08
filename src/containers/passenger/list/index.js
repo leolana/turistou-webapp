@@ -6,7 +6,7 @@ import { Row, Button, Col, Dropdown, Menu, Icon } from 'antd'
 import PassengerList from './PassengerList'
 import PassengerFilter from './PassengerFilter'
 
-const pageTitle = 'Passageiros da excursão'
+const pageTitle = 'Lista de passageiros'
 
 const menu = (
   <Menu>

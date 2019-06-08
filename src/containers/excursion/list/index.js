@@ -9,7 +9,7 @@ import 'costom.scss'
 import ExcursionFilter from './ExcursionFilter'
 import ExcursionList from './ExcursionList'
 
-const pageTitle = 'Próximas excursões'
+const pageTitle = 'Excursões'
 
 const ButtonAdd = () => (
   <Button type="primary" className="float-right">
