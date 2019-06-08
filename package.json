@@ -25,6 +25,7 @@
     "@rowno/sparkline": "^3.0.1",
     "antd": "^3.17.0",
     "apollo-boost": "^0.4.2",
+    "apollo-client": "^2.6.2",
     "auth0-js": "^9.10.2",
     "bootstrap-css-only": "^4.3.1",
     "classnames": "^2.2.6",
