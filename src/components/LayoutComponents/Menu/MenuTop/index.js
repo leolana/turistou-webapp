@@ -139,7 +139,7 @@ class MenuTop extends React.Component {
       <div>
         <div className={styles.logo}>
           <div className={styles.logoContainer}>
-            <img src="resources/images/logo-inverse.png" alt="logo" />
+            <img src="/resources/images/logo-inverse.png" alt="logo" />
           </div>
         </div>
         <Menu

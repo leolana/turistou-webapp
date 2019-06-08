@@ -6,10 +6,11 @@ import thunk from 'redux-thunk'
 import { routerMiddleware } from 'connected-react-router'
 import { createStore, applyMiddleware, compose } from 'redux'
 import createSagaMiddleware from 'redux-saga'
-import { createHashHistory } from 'history'
+import { createBrowserHistory } from 'history'
 import reducers from 'redux/reducers'
 import sagas from 'redux/sagas'
 import Router from 'router'
+
 import Localization from 'components/LayoutComponents/Localization'
 import * as serviceWorker from './serviceWorker'
 
@@ -17,7 +18,7 @@ import * as serviceWorker from './serviceWorker'
 import './global.scss'
 import './costom.scss'
 
-const history = createHashHistory()
+const history = createBrowserHistory()
 const sagaMiddleware = createSagaMiddleware()
 const routeMiddleware = routerMiddleware(history)
 const middlewares = [thunk, sagaMiddleware, routeMiddleware]

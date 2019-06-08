@@ -1,11 +1,14 @@
 import React from 'react'
-import { Route, Switch, Redirect } from 'react-router-dom'
+import { Route, Redirect, Switch } from 'react-router-dom'
 import { ConnectedRouter } from 'connected-react-router'
 import Loadable from 'react-loadable'
+import { connect } from 'react-redux'
 
 import Loader from 'components/LayoutComponents/Loader'
 import IndexLayout from 'layouts'
 import NotFoundPage from 'containers/404'
+import Callback from 'containers/callback'
+import * as auth from 'services/auth'
 
 const loadable = loader =>
   Loadable({
@@ -84,7 +87,28 @@ const routes = [
   },
 ]
 
+const mapStateToProps = ({ router }) => ({
+  pathname: router.location.pathname,
+  search: router.location.search,
+  hash: router.location.hash,
+})
+
+@connect(mapStateToProps)
 class Router extends React.Component {
+  async componentDidMount() {
+    const { pathname } = this.props
+    if (pathname === '/callback') {
+      return
+    }
+    try {
+      await auth.silentAuth()
+      this.forceUpdate()
+    } catch (err) {
+      if (err.error === 'login_required') return
+      console.log(err.error)
+    }
+  }
+
   render() {
     const { history } = this.props
     return (
@@ -100,6 +124,7 @@ class Router extends React.Component {
                 exact={route.exact}
               />
             ))}
+            <Route exact path="/callback" component={Callback} />
             <Route component={NotFoundPage} />
           </Switch>
         </IndexLayout>
