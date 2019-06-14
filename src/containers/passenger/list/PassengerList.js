@@ -132,10 +132,11 @@ class PassengerList extends Component {
         dataIndex: 'customer.telephone',
         key: 'telephone',
       },
-      outstandingBalance: {
-        title: 'Saldo em aberto',
-        dataIndex: 'outstandingBalance',
-        key: 'outstandingBalance',
+      reimbursedValue: {
+        title: 'Valor devolvido',
+        dataIndex: 'reimbursedValue',
+        key: 'reimbursedValue',
+        render: value => <span>R$ {value}</span>,
       },
       value: {
         title: 'Valor pago / Valor total',
@@ -175,7 +176,7 @@ class PassengerList extends Component {
         columns = ['actions', 'name', 'telephone']
         break
       case statusesCode.canceled:
-        columns = ['actions', 'name', 'outstandingBalance']
+        columns = ['actions', 'name', 'reimbursedValue']
         break
       default:
         columns = ['status', 'name']
