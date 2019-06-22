@@ -10,10 +10,10 @@ import { createBrowserHistory } from 'history'
 import reducers from 'redux/reducers'
 import sagas from 'redux/sagas'
 import Router from 'router'
-import ApolloClient from 'apollo-boost'
 import { ApolloProvider } from 'react-apollo'
 
 import Localization from 'components/LayoutComponents/Localization'
+import apolloClient from './core/api/apollo'
 import * as serviceWorker from './serviceWorker'
 
 // app styles
@@ -30,11 +30,9 @@ if (process.env.NODE_ENV === 'development' && true) {
 const store = createStore(reducers(history), compose(applyMiddleware(...middlewares)))
 sagaMiddleware.run(sagas)
 
-const client = new ApolloClient({ uri: 'http://localhost:4000/graphql' })
-
 ReactDOM.render(
   <Provider store={store}>
-    <ApolloProvider client={client}>
+    <ApolloProvider client={apolloClient}>
       <Localization>
         <Router history={history} />
       </Localization>

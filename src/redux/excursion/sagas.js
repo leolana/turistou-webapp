@@ -1,39 +1,33 @@
-import { all, put, call } from 'redux-saga/effects'
-import ApolloClient, { createNetworkInterface } from 'apollo-client'
-import gql from 'graphql-tag'
+import { all, put } from 'redux-saga/effects'
+// import gql from 'graphql-tag'
 
-export const apolloClient = new ApolloClient({
-  networkInterface: createNetworkInterface({ uri: 'http://localhost:4000/graphql' }),
-})
+// import actions from './actions'
 
-const fetchProperty = ({ id }) =>
-  apolloClient.query({
-    query: gql`
-      query FetchProperty($id: ID!) {
-        fetchProperty(id: $id) {
-          ...PropertyAttributes
-          rooms {
-            ...RoomAttributes
-          }
-        }
-      }
-    `,
-    variables: {
-      id,
-    },
-  })
+// export function* GET_DATA() {
+//   console.log('------------- excursion ------------')
+//   const result = yield call(fetchProperty)
+//   console.log(result)
+
+//   yield put({
+//     type: 'excursion/SET_STATE',
+//     payload: {
+//       filter: mko(),
+//     },
+//   })
+// }
 
 export function* SET_STATE() {
-  const result = yield call(fetchProperty)
-
   yield put({
     type: 'filter/SET_STATE',
-    payload: result,
+    payload: {
+      filter: 1,
+    },
   })
 }
 
 export default function* rootSaga() {
   yield all([
-    SET_STATE(), // run once on app load to fetch menu data
+    // takeEvery(actions.GET_DATA, GET_DATA),
+    SET_STATE(), // run once on app load to init listeners
   ])
 }

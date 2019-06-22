@@ -38,7 +38,9 @@ class ExcursionFilter extends Component {
           <Col md={12}>
             <Radio.Group className="mb-1" onChange={this.handleChangeStatus}>
               {EXCURSION_STATUS.map(x => (
-                <Radio.Button value={x.id}>{x.description}</Radio.Button>
+                <Radio.Button key={x.id} value={x.id}>
+                  {x.description}
+                </Radio.Button>
               ))}
             </Radio.Group>
           </Col>

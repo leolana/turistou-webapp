@@ -2,7 +2,7 @@ import auth0 from 'auth0-js'
 import { DateTime } from 'luxon'
 import { notification } from 'antd'
 
-import config from '../config'
+import config from 'config'
 
 const TURISTOU_AUTH_IDTOKEN = 'turistou_auth_idToken'
 const TURISTOU_AUTH_EXPIRESAT = 'turistou_auth_expiresAt'
@@ -93,6 +93,6 @@ export async function logout() {
 }
 
 export function getIdToken() {
-  const idToken = +sessionStorage.removeItem(TURISTOU_AUTH_IDTOKEN)
+  const idToken = sessionStorage.getItem(TURISTOU_AUTH_IDTOKEN)
   return idToken
 }
