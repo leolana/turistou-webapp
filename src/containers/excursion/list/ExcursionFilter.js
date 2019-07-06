@@ -43,7 +43,9 @@ class ExcursionFilter extends Component {
               defaultValue={EXCURSION_STATUS_ENUM.nexties}
             >
               {EXCURSION_STATUS.map(x => (
-                <Radio.Button value={x.id}>{x.description}</Radio.Button>
+                <Radio.Button key={x.id} value={x.id}>
+                  {x.description}
+                </Radio.Button>
               ))}
             </Radio.Group>
           </Col>

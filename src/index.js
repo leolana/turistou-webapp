@@ -10,8 +10,10 @@ import { createBrowserHistory } from 'history'
 import reducers from 'redux/reducers'
 import sagas from 'redux/sagas'
 import Router from 'router'
+import { ApolloProvider } from 'react-apollo'
 
 import Localization from 'components/LayoutComponents/Localization'
+import apolloClient from './core/api/apollo'
 import * as serviceWorker from './serviceWorker'
 
 // app styles
@@ -30,9 +32,11 @@ sagaMiddleware.run(sagas)
 
 ReactDOM.render(
   <Provider store={store}>
-    <Localization>
-      <Router history={history} />
-    </Localization>
+    <ApolloProvider client={apolloClient}>
+      <Localization>
+        <Router history={history} />
+      </Localization>
+    </ApolloProvider>
   </Provider>,
   document.getElementById('root'),
 )

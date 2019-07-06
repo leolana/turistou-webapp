@@ -8,7 +8,7 @@ import Loader from 'components/LayoutComponents/Loader'
 import IndexLayout from 'layouts'
 import NotFoundPage from 'containers/404'
 import Callback from 'containers/callback'
-import * as auth from 'services/auth'
+import * as auth from 'core/auth'
 
 const loadable = loader =>
   Loadable({
