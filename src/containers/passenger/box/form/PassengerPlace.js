@@ -22,8 +22,20 @@ class PassengerPlace extends Component {
 
         <Row>
           <Col xs={24} sm={8} lg={6}>
+            {/* TODO: transport ID */}
+            <Form.Item label="Tranporte">
+              {form.getFieldDecorator('transportId', { rules: [{ required: false }] })(
+                <Select size="default">
+                  <Select.Option key={1} value={1}>
+                    {/* TODO: */} TODO:
+                  </Select.Option>
+                </Select>,
+              )}
+            </Form.Item>
+          </Col>
+          <Col xs={24} sm={8} lg={6}>
             <Form.Item label="Escolha do assento">
-              {form.getFieldDecorator('busSeat', { rules: [{ required: false }] })(
+              {form.getFieldDecorator('spot', { rules: [{ required: false }] })(
                 <Select size="default">
                   {busSeats.map(x => (
                     <Select.Option key={x.number} value={x.number} disabled={!x.free}>
@@ -37,7 +49,7 @@ class PassengerPlace extends Component {
 
           <Col xs={24} sm={16} lg={18}>
             <Form.Item label="Ponto de embarque">
-              {form.getFieldDecorator('stopPoint', { rules: [{ required: false }] })(
+              {form.getFieldDecorator('stopPointId', { rules: [{ required: false }] })(
                 <Select size="default">
                   {busStop.map(x => (
                     <Select.Option key={x.id} value={x.id}>

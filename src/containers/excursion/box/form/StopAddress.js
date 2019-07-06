@@ -10,7 +10,7 @@ class StopAddress extends Component {
       <Row>
         <Col xs={20} md={22}>
           <FormItem label="Ponto de parada">
-            {form.getFieldDecorator(`stopAddress[${index}]`, {
+            {form.getFieldDecorator(`stopPoint[${index}]`, {
               rules: [{ required: false }],
             })(<Input size="default" maxLength={200} />)}
           </FormItem>

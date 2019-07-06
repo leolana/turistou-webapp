@@ -29,7 +29,7 @@ export default class CustomerPersonal extends Component {
         </Col>
         <Col xs={24} sm={4} lg={2}>
           <Form.Item label="UF emissor">
-            {form.getFieldDecorator('stateCpf', {
+            {form.getFieldDecorator('documentState', {
               rules: [{ required: false }],
             })(<Input size="default" maxLength={2} />)}
           </Form.Item>
@@ -37,7 +37,7 @@ export default class CustomerPersonal extends Component {
 
         <Col xs={24} sm={6} lg={4}>
           <Form.Item label="RG">
-            {form.getFieldDecorator('rg', {
+            {form.getFieldDecorator('document', {
               rules: [{ required: false }],
             })(<MaskedInput className="ant-input" mask={MASK.rg} />)}
           </Form.Item>
@@ -45,7 +45,7 @@ export default class CustomerPersonal extends Component {
         {/* TODO: validation for age?? */}
         <Col xs={24} sm={6} lg={4}>
           <Form.Item label="Data de nascimento">
-            {form.getFieldDecorator('birthdate', {
+            {form.getFieldDecorator('birthDate', {
               rules: [{ required: false }],
             })(<DatePicker size="default" format={dateFormat} />)}
             {/* TODO: translate DatePicker */}

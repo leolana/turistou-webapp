@@ -11,7 +11,7 @@ export default class CustomerAdditionalInfo extends Component {
           <Form.Item label="Restrição alimentícia">
             {form.getFieldDecorator('foodRestriction', {
               rules: [{ required: false }],
-            })(<Input size="default" maxLength={300} />)}
+            })(<Input size="default" maxLength={100} />)}
           </Form.Item>
         </Col>
         <Col xs={24} sm={12}>

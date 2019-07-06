@@ -18,11 +18,11 @@ const corporateType = [
   { value: 0, label: 'Outros' },
 ]
 const paymentType = [
-  { value: 1, isInstallable: false, label: 'Dinheiro' },
-  { value: 2, isInstallable: true, label: 'Cartão de crédito' },
-  { value: 3, isInstallable: false, label: 'Cartão de débito' },
-  { value: 4, isInstallable: true, label: 'Boleto' },
-  { value: 5, isInstallable: false, label: 'Transferência' },
+  { value: 1, isInstallable: false, label: 'Dinheiro', _value: 'MONEY' },
+  { value: 2, isInstallable: true, label: 'Cartão de crédito', _value: 'CREDITCARD' },
+  { value: 3, isInstallable: false, label: 'Cartão de débito', _value: 'DEBIT' },
+  { value: 4, isInstallable: true, label: 'Boleto', _value: 'PAYMENTBANKSLIP' },
+  { value: 5, isInstallable: false, label: 'Transferência', _value: 'BANKTRANSFER' },
 ]
 
 exports.genderOptions = genderOptions
