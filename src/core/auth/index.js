@@ -2,7 +2,7 @@ import auth0 from 'auth0-js'
 import { DateTime } from 'luxon'
 import { notification } from 'antd'
 
-import config from '../config'
+import config from 'config'
 
 const TURISTOU_AUTH_IDTOKEN = 'turistou_auth_idToken'
 const TURISTOU_AUTH_EXPIRESAT = 'turistou_auth_expiresAt'
@@ -42,7 +42,7 @@ export function silentAuth() {
 }
 
 export function isAuthenticated() {
-  const expiresAt = +sessionStorage.getItem(TURISTOU_AUTH_IDTOKEN)
+  const expiresAt = +sessionStorage.getItem(TURISTOU_AUTH_EXPIRESAT)
   if (!expiresAt) {
     return false
   }
@@ -78,21 +78,21 @@ const setSession = authResult => {
   const { idToken } = authResult
   // set the time that the id token will expire at
   const expiresAt = authResult.expiresIn * 1000 + DateTime.local().valueOf()
-  sessionStorage.setItem(TURISTOU_AUTH_EXPIRESAT, idToken)
-  sessionStorage.setItem(TURISTOU_AUTH_IDTOKEN, expiresAt)
+  sessionStorage.setItem(TURISTOU_AUTH_EXPIRESAT, expiresAt)
+  sessionStorage.setItem(TURISTOU_AUTH_IDTOKEN, idToken)
 }
 
 export async function logout() {
+  sessionStorage.removeItem(TURISTOU_AUTH_EXPIRESAT)
+  sessionStorage.removeItem(TURISTOU_AUTH_IDTOKEN)
+
   await auth0Client.logout({
     returnTo: `${config.app.url}/user/login`,
     clientID: config.auth0.clientId,
   })
-
-  sessionStorage.removeItem(TURISTOU_AUTH_EXPIRESAT)
-  sessionStorage.removeItem(TURISTOU_AUTH_IDTOKEN)
 }
 
 export function getIdToken() {
-  const idToken = +sessionStorage.removeItem(TURISTOU_AUTH_IDTOKEN)
+  const idToken = sessionStorage.getItem(TURISTOU_AUTH_IDTOKEN)
   return idToken
 }

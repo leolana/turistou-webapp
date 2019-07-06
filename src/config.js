@@ -1,4 +1,4 @@
-import { getOsEnv } from './services/environment'
+import { getOsEnv } from './core/environment'
 
 const config = {
   app: {
@@ -8,6 +8,9 @@ const config = {
     domain: getOsEnv('REACT_APP_AUTH0_DOMAIN'),
     clientId: getOsEnv('REACT_APP_AUTH0_CLIENT_ID'),
     audience: getOsEnv('REACT_APP_AUTH0_AUDIENCE'),
+  },
+  api: {
+    graphql: getOsEnv('REACT_APP_GRAPHQL_API'),
   },
 }
 
