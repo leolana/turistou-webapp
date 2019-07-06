@@ -1,12 +1,28 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
-import { Row, Button, Col } from 'antd'
+import { Row, Button, Col, Dropdown, Menu, Icon } from 'antd'
 
 import PassengerList from './PassengerList'
 import PassengerFilter from './PassengerFilter'
 
-const pageTitle = 'Passageiros da excursão'
+const pageTitle = 'Lista de passageiros'
+
+const menu = (
+  <Menu>
+    <Menu.Item>
+      <Link to="./">na excursão</Link>
+    </Menu.Item>
+    <Menu.Item> à lista de espera </Menu.Item>
+  </Menu>
+)
+const DropdownAdd = ({ placement }) => (
+  <Dropdown overlay={menu} placement={placement || 'bottomRight'} className="float-right">
+    <Button type="primary">
+      Adicionar passageiro <Icon type="menu" />
+    </Button>
+  </Dropdown>
+)
 
 class Passenger extends Component {
   render() {
@@ -25,9 +41,7 @@ class Passenger extends Component {
                 </div>
               </Col>
               <Col xs={6}>
-                <Button className="pull-right">
-                  <Link to="./">Adicionar passageiro</Link>
-                </Button>
+                <DropdownAdd />
               </Col>
             </Row>
           </div>
@@ -35,9 +49,9 @@ class Passenger extends Component {
             <PassengerFilter id={id} />
             <PassengerList />
 
-            <Button className="pull-right mt-3">
-              <Link to="./">Adicionar passageiro</Link>
-            </Button>
+            <div className="form-actions">
+              <DropdownAdd placement="topRight" />
+            </div>
           </div>
         </div>
       </div>

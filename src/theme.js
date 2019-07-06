@@ -26,7 +26,7 @@ module.exports = {
   '@input-padding-vertical-base': '7px',
   '@input-padding-vertical-sm': '11px',
   '@input-padding-vertical-lg': '11px',
-  '@input-border-color': '#dcc',
+  '@input-border-color': '#cde',
   '@input-hover-border-color': '#0190fe',
 
   '@shadow-color': 'rgba(0,0,0,.15)',

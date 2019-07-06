@@ -9,7 +9,13 @@ import 'costom.scss'
 import ExcursionFilter from './ExcursionFilter'
 import ExcursionList from './ExcursionList'
 
-const pageTitle = 'Próximas excursões'
+const pageTitle = 'Excursões'
+
+const ButtonAdd = () => (
+  <Button type="primary" className="float-right">
+    <Link to="./">Adicionar nova excursão</Link>
+  </Button>
+)
 
 class Excursion extends Component {
   render() {
@@ -27,9 +33,7 @@ class Excursion extends Component {
                     </div>
                   </Col>
                   <Col xs={6}>
-                    <Button className="pull-right">
-                      <Link to="./">Adicionar nova excursão</Link>
-                    </Button>
+                    <ButtonAdd />
                   </Col>
                 </Row>
               </div>
@@ -37,9 +41,9 @@ class Excursion extends Component {
                 <ExcursionFilter />
                 <ExcursionList />
 
-                <Button className="pull-right mt-3">
-                  <Link to="./">Adicionar nova excursão</Link>
-                </Button>
+                <div className="form-actions">
+                  <ButtonAdd />
+                </div>
               </div>
             </div>
           </div>

@@ -1,19 +1,19 @@
-export const EXCURSION_STATUS = [
-  {
-    id: 0,
-    key: 'all',
-    description: 'Todas',
-  },
+const EXCURSION_STATUS = [
+  // {
+  //   id: 0,
+  //   key: 'all',
+  //   description: 'Todas',
+  // },
   {
     id: 1,
     key: 'done',
     description: 'Concluídas',
   },
-  {
-    id: 2,
-    key: 'current',
-    description: 'Atuais',
-  },
+  // {
+  //   id: 2,
+  //   key: 'current',
+  //   description: 'Atuais',
+  // },
   {
     id: 3,
     key: 'nexties',

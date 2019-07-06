@@ -1,12 +1,11 @@
-export const genderOptions = [
-  { value: 'F', label: 'Feminino' },
-  { value: 'M', label: 'Masculino' },
+const genderOptions = [
+  { value: 'FEM', label: 'Feminino' },
+  { value: 'MASC', label: 'Masculino' },
   { value: '-', label: 'Outro' },
 ]
-
-export const typeUserOptions = [
-  { value: 'F', label: 'Pessoa física' },
-  { value: 'J', label: 'Pessoa jurídica' },
+const typeUserOptions = [
+  { value: 'PF', label: 'Pessoa física' },
+  { value: 'PJ', label: 'Pessoa jurídica' },
 ]
 
 export const personType = [

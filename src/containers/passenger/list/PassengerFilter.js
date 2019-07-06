@@ -84,6 +84,7 @@ class PassengerFilter extends Component {
               className="mb-1"
               onChange={this.handleChangeStatus}
               defaultValue={statusId || 1}
+              buttonStyle="solid"
             >
               <Radio.Button value={1}>Reservado</Radio.Button>
               <Radio.Button value={2}>Em espera</Radio.Button>
