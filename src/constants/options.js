@@ -12,7 +12,7 @@ const personType = [
   { value: 2, label: 'Agente de turismo' },
   { value: 0, label: 'Outros' },
 ]
-const corporateType = [
+const companyType = [
   { value: 1, label: 'Microempreendedor' },
   { value: 2, label: 'Agencia de turismo' },
   { value: 0, label: 'Outros' },
@@ -28,5 +28,5 @@ const paymentType = [
 exports.genderOptions = genderOptions
 exports.typeUserOptions = typeUserOptions
 exports.personType = personType
-exports.corporateType = corporateType
+exports.companyType = companyType
 exports.paymentType = paymentType
