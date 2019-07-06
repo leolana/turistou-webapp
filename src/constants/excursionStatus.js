@@ -1,4 +1,4 @@
-const EXCURSION_STATUS = [
+export const EXCURSION_STATUS = [
   // {
   //   id: 0,
   //   key: 'all',

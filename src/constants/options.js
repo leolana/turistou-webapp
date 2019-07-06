@@ -1,9 +1,9 @@
-const genderOptions = [
+export const genderOptions = [
   { value: 'FEM', label: 'Feminino' },
   { value: 'MASC', label: 'Masculino' },
   { value: '-', label: 'Outro' },
 ]
-const typeUserOptions = [
+export const typeUserOptions = [
   { value: 'PF', label: 'Pessoa física' },
   { value: 'PJ', label: 'Pessoa jurídica' },
 ]
@@ -13,7 +13,7 @@ export const personType = [
   { value: 2, label: 'Agente de turismo' },
   { value: 0, label: 'Outros' },
 ]
-export const corporateType = [
+export const companyType = [
   { value: 1, label: 'Microempreendedor' },
   { value: 2, label: 'Agencia de turismo' },
   { value: 0, label: 'Outros' },
