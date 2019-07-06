@@ -62,7 +62,7 @@ class Step2 extends Component {
                       })(<RadioGroup options={genderOptions} size="default" />)}
                     </Form.Item>
                     <Form.Item label="Data de nascimento">
-                      {form.getFieldDecorator('birthdate', {
+                      {form.getFieldDecorator('birthDate', {
                         rules: [
                           {
                             required: true,

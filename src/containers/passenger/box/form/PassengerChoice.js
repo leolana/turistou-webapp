@@ -41,7 +41,7 @@ class PassengerChoice extends Component {
                 <Select size="default">
                   {tableData.map(x => (
                     <Select.Option key={x.id} value={x.id}>
-                      {x.name} - {x.city}
+                      {x.name} - {x.rg} - {x.city}
                     </Select.Option>
                   ))}
                 </Select>,

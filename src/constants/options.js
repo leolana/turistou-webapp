@@ -1,11 +1,11 @@
 const genderOptions = [
-  { value: 'F', label: 'Feminino' },
-  { value: 'M', label: 'Masculino' },
+  { value: 'FEM', label: 'Feminino' },
+  { value: 'MASC', label: 'Masculino' },
   { value: '-', label: 'Outro' },
 ]
 const typeUserOptions = [
-  { value: 'F', label: 'Pessoa física' },
-  { value: 'J', label: 'Pessoa jurídica' },
+  { value: 'PF', label: 'Pessoa física' },
+  { value: 'PJ', label: 'Pessoa jurídica' },
 ]
 const personType = [
   { value: 1, label: 'Guia de turismo' },

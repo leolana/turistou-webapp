@@ -111,7 +111,7 @@ class Step4 extends Component {
                           })(<Input size="default" maxLength={200} />)}
                         </Form.Item>
                         <Form.Item label="Nome fantasia">
-                          {form.getFieldDecorator('tradeName', {
+                          {form.getFieldDecorator('companyTradeName', {
                             rules: [
                               { required: true, message: 'Por favor, indique o nome da empresa' },
                             ],
@@ -129,7 +129,7 @@ class Step4 extends Component {
 
                     {identityType === 'F' && (
                       <Form.Item label="Profissão">
-                        {form.getFieldDecorator('personType', {
+                        {form.getFieldDecorator('occupation', {
                           rules: [
                             { required: true, message: 'Por favor, selecione um tipo de trabalho' },
                           ],
@@ -153,7 +153,7 @@ class Step4 extends Component {
                       })(<MaskedInput size="default" className="ant-input" mask={MASK.cadastur} />)}
                     </Form.Item>
                     <Form.Item label="Validade do cadastur">
-                      {form.getFieldDecorator('cadasturDue', {
+                      {form.getFieldDecorator('cadasturExpiration', {
                         rules: [
                           { required: true, message: 'Por favor, indique a validade da licença' },
                         ],

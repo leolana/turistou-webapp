@@ -35,7 +35,7 @@ class ExcursionTransport extends Component {
         <Col xs={{ span: 16, offset: 4 }} md={{ span: 8, offset: 8 }}>
           <Button block type="dashed" onClick={this.addTransport}>
             <Icon type="plus" />
-            Adicionar transport
+            Adicionar transporte
           </Button>
         </Col>
       </Row>

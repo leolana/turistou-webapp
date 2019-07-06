@@ -5,11 +5,9 @@ import { Redirect } from 'react-router'
 import Loader from 'components/LayoutComponents/Loader'
 import actions from 'redux/user/actions'
 
-const mapStateToProps = state => {
-  return {
-    user: state.user,
-  }
-}
+const mapStateToProps = state => ({
+  user: state.user,
+})
 
 // eslint-disable-next-line import/no-mutable-exports
 let Callback = ({ dispatch, user }) => {

@@ -55,7 +55,7 @@ class Signup extends Component {
                     <Form.Item label="Nome">
                       {form.getFieldDecorator('name', {
                         rules: [{ required: true, message: 'Por favor, insira teu nome' }],
-                      })(<Input size="default" maxLength={15} />)}
+                      })(<Input size="default" maxLength={30} />)}
                     </Form.Item>
                     <Form.Item label="Sobrenome">
                       {form.getFieldDecorator('lastname', {
@@ -70,7 +70,7 @@ class Signup extends Component {
                       })(<Input size="default" type="email" maxLength={255} />)}
                     </Form.Item>
                     <Form.Item label="Celular">
-                      {form.getFieldDecorator('cellphone', {
+                      {form.getFieldDecorator('phone', {
                         rules: [
                           {
                             required: true,

@@ -36,7 +36,7 @@ class ExcursionList extends Component {
   handleRemove(id) {
     Modal.error({
       title: 'Deseja excluir esta excursão?',
-      content: 'Esta ação não podera ser desfeita',
+      content: 'Esta ação não poderá ser desfeita',
       okText: 'Sim',
       okType: 'danger',
       onOk: () => this.remove(id),
@@ -72,16 +72,13 @@ class ExcursionList extends Component {
     if (Number.isInteger(statusId) && EXCURSION_STATUS_ENUM.all !== statusId) {
       const today = DateTime.local()
       tableData = tableData.filter(excursion => {
-        const departure = DateTime.fromISO(excursion.departure)
         const regress = DateTime.fromISO(excursion.regress)
 
         switch (statusId) {
-          case EXCURSION_STATUS_ENUM.current:
-            return departure <= today && today <= regress
           case EXCURSION_STATUS_ENUM.done:
-            return today >= regress
+            return today > regress
           case EXCURSION_STATUS_ENUM.nexties:
-            return today <= departure
+            return today <= regress
           default:
             return true
         }
@@ -111,19 +108,20 @@ class ExcursionList extends Component {
         render: this.renderActionsButtons,
       },
       {
+        title: 'Destino',
+        dataIndex: 'destination',
+        key: 'destination',
+      },
+      {
         title: 'Vagas',
         dataIndex: 'vacacy',
         key: 'vacacy',
+        className: 'text-center',
         render: (x, a) => (
           <span className={a.textStyle}>
             {x} / {a.capacity}
           </span>
         ),
-      },
-      {
-        title: 'Destino',
-        dataIndex: 'destination',
-        key: 'destination',
       },
       {
         title: 'Partida',

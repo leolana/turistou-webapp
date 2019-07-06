@@ -11,24 +11,36 @@ class FormStepButtonsActions extends Component {
     this.dispatchStep = this.dispatchStep.bind(this)
   }
 
-  dispatchStep(step) {
+  dispatchStep(current) {
     const { dispatch } = this.props
     dispatch({
       type: actions.SET_STATE,
-      payload: { current: step },
+      payload: { current },
     })
   }
 
   render() {
-    const { current: step, lastStep } = this.props
+    const { current, lastStep, submit } = this.props
     return (
       <div>
-        <Button onClick={() => this.dispatchStep(step - 1)} disabled={step === 0}>
+        <Button onClick={() => this.dispatchStep(current - 1)} disabled={current === 0}>
           Voltar
         </Button>
-        <Button onClick={() => this.dispatchStep(step + 1)} disabled={step === lastStep}>
-          Próximo
-        </Button>
+        {current < lastStep && (
+          <Button type="primary" onClick={() => this.dispatchStep(current + 1)}>
+            Avançar
+          </Button>
+        )}
+        {current === lastStep && (
+          <Button type="primary" ghost submit={submit}>
+            Salvar e adicionar novo
+          </Button>
+        )}
+        {current === lastStep && (
+          <Button type="primary" submit={submit}>
+            Salvar
+          </Button>
+        )}
       </div>
     )
   }

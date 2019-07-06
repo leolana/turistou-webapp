@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-import { Form, Input, Button, InputNumber } from 'antd'
+import { Form, Input, Button } from 'antd'
 import { Helmet } from 'react-helmet'
 import { connect } from 'react-redux'
 import MaskedInput from 'react-editmask'
@@ -85,7 +85,7 @@ class Step3 extends Component {
                             message: 'Por favor, preencha o endereço completo da empresa',
                           },
                         ],
-                      })(<InputNumber size="default" maxLength={7} />)}
+                      })(<Input size="default" maxLength={15} />)}
                     </Form.Item>
                     <Form.Item label="Complemento">
                       {form.getFieldDecorator('complement', {
@@ -93,7 +93,7 @@ class Step3 extends Component {
                       })(<Input size="default" maxLength={20} />)}
                     </Form.Item>
                     <Form.Item label="UF">
-                      {form.getFieldDecorator('fu', {
+                      {form.getFieldDecorator('state', {
                         rules: [
                           {
                             required: true,
