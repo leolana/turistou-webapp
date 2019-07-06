@@ -20,7 +20,7 @@ class ExcursionDetail extends Component {
           <Form.Item label="Endereço de partida">
             {form.getFieldDecorator('departurePoint', {
               rules: [{ required: false }],
-            })(<Input size="default" maxLength={15} />)}
+            })(<Input size="default" maxLength={500} />)}
           </Form.Item>
         </Col>
         <Col xs={24} sm={12} md={6}>
@@ -30,6 +30,7 @@ class ExcursionDetail extends Component {
             })(<DatePicker size="default" format={dateFormat} />)}
           </Form.Item>
         </Col>
+        {/* TODO: juntar data e hora em um campo para enviar para a api e separar quando receber */}
         <Col xs={24} sm={12} md={6}>
           <Form.Item label="Hora da partida">
             {form.getFieldDecorator('departureTime', {
@@ -39,12 +40,11 @@ class ExcursionDetail extends Component {
         </Col>
         <Col xs={24} md={12}>
           <Form.Item label="Endereço de chegada">
-            {form.getFieldDecorator('regressPoint', {
+            {form.getFieldDecorator('arrivalPoint', {
               rules: [{ required: false }],
-            })(<Input size="default" maxLength={15} />)}
+            })(<Input size="default" maxLength={500} />)}
           </Form.Item>
         </Col>
-
         <Col xs={24} sm={12} md={6}>
           <Form.Item label="Data de retorno">
             {form.getFieldDecorator('regressDate', {

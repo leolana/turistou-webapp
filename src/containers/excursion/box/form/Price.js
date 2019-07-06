@@ -11,14 +11,14 @@ class Price extends Component {
         <Row>
           <Col xs={24} sm={16} md={8}>
             <FormItem label="Tipo de passagem">
-              {form.getFieldDecorator(`passageDescription[${index}]`, {
+              {form.getFieldDecorator(`ticketDescription[${index}]`, {
                 rules: [{ required: false }],
               })(<Input size="default" maxLength={30} />)}
             </FormItem>
           </Col>
           <Col xs={24} sm={8} md={4}>
             <FormItem label="Preço">
-              {form.getFieldDecorator(`passagePrice[${index}]`, {
+              {form.getFieldDecorator(`ticketPrice[${index}]`, {
                 rules: [{ required: false }],
               })(<InputNumber size="default" maxLength={5} />)}
             </FormItem>
@@ -33,14 +33,14 @@ class Price extends Component {
           </Col>
           <Col xs={19} sm={7} md={3}>
             <FormItem label="Idade">
-              {form.getFieldDecorator(`fromAge[${index}]`, {
+              {form.getFieldDecorator(`ageInital[${index}]`, {
                 rules: [{ required: false }],
               })(<InputNumber onClick={this.handleAbleFromAge} size="default" maxLength={6} />)}
             </FormItem>
           </Col>
           <Col xs={5} sm={{ span: 3, offset: 1 }} md={{ span: 2, offset: 0 }}>
             <FormItem label="até">
-              {form.getFieldDecorator(`isUntil[${index}]`, {
+              {form.getFieldDecorator(`ageFinal[${index}]`, {
                 rules: [{ required: false }],
               })(<Switch size="small" />)}
             </FormItem>

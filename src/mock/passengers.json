@@ -118,16 +118,19 @@
   "statuses": [
     {
       "id": 1,
+      "value": "booked",
       "description": "Reservado",
       "type": "success"
     },
     {
       "id": 2,
+      "value": "waiting",
       "description": "Em espera",
       "type": "warning"
     },
     {
       "id": 3,
+      "value": "canceled",
       "description": "Desistência",
       "type": "danger"
     }

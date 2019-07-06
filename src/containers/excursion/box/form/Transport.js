@@ -10,7 +10,7 @@ class Transport extends Component {
       <Row>
         <Col xs={24} sm={12}>
           <FormItem label="Trasporte">
-            {form.getFieldDecorator(`transport[${index}]`, {
+            {form.getFieldDecorator(`type[${index}]`, {
               rules: [{ required: false }],
             })(<Input size="default" maxLength={30} />)}
           </FormItem>
@@ -27,6 +27,13 @@ class Transport extends Component {
             {form.getFieldDecorator(`capacity[${index}]`, {
               rules: [{ required: false }],
             })(<InputNumber size="default" maxLength={3} />)}
+          </FormItem>
+        </Col>
+        <Col xs={24} sm={6}>
+          <FormItem label="Motorista">
+            {form.getFieldDecorator(`driver[${index}]`, {
+              rules: [{ required: false }],
+            })(<Input size="default" maxLength={30} />)}
           </FormItem>
         </Col>
         <Col xs={4} sm={3} md={2}>

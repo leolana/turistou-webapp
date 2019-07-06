@@ -5,11 +5,17 @@ import { paymentType } from 'constants/options'
 
 const dateFormat = 'DD/MM/YYYY'
 const MAX_INSTALLMENT = 10
+
+/* TODO: installment
+  BankSlip    dueDate
+  CreditCard  firtDueDate
+*/
 const Installment = ({ form, price, index }) => (
   <div>
     <Col xs={24} sm={12} lg={7}>
       <Form.Item label="Parcelas">
-        {form.getFieldDecorator(`installmentAmount[${index}]`, {
+        {/* TODO: send installment value */}
+        {form.getFieldDecorator(`installmentQuantity[${index}]`, {
           rules: [{ required: false }],
         })(
           <Select size="default">
@@ -101,6 +107,9 @@ class PaymentConditions extends Component {
             })(<InputNumber precision={2} />)}
           </Form.Item>
         </Col>
+        {/* NOTE:
+          PaymentCondition gera 
+         */}
 
         {isInstallable && <Installment {...this.props} price={230.0} />}
 

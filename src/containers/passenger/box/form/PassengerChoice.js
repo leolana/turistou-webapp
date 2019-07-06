@@ -52,11 +52,11 @@ class PassengerChoice extends Component {
         <Row>
           <Col xs={24}>
             <Form.Item label="Tipos de passagem">
-              {form.getFieldDecorator('passagePrice', { rules: [{ required: false }] })(
+              {form.getFieldDecorator('ticketPriceId', { rules: [{ required: false }] })(
                 <Radio.Group
                   options={options}
                   size="default"
-                  initialValue={0}
+                  initialValue={null}
                   onChange={this.onChangePassage}
                 />,
               )}

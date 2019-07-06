@@ -29,8 +29,8 @@ class ExcursionPricing extends Component {
       <Row>
         <Col xs={24} md={6}>
           <Form.Item label="Valor inteira (padrão)">
-            {form.getFieldDecorator('defaultPassagePrice', {
-              rules: [{ required: false }],
+            {form.getFieldDecorator('ticketPriceDefault', {
+              rules: [{ required: true }],
             })(<InputNumber className="ant-input" maxLength={5} />)}
           </Form.Item>
         </Col>

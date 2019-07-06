@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import MaskedInput from 'react-editmask'
 
 import MASK from 'constants/mask'
-import { typeUserOptions, corporateType, personType } from 'constants/options'
+import { typeUserOptions, companyType, personType } from 'constants/options'
 
 import styles from './style.module.scss'
 
@@ -92,7 +92,7 @@ class Step4 extends Component {
                             ],
                           })(
                             <Select>
-                              {corporateType.map(opt => (
+                              {companyType.map(opt => (
                                 <SelectOption key={opt.value} value={opt.value}>
                                   {opt.label}
                                 </SelectOption>

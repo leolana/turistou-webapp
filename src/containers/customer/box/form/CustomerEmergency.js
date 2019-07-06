@@ -21,19 +21,19 @@ export default class CustomerEmergency extends Component {
           <Form.Item label="Alergia a medicamentos">
             {form.getFieldDecorator('allergy', {
               rules: [{ required: false }],
-            })(<Input size="default" maxLength={200} />)}
+            })(<Input size="default" maxLength={100} />)}
           </Form.Item>
         </Col>
         <Col xs={24} sm={12} md={15} lg={18}>
           <Form.Item label="Nome do contato de emergência">
-            {form.getFieldDecorator('emergencyName', {
+            {form.getFieldDecorator('contactName', {
               rules: [{ required: false }],
             })(<Input size="default" maxLength={50} />)}
           </Form.Item>
         </Col>
         <Col xs={24} sm={12} md={9} lg={6}>
           <Form.Item label="Telefone do contato de emergência">
-            {form.getFieldDecorator('emergencyCellphone', {
+            {form.getFieldDecorator('contactPhone', {
               rules: [{ required: false }],
             })(<MaskedInput className="ant-input" mask={MASK.phone} />)}
           </Form.Item>
