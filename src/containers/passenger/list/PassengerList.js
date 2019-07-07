@@ -1,40 +1,71 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { Table, Button, Icon, Tag, Modal } from 'antd'
+import { Table, Button, Icon, Tag, Modal, Input, Form, InputNumber, Row, Col } from 'antd'
 
 import { tableData, statuses, statusesCode, statusesEnum } from 'mock/passengers'
-
-const passengersList = tableData.map(x => {
-  const paymentPercentual = x.paid / x.total
-  if (paymentPercentual === 1) x.paidColor = 'text-success'
-  else if (paymentPercentual > 0.5) x.paidColor = 'text-warning'
-  else x.paidColor = 'text-danger'
-
-  return x
-})
 
 class PassengerList extends Component {
   constructor() {
     super()
     this.filterData = this.filterData.bind(this)
     this.columnsForStatus = this.columnsForStatus.bind(this)
+
+    const passengersList = tableData.map(x => {
+      const paymentPercentual = x.paid / x.total
+      if (paymentPercentual === 1) x.paidColor = 'text-success'
+      else if (paymentPercentual > 0.5) x.paidColor = 'text-warning'
+      else x.paidColor = 'text-danger'
+
+      return x
+    })
+    this.state = { passengersList }
   }
 
   remove = id => {
     console.log('delete', id)
     // TODO: exclude...
+
+    const { passengersList } = this.state
+    const udPassengersList = passengersList.filter(x => x.id !== id)
+    this.setState({ passengersList: udPassengersList })
   }
 
   handleRemove(id) {
     Modal.error({
-      title: 'Passageiro desistiu da excursão?',
-      content: 'Esta ação colocará o passageiro na lista de desistência',
-      okText: 'Sim',
+      title: 'Removendo o passageiro da excursão',
+      width: '60%',
+      content: (
+        <Row>
+          <Col md={12}>
+            <Form>
+              <Form.Item label="Motivo da desistência">
+                <Input size="default" maxLength={150} />
+              </Form.Item>
+              <Form.Item label="Valor devolvido">
+                <InputNumber size="default" min={0} />
+              </Form.Item>
+            </Form>
+          </Col>
+          <Col md={12} className="pt-3 pl-5">
+            <div>
+              Valor pago: <span className="float-right font-weight-bold">R$ 1000,00</span>
+            </div>
+            <div>
+              Valor devolvido:{' '}
+              <span className="float-right font-weight-bold text-danger">R$ 400,00</span>
+            </div>
+            <div>
+              Valor em caixa: <span className="float-right font-weight-bold">R$ 600,00</span>
+            </div>
+          </Col>
+        </Row>
+      ),
+      okCancel: true,
+      cancelText: 'Cancelar',
+      okText: 'Excluir',
       okType: 'danger',
       onOk: () => this.remove(id),
-      okCancel: true,
-      cancelText: 'Não',
     })
   }
 
@@ -90,6 +121,7 @@ class PassengerList extends Component {
 
   filterData() {
     const { statusId, query, startPay, fullPay } = this.props
+    const { passengersList } = this.state
     let filteredData = passengersList
 
     if (statusId) filteredData = filteredData.filter(x => x.status === statusId)
