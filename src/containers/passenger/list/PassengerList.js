@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { Table, Button, Icon, Tag, Modal, Input, Form, InputNumber, Row, Col } from 'antd'
+import { Table, Button, Tag, Modal, Input, Form, InputNumber, Row, Col } from 'antd'
 
 import { tableData, statuses, statusesCode, statusesEnum } from 'mock/passengers'
 
@@ -75,11 +75,11 @@ class PassengerList extends Component {
         <div className="table-action-buttons">
           <Link to={`${id}`}>
             <Button ghost size="small" type="primary" title="Atualizar pagamento">
-              <Icon type="dollar" />
+              <i className="fa fa-dollar" />
             </Button>
           </Link>
           <Button ghost size="small" type="primary" title="Trocar passageiro">
-            <Icon type="swap" />
+            <i className="fa fa-exchange" />
           </Button>
           <Button
             ghost
@@ -88,14 +88,14 @@ class PassengerList extends Component {
             title="Passageiro desistiu"
             onClick={() => this.handleRemove(id)}
           >
-            <Icon type="close" />
+            <i className="fa fa-times" />
           </Button>
         </div>
       ),
       waiting: (
         <div className="table-action-buttons">
           <Button ghost size="small" type="primary" title="Reservar passageiro">
-            <Icon type="check" />
+            <i className="fa fa-check" />
           </Button>
           <Button
             ghost
@@ -104,14 +104,14 @@ class PassengerList extends Component {
             title="Remover passageiro"
             onClick={() => this.handleRemove(id)}
           >
-            <Icon type="close" />
+            <i className="fa fa-times" />
           </Button>
         </div>
       ),
       canceled: (
         <div className="table-action-buttons">
           <Button ghost size="small" type="primary">
-            <Icon type="check" />
+            <i className="fa fa-check" />
           </Button>
         </div>
       ),
