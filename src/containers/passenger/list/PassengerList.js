@@ -24,8 +24,9 @@ class PassengerList extends Component {
     this.state = { passengersList, paymentValue: 0 }
   }
 
-  handleChangePaymentCondition = value => {
-    this.setState({ paymentCondition: value })
+  book = id => {
+    console.log('id', id)
+    // TODO: move
   }
 
   remove = id => {
@@ -40,7 +41,7 @@ class PassengerList extends Component {
   handleRemove(id) {
     Modal.error({
       title: 'Removendo o passageiro da excursão',
-      width: '500',
+      width: 700,
       content: (
         <Row>
           <Col md={12}>
@@ -177,8 +178,8 @@ class PassengerList extends Component {
   }
 
   update(id) {
-    const { paymentCondition, paymentValue } = this.state
-    console.log('update: ', id, paymentCondition, paymentValue)
+    const { paymentValue } = this.state
+    console.log('update: ', id, paymentValue)
   }
 
   handleUpdate(id) {
@@ -189,7 +190,7 @@ class PassengerList extends Component {
 
     Modal.error({
       title: 'Atualizar pagamento',
-      width: 500,
+      width: 700,
       okCancel: true,
       cancelText: 'Cancelar',
       okText: 'Atualizar',
@@ -206,7 +207,7 @@ class PassengerList extends Component {
                 />
               </Form.Item>
               <Form.Item label="Forma de pagamento">
-                <Select size="default" onChange={this.handleChangePaymentCondition}>
+                <Select size="default">
                   {paymentType.map(x => (
                     <Select.Option key={x.value} value={x.value} title={x.label}>
                       {x.label}
@@ -229,6 +230,17 @@ class PassengerList extends Component {
           </Col>
         </Row>
       ),
+    })
+  }
+
+  handleBook(id) {
+    Modal.confirm({
+      okCancel: true,
+      cancelText: 'Não',
+      okText: 'Sim',
+      title: 'Confirmar reserva',
+      content: 'Deseja confirmar o passageiro à excursão?',
+      onOk: () => this.book(id),
     })
   }
 
@@ -272,7 +284,15 @@ class PassengerList extends Component {
       ),
       waiting: (
         <div className="table-action-buttons">
-          <Button ghost size="small" type="primary" title="Reservar passageiro">
+          <Button
+            ghost
+            size="small"
+            type="primary"
+            title="Reservar passageiro"
+            onClick={() => {
+              this.handleBook(id)
+            }}
+          >
             <i className="fa fa-check" />
           </Button>
           <Button
