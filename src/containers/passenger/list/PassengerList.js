@@ -308,7 +308,15 @@ class PassengerList extends Component {
       ),
       canceled: (
         <div className="table-action-buttons">
-          <Button ghost size="small" type="primary">
+          <Button
+            ghost
+            size="small"
+            type="primary"
+            title="Reservar passageiro"
+            onClick={() => {
+              this.handleBook(id)
+            }}
+          >
             <i className="fa fa-check" />
           </Button>
         </div>
