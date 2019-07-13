@@ -5,6 +5,7 @@ import { Table, Button, Tag, Modal, Input, Form, InputNumber, Row, Col, Select }
 import { paymentType } from 'constants/options'
 
 import { tableData, statuses, statusesCode, statusesEnum } from 'mock/passengers'
+import { tableData as customersList } from 'mock/customers'
 
 class PassengerList extends Component {
   constructor() {
@@ -22,6 +23,10 @@ class PassengerList extends Component {
       return x
     })
     this.state = { passengersList, paymentValue: 0 }
+  }
+
+  exchange = id => {
+    console.log('id', id)
   }
 
   book = id => {
@@ -244,6 +249,30 @@ class PassengerList extends Component {
     })
   }
 
+  handleExchange(id) {
+    Modal.confirm({
+      title: 'Troca de passageiro',
+      okCancel: true,
+      cancelText: 'Cancelar',
+      okText: 'Trocar',
+      onOk: () => {
+        this.exchange(id)
+      },
+      content: (
+        <div>
+          <p>Trocar passageiro atual pelo(a)</p>
+          <Select size="default">
+            {customersList.map(x => (
+              <Select.Option key={x.id} value={x.id}>
+                {x.name} - {x.city}
+              </Select.Option>
+            ))}
+          </Select>
+        </div>
+      ),
+    })
+  }
+
   renderActionsButtons = (id, statusId) => {
     const actions = {
       booked: (
@@ -268,7 +297,15 @@ class PassengerList extends Component {
           >
             <i className="fa fa-calendar" />
           </Button>
-          <Button ghost size="small" type="primary" title="Trocar passageiro">
+          <Button
+            ghost
+            size="small"
+            type="primary"
+            title="Trocar passageiro"
+            onClick={() => {
+              this.handleExchange(id)
+            }}
+          >
             <i className="fa fa-exchange" />
           </Button>
           <Button
