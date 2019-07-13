@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
-import { Table, Button, Tag, Modal, Input, Form, InputNumber, Row, Col } from 'antd'
+// import { Link } from 'react-router-dom'
+import { Table, Button, Tag, Modal, Input, Form, InputNumber, Row, Col, Select } from 'antd'
+import { paymentType } from 'constants/options'
 
 import { tableData, statuses, statusesCode, statusesEnum } from 'mock/passengers'
 
@@ -10,6 +11,7 @@ class PassengerList extends Component {
     super()
     this.filterData = this.filterData.bind(this)
     this.columnsForStatus = this.columnsForStatus.bind(this)
+    this.handleRemove = this.handleRemove.bind(this)
 
     const passengersList = tableData.map(x => {
       const paymentPercentual = x.paid / x.total
@@ -19,7 +21,11 @@ class PassengerList extends Component {
 
       return x
     })
-    this.state = { passengersList }
+    this.state = { passengersList, paymentValue: 0 }
+  }
+
+  handleChangePaymentCondition = value => {
+    this.setState({ paymentCondition: value })
   }
 
   remove = id => {
@@ -34,7 +40,7 @@ class PassengerList extends Component {
   handleRemove(id) {
     Modal.error({
       title: 'Removendo o passageiro da excursão',
-      width: '60%',
+      width: '500',
       content: (
         <Row>
           <Col md={12}>
@@ -69,15 +75,187 @@ class PassengerList extends Component {
     })
   }
 
+  handleHistory(id) {
+    const fake = [
+      {
+        id: 1,
+        date: new Date(2019, 5, 12),
+        value: 100,
+        paymentWay: 'Dinheiro',
+        paymentStatus: { paid: true, auto: false },
+      },
+      {
+        id: 2,
+        date: new Date(2019, 6, 12),
+        value: 100,
+        paymentWay: 'Cartão de crédito',
+        paymentStatus: { paid: true, auto: true },
+      },
+      {
+        id: 3,
+        date: new Date(2019, 7, 12),
+        value: 100,
+        paymentWay: 'Cartão de crédito',
+        paymentStatus: { paid: false, auto: true },
+      },
+      {
+        id: 4,
+        date: new Date(2019, 8, 12),
+        value: 100,
+        paymentWay: 'Boleto',
+        paymentStatus: { paid: true, auto: false },
+      },
+      {
+        id: 5,
+        date: new Date(2019, 9, 12),
+        value: 100,
+        paymentWay: 'Boleto',
+        paymentStatus: { paid: false, auto: false },
+      },
+    ]
+    const columns = [
+      {
+        title: 'Data',
+        dataIndex: 'date',
+        key: 'date',
+        render: x => x && new Date(x).toLocaleDateString(),
+      },
+      {
+        title: 'Valor',
+        dataIndex: 'value',
+        key: 'value',
+        className: 'text-right',
+        render: x => `R$ ${x}`,
+      },
+      {
+        title: 'Forma de pagamento',
+        dataIndex: 'paymentWay',
+        key: 'paymentWay',
+      },
+      {
+        title: 'Situação',
+        dataIndex: 'paymentstatus',
+        key: 'status',
+        render: (_, row) => {
+          console.log('row', row)
+          const { paymentStatus } = row
+          let text = paymentStatus.paid ? 'Pago' : 'A pagar'
+          if (paymentStatus.auto) text += ' (automático)'
+
+          return (
+            <span>
+              {text}
+              {/* TODO: ajustar link */}
+              {!paymentStatus.paid && !paymentStatus.auto && <Button type="link">Pagou</Button>}
+            </span>
+          )
+        },
+      },
+    ]
+
+    Modal.info({
+      title: 'Datas de pagamento',
+      width: 700,
+      okCancel: true,
+      cancelText: 'OK',
+      okText: 'Atualizar',
+      onOk: () => {
+        this.updatePayment(id)
+      },
+      content: (
+        <Table
+          id={`payment_${id}`}
+          rowKey="id"
+          className="utils__scrollTable"
+          scroll={{ x: '100%' }}
+          columns={columns}
+          dataSource={fake}
+          pagination={false}
+        />
+      ),
+    })
+  }
+
+  update(id) {
+    const { paymentCondition, paymentValue } = this.state
+    console.log('update: ', id, paymentCondition, paymentValue)
+  }
+
+  handleUpdate(id) {
+    const { paymentValue } = this.state
+
+    const paid = 500
+    const total = paid + paymentValue
+
+    Modal.error({
+      title: 'Atualizar pagamento',
+      width: 500,
+      okCancel: true,
+      cancelText: 'Cancelar',
+      okText: 'Atualizar',
+      onOk: () => this.update(id),
+      content: (
+        <Row>
+          <Col sm={12}>
+            <Form>
+              <Form.Item label="Valor do pagamento">
+                <InputNumber
+                  onChange={value => {
+                    this.setState({ paymentValue: value })
+                  }}
+                />
+              </Form.Item>
+              <Form.Item label="Forma de pagamento">
+                <Select size="default" onChange={this.handleChangePaymentCondition}>
+                  {paymentType.map(x => (
+                    <Select.Option key={x.value} value={x.value} title={x.label}>
+                      {x.label}
+                    </Select.Option>
+                  ))}
+                </Select>
+              </Form.Item>
+            </Form>
+          </Col>
+          <Col sm={12} className="pl-4">
+            <div>
+              Valor pago anteriormente: <span>{paid}</span>
+            </div>
+            <div>
+              Total pago: <span>{total}</span>
+            </div>
+            <div>
+              Valor faltante: <span>{total}</span>
+            </div>
+          </Col>
+        </Row>
+      ),
+    })
+  }
+
   renderActionsButtons = (id, statusId) => {
     const actions = {
       booked: (
         <div className="table-action-buttons">
-          <Link to={`${id}`}>
-            <Button ghost size="small" type="primary" title="Atualizar pagamento">
-              <i className="fa fa-dollar" />
-            </Button>
-          </Link>
+          <Button
+            size="small"
+            type="primary"
+            title="Atualizar pagamento"
+            onClick={() => {
+              this.handleUpdate(id)
+            }}
+          >
+            <i className="fa fa-dollar" />
+          </Button>
+          <Button
+            size="small"
+            type="primary"
+            title="Histórico de pagamento"
+            onClick={() => {
+              this.handleHistory(id)
+            }}
+          >
+            <i className="fa fa-calendar" />
+          </Button>
           <Button ghost size="small" type="primary" title="Trocar passageiro">
             <i className="fa fa-exchange" />
           </Button>
