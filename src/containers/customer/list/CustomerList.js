@@ -3,38 +3,40 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Table, Button } from 'antd'
 
-import { tableData } from 'mock/customers'
+import { tableData as mockData } from 'mock/customers'
 
 class CustomerList extends Component {
   constructor() {
     super()
-    const customerList = tableData.map(x => x)
-    this.state = { customerList }
+    this.state = { tableData: mockData }
+
+    this.filter = this.filter.bind(this)
   }
 
-  filterData() {
-    const { statusId, query, startPay, fullPay } = this.props
-    const { passengersList } = this.state
-    let filteredData = passengersList
+  filter() {
+    const { query } = this.props
+    const { tableData } = this.state
 
-    if (statusId) filteredData = filteredData.filter(x => x.status === statusId)
-    if (fullPay) filteredData = filteredData.filter(x => x.paid === x.total)
-    else if (startPay) filteredData = filteredData.filter(x => x.paid > 0)
-    if (query)
-      filteredData = filteredData.filter(x => {
-        const queryPart = query.toLowerCase().split(' ')
-        return queryPart.every(q => x.customer.name.toLowerCase().includes(q))
+    let filteredData = tableData
+    if (query) {
+      const lowerQuery = query.toLowerCase()
+      filteredData = filteredData.filter(customer => {
+        const { name, city } = customer
+        const customData = `${name.toLowerCase()} ${city.toLowerCase()}`
+
+        if (customData.includes(lowerQuery)) return true
+
+        return lowerQuery.split(' ').every(q => customData.includes(q.trim()))
       })
-
+    }
     return filteredData
   }
 
   render() {
-    const { customerList } = this.state
+    const filteredData = this.filter()
 
     const tableColumns = [
       {
-        title: '',
         dataIndex: 'id',
         key: 'actions',
         render: id => (
@@ -68,13 +70,15 @@ class CustomerList extends Component {
         className="utils__scrollTable"
         scroll={{ x: '100%' }}
         columns={tableColumns}
-        dataSource={customerList}
+        dataSource={filteredData}
         pagination={false}
       />
     )
   }
 }
 
-// const mapStateToProps = state => { }
+const mapStateToProps = state => ({
+  query: state.excursion.query,
+})
 
-export default connect()(CustomerList)
+export default connect(mapStateToProps)(CustomerList)

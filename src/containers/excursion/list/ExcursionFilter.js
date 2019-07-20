@@ -33,11 +33,10 @@ class ExcursionFilter extends Component {
 
   render() {
     return (
-      <Form layout="inline">
+      <Form layout="inline" className="mb-1">
         <Row>
           <Col md={12}>
             <Radio.Group
-              className="mb-1"
               onChange={this.handleChangeStatus}
               buttonStyle="solid"
               defaultValue={EXCURSION_STATUS_ENUM.nexties}

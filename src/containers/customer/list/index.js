@@ -6,6 +6,7 @@ import { Helmet } from 'react-helmet'
 
 import 'costom.scss'
 import CustomerList from './CustomerList'
+import CustomerFilter from './CustomerFilter'
 
 const pageTitle = 'Clientes'
 
@@ -15,7 +16,7 @@ const ButtonAdd = () => (
   </Button>
 )
 
-class CustomerListing extends Component {
+class Customer extends Component {
   render() {
     return (
       <div>
@@ -36,7 +37,7 @@ class CustomerListing extends Component {
                 </Row>
               </div>
               <div className="card-body">
-                {/* <CustomerFilter /> */}
+                <CustomerFilter />
                 <CustomerList />
 
                 <div className="form-actions">
@@ -51,4 +52,4 @@ class CustomerListing extends Component {
   }
 }
 
-export default CustomerListing
+export default Customer
