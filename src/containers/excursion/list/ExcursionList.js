@@ -57,9 +57,11 @@ class ExcursionList extends Component {
           <Icon type="usergroup-add" />
         </Button>
       </Link>
-      <Button ghost size="small" type="primary">
-        <Icon type="edit" />
-      </Button>
+      <Link to={`./${id}`}>
+        <Button ghost size="small" type="primary">
+          <Icon type="edit" />
+        </Button>
+      </Link>
       <Button ghost size="small" type="danger" onClick={() => this.handleRemove(id)}>
         <Icon type="delete" />
       </Button>
