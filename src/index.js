@@ -24,7 +24,7 @@ const history = createBrowserHistory()
 const sagaMiddleware = createSagaMiddleware()
 const routeMiddleware = routerMiddleware(history)
 const middlewares = [thunk, sagaMiddleware, routeMiddleware]
-if (process.env.NODE_ENV === 'development' && true) {
+if (process.env.NODE_ENV === 'development') {
   middlewares.push(logger)
 }
 const store = createStore(reducers(history), compose(applyMiddleware(...middlewares)))

@@ -4,6 +4,7 @@ import { setContext } from 'apollo-link-context'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 
 import { getIdToken } from 'core/auth'
+
 import config from 'config'
 
 const httpLink = createHttpLink({
@@ -24,5 +25,8 @@ const apolloClient = new ApolloClient({
   link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
 })
+
+export const query = options => apolloClient.query(options)
+export const mutate = options => apolloClient.mutate(options)
 
 export default apolloClient
