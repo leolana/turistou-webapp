@@ -1,11 +1,13 @@
 export async function getLeftMenuData() {
   return [
+    /*
     {
       title: 'Dashboard',
       key: 'dashboard',
       url: '/dashboard/alpha',
       icon: 'icmn icmn-home',
     },
+    */
     {
       title: 'Excursões',
       key: 'excursions',
@@ -15,7 +17,7 @@ export async function getLeftMenuData() {
     {
       title: 'Clientes',
       key: 'customers',
-      url: '/customer',
+      url: '/customer/list',
       icon: 'icmn icmn-users',
     },
   ]
