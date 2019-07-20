@@ -456,8 +456,7 @@ class PassengerList extends Component {
       default:
         columns = ['status', 'name']
     }
-    const tableColumns = columns.map(x => allColumns[x])
-    return tableColumns
+    return columns.map(x => allColumns[x])
   }
 
   render() {
