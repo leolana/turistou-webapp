@@ -57,13 +57,19 @@ const routes = [
   },
 
   // Customers
-  // {
-  //   path: '/customer/list',
-  //   component: loadable(() => import('containers/customer')),
-  // },
+  {
+    path: '/customer/list',
+    component: loadable(() => import('containers/customer/list')),
+  },
   {
     path: '/customer/',
     component: loadable(() => import('containers/customer/box')),
+    exact: true,
+  },
+  {
+    path: '/customer/:id',
+    component: loadable(() => import('containers/customer/box')),
+    exact: true,
   },
 
   // Passengers
@@ -84,6 +90,7 @@ const routes = [
   {
     path: '/excursion/',
     component: loadable(() => import('containers/excursion/box')),
+    exact: true,
   },
 ]
 
