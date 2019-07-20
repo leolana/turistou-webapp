@@ -1,25 +1,31 @@
 export async function getLeftMenuData() {
   return [
     /*
-    {
-      title: 'Dashboard',
-      key: 'dashboard',
-      url: '/dashboard/alpha',
-      icon: 'icmn icmn-home',
-    },
-    */
+     {
+       title: 'Dashboard',
+       key: 'dashboard',
+       url: '/dashboard/alpha',
+       icon: 'fa fa-line-chart',
+     },
+     */
     {
       title: 'Excursões',
       key: 'excursions',
       url: '/excursion/list',
-      icon: 'icmn icmn-truck',
+      icon: 'fa fa-bus',
     },
     {
       title: 'Clientes',
       key: 'customers',
       url: '/customer/list',
-      icon: 'icmn icmn-users',
+      icon: 'fa fa-users',
     },
+    // {
+    //   title: 'Pagamentos',
+    //   key: 'payments',
+    //   url: '/payment/list',
+    //   icon: 'fa fa-dollar',
+    // },
   ]
 }
 export async function getTopMenuData() {
