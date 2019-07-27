@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import actions from 'redux/passenger/actions'
-import { Form, Row, Col, Icon, Radio, Input } from 'antd'
+import { Form, Row, Col, Radio, Input } from 'antd'
 
 import { tableData } from 'mock/excursions'
 
@@ -64,7 +64,8 @@ class PassengerFilter extends Component {
             <h5>
               {excursion.destination}
               <small className="ml-2">
-                <Icon type="calendar" /> {new Date(excursion.departure).toLocaleDateString()}
+                <i className="fa fa-calendar" />{' '}
+                {new Date(excursion.departure).toLocaleDateString()}
               </small>
             </h5>
           </Col>
@@ -73,7 +74,7 @@ class PassengerFilter extends Component {
             <Form.Item label="Excursão">
               {form.getFieldDecorator('excursion', { rules: [{ required: false }] })(
                 <Select>
-                  {tableData.map(x => <Select.Option key={x.id} value={x.id}>{x.destination} <Icon type="calendar" className="ml-2" /> {new Date(x.departure).toLocaleDateString()}</Select.Option>)}
+                  {tableData.map(x => <Select.Option key={x.id} value={x.id}>{x.destination} <i className="fa fa-calendar ml-2" /> {new Date(x.departure).toLocaleDateString()}</Select.Option>)}
                 </Select>
               )}
             </Form.Item>
@@ -103,7 +104,7 @@ class PassengerFilter extends Component {
           <Col md={12}>
             <Input
               onChange={this.handleChangeFilter}
-              addonBefore={<Icon type="search" />}
+              addonBefore={<i className="fa fa-search" />}
               placeholder="Filtrar pelo nome"
             />
           </Col>

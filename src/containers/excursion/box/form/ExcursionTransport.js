@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Row, Col, Button, Icon } from 'antd'
+import { Row, Col, Button } from 'antd'
 import Transport from './Transport'
 
 class ExcursionTransport extends Component {
@@ -34,7 +34,7 @@ class ExcursionTransport extends Component {
 
         <Col xs={{ span: 16, offset: 4 }} md={{ span: 8, offset: 8 }}>
           <Button block type="dashed" onClick={this.addTransport}>
-            <Icon type="plus" />
+            <i className="fa fa-plus mr-3" />
             Adicionar transporte
           </Button>
         </Col>

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Input, Icon, Form } from 'antd'
+import { Input, Form } from 'antd'
 import actions from 'redux/customer/actions'
 
 class CustomerFilter extends Component {
@@ -22,7 +22,11 @@ class CustomerFilter extends Component {
   render() {
     return (
       <Form layout="inline" className="mb-1">
-        <Input type="text" addonBefore={<Icon type="search" />} onChange={this.handleChangeQuery} />
+        <Input
+          type="text"
+          addonBefore={<i className="fa fa-search" />}
+          onChange={this.handleChangeQuery}
+        />
       </Form>
     )
   }

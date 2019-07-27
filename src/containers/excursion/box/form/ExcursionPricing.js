@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Row, Col, Icon, Button, Form, InputNumber, Divider } from 'antd'
+import { Row, Col, Button, Form, InputNumber, Divider } from 'antd'
 import Price from './Price'
 
 class ExcursionPricing extends Component {
@@ -46,7 +46,7 @@ class ExcursionPricing extends Component {
 
         <Col xs={{ span: 16, offset: 4 }} md={{ span: 8, offset: 8 }}>
           <Button block type="dashed" onClick={this.addPrice}>
-            <Icon type="plus" />
+            <i className="fa fa-plus mr-3" />
             Adicionar preço
           </Button>
         </Col>

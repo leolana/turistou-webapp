@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Row, Col, InputNumber, Input, Button, Icon } from 'antd'
+import { Row, Col, InputNumber, Input, Button } from 'antd'
 import FormItem from 'antd/lib/form/FormItem'
 
 class Transport extends Component {
@@ -42,7 +42,7 @@ class Transport extends Component {
             className="button-side-field float-right"
             onClick={() => removeTransport(index)}
           >
-            <Icon type="delete" />
+            <i className="fa fa-trash" />
           </Button>
         </Col>
       </Row>
