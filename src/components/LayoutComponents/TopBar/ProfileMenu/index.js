@@ -17,14 +17,6 @@ class ProfileMenu extends React.Component {
     })
   }
 
-  addCount = () => {
-    let { count } = this.state
-    count += 1
-    this.setState({
-      count,
-    })
-  }
-
   render() {
     const { user } = this.props
     const { count } = this.state
@@ -78,7 +70,7 @@ class ProfileMenu extends React.Component {
       </Menu>
     )
     return (
-      <Dropdown overlay={menu} trigger={['click']} onVisibleChange={this.addCount}>
+      <Dropdown overlay={menu} trigger={['click']}>
         <div className={styles.dropdown}>
           <Badge count={count}>
             <Avatar className={styles.avatar} shape="square" size="large" icon="user" />
