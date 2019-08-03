@@ -1,9 +1,8 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { Menu, Dropdown, Avatar, Badge } from 'antd'
 import { FormattedMessage } from 'react-intl'
-import { getIdToken } from 'core/auth'
-import JwtDecode from 'jwt-decode'
 import styles from './style.module.scss'
 
 @connect(({ user }) => ({ user }))
@@ -22,50 +21,36 @@ class ProfileMenu extends React.Component {
   render() {
     const { user } = this.props
     const { count } = this.state
-    const token = getIdToken()
-    const info = JwtDecode(token)
-    console.log('\n\ninfo:', info)
-    const { nickname, email } = JwtDecode(token)
 
     const menu = (
       <Menu selectable={false}>
         <Menu.Item>
           <strong>
-            <FormattedMessage id="topBar.profileMenu.hello" />, {nickname || 'Anonymous'}
+            <FormattedMessage id="topBar.profileMenu.hello" />,{' '}
           </strong>
-          {/* <div>
-            <strong className="mr-1">
-              <FormattedMessage id="topBar.profileMenu.billingPlan" />:{' '}
-            </strong>
-            Professional
-          </div> */}
-          {/* <div>
-            <strong>
-              <FormattedMessage id="topBar.profileMenu.role" />:{' '}
-            </strong>
-            {user.role}
-          </div> */}
+          {user.name || 'Anonymous'}
         </Menu.Item>
         <Menu.Divider />
         <Menu.Item>
           <div>
             <strong>
-              <FormattedMessage id="topBar.profileMenu.email" />:{email || ''}
+              <FormattedMessage id="topBar.profileMenu.role" />:{' '}
+            </strong>
+            {user.role}
+          </div>
+          <div>
+            <strong>
+              <FormattedMessage id="topBar.profileMenu.email" />:{' '}
             </strong>
             {user.email}
-            {/* <br />
-            <strong>
-              <FormattedMessage id="topBar.profileMenu.phone" />:{' '}
-            </strong>
-            {user.phone || '-'} */}
           </div>
         </Menu.Item>
         <Menu.Divider />
         <Menu.Item>
-          <a href="javascript: void(0);">
+          <Link to="/profile/edit">
             <i className={`${styles.menuIcon} fa fa-user-o`} />
             <FormattedMessage id="topBar.profileMenu.editProfile" />
-          </a>
+          </Link>
         </Menu.Item>
         <Menu.Divider />
         <Menu.Item>
@@ -80,7 +65,13 @@ class ProfileMenu extends React.Component {
       <Dropdown overlay={menu} trigger={['click']}>
         <div className={styles.dropdown}>
           <Badge count={count}>
-            <Avatar className={styles.avatar} shape="square" size="large" icon="user" />
+            <Avatar
+              src={user.avatar}
+              className={styles.avatar}
+              shape="square"
+              size="large"
+              icon="user"
+            />
           </Badge>
         </div>
       </Dropdown>
