@@ -33,18 +33,14 @@ class Signup extends Component {
     return (
       <div>
         <Helmet title="Sign up" />
+        {/* TODO: (Mi) passar isso aqui para steps */}
         <div className={styles.title}>
           <h1>
-            <strong>Faça seu cadastro na Turistou</strong>
+            <strong>
+              Por favor, complete seu cadastro para poder usufruir dos benefícios Turistou Organize
+            </strong>
           </h1>
-          <p>
-            E seja um agente moderno.
-            <br />
-            Mantenha a agenda de excursões organizadas em um só lugar e acessível de onde você
-            estiver.
-            <br />
-            Tenha o controle dos pagamentos de seus clientes
-          </p>
+          <p>Dados de contato</p>
         </div>
         <div className={styles.block}>
           <div className="row">
@@ -98,7 +94,7 @@ class Signup extends Component {
                       >
                         Cadastrar
                       </Button>
-                      <Link className="mr-4" to="/user/signup2">
+                      <Link className="mr-4" to="/profile/edit2">
                         Próxima etapa
                       </Link>
                       <Link to="/user/login" className="utils__link--blue utils__link--underlined">

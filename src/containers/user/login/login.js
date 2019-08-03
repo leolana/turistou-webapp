@@ -57,7 +57,7 @@ class Login extends Component {
                   <div>
                     Ainda não é registrado?
                     <Link
-                      to="/user/signup"
+                      to="/profile/edit"
                       className="utils__link--blue utils__link--underlined ml-2"
                     >
                       Registre-se

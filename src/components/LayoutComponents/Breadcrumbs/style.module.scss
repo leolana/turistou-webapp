@@ -14,8 +14,9 @@
 .arrow {
   display: inline-block;
   margin: 0 rem(10);
-  &:after {
+
+  &:not(:first):after {
     display: inline-block;
-    content: '·';
+    content: '.';
   }
 }

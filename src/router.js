@@ -25,22 +25,22 @@ const routes = [
     exact: true,
   },
   {
-    path: '/user/signup',
+    path: '/profile/edit',
     component: loadable(() => import('containers/user/signup')),
     exact: true,
   },
   {
-    path: '/user/signup2',
+    path: '/profile/edit2',
     component: loadable(() => import('containers/user/signup/step2')),
     exact: true,
   },
   {
-    path: '/user/signup3',
+    path: '/profile/edit3',
     component: loadable(() => import('containers/user/signup/step3')),
     exact: true,
   },
   {
-    path: '/user/signup4',
+    path: '/profile/edit4',
     component: loadable(() => import('containers/user/signup/step4')),
     exact: true,
   },
@@ -122,7 +122,8 @@ class Router extends React.Component {
       <ConnectedRouter history={history}>
         <IndexLayout>
           <Switch>
-            <Route exact path="/" render={() => <Redirect to="/dashboard/alpha" />} />
+            {/* <Route exact path="/" render={() => <Redirect to="/dashboard/alpha" />} /> */}
+            <Route exact path="/" render={() => <Redirect to="/excursion/list" />} />
             {routes.map(route => (
               <Route
                 path={route.path}
