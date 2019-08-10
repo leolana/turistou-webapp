@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import actions from 'redux/excursion/actions'
-import { Form, Radio, Input, Row, Col, Icon } from 'antd'
+import { Form, Radio, Input, Row, Col } from 'antd'
 
 import { EXCURSION_STATUS, EXCURSION_STATUS_ENUM } from 'constants/excursionStatus'
 
@@ -51,7 +51,7 @@ class ExcursionFilter extends Component {
           <Col md={12}>
             <Input
               type="text"
-              addonBefore={<Icon type="search" />}
+              addonBefore={<i className="fa fa-search" />}
               onChange={this.handleChangeQuery}
             />
           </Col>

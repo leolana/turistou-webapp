@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Row, Col, Button, Icon } from 'antd'
+import { Row, Col, Button } from 'antd'
 
 import PaymentConditions from './PaymentConditions'
 
@@ -53,7 +53,7 @@ class PassengerPayment extends Component {
         <Row>
           <Col xs={{ span: 16, offset: 4 }} md={{ span: 8, offset: 8 }}>
             <Button block type="dashed" onClick={this.addPayment}>
-              <Icon type="plus" /> Adicionar pagamento
+              <i className="fa fa-plus mr-3" /> Adicionar pagamento
             </Button>
           </Col>
         </Row>

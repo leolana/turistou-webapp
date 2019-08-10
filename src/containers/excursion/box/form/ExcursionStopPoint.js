@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, Icon, Row, Col } from 'antd'
+import { Button, Row, Col } from 'antd'
 import StopAddress from './StopAddress'
 
 class ExcursionStopPoint extends Component {
@@ -34,7 +34,7 @@ class ExcursionStopPoint extends Component {
         </Col>
         <Col xs={{ span: 16, offset: 4 }} md={{ span: 8, offset: 8 }}>
           <Button block type="dashed" onClick={this.addStopPoint}>
-            <Icon type="plus" />
+            <i className="fa fa-plus mr-3" />
             Adicionar ponto de parada
           </Button>
         </Col>
