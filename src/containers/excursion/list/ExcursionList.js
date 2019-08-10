@@ -57,9 +57,11 @@ class ExcursionList extends Component {
           <i className="fa fa-users" />
         </Button>
       </Link>
-      <Button ghost size="small" type="primary">
-        <i className="fa fa-pencil" />
-      </Button>
+      <Link to={`./${id}`}>
+        <Button ghost size="small" type="primary">
+          <i className="fa fa-pencil" />
+        </Button>
+      </Link>
       <Button ghost size="small" type="danger" onClick={() => this.handleRemove(id)}>
         <i className="fa fa-trash" />
       </Button>
