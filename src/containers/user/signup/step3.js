@@ -40,6 +40,7 @@ class Step3 extends Component {
               Por favor, complete seu cadastro para poder usufruir dos benefícios Turistou Organize
             </strong>
           </h3>
+          <p>Endereço</p>
         </div>
         <div className={styles.block}>
           <div className="row">
@@ -122,7 +123,7 @@ class Step3 extends Component {
                         Salvar
                       </Button>
                       <Button type="default" className="width-150 mr-4" loading={fetching}>
-                        <Link to="/user/signup4">Próxima etapa</Link>
+                        <Link to="/profile/edit4">Próxima etapa</Link>
                       </Button>
                     </div>
                   </Form>

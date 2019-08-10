@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Row, Col, Input, Button, Icon } from 'antd'
+import { Row, Col, Input, Button } from 'antd'
 import FormItem from 'antd/lib/form/FormItem'
 
 class StopAddress extends Component {
@@ -21,7 +21,7 @@ class StopAddress extends Component {
             className="button-side-field float-right"
             onClick={() => removeStopPoint(index)}
           >
-            <Icon type="delete" />
+            <i className="fa fa-trash" />
           </Button>
         </Col>
       </Row>

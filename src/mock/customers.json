@@ -5,6 +5,7 @@
       "name": "Maria Aparecida da Silva",
       "rg": "123.456.789-00",
       "telephone": "(15) 1234-5678",
+      "cellphone": "(15) 1234-5678",
       "city": "Sorocaba"
     },
     {
@@ -12,6 +13,7 @@
       "name": "Antônio Carlos Andrade",
       "rg": "123.456.789-00",
       "telephone": "(15) 1234-5678",
+      "cellphone": "(15) 1234-5678",
       "city": "Sorocaba"
     },
     {
@@ -19,6 +21,7 @@
       "name": "Getúlio Andrade",
       "rg": "123.456.789-00",
       "telephone": "(15) 1234-5678",
+      "cellphone": "(15) 1234-5678",
       "city": "Salto"
     },
     {
@@ -26,6 +29,7 @@
       "name": "Júlia Ana Pereira",
       "rg": "123.456.789-00",
       "telephone": "(15) 1234-5678",
+      "cellphone": "(15) 1234-5678",
       "city": "Sorocaba"
     },
     {
@@ -33,6 +37,7 @@
       "name": "Luíza Cavalcanti Costa",
       "rg": "123.456.789-00",
       "telephone": "(15) 1234-5678",
+      "cellphone": "(15) 1234-5678",
       "city": "Votorantim"
     },
     {
@@ -40,6 +45,7 @@
       "name": "Pierre Quinto",
       "rg": "123.456.789-00",
       "telephone": "(15) 1234-5678",
+      "cellphone": "(15) 1234-5678",
       "city": "Sorocaba"
     },
     {
@@ -47,6 +53,7 @@
       "name": "Gertrudes de Almeida Costa e Silva",
       "rg": "123.456.789-00",
       "telephone": "(15) 1234-5678",
+      "cellphone": "(15) 1234-5678",
       "city": "Sorocaba"
     },
     {
@@ -54,6 +61,7 @@
       "name": "Abigaliu Sant'Ana",
       "rg": "123.456.789-00",
       "telephone": "(15) 1234-5678",
+      "cellphone": "(15) 1234-5678",
       "city": "Piedade"
     },
     {
@@ -61,6 +69,7 @@
       "name": "José Mercedes",
       "rg": "123.456.789-00",
       "telephone": "(15) 1234-5678",
+      "cellphone": "(15) 1234-5678",
       "city": "Sorocaba"
     }
   ]
