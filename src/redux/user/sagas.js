@@ -1,5 +1,6 @@
 import { all, takeEvery, put, call, takeLatest } from 'redux-saga/effects'
 import { notification } from 'antd'
+import JwtDecode from 'jwt-decode'
 import * as auth from 'core/auth'
 import actions from 'redux/user/actions'
 
@@ -39,12 +40,15 @@ export function* LOAD_CURRENT_ACCOUNT() {
   }
   const isAuthenticated = yield call(auth.isAuthenticated)
   if (isAuthenticated) {
-    const { uid: id, email, photoURL: avatar } = user
+    const token = auth.getIdToken()
+    const { uid: id = 1 } = user
+    const { nickname: name, email, picture: avatar } = JwtDecode(token)
+
     yield put({
       type: 'user/SET_STATE',
       payload: {
         id,
-        name: 'Administrator',
+        name,
         email,
         avatar,
         role: 'admin',

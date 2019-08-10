@@ -47,6 +47,8 @@
 .logoContainer {
   height: 64px;
   padding: 13px 20px 15px 22px;
+  text-align: center;
+
   img {
     height: 36px;
   }
@@ -135,8 +137,10 @@
 
     :global(.ant-menu-item) {
       color: $gray-darken;
+
       > a {
         color: $gray-darken;
+
         &:hover {
           .icon {
             color: $white !important;
@@ -200,6 +204,7 @@
 
   :global(.ant-menu-item) > :global(a) {
     color: $text;
+
     &:hover {
       color: $blue;
     }
