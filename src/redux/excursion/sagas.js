@@ -1,17 +1,17 @@
 import { all, put, takeEvery, call } from 'redux-saga/effects'
 
-import actions, { fetchExcursions } from './actions'
+import actions, { fetchExcursions, fetchExcursionsSuccess, fetchExcursionsFailed } from './actions'
 
 export function* getData() {
   const fetchExcursion = fetchExcursions()
   const result = yield call(fetchExcursion.request)
-
-  yield put({
-    type: 'filter/SET_STATE',
-    payload: {
-      ...result,
-    },
-  })
+  console.log(result)
+  console.log('success')
+  if (result.data) {
+    yield put(fetchExcursionsSuccess(result.data))
+  } else {
+    yield put(fetchExcursionsFailed(result.error))
+  }
 }
 
 export function* SET_STATE() {
