@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Row, Col, InputNumber, Input, Switch, Button, Icon, Divider } from 'antd'
+import { Row, Col, InputNumber, Input, Switch, Button, Divider } from 'antd'
 import FormItem from 'antd/lib/form/FormItem'
 
 class Price extends Component {
@@ -54,7 +54,7 @@ class Price extends Component {
           </Col>
           <Col xs={4} sm={3} md={2}>
             <Button type="danger" className="button-side-field" onClick={() => removePrice(index)}>
-              <Icon type="delete" />
+              <i className="fa fa-trash" />
             </Button>
           </Col>
         </Row>

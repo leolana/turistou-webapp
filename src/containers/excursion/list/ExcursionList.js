@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { Table, Button, Icon, Modal } from 'antd'
+import { Table, Button, Modal } from 'antd'
 import { DateTime } from 'luxon'
 
 import { EXCURSION_STATUS_ENUM } from 'constants/excursionStatus'
@@ -49,19 +49,21 @@ class ExcursionList extends Component {
     <div className="table-action-buttons">
       <Link to={`${id}/passenger`}>
         <Button ghost size="small" type="primary" title="Adicionar passageiro">
-          <Icon type="user-add" />
+          <i className="fa fa-user-plus" />
         </Button>
       </Link>
       <Link to={`${id}/passenger/list`}>
         <Button ghost size="small" type="primary" title="Lista de passageiros">
-          <Icon type="usergroup-add" />
+          <i className="fa fa-users" />
         </Button>
       </Link>
-      <Button ghost size="small" type="primary">
-        <Icon type="edit" />
-      </Button>
+      <Link to={`./${id}`}>
+        <Button ghost size="small" type="primary">
+          <i className="fa fa-pencil" />
+        </Button>
+      </Link>
       <Button ghost size="small" type="danger" onClick={() => this.handleRemove(id)}>
-        <Icon type="delete" />
+        <i className="fa fa-trash" />
       </Button>
     </div>
   )

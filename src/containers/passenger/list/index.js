@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
-import { Row, Button, Col, Dropdown, Menu, Icon } from 'antd'
+import { Row, Button, Col, Dropdown, Menu } from 'antd'
 
 import PassengerList from './PassengerList'
 import PassengerFilter from './PassengerFilter'
@@ -11,15 +11,17 @@ const pageTitle = 'Lista de passageiros'
 const menu = (
   <Menu>
     <Menu.Item>
-      <Link to="./">na excursão</Link>
+      <Link to="./"> à excursão</Link>
     </Menu.Item>
-    <Menu.Item> à lista de espera </Menu.Item>
+    <Menu.Item>
+      <Link to="./"> à lista de espera</Link>
+    </Menu.Item>
   </Menu>
 )
 const DropdownAdd = ({ placement }) => (
   <Dropdown overlay={menu} placement={placement || 'bottomRight'} className="float-right">
     <Button type="primary">
-      Adicionar passageiro <Icon type="menu" />
+      Adicionar passageiro <i className="fa fa-bars ml-2" />
     </Button>
   </Dropdown>
 )

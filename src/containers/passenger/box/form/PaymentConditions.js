@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Row, Col, Form, Select, InputNumber, DatePicker, Button, Icon, Modal, Divider } from 'antd'
+import { Row, Col, Form, Select, InputNumber, DatePicker, Button, Modal, Divider } from 'antd'
 
 import { paymentType } from 'constants/options'
 
@@ -119,7 +119,7 @@ class PaymentConditions extends Component {
             className="button-side-field float-right mr-0"
             onClick={() => this.handleRemove(index)}
           >
-            <Icon type="delete" />
+            <i className="fa fa-trash" />
           </Button>
         </Col>
 

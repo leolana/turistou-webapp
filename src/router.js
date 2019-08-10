@@ -25,22 +25,22 @@ const routes = [
     exact: true,
   },
   {
-    path: '/user/signup',
+    path: '/profile/edit',
     component: loadable(() => import('containers/user/signup')),
     exact: true,
   },
   {
-    path: '/user/signup2',
+    path: '/profile/edit2',
     component: loadable(() => import('containers/user/signup/step2')),
     exact: true,
   },
   {
-    path: '/user/signup3',
+    path: '/profile/edit3',
     component: loadable(() => import('containers/user/signup/step3')),
     exact: true,
   },
   {
-    path: '/user/signup4',
+    path: '/profile/edit4',
     component: loadable(() => import('containers/user/signup/step4')),
     exact: true,
   },
@@ -57,13 +57,19 @@ const routes = [
   },
 
   // Customers
-  // {
-  //   path: '/customer/list',
-  //   component: loadable(() => import('containers/customer')),
-  // },
+  {
+    path: '/customer/list',
+    component: loadable(() => import('containers/customer/list')),
+  },
   {
     path: '/customer/',
     component: loadable(() => import('containers/customer/box')),
+    exact: true,
+  },
+  {
+    path: '/customer/:id',
+    component: loadable(() => import('containers/customer/box')),
+    exact: true,
   },
 
   // Passengers
@@ -84,6 +90,7 @@ const routes = [
   {
     path: '/excursion/',
     component: loadable(() => import('containers/excursion/box')),
+    exact: true,
   },
 ]
 
@@ -115,7 +122,8 @@ class Router extends React.Component {
       <ConnectedRouter history={history}>
         <IndexLayout>
           <Switch>
-            <Route exact path="/" render={() => <Redirect to="/dashboard/alpha" />} />
+            {/* <Route exact path="/" render={() => <Redirect to="/dashboard/alpha" />} /> */}
+            <Route exact path="/" render={() => <Redirect to="/excursion/list" />} />
             {routes.map(route => (
               <Route
                 path={route.path}

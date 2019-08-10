@@ -1,5 +1,5 @@
 import React from 'react'
-import { Input, Icon, Checkbox } from 'antd'
+import { Checkbox } from 'antd'
 import { injectIntl } from 'react-intl'
 import styles from './style.module.scss'
 
@@ -7,7 +7,7 @@ import styles from './style.module.scss'
 class LiveSearch extends React.Component {
   state = {
     showSearch: false,
-    searchText: '',
+    // searchText: '',
   }
 
   componentWillMount() {
@@ -21,17 +21,17 @@ class LiveSearch extends React.Component {
     })
   }
 
-  changeSearchText = e => {
-    this.setState({
-      searchText: e.target.value,
-    })
-  }
+  // changeSearchText = () => {
+  //   this.setState({
+  //     searchText: e.target.value,
+  //   })
+  // }
 
   hideLiveSearch = () => {
     this.searchInput.blur()
     this.setState({
       showSearch: false,
-      searchText: '',
+      // searchText: '',
     })
   }
 
@@ -50,19 +50,19 @@ class LiveSearch extends React.Component {
   }
 
   render() {
-    const { showSearch, searchText } = this.state
-    const {
-      intl: { formatMessage },
-    } = this.props
+    const { showSearch } = this.state
+    // const {
+    //   intl: { formatMessage },
+    // } = this.props
     return (
       <div className="d-inline-block mr-4">
-        <Input
+        {/* <Input
           className={styles.extInput}
           placeholder={formatMessage({ id: 'topBar.typeToSearch' })}
           prefix={<Icon type="search" style={{ color: 'rgba(0,0,0,.25)' }} />}
           style={{ width: 200 }}
           onFocus={this.showLiveSearch}
-        />
+        /> */}
         <div
           className={`${showSearch ? styles.livesearchShowed : styles.livesearchHidden}`}
           id="livesearch"
@@ -76,7 +76,7 @@ class LiveSearch extends React.Component {
               <div className={styles.logoContainer}>
                 <img className={styles.logo} src="/resources/images/logo.png" alt="" />
               </div>
-              <input
+              {/* <input
                 type="search"
                 className={styles.searchInput}
                 value={searchText}
@@ -84,7 +84,7 @@ class LiveSearch extends React.Component {
                 id="livesearchInput"
                 placeholder="Type to search..."
                 ref={this.handleNode}
-              />
+              /> */}
               <ul className={styles.options}>
                 <li className={`${styles.option} ${styles.optionCheckbox}`}>
                   <Checkbox>Search within page</Checkbox>
