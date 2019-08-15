@@ -1,16 +1,15 @@
 import { all, put, takeEvery, call } from 'redux-saga/effects'
 
-import actions, { fetchExcursions, fetchExcursionsSuccess, fetchExcursionsFailed } from './actions'
+import actions, { fetchExcursions, fetchExcursionsSuccess, fetchExcursionsFailure } from './actions'
 
 export function* getData() {
   const fetchExcursion = fetchExcursions()
   const result = yield call(fetchExcursion.request)
-  console.log(result)
-  console.log('success')
   if (result.data) {
     yield put(fetchExcursionsSuccess(result.data))
   } else {
-    yield put(fetchExcursionsFailed(result.error))
+    const validationError = result.networkError.result.errors[0]
+    yield put(fetchExcursionsFailure(validationError))
   }
 }
 
