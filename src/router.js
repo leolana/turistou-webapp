@@ -92,6 +92,11 @@ const routes = [
     component: loadable(() => import('containers/excursion/box')),
     exact: true,
   },
+  {
+    path: '/excursion/:id',
+    component: loadable(() => import('containers/excursion/box')),
+    exact: true,
+  },
 ]
 
 const mapStateToProps = ({ router }) => ({
