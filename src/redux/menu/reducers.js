@@ -3,6 +3,7 @@ import actions from './actions'
 const initialState = {
   menuLeftData: [],
   menuTopData: [],
+  breadcrumbData: [],
 }
 
 export default function menuReducer(state = initialState, action) {

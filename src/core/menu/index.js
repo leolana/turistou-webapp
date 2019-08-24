@@ -1,3 +1,39 @@
+export async function getBreadcrumbData() {
+  return [
+    {
+      title: 'Excursões',
+      url: 'excursion/list',
+      children: [
+        {
+          title: 'Lista de passageiros',
+          url: 'excursion/\\d*/passenger/list',
+        },
+        {
+          title: 'Novo passageiro',
+          url: 'excursion/\\d*/passenger',
+        },
+        {
+          title: 'Edição da excursão',
+          url: 'excursion/\\d*',
+        },
+      ],
+    },
+    {
+      title: 'Clientes',
+      url: 'customer/list',
+      children: [
+        {
+          title: 'Edição do cliente',
+          url: 'customer/\\d*',
+        },
+        {
+          title: 'Novo cliente',
+          url: 'customer',
+        },
+      ],
+    },
+  ]
+}
 export async function getLeftMenuData() {
   return [
     /*

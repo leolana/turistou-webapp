@@ -8,6 +8,7 @@ const mapStateToProps = ({ menu }) => ({
   isMenuTop: menu.isMenuTop,
   menuTopData: menu.menuTopData,
   menuLeftData: menu.menuLeftData,
+  breadcrumbData: menu.breadcrumbData,
 })
 
 @withRouter
@@ -26,9 +27,10 @@ class Breadcrumbs extends React.Component {
   }
 
   setBreadcrumbs = props => {
-    const { isMenuTop, menuTopData, menuLeftData } = this.props
+    const { breadcrumbData } = this.props
+
     this.setState({
-      breadcrumb: this.getBreadcrumb(props, isMenuTop ? menuTopData : menuLeftData),
+      breadcrumb: this.getBreadcrumb(props, breadcrumbData),
     })
   }
 
@@ -39,7 +41,7 @@ class Breadcrumbs extends React.Component {
         if (result.length) {
           return result
         }
-        if (entry.url === url) {
+        if (RegExp(entry.url).test(url)) {
           return [entry].concat(parents)
         }
         if (entry.children) {

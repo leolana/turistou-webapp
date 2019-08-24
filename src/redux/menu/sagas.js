@@ -1,14 +1,16 @@
 import { all, put, call } from 'redux-saga/effects'
-import { getLeftMenuData, getTopMenuData } from 'core/menu'
+import { getLeftMenuData, getTopMenuData, getBreadcrumbData } from 'core/menu'
 
 export function* GET_DATA() {
   const menuLeftData = yield call(getLeftMenuData)
   const menuTopData = yield call(getTopMenuData)
+  const breadcrumbData = yield call(getBreadcrumbData)
   yield put({
     type: 'menu/SET_STATE',
     payload: {
       menuLeftData,
       menuTopData,
+      breadcrumbData,
     },
   })
 }
