@@ -35,7 +35,7 @@ class ExcursionList extends Component {
 
   handleRemove(id) {
     Modal.error({
-      title: 'Deseja excluir esta excursão?',
+      title: 'Deseja remover esta excursão?',
       content: 'Esta ação não poderá ser desfeita',
       okText: 'Sim',
       okType: 'danger',

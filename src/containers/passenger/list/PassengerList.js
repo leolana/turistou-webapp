@@ -27,6 +27,7 @@ class PassengerList extends Component {
 
   exchange = id => {
     console.log('id', id)
+    // TODO: replace passenger
   }
 
   book = id => {
@@ -75,7 +76,7 @@ class PassengerList extends Component {
       ),
       okCancel: true,
       cancelText: 'Cancelar',
-      okText: 'Excluir',
+      okText: 'Remover',
       okType: 'danger',
       onOk: () => this.remove(id),
     })

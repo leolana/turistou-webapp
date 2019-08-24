@@ -59,7 +59,7 @@ class PaymentConditions extends Component {
   handleRemove(id) {
     const { removePayment } = this.props
     Modal.error({
-      title: 'Excluir pagamento?',
+      title: 'Deseja remover este pagamento?',
       content: 'Esta ação removerá o pagamento do histórico e não poderá ser desfeita!',
       okText: 'Sim',
       okType: 'danger',
