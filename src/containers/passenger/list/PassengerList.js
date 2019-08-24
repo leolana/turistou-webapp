@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-// import { Link } from 'react-router-dom'
-import { Table, Button, Tag, Modal, Input, Form, InputNumber, Row, Col, Select } from 'antd'
+import { Table, Button, Tag, Modal, Form, InputNumber, Row, Col, Select } from 'antd'
 import { paymentType } from 'constants/options'
 
 import { tableData, statuses, statusesCode, statusesEnum } from 'mock/passengers'
@@ -52,9 +51,9 @@ class PassengerList extends Component {
         <Row>
           <Col md={12}>
             <Form>
-              <Form.Item label="Motivo da desistência">
+              {/* <Form.Item label="Motivo da desistência">
                 <Input size="default" maxLength={150} />
-              </Form.Item>
+              </Form.Item> */}
               <Form.Item label="Valor devolvido">
                 <InputNumber size="default" min={0} />
               </Form.Item>
