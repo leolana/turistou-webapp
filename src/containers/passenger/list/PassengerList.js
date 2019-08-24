@@ -278,6 +278,7 @@ class PassengerList extends Component {
       booked: (
         <div className="table-action-buttons">
           <Button
+            ghost
             size="small"
             type="primary"
             title="Atualizar pagamento"
@@ -288,6 +289,7 @@ class PassengerList extends Component {
             <i className="fa fa-dollar" />
           </Button>
           <Button
+            ghost
             size="small"
             type="primary"
             title="Histórico de pagamento"
