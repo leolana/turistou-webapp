@@ -1,21 +1,63 @@
 import React, { Component } from 'react'
-import { Row, Col, InputNumber, Input, Button } from 'antd'
+import { Row, Col, Input, Button, Select } from 'antd'
 import FormItem from 'antd/lib/form/FormItem'
 
 class Transport extends Component {
   render() {
     const { form, index, removeTransport } = this.props
 
+    const availableTransports = [
+      {
+        id: '123',
+        name: 'Ônibus padrão',
+        plate: 'ASD-1234',
+        capacity: 50,
+      },
+      {
+        id: '124',
+        name: 'Ônibus duble deck',
+        plate: 'QWE-0987',
+        capacity: 80,
+      },
+      {
+        id: '125',
+        name: 'Microônibus',
+        plate: 'MKO-9630',
+        capacity: 30,
+      },
+    ]
+
     return (
       <Row>
-        <Col xs={24} sm={12}>
+        <Col xs={24} sm={15}>
+          <FormItem label="Transport">
+            {form.getFieldDecorator(`type[${index}]`, { rules: [{ required: true }] })(
+              <Select
+                showSearch
+                filterOption={(q, option) =>
+                  q
+                    .toLowerCase()
+                    .split(' ')
+                    .every(x => option.props.children.toLowerCase().includes(x))
+                }
+              >
+                {availableTransports.map(x => (
+                  <Select.Option value={x.id}>
+                    {`${x.name} - ${x.plate} (${x.capacity} lugares)`}
+                  </Select.Option>
+                ))}
+              </Select>,
+            )}
+          </FormItem>
+        </Col>
+        {/* <Col xs={24} sm={8}>
           <FormItem label="Trasporte">
             {form.getFieldDecorator(`type[${index}]`, {
               rules: [{ required: false }],
             })(<Input size="default" maxLength={30} />)}
           </FormItem>
         </Col>
-        <Col xs={24} sm={6}>
+        <Col xs={24} sm={4}>
           <FormItem label="Placa">
             {form.getFieldDecorator(`plate[${index}]`, {
               rules: [{ required: false }],
@@ -28,7 +70,7 @@ class Transport extends Component {
               rules: [{ required: false }],
             })(<InputNumber size="default" maxLength={3} />)}
           </FormItem>
-        </Col>
+        </Col> */}
         <Col xs={24} sm={6}>
           <FormItem label="Motorista">
             {form.getFieldDecorator(`driver[${index}]`, {
