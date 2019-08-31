@@ -11,11 +11,13 @@ class ExcursionList extends Component {
   constructor() {
     super()
     const tableData = mockData.map(x => {
-      if (!x.vacacy) {
-        x.vacacy = 'Sem vagas'
-        x.textStyle = 'font-italic'
-      } else if (x.vacacy / x.capacity > 0.75) x.textStyle = 'text-danger'
-      else if (x.vacacy / x.capacity > 0.33) x.textStyle = 'text-warning'
+      const occupancy = x.passengersAmout / x.capacity
+
+      const WARNING = 0.75
+      const DANGER = 0.33
+
+      if (occupancy < DANGER) x.textStyle = 'text-danger'
+      else if (occupancy < WARNING) x.textStyle = 'text-warning'
       else x.textStyle = 'text-success'
 
       return x
@@ -115,9 +117,9 @@ class ExcursionList extends Component {
         key: 'destination',
       },
       {
-        title: 'Vagas',
-        dataIndex: 'vacacy',
-        key: 'vacacy',
+        title: 'Lotação',
+        dataIndex: 'passengersAmout',
+        key: 'passengersAmout',
         className: 'text-center',
         render: (x, a) => (
           <span className={a.textStyle}>
