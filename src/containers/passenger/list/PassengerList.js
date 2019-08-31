@@ -5,6 +5,7 @@ import { paymentType } from 'constants/options'
 
 import { tableData, statuses, statusesCode, statusesEnum } from 'mock/passengers'
 import { tableData as customersList } from 'mock/customers'
+import CustomerSelect from 'components/CustomerSelect/CustomerSelect'
 
 class PassengerList extends Component {
   constructor() {
@@ -261,13 +262,7 @@ class PassengerList extends Component {
       content: (
         <div>
           <p>Trocar passageiro atual pelo(a)</p>
-          <Select size="default">
-            {customersList.map(x => (
-              <Select.Option key={x.id} value={x.id}>
-                {x.name} - {x.city}
-              </Select.Option>
-            ))}
-          </Select>
+          <CustomerSelect customers={customersList} />
         </div>
       ),
     })
