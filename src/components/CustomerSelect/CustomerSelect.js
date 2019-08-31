@@ -7,12 +7,7 @@ const CustomerSelect = ({ customers }) => (
     // TODO: max options show
     showSearch
     filterOption={(q, option) =>
-      q.split(' ').every(x =>
-        option.props.children
-          .join('')
-          .toLowerCase()
-          .includes(x),
-      )
+      q.split(' ').every(x => option.props.children.toLowerCase().includes(x))
     }
     dropdownRender={menu => (
       <div>
@@ -26,7 +21,7 @@ const CustomerSelect = ({ customers }) => (
   >
     {customers.map(x => (
       <Select.Option key={x.id} value={x.id}>
-        {x.name} - {x.rg} - {x.city}
+        {`${x.name} - ${x.rg} - ${x.city}`}
       </Select.Option>
     ))}
   </Select>
