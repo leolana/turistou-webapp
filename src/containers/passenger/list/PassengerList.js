@@ -430,35 +430,34 @@ class PassengerList extends Component {
           return ''
         },
       },
-      nextTranche: {
-        title: 'Próxima parcela',
-        dataIndex: 'nextTranche',
-        key: 'nextTranche',
-        render: x => x && new Date(x).toLocaleDateString(),
+      ticketType: {
+        title: 'Tipo de passagem',
+        dataIndex: 'ticketPrice.description',
+        key: 'ticketType',
       },
-      lastTranche: {
-        title: 'Última parcela',
-        dataIndex: 'lastTranche',
-        key: 'lastTranche',
-        render: x => x && new Date(x).toLocaleDateString(),
+      spot: {
+        title: 'Poltrona',
+        dataIndex: 'spot',
+        key: 'spot',
       },
     }
 
-    let columns = null
     switch (statusId) {
       case statusesCode.booked:
-        columns = ['actions', 'name', 'value', 'nextTranche', 'lastTranche']
-        break
+        return [
+          allColumns.actions,
+          allColumns.name,
+          allColumns.value,
+          allColumns.ticketType,
+          allColumns.spot,
+        ]
       case statusesCode.waiting:
-        columns = ['actions', 'name', 'telephone']
-        break
+        return [allColumns.actions, allColumns.name, allColumns.telephone]
       case statusesCode.canceled:
-        columns = ['actions', 'name', 'reimbursedValue']
-        break
+        return [allColumns.actions, allColumns.name, allColumns.reimbursedValue]
       default:
-        columns = ['status', 'name']
+        return [allColumns.status, allColumns.name]
     }
-    return columns.map(x => allColumns[x])
   }
 
   render() {
