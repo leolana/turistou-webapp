@@ -64,8 +64,12 @@ class PassengerFilter extends Component {
             <h5>
               {excursion.destination}
               <small className="ml-2">
-                <i className="fa fa-calendar" />{' '}
+                <i className="fa fa-calendar-o" />{' '}
                 {new Date(excursion.departure).toLocaleDateString()}
+              </small>
+              <small className="ml-2">
+                <i className="fa fa-calendar-o" />{' '}
+                {new Date(excursion.regress).toLocaleDateString()}
               </small>
             </h5>
           </Col>

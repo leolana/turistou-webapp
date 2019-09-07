@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-// import { Link } from 'react-router-dom'
-import { Table, Button, Tag, Modal, Input, Form, InputNumber, Row, Col, Select } from 'antd'
+import { Table, Button, Tag, Modal, Form, InputNumber, Row, Col, Select } from 'antd'
 import { paymentType } from 'constants/options'
 
 import { tableData, statuses, statusesCode, statusesEnum } from 'mock/passengers'
 import { tableData as customersList } from 'mock/customers'
+import CustomerSelect from 'components/CustomerSelect/CustomerSelect'
 
 class PassengerList extends Component {
   constructor() {
@@ -27,6 +27,7 @@ class PassengerList extends Component {
 
   exchange = id => {
     console.log('id', id)
+    // TODO: replace passenger
   }
 
   book = id => {
@@ -51,9 +52,9 @@ class PassengerList extends Component {
         <Row>
           <Col md={12}>
             <Form>
-              <Form.Item label="Motivo da desistência">
+              {/* <Form.Item label="Motivo da desistência">
                 <Input size="default" maxLength={150} />
-              </Form.Item>
+              </Form.Item> */}
               <Form.Item label="Valor devolvido">
                 <InputNumber size="default" min={0} />
               </Form.Item>
@@ -75,7 +76,7 @@ class PassengerList extends Component {
       ),
       okCancel: true,
       cancelText: 'Cancelar',
-      okText: 'Excluir',
+      okText: 'Remover',
       okType: 'danger',
       onOk: () => this.remove(id),
     })
@@ -261,13 +262,7 @@ class PassengerList extends Component {
       content: (
         <div>
           <p>Trocar passageiro atual pelo(a)</p>
-          <Select size="default">
-            {customersList.map(x => (
-              <Select.Option key={x.id} value={x.id}>
-                {x.name} - {x.city}
-              </Select.Option>
-            ))}
-          </Select>
+          <CustomerSelect customers={customersList} />
         </div>
       ),
     })
@@ -278,6 +273,7 @@ class PassengerList extends Component {
       booked: (
         <div className="table-action-buttons">
           <Button
+            ghost
             size="small"
             type="primary"
             title="Atualizar pagamento"
@@ -288,6 +284,7 @@ class PassengerList extends Component {
             <i className="fa fa-dollar" />
           </Button>
           <Button
+            ghost
             size="small"
             type="primary"
             title="Histórico de pagamento"
@@ -428,35 +425,34 @@ class PassengerList extends Component {
           return ''
         },
       },
-      nextTranche: {
-        title: 'Próxima parcela',
-        dataIndex: 'nextTranche',
-        key: 'nextTranche',
-        render: x => x && new Date(x).toLocaleDateString(),
+      ticketType: {
+        title: 'Tipo de passagem',
+        dataIndex: 'ticketPrice.description',
+        key: 'ticketType',
       },
-      lastTranche: {
-        title: 'Última parcela',
-        dataIndex: 'lastTranche',
-        key: 'lastTranche',
-        render: x => x && new Date(x).toLocaleDateString(),
+      spot: {
+        title: 'Poltrona',
+        dataIndex: 'spot',
+        key: 'spot',
       },
     }
 
-    let columns = null
     switch (statusId) {
       case statusesCode.booked:
-        columns = ['actions', 'name', 'value', 'nextTranche', 'lastTranche']
-        break
+        return [
+          allColumns.actions,
+          allColumns.name,
+          allColumns.value,
+          allColumns.ticketType,
+          allColumns.spot,
+        ]
       case statusesCode.waiting:
-        columns = ['actions', 'name', 'telephone']
-        break
+        return [allColumns.actions, allColumns.name, allColumns.telephone]
       case statusesCode.canceled:
-        columns = ['actions', 'name', 'reimbursedValue']
-        break
+        return [allColumns.actions, allColumns.name, allColumns.reimbursedValue]
       default:
-        columns = ['status', 'name']
+        return [allColumns.status, allColumns.name]
     }
-    return columns.map(x => allColumns[x])
   }
 
   render() {

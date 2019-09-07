@@ -5,7 +5,7 @@
       "destination": "Natal",
       "departure": "2019-03-10T10:00:00.000Z",
       "regress": "2019-03-25T18:00:00.000Z",
-      "vacacy": 0,
+      "passengersAmout": 0,
       "capacity": 42,
       "passType": [
         {
@@ -33,7 +33,7 @@
       "destination": "Belo Horizonte",
       "departure": "2019-03-20T10:00:00.000Z",
       "regress": "2019-03-27T18:00:00.000Z",
-      "vacacy": 3,
+      "passengersAmout": 3,
       "capacity": 50
     },
     {
@@ -41,7 +41,7 @@
       "destination": "Campos de Jordão",
       "departure": "2019-04-10T10:00:00.000Z",
       "regress": "2019-04-17T18:00:00.000Z",
-      "vacacy": 12,
+      "passengersAmout": 12,
       "capacity": 30
     },
     {
@@ -49,7 +49,7 @@
       "destination": "Belo Horizonte",
       "departure": "2019-04-30T10:00:00.000Z",
       "regress": "2019-05-12T18:00:00.000Z",
-      "vacacy": 40,
+      "passengersAmout": 40,
       "capacity": 42
     },
     {
@@ -57,7 +57,7 @@
       "destination": "Arraial do Cabo",
       "departure": "2019-05-20T07:00:00.000Z",
       "regress": "2019-05-30T07:00:00.000Z",
-      "vacacy": 40,
+      "passengersAmout": 40,
       "capacity": 50,
       "passType": [
         {

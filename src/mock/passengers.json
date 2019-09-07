@@ -11,6 +11,10 @@
       "total": 200.0,
       "nextTranche": "2019-05-10T00:00:00.000-0300",
       "lastTranche": "2019-07-10T00:00:00.000-0300",
+      "ticketPrice": {
+        "description": "Normal"
+      },
+      "spot": "22",
       "status": 1
     },
     {
@@ -24,6 +28,10 @@
       "total": 200.0,
       "nextTranche": "2019-05-10T00:00:00.000-0300",
       "lastTranche": "2019-07-10T00:00:00.000-0300",
+      "ticketPrice": {
+        "description": "Estudante"
+      },
+      "spot": "20",
       "status": 1
     },
     {
@@ -37,6 +45,10 @@
       "total": 189.0,
       "nextTranche": "2019-05-10T00:00:00.000-0300",
       "lastTranche": "2019-07-10T00:00:00.000-0300",
+      "ticketPrice": {
+        "description": "Idoso"
+      },
+      "spot": "23",
       "status": 1
     },
     {
@@ -50,6 +62,10 @@
       "total": 190.0,
       "nextTranche": "2019-05-10T00:00:00.000-0300",
       "lastTranche": "2019-07-10T00:00:00.000-0300",
+      "ticketPrice": {
+        "description": "Normal"
+      },
+      "spot": "38",
       "status": 1
     },
     {
@@ -63,6 +79,10 @@
       "total": 200.0,
       "nextTranche": "2019-05-10T00:00:00.000-0300",
       "lastTranche": "2019-07-10T00:00:00.000-0300",
+      "ticketPrice": {
+        "description": "Estudante"
+      },
+      "spot": "05",
       "status": 1
     },
     {
@@ -76,6 +96,10 @@
       "total": 200.0,
       "nextTranche": "2019-05-10T00:00:00.000-0300",
       "lastTranche": "2019-07-10T00:00:00.000-0300",
+      "ticketPrice": {
+        "description": "Normal"
+      },
+      "spot": null,
       "status": 1
     },
     {
@@ -87,6 +111,10 @@
       },
       "paid": 0,
       "total": 189.0,
+      "ticketPrice": {
+        "description": "Idoso"
+      },
+      "spot": "25",
       "status": 2
     },
     {
@@ -98,6 +126,10 @@
       },
       "paid": 0,
       "total": 189.0,
+      "ticketPrice": {
+        "description": "Normal"
+      },
+      "spot": "26",
       "status": 2
     },
     {
@@ -112,6 +144,10 @@
       "nextTranche": "2019-05-10T00:00:00.000-0300",
       "lastTranche": "2019-07-10T00:00:00.000-0300",
       "reimbursedValue": 80,
+      "ticketPrice": {
+        "description": "Estudante"
+      },
+      "spot": "21",
       "status": 3
     }
   ],
