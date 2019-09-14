@@ -1,33 +1,27 @@
-import { all, put } from 'redux-saga/effects'
-// import gql from 'graphql-tag'
+import { all, put, takeEvery, call } from 'redux-saga/effects'
 
-// import actions from './actions'
+import actions, { fetchExcursions, fetchExcursionsSuccess, fetchExcursionsFailure } from './actions'
 
-// export function* GET_DATA() {
-//   console.log('------------- excursion ------------')
-//   const result = yield call(fetchProperty)
-//   console.log(result)
-
-//   yield put({
-//     type: 'excursion/SET_STATE',
-//     payload: {
-//       filter: mko(),
-//     },
-//   })
-// }
+export function* getData() {
+  const fetchExcursion = fetchExcursions()
+  const result = yield call(fetchExcursion.request)
+  if (result.response.data) {
+    yield put(fetchExcursionsSuccess(result.response.data))
+  } else {
+    const validationError = result.networkError.result.errors[0]
+    yield put(fetchExcursionsFailure(validationError))
+  }
+}
 
 export function* SET_STATE() {
   yield put({
     type: 'filter/SET_STATE',
-    payload: {
-      filter: 1,
-    },
   })
 }
 
 export default function* rootSaga() {
   yield all([
-    // takeEvery(actions.GET_DATA, GET_DATA),
+    takeEvery(actions.GET_EXCURSIONS, getData),
     SET_STATE(), // run once on app load to init listeners
   ])
 }
