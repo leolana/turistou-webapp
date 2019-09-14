@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Table, Button, Tag, Modal, Form, InputNumber, Row, Col, Select } from 'antd'
+import { Table, Button, Tag, Modal, Form, InputNumber, Row, Col, Select, Skeleton } from 'antd'
 import { paymentType } from 'constants/options'
 
 import { tableData, statuses, statusesCode, statusesEnum } from 'mock/passengers'
@@ -22,7 +22,17 @@ class PassengerList extends Component {
 
       return x
     })
-    this.state = { passengersList, paymentValue: 0 }
+    this.state = {
+      passengersList,
+      paymentValue: 0,
+      isLoading: true,
+    }
+  }
+
+  componentDidMount() {
+    setTimeout(() => {
+      this.setState({ isLoading: false })
+    }, 1500)
   }
 
   exchange = id => {
@@ -42,6 +52,11 @@ class PassengerList extends Component {
     const { passengersList } = this.state
     const udPassengersList = passengersList.filter(x => x.id !== id)
     this.setState({ passengersList: udPassengersList })
+  }
+
+  update = id => {
+    const { paymentValue } = this.state
+    console.log('update: ', id, paymentValue)
   }
 
   handleRemove(id) {
@@ -183,11 +198,6 @@ class PassengerList extends Component {
     })
   }
 
-  update(id) {
-    const { paymentValue } = this.state
-    console.log('update: ', id, paymentValue)
-  }
-
   handleUpdate(id) {
     const { paymentValue } = this.state
 
@@ -269,7 +279,7 @@ class PassengerList extends Component {
   }
 
   renderActionsButtons = (id, statusId) => {
-    const actions = {
+    const buttonsAction = {
       booked: (
         <div className="table-action-buttons">
           <Button
@@ -356,7 +366,7 @@ class PassengerList extends Component {
         </div>
       ),
     }
-    return actions[statusesEnum[statusId]]
+    return buttonsAction[statusesEnum[statusId]]
   }
 
   filterData() {
@@ -456,22 +466,35 @@ class PassengerList extends Component {
   }
 
   render() {
+    const { isLoading } = this.state
     const tableColumns = this.columnsForStatus()
 
     const filteredData = this.filterData()
 
     return (
-      <Table
-        rowKey="id"
-        className="utils__scrollTable"
-        scroll={{ x: '100%' }}
-        columns={tableColumns}
-        dataSource={filteredData}
-        pagination={false}
-      />
+      <Skeleton loading={isLoading}>
+        <Table
+          rowKey="id"
+          className="utils__scrollTable"
+          scroll={{ x: '100%' }}
+          columns={tableColumns}
+          dataSource={filteredData}
+          pagination={false}
+        />
+      </Skeleton>
     )
   }
 }
+
+// const mapStateToProps = ({ passenger: {
+//   isLoading,
+//   payloadList,
+//   filter,
+// } }) => ({
+//   isLoading,
+//   payloadList,
+//   filter,
+// })
 
 const mapStateToProps = state => {
   const { statusId, startPay, fullPay, query } = state.passenger
