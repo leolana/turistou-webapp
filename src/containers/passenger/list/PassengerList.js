@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Table, Button, Tag, Modal, Form, InputNumber, Row, Col, Select, Skeleton } from 'antd'
+import { Button, Tag, Modal, Form, InputNumber, Row, Col, Select, Table } from 'antd'
 import { paymentType } from 'constants/options'
 
 import { tableData, statuses, statusesCode, statusesEnum } from 'mock/passengers'
 import { tableData as customersList } from 'mock/customers'
 import CustomerSelect from 'components/CustomerSelect/CustomerSelect'
+import SkeletonTable from 'components/SkeletonTable/SkeletonTable'
 
 class PassengerList extends Component {
   constructor() {
@@ -471,18 +472,9 @@ class PassengerList extends Component {
 
     const filteredData = this.filterData()
 
-    return (
-      <Skeleton loading={isLoading}>
-        <Table
-          rowKey="id"
-          className="utils__scrollTable"
-          scroll={{ x: '100%' }}
-          columns={tableColumns}
-          dataSource={filteredData}
-          pagination={false}
-        />
-      </Skeleton>
-    )
+    const props = { isLoading, tableColumns, tableData: filteredData }
+
+    return <SkeletonTable {...props} />
   }
 }
 

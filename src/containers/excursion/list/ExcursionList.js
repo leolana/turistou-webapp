@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { Table, Button, Modal, Skeleton } from 'antd'
+import { Button, Modal } from 'antd'
 import { DateTime } from 'luxon'
 import actions from 'redux/excursion/actions'
 
 import { EXCURSION_STATUS_ENUM } from 'constants/excursionStatus'
 import { tableData as mockData } from 'mock/excursions'
+import SkeletonTable from 'components/SkeletonTable/SkeletonTable'
 
 class ExcursionList extends Component {
   constructor() {
@@ -115,6 +116,7 @@ class ExcursionList extends Component {
 
   render() {
     let { tableData } = this.state
+    const { isLoading } = this.state
     tableData = this.applyFilterOnTable(tableData)
 
     const tableColumns = [
@@ -154,19 +156,9 @@ class ExcursionList extends Component {
       },
     ]
 
-    const { isLoading } = this.state
-    return (
-      <Skeleton active loading={isLoading}>
-        <Table
-          rowKey="id"
-          className="utils__scrollTable"
-          scroll={{ x: '100%' }}
-          columns={tableColumns}
-          dataSource={tableData}
-          pagination={false}
-        />
-      </Skeleton>
-    )
+    const props = { isLoading, tableData, tableColumns }
+
+    return <SkeletonTable {...props} />
   }
 }
 

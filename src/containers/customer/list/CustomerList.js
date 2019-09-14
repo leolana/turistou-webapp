@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { Table, Button, Skeleton } from 'antd'
+import { Button } from 'antd'
 
 import { tableData as mockData } from 'mock/customers'
+import SkeletonTable from 'components/SkeletonTable/SkeletonTable'
 
 class CustomerList extends Component {
   constructor() {
@@ -75,18 +76,9 @@ class CustomerList extends Component {
       },
     ]
 
-    return (
-      <Skeleton loading={isLoading}>
-        <Table
-          rowKey="id"
-          className="utils__scrollTable"
-          scroll={{ x: '100%' }}
-          columns={tableColumns}
-          dataSource={filteredData}
-          pagination={false}
-        />
-      </Skeleton>
-    )
+    const props = { isLoading, tableData: filteredData, tableColumns }
+
+    return <SkeletonTable {...props} />
   }
 }
 
