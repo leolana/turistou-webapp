@@ -4,6 +4,7 @@ import { Form } from 'antd'
 
 import actions from 'redux/step/actions'
 import FormStepButtonsActions from 'components/Step/FormStepButtonsActions'
+import SkeletonForm from 'components/SkeletonForm/SkeletonForm'
 
 @Form.create()
 class PassengerForm extends Component {
@@ -11,6 +12,16 @@ class PassengerForm extends Component {
     super()
 
     this.dispatchStep = this.dispatchStep.bind(this)
+
+    this.state = {
+      isLoading: true,
+    }
+  }
+
+  componentDidMount() {
+    setTimeout(() => {
+      this.setState({ isLoading: false })
+    }, 1500)
   }
 
   dispatchStep(step) {
@@ -23,15 +34,18 @@ class PassengerForm extends Component {
 
   render() {
     const { current, formSteps } = this.props
+    const { isLoading } = this.state
 
     return (
-      <Form layout="vertical" className="passenger-form">
-        {formSteps.map((x, i) => current === i && <x.component key={x.title} {...this.props} />)}
+      <SkeletonForm isLoading={isLoading} rows={3}>
+        <Form layout="vertical" className="passenger-form">
+          {formSteps.map((x, i) => current === i && <x.component key={x.title} {...this.props} />)}
 
-        <div className="form-actions">
-          <FormStepButtonsActions lastStep={formSteps.length - 1} />
-        </div>
-      </Form>
+          <div className="form-actions">
+            <FormStepButtonsActions lastStep={formSteps.length - 1} />
+          </div>
+        </Form>
+      </SkeletonForm>
     )
   }
 }
