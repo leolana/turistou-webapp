@@ -7,23 +7,26 @@ import SkeletonForm from 'components/SkeletonForm/SkeletonForm'
 
 @Form.create()
 class ExcursionForm extends Component {
-  constructor() {
-    super()
+  // FIXME: commented code and isloading
 
-    this.state({
-      isLoading: true,
-    })
-  }
+  // constructor() {
+  //   super()
 
-  componentDidMount() {
-    setTimeout(() => {
-      this.setState({ isLoading: false })
-    }, 1500)
-  }
+  //   this.state({
+  //     isLoading: true,
+  //   })
+  // }
+
+  // componentDidMount() {
+  //   setTimeout(() => {
+  //     this.setState({ isLoading: false })
+  //   }, 1500)
+  // }
 
   render() {
     const { current, formSteps } = this.props
-    const { isLoading } = this.state
+    // const { isLoading } = this.state
+    const isLoading = false
 
     return (
       <SkeletonForm isLoading={isLoading}>
