@@ -5,8 +5,8 @@ import actions, { fetchExcursions, fetchExcursionsSuccess, fetchExcursionsFailur
 export function* getData() {
   const fetchExcursion = fetchExcursions()
   const result = yield call(fetchExcursion.request)
-  if (result.data) {
-    yield put(fetchExcursionsSuccess(result.data))
+  if (result.response.data) {
+    yield put(fetchExcursionsSuccess(result.response.data))
   } else {
     const validationError = result.networkError.result.errors[0]
     yield put(fetchExcursionsFailure(validationError))
@@ -16,9 +16,6 @@ export function* getData() {
 export function* SET_STATE() {
   yield put({
     type: 'filter/SET_STATE',
-    payload: {
-      filter: 1,
-    },
   })
 }
 

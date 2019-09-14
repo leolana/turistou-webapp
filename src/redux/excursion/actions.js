@@ -14,6 +14,12 @@ const excursionFragment = gql`
     destination
     departureDate
     regressDate
+    transports {
+      capacity
+    }
+    passengers {
+      spot
+    }
   }
 `
 
@@ -35,12 +41,14 @@ export const fetchExcursions = () => ({
 
 export const fetchExcursionsSuccess = (payload: any) => ({
   type: actions.SET_STATE,
-  payload: { ...payload.data, loading: false },
+  payload: payload.excursions,
+  loading: false,
 })
 
 export const fetchExcursionsFailure = (payload: any) => ({
   type: actions.GET_EXCURSIONS_FAILURE,
-  payload: { ...payload, loading: false },
+  payload: { ...payload },
+  loading: false,
 })
 
 export default actions

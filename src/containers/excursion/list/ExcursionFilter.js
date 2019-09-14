@@ -18,7 +18,7 @@ class ExcursionFilter extends Component {
     const { dispatch } = this.props
     dispatch({
       type: actions.GET_EXCURSIONS,
-      payload: { query },
+      filter: { query },
     })
   }
 
@@ -27,7 +27,7 @@ class ExcursionFilter extends Component {
     const { dispatch } = this.props
     dispatch({
       type: actions.GET_EXCURSIONS,
-      payload: { statusId },
+      filter: { statusId },
     })
   }
 
