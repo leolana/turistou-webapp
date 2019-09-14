@@ -1,11 +1,13 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { Table, Button, Modal } from 'antd'
+import { Button, Modal } from 'antd'
 import { DateTime } from 'luxon'
+import actions from 'redux/excursion/actions'
 
 import { EXCURSION_STATUS_ENUM } from 'constants/excursionStatus'
 import { tableData as mockData } from 'mock/excursions'
+import SkeletonTable from 'components/SkeletonTable/SkeletonTable'
 
 class ExcursionList extends Component {
   constructor() {
@@ -22,9 +24,19 @@ class ExcursionList extends Component {
 
       return x
     })
-    this.state = { tableData }
+    this.state = {
+      isLoading: true,
+      tableData,
+    }
 
     this.applyFilterOnTable = this.applyFilterOnTable.bind(this)
+  }
+
+  componentDidMount() {
+    // TODO: remove after resolve fetches
+    setTimeout(() => {
+      this.setState({ isLoading: false })
+    }, 1500)
   }
 
   remove = id => {
@@ -71,7 +83,8 @@ class ExcursionList extends Component {
   )
 
   applyFilterOnTable(tableData) {
-    const { query, statusId } = this.props
+    const { filter } = this.props
+    const { query = '', statusId = EXCURSION_STATUS_ENUM.nexties } = filter
 
     if (Number.isInteger(statusId) && EXCURSION_STATUS_ENUM.all !== statusId) {
       const today = DateTime.local()
@@ -103,6 +116,7 @@ class ExcursionList extends Component {
 
   render() {
     let { tableData } = this.state
+    const { isLoading } = this.state
     tableData = this.applyFilterOnTable(tableData)
 
     const tableColumns = [
@@ -142,22 +156,24 @@ class ExcursionList extends Component {
       },
     ]
 
-    return (
-      <Table
-        rowKey="id"
-        className="utils__scrollTable"
-        scroll={{ x: '100%' }}
-        columns={tableColumns}
-        dataSource={tableData}
-        pagination={false}
-      />
-    )
+    const props = { isLoading, tableData, tableColumns }
+
+    return <SkeletonTable {...props} />
   }
 }
 
-const mapStateToProps = state => ({
-  statusId: state.excursion.statusId,
-  query: state.excursion.query,
+const mapStateToProps = ({ excursion: { isLoading, filter, listPayload } }) => ({
+  isLoading,
+  filter,
+  listPayload,
 })
 
-export default connect(mapStateToProps)(ExcursionList)
+const mapDispatchToProps = dispatch => ({
+  removeItem: () => dispatch({ type: actions.DELETE_DATA }),
+  removeItemSuccess: () => dispatch({ type: actions.DELETE_DATA_SUCCESS }),
+})
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(ExcursionList)
