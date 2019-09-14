@@ -3,9 +3,14 @@ import gql from 'graphql-tag'
 import { query } from 'core/api/apollo'
 
 const actions = {
+  // TODO: ajustar os nomes e padronizar
   SET_STATE: 'filter/SET_STATE',
   GET_EXCURSIONS: 'excursion/GET_DATA',
   GET_EXCURSIONS_FAILURE: 'excursion/GET_EXCURSIONS_FAILURE',
+  GET_DATA: 'excursion/GET_DATA',
+  GET_DATA_SUCCESS: 'excursion/GET_DATA_SUCCESS',
+  DELETE_DATA: 'excursion/DELETE_DATA',
+  DELETE_DATA_SUCCESS: 'excursion/DELETE_DATA_SUCCESS',
 }
 
 const excursionFragment = gql`
@@ -42,13 +47,13 @@ export const fetchExcursions = () => ({
 export const fetchExcursionsSuccess = (payload: any) => ({
   type: actions.SET_STATE,
   payload: payload.excursions,
-  loading: false,
+  isLoading: false,
 })
 
 export const fetchExcursionsFailure = (payload: any) => ({
   type: actions.GET_EXCURSIONS_FAILURE,
   payload: { ...payload },
-  loading: false,
+  isLoading: false,
 })
 
 export default actions

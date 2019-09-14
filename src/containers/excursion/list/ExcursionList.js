@@ -1,20 +1,15 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { Table, Button, Modal } from 'antd'
+import { Button, Modal } from 'antd'
 import { DateTime } from 'luxon'
-
-// import { tableData as mockData } from 'mock/excursions'
 import actions from 'redux/excursion/actions'
-
-// import { EXCURSION_STATUS_ENUM } from 'constants/excursionStatus'
+import SkeletonTable from 'components/SkeletonTable/SkeletonTable'
 
 class ExcursionList extends Component {
   componentDidMount() {
-    const { dispatch } = this.props
-    dispatch({
-      type: actions.GET_EXCURSIONS,
-    })
+    const { getExcursions } = this.props
+    getExcursions()
   }
 
   remove = id => {
@@ -27,7 +22,7 @@ class ExcursionList extends Component {
 
   handleRemove(id) {
     Modal.error({
-      title: 'Deseja excluir esta excursão?',
+      title: 'Deseja remover esta excursão?',
       content: 'Esta ação não poderá ser desfeita',
       okText: 'Sim',
       okType: 'danger',
@@ -60,39 +55,8 @@ class ExcursionList extends Component {
     </div>
   )
 
-  // applyFilterOnTable(tableData) {
-  //   const { query, statusId } = this.props
-
-  //   if (Number.isInteger(statusId) && EXCURSION_STATUS_ENUM.all !== statusId) {
-  //     const today = DateTime.local()
-  //     tableData = tableData.filter(excursion => {
-  //       const regress = DateTime.fromISO(excursion.regress)
-
-  //       switch (statusId) {
-  //         case EXCURSION_STATUS_ENUM.done:
-  //           return today > regress
-  //         case EXCURSION_STATUS_ENUM.nexties:
-  //           return today <= regress
-  //         default:
-  //           return true
-  //       }
-  //     })
-  //   }
-  //   if (query) {
-  //     tableData = tableData.filter(excursion => {
-  //       const destination = excursion.destination.toLowerCase()
-  //       if (destination.includes(query.toLowerCase())) return true
-  //       return query.split(' ').every(q => {
-  //         const partialQuery = q.toLowerCase().trim()
-  //         return destination.includes(partialQuery)
-  //       })
-  //     })
-  //   }
-  //   return tableData
-  // }
-
   render() {
-    const { excursions } = this.props
+    const { excursions, isLoading } = this.props
     const tableData = excursions.map(excursion => {
       const spotsFormatter = (transports, passengers) => {
         const { capacity } = transports[0]
@@ -161,23 +125,25 @@ class ExcursionList extends Component {
       },
     ]
 
-    return (
-      <Table
-        rowKey="id"
-        className="utils__scrollTable"
-        scroll={{ x: '100%' }}
-        columns={tableColumns}
-        dataSource={tableData}
-        pagination={false}
-      />
-    )
+    const props = { isLoading, tableData, tableColumns }
+
+    return <SkeletonTable {...props} />
   }
 }
 
-const mapStateToProps = state => ({
-  statusId: state.excursion.statusId,
-  query: state.excursion.query,
-  excursions: state.excursion.payload,
+const mapStateToProps = ({ excursion: { isLoading, filter, payload } }) => ({
+  isLoading,
+  filter,
+  excursions: payload,
 })
 
-export default connect(mapStateToProps)(ExcursionList)
+const mapDispatchToProps = dispatch => ({
+  removeItem: () => dispatch({ type: actions.DELETE_DATA }),
+  removeItemSuccess: () => dispatch({ type: actions.DELETE_DATA_SUCCESS }),
+  getExcursions: () => dispatch({ type: actions.GET_EXCURSIONS }),
+})
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(ExcursionList)

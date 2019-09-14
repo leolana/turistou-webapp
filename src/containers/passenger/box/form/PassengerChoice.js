@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
-import { Row, Col, Form, Select, Radio } from 'antd'
+import { Row, Col, Form, Radio } from 'antd'
 
 import { tableData } from 'mock/customers'
+import CustomerSelect from 'components/CustomerSelect/CustomerSelect'
 
 const passagePrices = [
   { id: 0, description: 'Normal', price: '320,00' },
@@ -37,15 +38,7 @@ class PassengerChoice extends Component {
             <Form.Item label="Cliente">
               {form.getFieldDecorator('customer', {
                 rules: [{ required: false }],
-              })(
-                <Select size="default">
-                  {tableData.map(x => (
-                    <Select.Option key={x.id} value={x.id}>
-                      {x.name} - {x.rg} - {x.city}
-                    </Select.Option>
-                  ))}
-                </Select>,
-              )}
+              })(<CustomerSelect customers={tableData} />)}
             </Form.Item>
           </Col>
         </Row>

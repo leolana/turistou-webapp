@@ -1,16 +1,26 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { Table, Button } from 'antd'
+import { Button } from 'antd'
 
 import { tableData as mockData } from 'mock/customers'
+import SkeletonTable from 'components/SkeletonTable/SkeletonTable'
 
 class CustomerList extends Component {
   constructor() {
     super()
-    this.state = { tableData: mockData }
+    this.state = {
+      tableData: mockData,
+      isLoading: true,
+    }
 
     this.filter = this.filter.bind(this)
+  }
+
+  componentDidMount() {
+    setTimeout(() => {
+      this.setState({ isLoading: false })
+    }, 1500)
   }
 
   filter() {
@@ -33,6 +43,8 @@ class CustomerList extends Component {
   }
 
   render() {
+    const { isLoading } = this.state
+
     const filteredData = this.filter()
 
     const tableColumns = [
@@ -64,16 +76,9 @@ class CustomerList extends Component {
       },
     ]
 
-    return (
-      <Table
-        rowKey="id"
-        className="utils__scrollTable"
-        scroll={{ x: '100%' }}
-        columns={tableColumns}
-        dataSource={filteredData}
-        pagination={false}
-      />
-    )
+    const props = { isLoading, tableData: filteredData, tableColumns }
+
+    return <SkeletonTable {...props} />
   }
 }
 

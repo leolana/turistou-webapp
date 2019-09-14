@@ -1,21 +1,71 @@
 import React, { Component } from 'react'
-import { Row, Col, InputNumber, Input, Button } from 'antd'
+import { Row, Col, Input, Button, Select, InputNumber } from 'antd'
 import FormItem from 'antd/lib/form/FormItem'
 
 class Transport extends Component {
   render() {
     const { form, index, removeTransport } = this.props
 
+    const availableTransports = [
+      {
+        id: '123',
+        name: 'Ônibus',
+      },
+      {
+        id: '124',
+        name: 'Micro-ônibus',
+      },
+      {
+        id: '125',
+        name: 'Ônibus duble-deck',
+      },
+      {
+        id: '126',
+        name: 'Van',
+      },
+      {
+        id: '127',
+        name: 'Trêm',
+      },
+      {
+        id: '128',
+        name: 'Carro',
+      },
+      {
+        id: '129',
+        name: 'Avião',
+      },
+    ]
+
     return (
       <Row>
-        <Col xs={24} sm={12}>
+        <Col xs={24} sm={7}>
+          <FormItem label="Transport">
+            {form.getFieldDecorator(`type[${index}]`, { rules: [{ required: true }] })(
+              <Select
+                showSearch
+                filterOption={(q, option) =>
+                  q
+                    .toLowerCase()
+                    .split(' ')
+                    .every(x => option.props.children.toLowerCase().includes(x))
+                }
+              >
+                {availableTransports.map(x => (
+                  <Select.Option value={x.id}>{x.name}</Select.Option>
+                ))}
+              </Select>,
+            )}
+          </FormItem>
+        </Col>
+        {/* <Col xs={24} sm={8}>
           <FormItem label="Trasporte">
             {form.getFieldDecorator(`type[${index}]`, {
               rules: [{ required: false }],
             })(<Input size="default" maxLength={30} />)}
           </FormItem>
-        </Col>
-        <Col xs={24} sm={6}>
+        </Col> */}
+        <Col xs={24} sm={4}>
           <FormItem label="Placa">
             {form.getFieldDecorator(`plate[${index}]`, {
               rules: [{ required: false }],
