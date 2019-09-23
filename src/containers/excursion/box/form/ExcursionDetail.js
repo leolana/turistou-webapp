@@ -3,11 +3,12 @@ import { Form, Input, Col, Row, DatePicker, TimePicker } from 'antd'
 
 class ExcursionDetail extends Component {
   render() {
-    const { form } = this.props
+    const { form, style } = this.props
+
     const dateFormat = 'DD/MM/YYYY'
     const timeFormat = 'HH:mm'
     return (
-      <Row>
+      <Row style={style}>
         <Col xs={24}>
           <Form.Item label="Destino">
             {form.getFieldDecorator('destination', {

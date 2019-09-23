@@ -20,7 +20,7 @@ class FormStepButtonsActions extends Component {
   }
 
   render() {
-    const { current, lastStep, submit } = this.props
+    const { current, lastStep } = this.props
     return (
       <div>
         <Button onClick={() => this.dispatchStep(current - 1)} disabled={current === 0}>
@@ -32,12 +32,12 @@ class FormStepButtonsActions extends Component {
           </Button>
         )}
         {current === lastStep && (
-          <Button type="primary" ghost submit={submit}>
+          <Button type="primary" ghost htmlType="submit">
             Salvar e adicionar novo
           </Button>
         )}
         {current === lastStep && (
-          <Button type="primary" submit={submit}>
+          <Button type="primary" htmlType="submit">
             Salvar
           </Button>
         )}
