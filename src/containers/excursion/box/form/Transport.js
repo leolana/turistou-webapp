@@ -44,8 +44,8 @@ class Transport extends Component {
             {form.getFieldDecorator(`type[${index}]`, { rules: [{ required: true }] })(
               <Select
                 showSearch
-                filterOption={(q, option) =>
-                  q
+                filterOption={(query, option) =>
+                  query
                     .toLowerCase()
                     .split(' ')
                     .every(x => option.props.children.toLowerCase().includes(x))
@@ -58,13 +58,6 @@ class Transport extends Component {
             )}
           </FormItem>
         </Col>
-        {/* <Col xs={24} sm={8}>
-          <FormItem label="Trasporte">
-            {form.getFieldDecorator(`type[${index}]`, {
-              rules: [{ required: false }],
-            })(<Input size="default" maxLength={30} />)}
-          </FormItem>
-        </Col> */}
         <Col xs={24} sm={4}>
           <FormItem label="Placa">
             {form.getFieldDecorator(`plate[${index}]`, {

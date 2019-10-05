@@ -16,7 +16,6 @@ class ExcursionDetail extends Component {
             })(<Input size="default" maxLength={50} />)}
           </Form.Item>
         </Col>
-
         <Col xs={24} md={12}>
           <Form.Item label="Endereço de partida">
             {form.getFieldDecorator('departurePoint', {
