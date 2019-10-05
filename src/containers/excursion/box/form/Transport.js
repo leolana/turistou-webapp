@@ -8,31 +8,31 @@ class Transport extends Component {
 
     const availableTransports = [
       {
-        id: '123',
+        id: 'BUS',
         name: 'Ônibus',
       },
       {
-        id: '124',
+        id: 'MICRO_BUS',
         name: 'Micro-ônibus',
       },
       {
-        id: '125',
-        name: 'Ônibus duble-deck',
+        id: 'DOUBLE_DECK_BUS',
+        name: 'Ônibus double-deck',
       },
       {
-        id: '126',
+        id: 'VAN',
         name: 'Van',
       },
       {
-        id: '127',
+        id: 'TRAIN',
         name: 'Trêm',
       },
       {
-        id: '128',
+        id: 'CAR',
         name: 'Carro',
       },
       {
-        id: '129',
+        id: 'AIRPLANE',
         name: 'Avião',
       },
     ]
