@@ -22,19 +22,6 @@ const formSteps = [
 
 @connect(({ user }) => ({ user }))
 class ExcursionBox extends Component {
-  onSubmit = event => {
-    event.preventDefault()
-    const { form, dispatch } = this.props
-    form.validateFields((error, values) => {
-      if (!error) {
-        dispatch({
-          type: 'excursion/SAVE',
-          payload: values,
-        })
-      }
-    })
-  }
-
   render() {
     return (
       <div>

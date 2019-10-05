@@ -11,46 +11,44 @@ class ExcursionForm extends Component {
     super()
 
     this.state = {
-      isLoading: true,
+      isLoading: false,
     }
   }
 
-  componentDidMount() {
-    setTimeout(() => {
-      this.setState({ isLoading: false })
-    }, 1500)
-  }
+  // componentDidMount() {
+  //   setTimeout(() => {
+  //     this.setState({ isLoading: false })
+  //   }, 1500)
+  // }
 
-  onSubmit = e => {
-    e.preventDefault()
-    // eslint-disable-next-line react/destructuring-assignment
-    this.props.form.validateFields((err, values) => {
-      if (!err) {
-        console.log('Received values of form: ', values)
+  onSubmit = event => {
+    event.preventDefault()
+    const { form, dispatch } = this.props
+    form.validateFields((error, values) => {
+      console.log(error, values)
+      if (!error) {
+        dispatch({
+          type: 'excursion/SAVE',
+          payload: values,
+        })
       }
     })
   }
 
   render() {
     const { current, formSteps, form } = this.props
-    console.log('--------- render -------------')
-    console.log(current, formSteps, form)
     const { isLoading } = this.state
 
     return (
       <SkeletonForm isLoading={isLoading}>
         <Form layout="vertical" className="customer-form" onSubmit={this.onSubmit}>
-          {formSteps.map((x, i) => {
-            console.log('--------- map ---------')
-            console.log(x, i)
-            return (
-              <x.component
-                key={x.title}
-                form={form}
-                style={{ display: current === i ? 'block' : 'none' }}
-              />
-            )
-          })}
+          {formSteps.map((x, i) => (
+            <x.component
+              key={x.title}
+              form={form}
+              style={{ display: current === i ? 'block' : 'none' }}
+            />
+          ))}
           <div className="form-actions">
             <FormStepButtonsActions lastStep={formSteps.length - 1} />
           </div>
