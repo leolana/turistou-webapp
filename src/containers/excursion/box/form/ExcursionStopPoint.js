@@ -24,9 +24,10 @@ class ExcursionStopPoint extends Component {
 
   render() {
     const { stopPoints } = this.state
+    const { style } = this.props
 
     return (
-      <Row>
+      <Row style={style}>
         <Col>
           {stopPoints.map(x => (
             <StopAddress key={x} index={x} removeStopPoint={this.removeStopPoint} {...this.props} />

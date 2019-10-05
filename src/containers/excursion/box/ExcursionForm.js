@@ -33,19 +33,24 @@ class ExcursionForm extends Component {
 
   render() {
     const { current, formSteps, form } = this.props
+    console.log('--------- render -------------')
+    console.log(current, formSteps, form)
     const { isLoading } = this.state
 
     return (
       <SkeletonForm isLoading={isLoading}>
         <Form layout="vertical" className="customer-form" onSubmit={this.onSubmit}>
-          {formSteps.map((x, i) => (
-            <x.component
-              key={x.title}
-              form={form}
-              style={{ display: current === i ? 'block' : 'none' }}
-            />
-          ))}
-
+          {formSteps.map((x, i) => {
+            console.log('--------- map ---------')
+            console.log(x, i)
+            return (
+              <x.component
+                key={x.title}
+                form={form}
+                style={{ display: current === i ? 'block' : 'none' }}
+              />
+            )
+          })}
           <div className="form-actions">
             <FormStepButtonsActions lastStep={formSteps.length - 1} />
           </div>

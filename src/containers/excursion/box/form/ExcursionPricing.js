@@ -22,11 +22,11 @@ class ExcursionPricing extends Component {
   }
 
   render() {
-    const { form } = this.props
+    const { form, style } = this.props
     const { prices } = this.state
 
     return (
-      <Row>
+      <Row style={style}>
         <Col xs={24} md={6}>
           <Form.Item label="Valor inteira (padrão)">
             {form.getFieldDecorator('ticketPriceDefault', {

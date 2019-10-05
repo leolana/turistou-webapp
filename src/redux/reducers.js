@@ -4,7 +4,7 @@ import user from 'redux/user/reducers'
 import menu from 'redux/menu/reducers'
 import settings from 'redux/settings/reducers'
 import step from 'redux/step/reducers'
-import excursion from 'redux/excursion/reducers'
+import excursion from 'redux/excursionList/reducers'
 import passenger from 'redux/passenger/reducers'
 
 export default history =>

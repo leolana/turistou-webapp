@@ -23,9 +23,10 @@ class ExcursionTransport extends Component {
 
   render() {
     const { transports } = this.state
+    const { style } = this.props
 
     return (
-      <Row>
+      <Row style={style}>
         <Col>
           {transports.map(x => (
             <Transport key={x} index={x} removeTransport={this.removeTransport} {...this.props} />

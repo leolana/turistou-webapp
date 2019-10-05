@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import actions from 'redux/excursion/actions'
+import actions from 'redux/excursionList/actions'
 import { Form, Radio, Input, Row, Col } from 'antd'
 
 import { EXCURSION_STATUS, EXCURSION_STATUS_ENUM } from 'constants/excursionStatus'
