@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import { Row, Col, Button, Form, InputNumber, Divider } from 'antd'
 import Price from './Price'
 
+export const formFields = ['ticketPriceDefault']
+
 class ExcursionPricing extends Component {
   constructor() {
     super()
@@ -22,11 +24,11 @@ class ExcursionPricing extends Component {
   }
 
   render() {
-    const { form, style } = this.props
+    const { form } = this.props
     const { prices } = this.state
 
     return (
-      <Row style={style}>
+      <Row>
         <Col xs={24} md={6}>
           <Form.Item label="Valor inteira (padrão)">
             {form.getFieldDecorator('ticketPriceDefault', {
@@ -39,8 +41,13 @@ class ExcursionPricing extends Component {
         <Divider dashed />
 
         <Col xs={24}>
-          {prices.map(x => (
-            <Price key={x} index={x} removePrice={this.removePrice} {...this.props} />
+          {prices.map((x, index) => (
+            <Price
+              key={index.toString()}
+              index={x}
+              removePrice={this.removePrice}
+              {...this.props}
+            />
           ))}
         </Col>
 

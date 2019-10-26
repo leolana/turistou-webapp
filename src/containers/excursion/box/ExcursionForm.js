@@ -35,6 +35,21 @@ class ExcursionForm extends Component {
     })
   }
 
+  saveStepHandler = (fields, doSuccess) => {
+    const { form, dispatch } = this.props
+    form.validateFields(fields, { first: true }, (error, values) => {
+      console.log(error, values)
+      if (!error) {
+        dispatch({
+          type: 'excursion/SET_STATE',
+          payload: values,
+        })
+
+        doSuccess()
+      }
+    })
+  }
+
   render() {
     const { current, formSteps, form } = this.props
     const { isLoading } = this.state
@@ -43,15 +58,18 @@ class ExcursionForm extends Component {
       <SkeletonForm isLoading={isLoading}>
         <Form layout="vertical" className="customer-form" onSubmit={this.onSubmit}>
           {formSteps.map((x, i) => (
-            <x.component
-              key={x.title}
-              form={form}
-              style={{ display: current === i ? 'block' : 'none' }}
-            />
+            <div key={x.title} style={{ display: current === i ? 'block' : 'none' }}>
+              <x.component form={form} />
+              <div className="form-actions">
+                <FormStepButtonsActions
+                  lastStep={formSteps.length - 1}
+                  validationFields={x.fields}
+                  // todo: da para utilizar curring com ramda.js
+                  onSaveStep={this.saveStepHandler}
+                />
+              </div>
+            </div>
           ))}
-          <div className="form-actions">
-            <FormStepButtonsActions lastStep={formSteps.length - 1} />
-          </div>
         </Form>
       </SkeletonForm>
     )

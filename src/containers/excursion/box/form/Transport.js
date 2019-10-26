@@ -51,8 +51,10 @@ class Transport extends Component {
                     .every(x => option.props.children.toLowerCase().includes(x))
                 }
               >
-                {availableTransports.map(x => (
-                  <Select.Option value={x.id}>{x.name}</Select.Option>
+                {availableTransports.map((x, availableTransportsIndex) => (
+                  <Select.Option key={availableTransportsIndex.toString()} value={x.id}>
+                    {x.name}
+                  </Select.Option>
                 ))}
               </Select>,
             )}
