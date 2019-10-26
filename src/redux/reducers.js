@@ -6,6 +6,7 @@ import settings from 'redux/settings/reducers'
 import step from 'redux/step/reducers'
 import excursion from 'redux/excursion/reducers'
 import passenger from 'redux/passenger/reducers'
+import customer from 'redux/customer/reducers'
 
 export default history =>
   combineReducers({
@@ -16,4 +17,5 @@ export default history =>
     step,
     excursion,
     passenger,
+    customer,
   })
