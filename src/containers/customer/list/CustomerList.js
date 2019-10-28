@@ -61,7 +61,7 @@ class CustomerList extends Component {
       },
       {
         title: 'Cidade',
-        dataIndex: 'city',
+        dataIndex: 'address.city',
         key: 'city',
       },
     ]
