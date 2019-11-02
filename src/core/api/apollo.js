@@ -51,6 +51,7 @@ export const query = options =>
       return { response }
     })
     .catch(error => ({ error }))
+
 export const mutate = options =>
   apolloClient
     .mutate(options)

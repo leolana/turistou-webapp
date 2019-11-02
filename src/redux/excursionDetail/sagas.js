@@ -1,16 +1,10 @@
-import { all, put, takeEvery, call } from 'redux-saga/effects'
+import { all, takeEvery, call } from 'redux-saga/effects'
 
-import actions, { saveExcursion, saveExcursionSuccess, saveExcursionFailure } from './actions'
+import actions, { saveExcursion } from './actions'
 
-export function* save(payload) {
-  const fetchExcursion = saveExcursion()
-  const result = yield call(fetchExcursion.request, payload)
-  if (result.response.data) {
-    yield put(saveExcursionSuccess(result.response.data))
-  } else {
-    const validationError = result.networkError.result.errors[0]
-    yield put(saveExcursionFailure(validationError))
-  }
+export function* save({ payload }) {
+  const result = yield call(saveExcursion, payload)
+  console.log(result)
 }
 
 export default function* rootSaga() {

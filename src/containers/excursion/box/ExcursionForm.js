@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Form } from 'antd'
 
+import actions from 'redux/excursionDetail/actions'
 import FormStepButtonsActions from 'components/Step/FormStepButtonsActions'
 import SkeletonForm from 'components/SkeletonForm/SkeletonForm'
 
@@ -9,6 +10,7 @@ import SkeletonForm from 'components/SkeletonForm/SkeletonForm'
 class ExcursionForm extends Component {
   constructor() {
     super()
+    // FIXME: commented code and isloading
 
     this.state = {
       isLoading: false,
@@ -23,27 +25,21 @@ class ExcursionForm extends Component {
 
   onSubmit = event => {
     event.preventDefault()
-    const { form, dispatch } = this.props
+    const { form, saveForm } = this.props
     form.validateFields((error, values) => {
       console.log(error, values)
       if (!error) {
-        dispatch({
-          type: 'excursion/SAVE',
-          payload: values,
-        })
+        saveForm(values)
       }
     })
   }
 
   saveStepHandler = (fields, doSuccess) => {
-    const { form, dispatch } = this.props
+    const { form, saveStep } = this.props
     form.validateFields(fields, { first: true }, (error, values) => {
       console.log(error, values)
       if (!error) {
-        dispatch({
-          type: 'excursion/SET_STATE',
-          payload: values,
-        })
+        saveStep(values)
 
         doSuccess()
       }
@@ -80,4 +76,12 @@ const mapStateToProps = store => ({
   current: store.step.current,
 })
 
-export default connect(mapStateToProps)(ExcursionForm)
+const mapDispatchToProps = dispatch => ({
+  saveStep: values => dispatch({ type: actions.SET_STATE, payload: values }),
+  saveForm: values => dispatch({ type: actions.SAVE_EXCURSION, payload: values }),
+})
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(ExcursionForm)

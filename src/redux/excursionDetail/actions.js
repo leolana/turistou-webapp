@@ -1,6 +1,6 @@
 import gql from 'graphql-tag'
 
-import { query } from 'core/api/apollo'
+import { mutate } from 'core/api/apollo'
 
 const actions = {
   SET_STATE: 'excursionDetail/SET_STATE',
@@ -9,36 +9,19 @@ const actions = {
   SAVE_EXCURSION_SUCCESS: 'excursionDetail/SAVE_EXCURSION_SUCCESS',
 }
 
-const excursionFragment = gql`
-  fragment ExcursionFragment on Excursion {
-    id
-    destination
-    departureDate
-    regressDate
-    transports {
-      capacity
-    }
-    passengers {
-      spot
-    }
-  }
-`
-
-export const saveExcursion = () => ({
-  type: actions.GET_EXCURSIONS,
-  payload: { loading: true },
-  request: () =>
-    query({
-      query: gql`
-        {
-          excursions {
-            ...ExcursionFragment
-          }
+export const saveExcursion = payload =>
+  mutate({
+    mutation: gql`
+      mutation saveExcursion($input: SaveExcursionInput!) {
+        saveExcursion(input: $input) {
+          id
         }
-        ${excursionFragment}
-      `,
-    }),
-})
+      }
+    `,
+    variables: {
+      input: payload,
+    },
+  })
 
 export const saveExcursionSuccess = (payload: any) => ({
   type: actions.SET_STATE,

@@ -9,13 +9,9 @@ const initialState = {
 export default function reducer(state = initialState, action) {
   switch (action.type) {
     case actions.SET_STATE:
-      console.log('-------- reducer set-state----------')
-      console.log(state, action)
-      return { ...state, ...action }
+      return { isLoading: false, payload: { ...state.payload, ...action.payload } }
     case actions.SAVE_EXCURSION:
-      state.isLoading = true
-      // TODO:
-      return state
+      return { ...state, isLoading: true, payload: action.payload }
 
     case actions.SAVE_EXCURSION_FAILURE:
       state.isLoading = false
