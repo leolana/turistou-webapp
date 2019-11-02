@@ -1,5 +1,5 @@
 const actions = {
-  SET_STATE: 'filter/SET_STATE',
+  SET_STATE: 'passenger/SET_STATE',
 }
 
 export default actions

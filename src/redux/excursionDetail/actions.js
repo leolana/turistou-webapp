@@ -3,10 +3,10 @@ import gql from 'graphql-tag'
 import { query } from 'core/api/apollo'
 
 const actions = {
-  SET_STATE: 'excursion/SET_STATE',
-  SAVE_EXCURSION: 'excursion/SAVE_EXCURSION',
-  SAVE_EXCURSION_FAILURE: 'excursion/SAVE_EXCURSION_FAILURE',
-  SAVE_EXCURSION_SUCCESS: 'excursion/SAVE_EXCURSION_SUCCESS',
+  SET_STATE: 'excursionDetail/SET_STATE',
+  SAVE_EXCURSION: 'excursionDetail/SAVE_EXCURSION',
+  SAVE_EXCURSION_FAILURE: 'excursionDetail/SAVE_EXCURSION_FAILURE',
+  SAVE_EXCURSION_SUCCESS: 'excursionDetail/SAVE_EXCURSION_SUCCESS',
 }
 
 const excursionFragment = gql`

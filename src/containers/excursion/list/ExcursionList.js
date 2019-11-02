@@ -58,6 +58,8 @@ class ExcursionList extends Component {
   render() {
     const { excursions, isLoading } = this.props
     const tableData = excursions.map(excursion => {
+      console.log('--------- dddd ------------')
+      console.log(excursion)
       const spotsFormatter = (transports, passengers) => {
         const { capacity } = transports[0]
         const places = passengers.length

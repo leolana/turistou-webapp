@@ -2,7 +2,7 @@ import { all, put } from 'redux-saga/effects'
 
 export function* SET_STATE() {
   yield put({
-    type: 'filter/SET_STATE',
+    type: 'passenger/SET_STATE',
     payload: {
       filter: 1,
     },
