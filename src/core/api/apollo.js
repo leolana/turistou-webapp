@@ -5,7 +5,7 @@ import { setContext } from 'apollo-link-context'
 import { onError } from 'apollo-link-error'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 
-// import { getIdToken } from 'core/auth'
+import { getIdToken } from 'core/auth'
 
 import config from 'config'
 
@@ -26,11 +26,11 @@ const httpLink = createHttpLink({
 })
 
 const authLink = setContext((_, { headers }) => {
-  // const token = getIdToken()
+  const token = getIdToken()
   return {
     headers: {
       ...headers,
-      // authorization: token ? `Bearer ${token}` : '',
+      authorization: token ? `Bearer ${token}` : '',
     },
   }
 })
