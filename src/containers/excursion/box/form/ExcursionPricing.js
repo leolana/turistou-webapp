@@ -32,7 +32,7 @@ class ExcursionPricing extends Component {
         <Col xs={24} md={6}>
           <Form.Item label="Valor inteira (padrão)">
             {form.getFieldDecorator('ticketPriceDefault', {
-              rules: [{ required: true }],
+              rules: [{ required: true, message: 'Por favor, insira o valor inteira (padrão)' }],
             })(<InputNumber className="ant-input" maxLength={5} />)}
           </Form.Item>
         </Col>

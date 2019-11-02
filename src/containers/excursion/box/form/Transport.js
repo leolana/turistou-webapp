@@ -41,7 +41,9 @@ class Transport extends Component {
       <Row>
         <Col xs={24} sm={7}>
           <FormItem label="Transport">
-            {form.getFieldDecorator(`type[${index}]`, { rules: [{ required: true }] })(
+            {form.getFieldDecorator(`type[${index}]`, {
+              rules: [{ required: true, message: 'Por favor, escolha o tipo de transporte' }],
+            })(
               <Select
                 showSearch
                 filterOption={(query, option) =>
