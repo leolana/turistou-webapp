@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Button, Modal } from 'antd'
 import { DateTime } from 'luxon'
-import actions from 'redux/excursion/actions'
+import actions from 'redux/excursionList/actions'
 import SkeletonTable from 'components/SkeletonTable/SkeletonTable'
 import { EXCURSION_STATUS_ENUM } from 'constants/excursionStatus'
 
@@ -169,7 +169,7 @@ class ExcursionList extends Component {
   }
 }
 
-const mapStateToProps = ({ excursion: { isLoading, filter, payload } }) => ({
+const mapStateToProps = ({ excursionList: { isLoading, filter, payload } }) => ({
   isLoading,
   filter,
   excursions: payload,

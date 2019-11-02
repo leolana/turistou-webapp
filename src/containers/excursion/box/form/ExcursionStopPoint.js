@@ -28,8 +28,13 @@ class ExcursionStopPoint extends Component {
     return (
       <Row>
         <Col>
-          {stopPoints.map(x => (
-            <StopAddress key={x} index={x} removeStopPoint={this.removeStopPoint} {...this.props} />
+          {stopPoints.map((x, index) => (
+            <StopAddress
+              key={index.toString()}
+              index={x}
+              removeStopPoint={this.removeStopPoint}
+              {...this.props}
+            />
           ))}
         </Col>
         <Col xs={{ span: 16, offset: 4 }} md={{ span: 8, offset: 8 }}>

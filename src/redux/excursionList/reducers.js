@@ -3,17 +3,12 @@ import actions from './actions'
 const initialState = {
   statusId: 0,
   query: '',
-  loading: false,
   isLoading: true,
   payload: [],
-  payloadList: [],
-  payloadEdit: {},
   filter: {},
 }
 
 export default function reducer(state = initialState, action) {
-  console.log('----------- payload ----------')
-  console.log(action)
   switch (action.type) {
     case actions.SET_STATE:
       return { ...state, ...action }

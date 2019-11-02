@@ -8,31 +8,31 @@ class Transport extends Component {
 
     const availableTransports = [
       {
-        id: '123',
+        id: 'BUS',
         name: 'Ônibus',
       },
       {
-        id: '124',
+        id: 'MICRO_BUS',
         name: 'Micro-ônibus',
       },
       {
-        id: '125',
-        name: 'Ônibus duble-deck',
+        id: 'DOUBLE_DECK_BUS',
+        name: 'Ônibus double-deck',
       },
       {
-        id: '126',
+        id: 'VAN',
         name: 'Van',
       },
       {
-        id: '127',
+        id: 'TRAIN',
         name: 'Trêm',
       },
       {
-        id: '128',
+        id: 'CAR',
         name: 'Carro',
       },
       {
-        id: '129',
+        id: 'AIRPLANE',
         name: 'Avião',
       },
     ]
@@ -41,30 +41,27 @@ class Transport extends Component {
       <Row>
         <Col xs={24} sm={7}>
           <FormItem label="Transport">
-            {form.getFieldDecorator(`type[${index}]`, { rules: [{ required: true }] })(
+            {form.getFieldDecorator(`type[${index}]`, {
+              rules: [{ required: true, message: 'Por favor, escolha o tipo de transporte' }],
+            })(
               <Select
                 showSearch
-                filterOption={(q, option) =>
-                  q
+                filterOption={(query, option) =>
+                  query
                     .toLowerCase()
                     .split(' ')
                     .every(x => option.props.children.toLowerCase().includes(x))
                 }
               >
-                {availableTransports.map(x => (
-                  <Select.Option value={x.id}>{x.name}</Select.Option>
+                {availableTransports.map((x, availableTransportsIndex) => (
+                  <Select.Option key={availableTransportsIndex.toString()} value={x.id}>
+                    {x.name}
+                  </Select.Option>
                 ))}
               </Select>,
             )}
           </FormItem>
         </Col>
-        {/* <Col xs={24} sm={8}>
-          <FormItem label="Trasporte">
-            {form.getFieldDecorator(`type[${index}]`, {
-              rules: [{ required: false }],
-            })(<Input size="default" maxLength={30} />)}
-          </FormItem>
-        </Col> */}
         <Col xs={24} sm={4}>
           <FormItem label="Placa">
             {form.getFieldDecorator(`plate[${index}]`, {

@@ -27,8 +27,13 @@ class ExcursionTransport extends Component {
     return (
       <Row>
         <Col>
-          {transports.map(x => (
-            <Transport key={x} index={x} removeTransport={this.removeTransport} {...this.props} />
+          {transports.map((x, index) => (
+            <Transport
+              key={index.toString()}
+              index={x}
+              removeTransport={this.removeTransport}
+              {...this.props}
+            />
           ))}
         </Col>
 

@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import { Row, Col, Button, Form, InputNumber, Divider } from 'antd'
 import Price from './Price'
 
+export const formFields = ['ticketPriceDefault']
+
 class ExcursionPricing extends Component {
   constructor() {
     super()
@@ -30,7 +32,7 @@ class ExcursionPricing extends Component {
         <Col xs={24} md={6}>
           <Form.Item label="Valor inteira (padrão)">
             {form.getFieldDecorator('ticketPriceDefault', {
-              rules: [{ required: true }],
+              rules: [{ required: true, message: 'Por favor, insira o valor inteira (padrão)' }],
             })(<InputNumber className="ant-input" maxLength={5} />)}
           </Form.Item>
         </Col>
@@ -39,8 +41,13 @@ class ExcursionPricing extends Component {
         <Divider dashed />
 
         <Col xs={24}>
-          {prices.map(x => (
-            <Price key={x} index={x} removePrice={this.removePrice} {...this.props} />
+          {prices.map((x, index) => (
+            <Price
+              key={index.toString()}
+              index={x}
+              removePrice={this.removePrice}
+              {...this.props}
+            />
           ))}
         </Col>
 

@@ -3,7 +3,7 @@ import gql from 'graphql-tag'
 import { query } from 'core/api/apollo'
 
 const actions = {
-  SET_STATE: 'filter/SET_STATE',
+  SET_STATE: 'customer/SET_STATE',
   GET_CUSTOMERS: 'customer/GET_DATA',
   GET_CUSTOMERS_FAILURE: 'customer/GET_CUSTOMERS_FAILURE',
 }
