@@ -3,37 +3,17 @@ import { connect } from 'react-redux'
 import { Button, Tag, Modal, Form, InputNumber, Row, Col, Select, Table } from 'antd'
 import { paymentType } from 'constants/options'
 
-import { tableData, statuses, statusesCode, statusesEnum } from 'mock/passengers'
-import { tableData as customersList } from 'mock/customers'
+import { statuses, statusesCode, statusesEnum } from 'mock/passengers'
+// import { tableData as customersList } from 'mock/customers'
+import passengerActions from 'redux/passenger/actions'
 import CustomerSelect from 'components/CustomerSelect/CustomerSelect'
 import SkeletonTable from 'components/SkeletonTable/SkeletonTable'
+import customerActions from 'redux/customer/actions'
 
 class PassengerList extends Component {
-  constructor() {
-    super()
-    this.filterData = this.filterData.bind(this)
-    this.columnsForStatus = this.columnsForStatus.bind(this)
-    this.handleRemove = this.handleRemove.bind(this)
-
-    const passengersList = tableData.map(x => {
-      const paymentPercentual = x.paid / x.total
-      if (paymentPercentual === 1) x.paidColor = 'text-success'
-      else if (paymentPercentual > 0.5) x.paidColor = 'text-warning'
-      else x.paidColor = 'text-danger'
-
-      return x
-    })
-    this.state = {
-      passengersList,
-      paymentValue: 0,
-      isLoading: true,
-    }
-  }
-
   componentDidMount() {
-    setTimeout(() => {
-      this.setState({ isLoading: false })
-    }, 1500)
+    const { getPassengers } = this.props
+    getPassengers()
   }
 
   exchange = id => {
@@ -262,6 +242,8 @@ class PassengerList extends Component {
   }
 
   handleExchange(id) {
+    const { customersList } = this.props
+
     Modal.confirm({
       title: 'Troca de passageiro',
       okCancel: true,
@@ -370,10 +352,11 @@ class PassengerList extends Component {
     return buttonsAction[statusesEnum[statusId]]
   }
 
-  filterData() {
-    const { statusId, query, startPay, fullPay } = this.props
-    const { passengersList } = this.state
-    let filteredData = passengersList
+  filterData(passengers) {
+    const {
+      filter: { statusId, query, startPay, fullPay },
+    } = this.props
+    let filteredData = passengers
 
     if (statusId) filteredData = filteredData.filter(x => x.status === statusId)
     if (fullPay) filteredData = filteredData.filter(x => x.paid === x.total)
@@ -388,7 +371,9 @@ class PassengerList extends Component {
   }
 
   columnsForStatus() {
-    const { statusId } = this.props
+    const {
+      filter: { statusId },
+    } = this.props
     const allColumns = {
       actions: {
         dataIndex: 'id',
@@ -467,30 +452,43 @@ class PassengerList extends Component {
   }
 
   render() {
-    const { isLoading } = this.state
+    const { isLoading, passengers } = this.props
     const tableColumns = this.columnsForStatus()
 
-    const filteredData = this.filterData()
+    const passengersList = passengers.map(x => {
+      const paymentPercentual = x.paid / x.total
+      if (paymentPercentual === 1) x.paidColor = 'text-success'
+      else if (paymentPercentual > 0.5) x.paidColor = 'text-warning'
+      else x.paidColor = 'text-danger'
 
-    const props = { isLoading, tableColumns, tableData: filteredData }
+      return x
+    })
 
-    return <SkeletonTable {...props} />
+    // TODO:
+    const filteredData = passengersList // this.filterData(passengersList)
+
+    return (
+      <SkeletonTable isLoading={isLoading} tableColumns={tableColumns} tableData={filteredData} />
+    )
   }
 }
 
-// const mapStateToProps = ({ passenger: {
-//   isLoading,
-//   payloadList,
-//   filter,
-// } }) => ({
-//   isLoading,
-//   payloadList,
-//   filter,
-// })
+const mapStateToProps = ({
+  passenger: { isLoading, filter, payload: passengers },
+  customer: { payload: customersList },
+}) => ({
+  isLoading,
+  filter,
+  passengers,
+  customersList,
+})
 
-const mapStateToProps = state => {
-  const { statusId, startPay, fullPay, query } = state.passenger
-  return { statusId, startPay, fullPay, query }
-}
+const mapDispatchToProps = dispatch => ({
+  getPassengers: () => dispatch({ type: passengerActions.GET_PASSENGERS }),
+  getCustomers: () => dispatch({ type: customerActions.GET_CUSTOMERS }),
+})
 
-export default connect(mapStateToProps)(PassengerList)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(PassengerList)
