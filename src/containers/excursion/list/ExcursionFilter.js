@@ -62,8 +62,8 @@ class ExcursionFilter extends Component {
 }
 
 const mapStateToProps = state => ({
-  statusId: state.excursion.statusId,
-  queryFilter: state.excursion.query,
+  statusId: state.excursionList.statusId,
+  queryFilter: state.excursionList.query,
 })
 
 export default connect(mapStateToProps)(ExcursionFilter)

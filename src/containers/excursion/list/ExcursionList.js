@@ -133,7 +133,7 @@ class ExcursionList extends Component {
   }
 }
 
-const mapStateToProps = ({ excursion: { isLoading, filter, payload } }) => ({
+const mapStateToProps = ({ excursionList: { isLoading, filter, payload } }) => ({
   isLoading,
   filter,
   excursions: payload,
