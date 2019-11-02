@@ -5,6 +5,7 @@ import { Button, Modal } from 'antd'
 import { DateTime } from 'luxon'
 import actions from 'redux/excursion/actions'
 import SkeletonTable from 'components/SkeletonTable/SkeletonTable'
+import { EXCURSION_STATUS_ENUM } from 'constants/excursionStatus'
 
 class ExcursionList extends Component {
   componentDidMount() {
@@ -32,6 +33,39 @@ class ExcursionList extends Component {
     })
   }
 
+  filterTable(tableData) {
+    const {
+      filter: { query, statusId },
+    } = this.props
+
+    if (Number.isInteger(statusId) && EXCURSION_STATUS_ENUM.all !== statusId) {
+      const today = DateTime.local()
+      tableData = tableData.filter(excursion => {
+        const regress = DateTime.fromISO(excursion.regress)
+
+        switch (statusId) {
+          case EXCURSION_STATUS_ENUM.done:
+            return today > regress
+          case EXCURSION_STATUS_ENUM.nexties:
+            return today <= regress
+          default:
+            return true
+        }
+      })
+    }
+    if (query) {
+      tableData = tableData.filter(excursion => {
+        const destination = excursion.destination.toLowerCase()
+        if (destination.includes(query.toLowerCase())) return true
+        return query.split(' ').every(q => {
+          const partialQuery = q.toLowerCase().trim()
+          return destination.includes(partialQuery)
+        })
+      })
+    }
+    return tableData
+  }
+
   renderActionsButtons = id => (
     <div className="table-action-buttons">
       <Link to={`${id}/passenger`}>
@@ -57,7 +91,7 @@ class ExcursionList extends Component {
 
   render() {
     const { excursions, isLoading } = this.props
-    const tableData = excursions.map(excursion => {
+    const tableData = this.filterTable(excursions).map(excursion => {
       const spotsFormatter = (transports, passengers) => {
         const { capacity } = transports[0]
         const places = passengers.length
@@ -125,7 +159,11 @@ class ExcursionList extends Component {
       },
     ]
 
-    const props = { isLoading, tableData, tableColumns }
+    const props = {
+      isLoading,
+      tableData,
+      tableColumns,
+    }
 
     return <SkeletonTable {...props} />
   }

@@ -9,26 +9,13 @@ class ExcursionFilter extends Component {
   constructor() {
     super()
 
-    this.handleChangeQuery = this.handleChangeQuery.bind(this)
-    this.handleChangeStatus = this.handleChangeStatus.bind(this)
+    this.handleChangeFilterProperty = this.handleChangeFilterProperty.bind(this)
   }
 
-  handleChangeQuery(e) {
-    const query = e.target.value
-    const { dispatch } = this.props
-    dispatch({
-      type: actions.GET_EXCURSIONS,
-      filter: { query },
-    })
-  }
-
-  handleChangeStatus(e) {
-    const statusId = e.target.value
-    const { dispatch } = this.props
-    dispatch({
-      type: actions.GET_EXCURSIONS,
-      filter: { statusId },
-    })
+  handleChangeFilterProperty(property, value) {
+    const { filter, setFilter } = this.props
+    const newFilter = { ...filter, [property]: value }
+    setFilter(newFilter)
   }
 
   render() {
@@ -37,7 +24,7 @@ class ExcursionFilter extends Component {
         <Row>
           <Col md={12}>
             <Radio.Group
-              onChange={this.handleChangeStatus}
+              onChange={e => this.handleChangeFilterProperty('statusId', e.target.value)}
               buttonStyle="solid"
               defaultValue={EXCURSION_STATUS_ENUM.nexties}
             >
@@ -52,7 +39,7 @@ class ExcursionFilter extends Component {
             <Input
               type="text"
               addonBefore={<i className="fa fa-search" />}
-              onChange={this.handleChangeQuery}
+              onChange={e => this.handleChangeFilterProperty('query', e.target.value)}
             />
           </Col>
         </Row>
@@ -61,9 +48,15 @@ class ExcursionFilter extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  statusId: state.excursion.statusId,
-  queryFilter: state.excursion.query,
+const mapStateToProps = ({ excursion: { filter } }) => ({
+  filter,
 })
 
-export default connect(mapStateToProps)(ExcursionFilter)
+const mapDispatchToProps = dispatch => ({
+  setFilter: filter => dispatch({ type: actions.SET_STATE, filter }),
+})
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(ExcursionFilter)
