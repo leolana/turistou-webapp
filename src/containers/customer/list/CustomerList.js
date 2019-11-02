@@ -3,31 +3,21 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Button } from 'antd'
 
-import { tableData as mockData } from 'mock/customers'
+import actions from 'redux/customer/actions'
 import SkeletonTable from 'components/SkeletonTable/SkeletonTable'
 
 class CustomerList extends Component {
-  constructor() {
-    super()
-    this.state = {
-      tableData: mockData,
-      isLoading: true,
-    }
-
-    this.filter = this.filter.bind(this)
-  }
-
   componentDidMount() {
-    setTimeout(() => {
-      this.setState({ isLoading: false })
-    }, 1500)
+    const { getCustomers } = this.props
+    getCustomers()
   }
 
-  filter() {
-    const { query } = this.props
-    const { tableData } = this.state
+  filterCustomers(customers) {
+    const {
+      filter: { query },
+    } = this.props
 
-    let filteredData = tableData
+    let filteredData = customers
     if (query) {
       const lowerQuery = query.toLowerCase()
       filteredData = filteredData.filter(customer => {
@@ -43,9 +33,9 @@ class CustomerList extends Component {
   }
 
   render() {
-    const { isLoading } = this.state
-
-    const filteredData = this.filter()
+    const { isLoading, customers } = this.props
+    // FIXME: filters
+    // const filteredData = this.filterCustomers(customers)
 
     const tableColumns = [
       {
@@ -71,19 +61,25 @@ class CustomerList extends Component {
       },
       {
         title: 'Cidade',
-        dataIndex: 'city',
+        dataIndex: 'address.city',
         key: 'city',
       },
     ]
 
-    const props = { isLoading, tableData: filteredData, tableColumns }
-
-    return <SkeletonTable {...props} />
+    return <SkeletonTable isLoading={isLoading} tableData={customers} tableColumns={tableColumns} />
   }
 }
 
-const mapStateToProps = state => ({
-  query: state.excursion.query,
+const mapStateToProps = ({ customer }) => ({
+  query: customer.query,
+  customers: customer.payload,
 })
 
-export default connect(mapStateToProps)(CustomerList)
+const mapDispatchToProps = dispatch => ({
+  getCustomers: () => dispatch({ type: actions.GET_CUSTOMERS }),
+})
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(CustomerList)
