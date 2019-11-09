@@ -24,11 +24,16 @@ class ExcursionStopPoint extends Component {
 
   render() {
     const { stopPoints } = this.state
+    const { form } = this.props
+    const { getFieldDecorator, getFieldValue } = form
+
+    getFieldDecorator('stopPointsKeys', { initialValue: stopPoints })
+    const stopPointsKeys = getFieldValue('stopPointsKeys')
 
     return (
       <Row>
         <Col>
-          {stopPoints.map((x, index) => (
+          {stopPointsKeys.map((x, index) => (
             <StopAddress
               key={index.toString()}
               index={x}

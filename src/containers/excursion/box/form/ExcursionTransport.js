@@ -23,11 +23,16 @@ class ExcursionTransport extends Component {
 
   render() {
     const { transports } = this.state
+    const { form } = this.props
+    const { getFieldDecorator, getFieldValue } = form
+
+    getFieldDecorator('transportsKeys', { initialValue: transports })
+    const transportsKeys = getFieldValue('transportsKeys')
 
     return (
       <Row>
         <Col>
-          {transports.map((x, index) => (
+          {transportsKeys.map((x, index) => (
             <Transport
               key={index.toString()}
               index={x}
