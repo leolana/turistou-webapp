@@ -13,7 +13,9 @@ class ExcursionPricing extends Component {
   addPrice = () => {
     const { prices } = this.state
     const last = prices.length ? prices[prices.length - 1] : 0
+    console.log(prices)
     prices.push(last + 1)
+    console.log(prices)
     this.setState({ prices })
   }
 
@@ -25,7 +27,11 @@ class ExcursionPricing extends Component {
 
   render() {
     const { form } = this.props
+    const { getFieldDecorator, getFieldValue } = form
     const { prices } = this.state
+
+    getFieldDecorator('priceKeys', { initialValue: prices })
+    const priceKeys = getFieldValue('priceKeys')
 
     return (
       <Row>
@@ -41,7 +47,7 @@ class ExcursionPricing extends Component {
         <Divider dashed />
 
         <Col xs={24}>
-          {prices.map((x, index) => (
+          {priceKeys.map((x, index) => (
             <Price
               key={index.toString()}
               index={x}

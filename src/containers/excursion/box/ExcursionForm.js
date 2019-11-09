@@ -27,7 +27,6 @@ class ExcursionForm extends Component {
     event.preventDefault()
     const { form, saveForm } = this.props
     form.validateFields((error, values) => {
-      console.log(error, values)
       if (!error) {
         saveForm(values)
       }
@@ -81,7 +80,4 @@ const mapDispatchToProps = dispatch => ({
   saveForm: values => dispatch({ type: actions.SAVE_EXCURSION, payload: values }),
 })
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(ExcursionForm)
+export default connect(mapStateToProps, mapDispatchToProps)(ExcursionForm)
