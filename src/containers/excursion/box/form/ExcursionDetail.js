@@ -1,9 +1,21 @@
 import React, { Component } from 'react'
 import { Form, Input, Col, Row, DatePicker, TimePicker } from 'antd'
 
+export const formFields = [
+  'destination',
+  'departurePoint',
+  'departureDate',
+  'departureTime',
+  'arrivalPoint',
+  'regressDate',
+  'regressDate',
+  'regressTime',
+]
+
 class ExcursionDetail extends Component {
   render() {
     const { form } = this.props
+
     const dateFormat = 'DD/MM/YYYY'
     const timeFormat = 'HH:mm'
     return (
@@ -15,7 +27,6 @@ class ExcursionDetail extends Component {
             })(<Input size="default" maxLength={50} />)}
           </Form.Item>
         </Col>
-
         <Col xs={24} md={12}>
           <Form.Item label="Endereço de partida">
             {form.getFieldDecorator('departurePoint', {

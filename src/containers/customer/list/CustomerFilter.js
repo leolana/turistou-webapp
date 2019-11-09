@@ -33,7 +33,7 @@ class CustomerFilter extends Component {
 }
 
 const mapStateToProps = state => ({
-  queryFilter: state.excursion.query,
+  queryFilter: state.excursionList.query,
 })
 
 export default connect(mapStateToProps)(CustomerFilter)

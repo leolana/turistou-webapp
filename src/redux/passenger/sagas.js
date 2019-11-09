@@ -16,7 +16,10 @@ export function* getData() {
 
 export function* SET_STATE() {
   yield put({
-    type: 'filter/SET_STATE',
+    type: actions.SET_STATE,
+    payload: {
+      filter: 1,
+    },
   })
 }
 
