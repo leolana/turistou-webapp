@@ -56,7 +56,4 @@ const mapDispatchToProps = dispatch => ({
   setFilter: filter => dispatch({ type: actions.SET_STATE, filter }),
 })
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(ExcursionFilter)
+export default connect(mapStateToProps, mapDispatchToProps)(ExcursionFilter)

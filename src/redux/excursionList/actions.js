@@ -27,7 +27,6 @@ const excursionFragment = gql`
     }
   }
 `
-
 export const fetchExcursions = () => ({
   type: actions.GET_EXCURSIONS,
   payload: { loading: true },

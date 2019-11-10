@@ -1,15 +1,20 @@
 import actions from './actions'
 
 const initialState = {
-  statusId: 1,
-  startPay: false,
-  fullPay: false,
+  isLoading: true,
+  payload: [],
+  filter: {
+    query: '',
+    statusId: 1,
+    startPay: false,
+    fullPay: false,
+  },
 }
 
-export default function stepReducer(state = initialState, action) {
+export default function passengerReducer(state = initialState, action) {
   switch (action.type) {
     case actions.SET_STATE:
-      return { ...state, ...action.payload }
+      return { ...state, ...action }
     default:
       return state
   }

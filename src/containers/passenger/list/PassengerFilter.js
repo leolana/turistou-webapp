@@ -55,25 +55,28 @@ class PassengerFilter extends Component {
   render() {
     // const { id, startPay, fullPay, statusId } = this.props
     const { id, statusId } = this.props
-    const excursion = tableData.filter(x => x.id === +id)[0]
+
+    const excursion = tableData.find(x => x.id === +id)
 
     return (
       <Form layout="inline" className="form-filter">
         <Row>
           <Col md={24}>
-            <h5>
-              {excursion.destination}
-              <small className="ml-2">
-                <i className="fa fa-calendar-o" />{' '}
-                {new Date(excursion.departure).toLocaleDateString()}
-              </small>
-              <small className="ml-2">
-                <i className="fa fa-calendar-o" />{' '}
-                {new Date(excursion.regress).toLocaleDateString()}
-              </small>
-            </h5>
+            {excursion && (
+              <h5>
+                {excursion.destination}
+                <small className="ml-2">
+                  <i className="fa fa-calendar-o" />{' '}
+                  {new Date(excursion.departure).toLocaleDateString()}
+                </small>
+                <small className="ml-2">
+                  <i className="fa fa-calendar-o" />{' '}
+                  {new Date(excursion.regress).toLocaleDateString()}
+                </small>
+              </h5>
+            )}
           </Col>
-          {/* 
+          {/*
           <Col md={10}>
             <Form.Item label="Excursão">
               {form.getFieldDecorator('excursion', { rules: [{ required: false }] })(

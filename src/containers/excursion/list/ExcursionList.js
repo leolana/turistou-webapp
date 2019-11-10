@@ -181,7 +181,4 @@ const mapDispatchToProps = dispatch => ({
   getExcursions: () => dispatch({ type: actions.GET_EXCURSIONS }),
 })
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(ExcursionList)
+export default connect(mapStateToProps, mapDispatchToProps)(ExcursionList)
