@@ -46,8 +46,6 @@ export const query = options =>
   apolloClient
     .query(options)
     .then(response => {
-      console.log('then')
-      console.log(response)
       return { response }
     })
     .catch(error => ({ error }))
@@ -56,9 +54,7 @@ export const mutate = options =>
   apolloClient
     .mutate(options)
     .then(response => {
-      console.log('then')
-      console.log(response)
-      return { data: response }
+      return { response }
     })
     .catch(error => ({ error }))
 

@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Form } from 'antd'
+import { push } from 'react-router-redux'
 
 import actions from 'redux/excursionDetail/actions'
 import FormStepButtonsActions from 'components/Step/FormStepButtonsActions'
@@ -8,28 +9,23 @@ import SkeletonForm from 'components/SkeletonForm/SkeletonForm'
 
 @Form.create()
 class ExcursionForm extends Component {
-  constructor() {
-    super()
-    // FIXME: commented code and isloading
-
-    this.state = {
-      isLoading: false,
-    }
+  onSaveFormAndAddNew = () => {
+    const { form, saveForm, resetForm } = this.props
+    form.validateFields(async (error, values) => {
+      if (!error) {
+        await saveForm(values)
+        resetForm()
+      }
+    })
   }
-
-  // componentDidMount() {
-  //   setTimeout(() => {
-  //     this.setState({ isLoading: false })
-  //   }, 1500)
-  // }
 
   onSubmit = event => {
     event.preventDefault()
-    const { form, saveForm } = this.props
-    form.validateFields((error, values) => {
-      console.log(error, values)
+    const { form, saveForm, redirectToExcursionList } = this.props
+    form.validateFields(async (error, values) => {
       if (!error) {
-        saveForm(values)
+        await saveForm(values)
+        redirectToExcursionList()
       }
     })
   }
@@ -37,7 +33,6 @@ class ExcursionForm extends Component {
   saveStepHandler = (fields, doSuccess) => {
     const { form, saveStep } = this.props
     form.validateFields(fields, { first: true }, (error, values) => {
-      console.log(error, values)
       if (!error) {
         saveStep(values)
 
@@ -47,8 +42,7 @@ class ExcursionForm extends Component {
   }
 
   render() {
-    const { current, formSteps, form } = this.props
-    const { isLoading } = this.state
+    const { current, formSteps, form, isLoading } = this.props
 
     return (
       <SkeletonForm isLoading={isLoading}>
@@ -62,6 +56,7 @@ class ExcursionForm extends Component {
                   validationFields={x.fields}
                   // todo: da para utilizar curring com ramda.js
                   onSaveStep={this.saveStepHandler}
+                  onSaveFormAndAddNew={this.onSaveFormAndAddNew}
                 />
               </div>
             </div>
@@ -74,11 +69,14 @@ class ExcursionForm extends Component {
 
 const mapStateToProps = store => ({
   current: store.step.current,
+  isLoading: store.excursionDetail.isLoading,
 })
 
 const mapDispatchToProps = dispatch => ({
   saveStep: values => dispatch({ type: actions.SET_STATE, payload: values }),
   saveForm: values => dispatch({ type: actions.SAVE_EXCURSION, payload: values }),
+  resetForm: () => dispatch(push('/excursion')),
+  redirectToExcursionList: () => dispatch(push('/excursion/list')),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(ExcursionForm)

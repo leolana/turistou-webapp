@@ -20,7 +20,7 @@ class FormStepButtonsActions extends Component {
   }
 
   render() {
-    const { current, lastStep, onSaveStep, validationFields } = this.props
+    const { current, lastStep, onSaveStep, onSaveFormAndAddNew, validationFields } = this.props
     return (
       <div>
         <Button
@@ -38,7 +38,14 @@ class FormStepButtonsActions extends Component {
           </Button>
         )}
         {current === lastStep && (
-          <Button type="primary" ghost htmlType="submit">
+          <Button
+            type="primary"
+            ghost
+            onClick={() => {
+              onSaveFormAndAddNew()
+              this.dispatchStep(0)
+            }}
+          >
             Salvar e adicionar novo
           </Button>
         )}

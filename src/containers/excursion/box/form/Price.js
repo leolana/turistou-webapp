@@ -33,21 +33,21 @@ class Price extends Component {
           </Col>
           <Col xs={19} sm={7} md={3}>
             <FormItem label="Idade">
-              {form.getFieldDecorator(`ageInital[${index}]`, {
+              {form.getFieldDecorator(`ageInitial[${index}]`, {
                 rules: [{ required: false }],
               })(<InputNumber onClick={this.handleAbleFromAge} size="default" maxLength={6} />)}
             </FormItem>
           </Col>
           <Col xs={5} sm={{ span: 3, offset: 1 }} md={{ span: 2, offset: 0 }}>
             <FormItem label="até">
-              {form.getFieldDecorator(`ageFinal[${index}]`, {
+              {form.getFieldDecorator(`untilAge[${index}]`, {
                 rules: [{ required: false }],
               })(<Switch size="small" />)}
             </FormItem>
           </Col>
           <Col xs={15} sm={7} md={3}>
             <FormItem label="Idade">
-              {form.getFieldDecorator(`untilAge[${index}]`, {
+              {form.getFieldDecorator(`ageFinal[${index}]`, {
                 rules: [{ required: false }],
               })(<InputNumber size="default" maxLength={3} />)}
             </FormItem>
