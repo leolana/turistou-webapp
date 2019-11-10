@@ -74,7 +74,7 @@ export const saveExcursion = form => {
     })),
   }
 
-  mutate({
+  return mutate({
     mutation: gql`
       mutation saveExcursion($input: SaveExcursionInput!) {
         saveExcursion(input: $input) {
@@ -89,8 +89,8 @@ export const saveExcursion = form => {
 }
 
 export const saveExcursionSuccess = (payload: any) => ({
+  payload: { ...payload },
   type: actions.SET_STATE,
-  payload: payload.excursions,
   isLoading: false,
 })
 

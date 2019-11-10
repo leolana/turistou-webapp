@@ -13,9 +13,7 @@ class ExcursionPricing extends Component {
   addPrice = () => {
     const { prices } = this.state
     const last = prices.length ? prices[prices.length - 1] : 0
-    console.log(prices)
     prices.push(last + 1)
-    console.log(prices)
     this.setState({ prices })
   }
 

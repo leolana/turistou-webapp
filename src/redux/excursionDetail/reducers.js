@@ -1,7 +1,7 @@
 import actions from './actions'
 
 const initialState = {
-  isLoading: true,
+  isLoading: false,
   error: {},
   payload: {},
 }
