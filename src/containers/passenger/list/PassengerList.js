@@ -456,9 +456,9 @@ class PassengerList extends Component {
     const tableColumns = this.columnsForStatus()
 
     const passengersList = passengers.map(x => {
-      const paymentPercentual = x.paid / x.total
-      if (paymentPercentual === 1) x.paidColor = 'text-success'
-      else if (paymentPercentual > 0.5) x.paidColor = 'text-warning'
+      const paymentPercent = x.paid / x.total
+      if (paymentPercent === 1) x.paidColor = 'text-success'
+      else if (paymentPercent > 0.5) x.paidColor = 'text-warning'
       else x.paidColor = 'text-danger'
 
       return x
@@ -488,7 +488,4 @@ const mapDispatchToProps = dispatch => ({
   getCustomers: () => dispatch({ type: customerActions.GET_CUSTOMERS }),
 })
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(PassengerList)
+export default connect(mapStateToProps, mapDispatchToProps)(PassengerList)

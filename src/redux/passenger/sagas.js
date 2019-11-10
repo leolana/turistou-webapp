@@ -17,9 +17,6 @@ export function* getData() {
 export function* SET_STATE() {
   yield put({
     type: actions.SET_STATE,
-    payload: {
-      filter: 1,
-    },
   })
 }
 

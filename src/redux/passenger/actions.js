@@ -13,9 +13,11 @@ const passengerFragment = gql`
     id
     spot
     status
+    customer {
+      name
+    }
   }
 `
-
 export const fetchPassengers = () => ({
   type: actions.GET_PASSENGERS,
   payload: { loading: true },
