@@ -16,6 +16,10 @@ const passengerFragment = gql`
     customer {
       name
     }
+    ticketPrice {
+      description
+      price
+    }
   }
 `
 export const fetchPassengers = () => ({
