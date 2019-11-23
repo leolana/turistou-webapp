@@ -415,7 +415,7 @@ class PassengerList extends Component {
           if (row.status !== statusesCode.waiting)
             return (
               <span className={row.paidColor}>
-                R$ {row.paid} / R$ {row.total}
+                R$ {row.paid} / R$ {row.ticketPrice.price}
               </span>
             )
           return ''
