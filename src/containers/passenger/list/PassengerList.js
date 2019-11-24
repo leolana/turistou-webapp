@@ -2,18 +2,73 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Button, Tag, Modal, Form, InputNumber, Row, Col, Select, Table } from 'antd'
 import { paymentType } from 'constants/options'
+import OPERATIONS from 'constants/paymentOperations'
 
 import { statuses, statusesCode, statusesEnum } from 'mock/passengers'
-// import { tableData as customersList } from 'mock/customers'
 import passengerActions from 'redux/passenger/actions'
+import paymentsActions from 'redux/payments/actions'
 import CustomerSelect from 'components/CustomerSelect/CustomerSelect'
 import SkeletonTable from 'components/SkeletonTable/SkeletonTable'
 import customerActions from 'redux/customer/actions'
 
 class PassengerList extends Component {
+  static defaultProps = {
+    isPaymentsModalVisible: false,
+    paymentsList: [],
+  }
+
   componentDidMount() {
     const { getPassengers } = this.props
     getPassengers()
+  }
+
+  columnsForPayments = () => {
+    const columns = [
+      {
+        title: 'Data',
+        dataIndex: 'payDate',
+        key: 'payDate',
+        render: x => x && new Date(x).toLocaleDateString(),
+      },
+      {
+        title: 'Valor',
+        dataIndex: 'value',
+        key: 'value',
+        className: 'text-right',
+        render: x => `R$ ${x}`,
+      },
+      {
+        title: 'Forma de pagamento',
+        dataIndex: 'operation',
+        key: 'operation',
+        render: x => {
+          const text = OPERATIONS[x] || 'Não especificado'
+
+          return text
+        },
+      },
+      {
+        title: 'Situação',
+        dataIndex: 'paymentstatus',
+        key: 'status',
+        render: (_, row) => {
+          const { payDate } = row
+          const text = payDate ? 'Pago' : 'A pagar'
+          const className = payDate ? 'text-success' : 'text-warning'
+          // if (paymentStatus.auto) text += ' (automático)'
+
+          return (
+            <span className={className}>
+              {text}
+              {/* TODO: ajustar link */}
+              {/* {!paymentStatus.paid && !paymentStatus.auto && <Button type="link">Pagou</Button>} */}
+            </span>
+          )
+        },
+      },
+    ]
+
+    return columns
   }
 
   exchange = id => {
@@ -79,104 +134,9 @@ class PassengerList extends Component {
   }
 
   handleHistory(id) {
-    const fake = [
-      {
-        id: 1,
-        date: new Date(2019, 5, 12),
-        value: 100,
-        paymentWay: 'Dinheiro',
-        paymentStatus: { paid: true, auto: false },
-      },
-      {
-        id: 2,
-        date: new Date(2019, 6, 12),
-        value: 100,
-        paymentWay: 'Cartão de crédito',
-        paymentStatus: { paid: true, auto: true },
-      },
-      {
-        id: 3,
-        date: new Date(2019, 7, 12),
-        value: 100,
-        paymentWay: 'Cartão de crédito',
-        paymentStatus: { paid: false, auto: true },
-      },
-      {
-        id: 4,
-        date: new Date(2019, 8, 12),
-        value: 100,
-        paymentWay: 'Boleto',
-        paymentStatus: { paid: true, auto: false },
-      },
-      {
-        id: 5,
-        date: new Date(2019, 9, 12),
-        value: 100,
-        paymentWay: 'Boleto',
-        paymentStatus: { paid: false, auto: false },
-      },
-    ]
-    const columns = [
-      {
-        title: 'Data',
-        dataIndex: 'date',
-        key: 'date',
-        render: x => x && new Date(x).toLocaleDateString(),
-      },
-      {
-        title: 'Valor',
-        dataIndex: 'value',
-        key: 'value',
-        className: 'text-right',
-        render: x => `R$ ${x}`,
-      },
-      {
-        title: 'Forma de pagamento',
-        dataIndex: 'paymentWay',
-        key: 'paymentWay',
-      },
-      {
-        title: 'Situação',
-        dataIndex: 'paymentstatus',
-        key: 'status',
-        render: (_, row) => {
-          console.log('row', row)
-          const { paymentStatus } = row
-          let text = paymentStatus.paid ? 'Pago' : 'A pagar'
-          if (paymentStatus.auto) text += ' (automático)'
+    const { getPayments } = this.props
 
-          return (
-            <span>
-              {text}
-              {/* TODO: ajustar link */}
-              {!paymentStatus.paid && !paymentStatus.auto && <Button type="link">Pagou</Button>}
-            </span>
-          )
-        },
-      },
-    ]
-
-    Modal.info({
-      title: 'Datas de pagamento',
-      width: 700,
-      okCancel: true,
-      cancelText: 'OK',
-      okText: 'Atualizar',
-      onOk: () => {
-        this.updatePayment(id)
-      },
-      content: (
-        <Table
-          id={`payment_${id}`}
-          rowKey="id"
-          className="utils__scrollTable"
-          scroll={{ x: '100%' }}
-          columns={columns}
-          dataSource={fake}
-          pagination={false}
-        />
-      ),
-    })
+    getPayments(id)
   }
 
   handleUpdate(id) {
@@ -452,7 +412,15 @@ class PassengerList extends Component {
   }
 
   render() {
-    const { isLoading, passengers } = this.props
+    const {
+      isPassengerLoading,
+      passengers,
+      isPaymentsModalVisible,
+      closePayments,
+      clearPayments,
+      paymentsList,
+      isPaymentsLoading,
+    } = this.props
     const tableColumns = this.columnsForStatus()
 
     const passengersList = passengers.map(x => {
@@ -468,24 +436,62 @@ class PassengerList extends Component {
     const filteredData = passengersList // this.filterData(passengersList)
 
     return (
-      <SkeletonTable isLoading={isLoading} tableColumns={tableColumns} tableData={filteredData} />
+      <React.Fragment>
+        <SkeletonTable
+          isLoading={isPassengerLoading}
+          tableColumns={tableColumns}
+          tableData={filteredData}
+        />
+
+        <Modal
+          title="Datas de pagamento"
+          width={700}
+          visible={isPaymentsModalVisible}
+          okCancel
+          onCancel={closePayments}
+          afterClose={clearPayments}
+          okText="Atualizar"
+        >
+          <Table
+            rowKey={(record, index) => `${index}${record.payDate}${record.operation}`}
+            className="utils__scrollTable"
+            scroll={{ x: '100%' }}
+            columns={this.columnsForPayments()}
+            dataSource={paymentsList}
+            pagination={false}
+            loading={isPaymentsLoading}
+          />
+        </Modal>
+      </React.Fragment>
     )
   }
 }
 
 const mapStateToProps = ({
-  passenger: { isLoading, filter, payload: passengers },
+  passenger: { isLoading: isPassengerLoading, filter, payload: passengers },
   customer: { payload: customersList },
+  payments: {
+    payload: paymentsList,
+    isVisible: isPaymentsModalVisible,
+    isLoading: isPaymentsLoading,
+  },
 }) => ({
-  isLoading,
+  isPassengerLoading,
   filter,
   passengers,
   customersList,
+  paymentsList,
+  isPaymentsModalVisible,
+  isPaymentsLoading,
 })
 
 const mapDispatchToProps = dispatch => ({
   getPassengers: () => dispatch({ type: passengerActions.GET_PASSENGERS }),
+  getPayments: passengerId =>
+    dispatch({ type: paymentsActions.GET_PAYMENTS, payload: { passengerId } }),
   getCustomers: () => dispatch({ type: customerActions.GET_CUSTOMERS }),
+  closePayments: () => dispatch({ type: paymentsActions.TOGGLE_VISIBILITY, payload: false }),
+  clearPayments: () => dispatch({ type: paymentsActions.SET_STATE, payload: [] }),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(PassengerList)
