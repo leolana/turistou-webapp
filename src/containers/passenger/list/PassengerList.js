@@ -2,18 +2,74 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Button, Tag, Modal, Form, InputNumber, Row, Col, Select, Table } from 'antd'
 import { paymentType } from 'constants/options'
+import OPERATIONS from 'constants/paymentOperations'
 
 import { statuses, statusesCode, statusesEnum } from 'mock/passengers'
-// import { tableData as customersList } from 'mock/customers'
 import passengerActions from 'redux/passenger/actions'
+import paymentsActions from 'redux/payments/actions'
 import CustomerSelect from 'components/CustomerSelect/CustomerSelect'
 import SkeletonTable from 'components/SkeletonTable/SkeletonTable'
 import customerActions from 'redux/customer/actions'
 
 class PassengerList extends Component {
+  static defaultProps = {
+    isPaymentListVisible: false,
+    isPaymentUpdateVisible: false,
+    payments: [],
+  }
+
   componentDidMount() {
     const { getPassengers } = this.props
     getPassengers()
+  }
+
+  columnsForPayments = () => {
+    const columns = [
+      {
+        title: 'Data',
+        dataIndex: 'payDate',
+        key: 'payDate',
+        render: x => x && new Date(x).toLocaleDateString(),
+      },
+      {
+        title: 'Valor',
+        dataIndex: 'value',
+        key: 'value',
+        className: 'text-right',
+        render: x => `R$ ${x}`,
+      },
+      {
+        title: 'Forma de pagamento',
+        dataIndex: 'operation',
+        key: 'operation',
+        render: x => {
+          const text = OPERATIONS[x] || 'Não especificado'
+
+          return text
+        },
+      },
+      {
+        title: 'Situação',
+        dataIndex: 'paymentstatus',
+        key: 'status',
+        render: (_, row) => {
+          const { payDate } = row
+          const text = payDate ? 'Pago' : 'A pagar'
+          const className = payDate ? 'text-success' : 'text-warning'
+          // if (paymentStatus.auto) text += ' (automático)'
+
+          return (
+            <span className={className}>
+              {text}
+              {/* TODO: ajustar link */}
+              {/* {!paymentStatus.paid && !paymentStatus.auto && <Button type="link">Pagou</Button>} */}
+            </span>
+          )
+        },
+      },
+    ]
+
+    return columns
   }
 
   exchange = id => {
@@ -38,6 +94,73 @@ class PassengerList extends Component {
   update = id => {
     const { paymentValue } = this.state
     console.log('update: ', id, paymentValue)
+  }
+
+  contentForPaymentsUpdate() {
+    const { payments } = this.props
+
+    const previousPaid = payments
+      .filter(payment => !!payment.payDate)
+      .reduce((prev, curr, index) => {
+        if (index === payments.length - 1) {
+          return curr.value
+        }
+
+        const prevPayDate = prev ? new Date(prev.payDate) : prev
+        const currPayDate = new Date(curr.payDate)
+
+        const dateDiffFromNow = date => date - new Date()
+
+        if (!prevPayDate || dateDiffFromNow(currPayDate) < dateDiffFromNow(prevPayDate)) {
+          return curr
+        }
+
+        return prev
+      }, null)
+
+    const totalPaid = payments
+      .filter(payment => !!payment.payDate)
+      .reduce((prev, curr) => {
+        return prev + curr.value
+      }, 0)
+
+    const content = (
+      <Row>
+        <Col sm={12}>
+          <Form>
+            <Form.Item label="Valor do pagamento">
+              <InputNumber
+                onChange={value => {
+                  this.setState({ paymentValue: value })
+                }}
+              />
+            </Form.Item>
+            <Form.Item label="Forma de pagamento">
+              <Select size="default">
+                {paymentType.map(x => (
+                  <Select.Option key={x.value} value={x.value} title={x.label}>
+                    {x.label}
+                  </Select.Option>
+                ))}
+              </Select>
+            </Form.Item>
+          </Form>
+        </Col>
+        <Col sm={12} className="pl-4">
+          <div>
+            Valor pago anteriormente: <span>{previousPaid}</span>
+          </div>
+          <div>
+            Total pago: <span>{totalPaid}</span>
+          </div>
+          <div>
+            Valor faltante: <span>{0}</span>
+          </div>
+        </Col>
+      </Row>
+    )
+
+    return content
   }
 
   handleRemove(id) {
@@ -79,155 +202,15 @@ class PassengerList extends Component {
   }
 
   handleHistory(id) {
-    const fake = [
-      {
-        id: 1,
-        date: new Date(2019, 5, 12),
-        value: 100,
-        paymentWay: 'Dinheiro',
-        paymentStatus: { paid: true, auto: false },
-      },
-      {
-        id: 2,
-        date: new Date(2019, 6, 12),
-        value: 100,
-        paymentWay: 'Cartão de crédito',
-        paymentStatus: { paid: true, auto: true },
-      },
-      {
-        id: 3,
-        date: new Date(2019, 7, 12),
-        value: 100,
-        paymentWay: 'Cartão de crédito',
-        paymentStatus: { paid: false, auto: true },
-      },
-      {
-        id: 4,
-        date: new Date(2019, 8, 12),
-        value: 100,
-        paymentWay: 'Boleto',
-        paymentStatus: { paid: true, auto: false },
-      },
-      {
-        id: 5,
-        date: new Date(2019, 9, 12),
-        value: 100,
-        paymentWay: 'Boleto',
-        paymentStatus: { paid: false, auto: false },
-      },
-    ]
-    const columns = [
-      {
-        title: 'Data',
-        dataIndex: 'date',
-        key: 'date',
-        render: x => x && new Date(x).toLocaleDateString(),
-      },
-      {
-        title: 'Valor',
-        dataIndex: 'value',
-        key: 'value',
-        className: 'text-right',
-        render: x => `R$ ${x}`,
-      },
-      {
-        title: 'Forma de pagamento',
-        dataIndex: 'paymentWay',
-        key: 'paymentWay',
-      },
-      {
-        title: 'Situação',
-        dataIndex: 'paymentstatus',
-        key: 'status',
-        render: (_, row) => {
-          console.log('row', row)
-          const { paymentStatus } = row
-          let text = paymentStatus.paid ? 'Pago' : 'A pagar'
-          if (paymentStatus.auto) text += ' (automático)'
+    const { getPaymentsList } = this.props
 
-          return (
-            <span>
-              {text}
-              {/* TODO: ajustar link */}
-              {!paymentStatus.paid && !paymentStatus.auto && <Button type="link">Pagou</Button>}
-            </span>
-          )
-        },
-      },
-    ]
-
-    Modal.info({
-      title: 'Datas de pagamento',
-      width: 700,
-      okCancel: true,
-      cancelText: 'OK',
-      okText: 'Atualizar',
-      onOk: () => {
-        this.updatePayment(id)
-      },
-      content: (
-        <Table
-          id={`payment_${id}`}
-          rowKey="id"
-          className="utils__scrollTable"
-          scroll={{ x: '100%' }}
-          columns={columns}
-          dataSource={fake}
-          pagination={false}
-        />
-      ),
-    })
+    getPaymentsList(id)
   }
 
   handleUpdate(id) {
-    const { paymentValue } = this.state
+    const { getPaymentsUpdate } = this.props
 
-    const paid = 500
-    const total = paid + paymentValue
-
-    Modal.error({
-      title: 'Atualizar pagamento',
-      width: 700,
-      okCancel: true,
-      cancelText: 'Cancelar',
-      okText: 'Atualizar',
-      onOk: () => this.update(id),
-      content: (
-        <Row>
-          <Col sm={12}>
-            <Form>
-              <Form.Item label="Valor do pagamento">
-                <InputNumber
-                  onChange={value => {
-                    this.setState({ paymentValue: value })
-                  }}
-                />
-              </Form.Item>
-              <Form.Item label="Forma de pagamento">
-                <Select size="default">
-                  {paymentType.map(x => (
-                    <Select.Option key={x.value} value={x.value} title={x.label}>
-                      {x.label}
-                    </Select.Option>
-                  ))}
-                </Select>
-              </Form.Item>
-            </Form>
-          </Col>
-          <Col sm={12} className="pl-4">
-            <div>
-              Valor pago anteriormente: <span>{paid}</span>
-            </div>
-            <div>
-              Total pago: <span>{total}</span>
-            </div>
-            <div>
-              Valor faltante: <span>{total}</span>
-            </div>
-          </Col>
-        </Row>
-      ),
-    })
+    getPaymentsUpdate(id)
   }
 
   handleBook(id) {
@@ -415,7 +398,7 @@ class PassengerList extends Component {
           if (row.status !== statusesCode.waiting)
             return (
               <span className={row.paidColor}>
-                R$ {row.paid} / R$ {row.ticketPrice.price}
+                {/* R$ {row.paid} / R$ {row.ticketPrice.price} */}
               </span>
             )
           return ''
@@ -452,7 +435,17 @@ class PassengerList extends Component {
   }
 
   render() {
-    const { isLoading, passengers } = this.props
+    const {
+      isPassengerLoading,
+      passengers,
+      isPaymentListVisible,
+      isPaymentUpdateVisible,
+      closePaymentsListModal,
+      closePaymentsUpdateModal,
+      clearPayments,
+      payments,
+      isPaymentsLoading,
+    } = this.props
     const tableColumns = this.columnsForStatus()
 
     const passengersList = passengers.map(x => {
@@ -468,24 +461,81 @@ class PassengerList extends Component {
     const filteredData = passengersList // this.filterData(passengersList)
 
     return (
-      <SkeletonTable isLoading={isLoading} tableColumns={tableColumns} tableData={filteredData} />
+      <React.Fragment>
+        <SkeletonTable
+          isLoading={isPassengerLoading}
+          tableColumns={tableColumns}
+          tableData={filteredData}
+        />
+        <Modal
+          title="Datas de pagamento"
+          width={700}
+          visible={isPaymentListVisible}
+          okCancel
+          onCancel={closePaymentsListModal}
+          afterClose={clearPayments}
+          okText="Atualizar"
+        >
+          <Table
+            rowKey={(record, index) => `${index}${record.payDate}${record.operation}`}
+            className="utils__scrollTable"
+            scroll={{ x: '100%' }}
+            columns={this.columnsForPayments()}
+            dataSource={payments}
+            pagination={false}
+            loading={isPaymentsLoading}
+          />
+        </Modal>
+
+        <Modal
+          title="Atualizar pagamento"
+          width={700}
+          visible={isPaymentUpdateVisible}
+          okCancel
+          onCancel={closePaymentsUpdateModal}
+          afterClose={clearPayments}
+          okText="Atualizar"
+          // onOk={() => this.update(id)}
+        >
+          {isPaymentUpdateVisible && this.contentForPaymentsUpdate()}
+        </Modal>
+      </React.Fragment>
     )
   }
 }
 
 const mapStateToProps = ({
-  passenger: { isLoading, filter, payload: passengers },
+  passenger: { isLoading: isPassengerLoading, filter, payload: passengers },
   customer: { payload: customersList },
+  payments: {
+    payload: payments,
+    isPaymentListVisible,
+    isPaymentUpdateVisible,
+    isLoading: isPaymentsLoading,
+  },
 }) => ({
-  isLoading,
+  isPassengerLoading,
   filter,
   passengers,
   customersList,
+  payments,
+  isPaymentListVisible,
+  isPaymentUpdateVisible,
+  isPaymentsLoading,
 })
 
 const mapDispatchToProps = dispatch => ({
   getPassengers: () => dispatch({ type: passengerActions.GET_PASSENGERS }),
+  getPaymentsList: passengerId =>
+    dispatch({ type: paymentsActions.GET_PAYMENTS_LIST, payload: { passengerId } }),
+  getPaymentsUpdate: passengerId =>
+    dispatch({ type: paymentsActions.GET_PAYMENTS_UPDATE, payload: { passengerId } }),
   getCustomers: () => dispatch({ type: customerActions.GET_CUSTOMERS }),
+  closePaymentsListModal: () =>
+    dispatch({ type: paymentsActions.TOGGLE_PAYMENTS_LIST_VISIBILITY, payload: false }),
+  closePaymentsUpdateModal: () =>
+    dispatch({ type: paymentsActions.TOGGLE_PAYMENTS_UPDATE_VISIBILITY, payload: false }),
+  clearPayments: () => dispatch({ type: paymentsActions.SET_STATE, payload: [] }),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(PassengerList)
