@@ -423,13 +423,27 @@ class PassengerList extends Component {
     } = this.props
     const tableColumns = this.columnsForStatus()
 
-    const passengersList = passengers.map(x => {
-      const paymentPercent = x.paid / x.total
-      if (paymentPercent === 1) x.paidColor = 'text-success'
-      else if (paymentPercent > 0.5) x.paidColor = 'text-warning'
-      else x.paidColor = 'text-danger'
+    const getPaidColor = paymentPercent => {
+      if (paymentPercent === 1) {
+        return 'text-success'
+      }
 
-      return x
+      if (paymentPercent > 0.5) {
+        return 'text-warning'
+      }
+
+      return 'text-danger'
+    }
+
+    const passengersList = passengers.map(passenger => {
+      const paymentPercent = passenger.paid / passenger.total
+
+      const passengerPresenterModified = {
+        paidColor: getPaidColor(paymentPercent),
+        spot: passenger.spot.toString().padStart(2, '0'),
+      }
+
+      return { ...passenger, ...passengerPresenterModified }
     })
 
     // TODO:
