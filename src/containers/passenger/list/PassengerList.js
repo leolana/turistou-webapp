@@ -8,7 +8,7 @@ import { statuses, statusesCode, statusesEnum } from 'mock/passengers'
 import passengerActions from 'redux/passenger/actions'
 import CustomerSelect from 'components/CustomerSelect/CustomerSelect'
 import SkeletonTable from 'components/SkeletonTable/SkeletonTable'
-import customerActions from 'redux/customer/actions'
+import customerActions from 'redux/customerList/actions'
 
 class PassengerList extends Component {
   componentDidMount() {
