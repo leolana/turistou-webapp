@@ -5,6 +5,8 @@ import { MaskedInput } from 'react-editmask'
 import MASK from 'constants/mask'
 import { genderOptions } from 'constants/options'
 
+export const formFields = ['name', 'cpf', 'documentState', 'document', 'birthDate', 'gender']
+
 export default class CustomerPersonal extends Component {
   render() {
     const { form } = this.props

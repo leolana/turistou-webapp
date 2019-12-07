@@ -4,6 +4,8 @@ import { MaskedInput } from 'react-editmask'
 
 import MASK from 'constants/mask'
 
+export const formFields = ['healthPlan', 'allergy', 'contactName', 'contactPhone']
+
 export default class CustomerEmergency extends Component {
   render() {
     const { form } = this.props
