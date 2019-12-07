@@ -7,6 +7,7 @@ import customerDetail from './customerDetail/sagas'
 import excursionList from './excursionList/sagas'
 import excursionDetail from './excursionDetail/sagas'
 import passenger from './passenger/sagas'
+import payments from './payments/sagas'
 
 export default function* rootSaga() {
   yield all([
@@ -18,5 +19,6 @@ export default function* rootSaga() {
     excursionList(),
     excursionDetail(),
     passenger(),
+    payments(),
   ])
 }

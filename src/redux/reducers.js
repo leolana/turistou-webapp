@@ -9,6 +9,7 @@ import excursionDetail from 'redux/excursionDetail/reducers'
 import passenger from 'redux/passenger/reducers'
 import customerList from 'redux/customerList/reducers'
 import customerDetail from 'redux/customerDetail/reducers'
+import payments from 'redux/payments/reducers'
 
 export default history =>
   combineReducers({
@@ -22,4 +23,5 @@ export default history =>
     passenger,
     customerList,
     customerDetail,
+    payments,
   })
