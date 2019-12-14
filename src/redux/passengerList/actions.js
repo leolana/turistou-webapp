@@ -3,9 +3,9 @@ import gql from 'graphql-tag'
 import { query } from 'core/api/apollo'
 
 const actions = {
-  SET_STATE: 'passenger/SET_STATE',
-  GET_PASSENGERS: 'passenger/GET_PASSENGERS',
-  GET_PASSENGERS_SUCCESS: 'passenger/GET_PASSENGERS_SUCCESS',
+  SET_STATE: 'passengerList/SET_STATE',
+  GET_PASSENGERS: 'passengerList/GET_PASSENGERS',
+  GET_PASSENGERS_SUCCESS: 'passengerList/GET_PASSENGERS_SUCCESS',
 }
 
 const passengerFragment = gql`

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import actions from 'redux/passenger/actions'
+import actions from 'redux/passengerList/actions'
 import { Form, Row, Col, Radio, Input } from 'antd'
 
 import { tableData } from 'mock/excursions'

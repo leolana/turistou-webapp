@@ -6,7 +6,6 @@ import actions from 'redux/customerList/actions'
 export class CustomerSelect extends Component {
   componentDidMount() {
     const { customers, getCustomers } = this.props
-    console.log('customers', customers)
     if (!customers || !customers.length) getCustomers()
   }
 

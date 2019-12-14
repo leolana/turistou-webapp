@@ -6,7 +6,8 @@ import customerList from './customerList/sagas'
 import customerDetail from './customerDetail/sagas'
 import excursionList from './excursionList/sagas'
 import excursionDetail from './excursionDetail/sagas'
-import passenger from './passenger/sagas'
+import passengerList from './passengerList/sagas'
+import passengerDetail from './passengerDetail/sagas'
 import payments from './payments/sagas'
 
 export default function* rootSaga() {
@@ -18,7 +19,8 @@ export default function* rootSaga() {
     customerDetail(),
     excursionList(),
     excursionDetail(),
-    passenger(),
+    passengerList(),
+    passengerDetail(),
     payments(),
   ])
 }

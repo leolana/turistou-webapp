@@ -98,7 +98,7 @@
   },
   "config": {
     "commitizen": {
-      "path": "npx cz-conventional-changelog"
+      "path": "cz-conventional-changelog"
     }
   },
   "lint-staged": {

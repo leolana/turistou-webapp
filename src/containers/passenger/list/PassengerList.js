@@ -5,7 +5,7 @@ import { paymentType } from 'constants/options'
 import OPERATIONS from 'constants/paymentOperations'
 
 import { statuses, statusesCode, statusesEnum } from 'mock/passengers'
-import passengerActions from 'redux/passenger/actions'
+import passengerActions from 'redux/passengerList/actions'
 import paymentsActions from 'redux/payments/actions'
 import CustomerSelect from 'components/CustomerSelect/CustomerSelect'
 import SkeletonTable from 'components/SkeletonTable/SkeletonTable'
@@ -468,8 +468,8 @@ class PassengerList extends Component {
 }
 
 const mapStateToProps = ({
-  passenger: { isLoading: isPassengerLoading, filter, payload: passengers },
-  customer: { payload: customersList },
+  passengerList: { isLoading: isPassengerLoading, filter, payload: passengers },
+  customerList: { payload: customersList },
   payments: {
     payload: paymentsList,
     isVisible: isPaymentsModalVisible,

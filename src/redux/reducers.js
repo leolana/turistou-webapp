@@ -6,7 +6,8 @@ import settings from 'redux/settings/reducers'
 import step from 'redux/step/reducers'
 import excursionList from 'redux/excursionList/reducers'
 import excursionDetail from 'redux/excursionDetail/reducers'
-import passenger from 'redux/passenger/reducers'
+import passengerList from 'redux/passengerList/reducers'
+import passengerDetail from 'redux/passengerDetail/reducers'
 import customerList from 'redux/customerList/reducers'
 import customerDetail from 'redux/customerDetail/reducers'
 import payments from 'redux/payments/reducers'
@@ -20,7 +21,8 @@ export default history =>
     step,
     excursionList,
     excursionDetail,
-    passenger,
+    passengerList,
+    passengerDetail,
     customerList,
     customerDetail,
     payments,
