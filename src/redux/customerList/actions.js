@@ -13,6 +13,7 @@ const customerFragment = gql`
     id
     name
     cellphone
+    document
     address {
       city
     }
