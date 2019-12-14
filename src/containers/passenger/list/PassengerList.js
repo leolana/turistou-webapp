@@ -9,7 +9,7 @@ import passengerActions from 'redux/passenger/actions'
 import paymentsActions from 'redux/payments/actions'
 import CustomerSelect from 'components/CustomerSelect/CustomerSelect'
 import SkeletonTable from 'components/SkeletonTable/SkeletonTable'
-import customerActions from 'redux/customer/actions'
+import customerActions from 'redux/customerList/actions'
 
 class PassengerList extends Component {
   static defaultProps = {

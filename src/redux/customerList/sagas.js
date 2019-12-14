@@ -5,8 +5,10 @@ export function* getData() {
   const fetchCustomer = fetchCustomers()
   const result = yield call(fetchCustomer.request)
 
-  if (result.response.data) {
+  if (result.response && result.response.data) {
     yield put(fetchCustomersSuccess(result.response.data))
+  } else if (result.error) {
+    yield put(fetchCustomersFailure(result.error))
   } else {
     const validationError = result.networkError.result.errors[0]
     yield put(fetchCustomersFailure(validationError))
