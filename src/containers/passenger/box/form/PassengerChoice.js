@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import { Row, Col, Form, Radio } from 'antd'
 
-import { tableData } from 'mock/customers'
 import CustomerSelect from 'components/CustomerSelect/CustomerSelect'
 
 const passagePrices = [
@@ -11,16 +11,17 @@ const passagePrices = [
 ]
 
 class PassengerChoice extends Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.state = { price: null }
+    this.onChangePassage = this.onChangePassage.bind(this)
   }
 
   componentDidMount() {
     this.setState({ price: '320,00' })
   }
 
-  onChangePassage = event => {
+  onChangePassage(event) {
     const id = event.target.value
     const selected = passagePrices.find(x => x.id === id)
     if (selected) this.setState({ price: selected.price })
@@ -32,38 +33,37 @@ class PassengerChoice extends Component {
     const options = passagePrices.map(x => ({ value: x.id, label: x.description }))
 
     return (
-      <div>
-        <Row>
-          <Col xs={24}>
-            <Form.Item label="Cliente">
-              {form.getFieldDecorator('customer', {
-                rules: [{ required: false }],
-              })(<CustomerSelect customers={tableData} />)}
-            </Form.Item>
-          </Col>
-        </Row>
-        <Row>
-          <Col xs={24}>
-            <Form.Item label="Tipos de passagem">
-              {form.getFieldDecorator('ticketPriceId', { rules: [{ required: false }] })(
-                <Radio.Group
-                  options={options}
-                  size="default"
-                  initialValue={null}
-                  onChange={this.onChangePassage}
-                />,
-              )}
-            </Form.Item>
-          </Col>
-          <Col xs={24}>
-            <div>
-              Valor: <b>R$ {price}</b>
-            </div>
-          </Col>
-        </Row>
-      </div>
+      <Row>
+        <Col xs={24}>
+          <Form.Item label="Cliente">
+            {form.getFieldDecorator('customer', {
+              rules: [{ required: false }],
+            })(<CustomerSelect />)}
+          </Form.Item>
+        </Col>
+        <Col xs={24}>
+          <Form.Item label="Tipos de passagem">
+            {form.getFieldDecorator('ticketPriceId', { rules: [{ required: false }] })(
+              <TicketSelect options={options} onChange={this.onChangePassage} />,
+            )}
+          </Form.Item>
+        </Col>
+        <Col xs={24}>
+          Valor: <b>R$ {price}</b>
+        </Col>
+      </Row>
     )
   }
 }
 
-export default PassengerChoice
+const mapStateToProps = ({ excursionDetail }) => ({
+  excursion: excursionDetail.payload,
+})
+
+const mapDispatchToProps = () => ({})
+
+export default connect(mapStateToProps, mapDispatchToProps)(PassengerChoice)
+
+const TicketSelect = ({ options, onChange }) => (
+  <Radio.Group size="default" initialValue={null} options={options} onChange={onChange} />
+)

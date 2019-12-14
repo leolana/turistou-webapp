@@ -66,7 +66,6 @@ export const saveCustomer = form => {
     organizationId: '123',
   }
 
-  console.log('mutate')
   return mutate({
     mutation: gql`
       mutation saveCustomer($input: SaveCustomerInput!) {

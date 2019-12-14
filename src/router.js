@@ -74,11 +74,11 @@ const routes = [
 
   // Passengers
   {
-    path: '/excursion/:id/passenger/list',
+    path: '/excursion/:excursionId/passenger/list',
     component: loadable(() => import('containers/passenger/list')),
   },
   {
-    path: '/excursion/:id/passenger/',
+    path: '/excursion/:excursionId/passenger/',
     component: loadable(() => import('containers/passenger/box')),
   },
 
