@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Button, Tag, Modal, Form, InputNumber, Row, Col, Select, Table } from 'antd'
 import { paymentType } from 'constants/options'
-import paymentOperations from 'constants/paymentOperations'
 import paymentMethods from 'constants/paymentMethods'
 
 import { statuses, statusesCode, statusesEnum } from 'mock/passengers'
@@ -11,6 +10,8 @@ import paymentsActions from 'redux/payments/actions'
 import CustomerSelect from 'components/CustomerSelect/CustomerSelect'
 import SkeletonTable from 'components/SkeletonTable/SkeletonTable'
 import customerActions from 'redux/customerList/actions'
+
+import PaymentSelect from 'components/PaymentSelect/PaymentSelect'
 
 class PassengerList extends Component {
   static defaultProps = {
@@ -24,24 +25,29 @@ class PassengerList extends Component {
   }
 
   columnsForPayments = () => {
+    const { setToPaid, setToUnpaid } = this.props
+
     const columns = [
       {
         title: 'Data',
         dataIndex: 'payDate',
         key: 'payDate',
+        width: '30%',
         render: x => x && new Date(x).toLocaleDateString(),
       },
       {
         title: 'Valor',
         dataIndex: 'value',
         key: 'value',
-        className: 'text-right',
+        width: '20%',
+        className: 'text-left',
         render: x => `R$ ${x}`,
       },
       {
         title: 'Forma de pagamento',
         dataIndex: 'method',
         key: 'method',
+        width: '20%',
         render: x => {
           const text = paymentMethods[x] || 'Não especificado'
 
@@ -53,51 +59,20 @@ class PassengerList extends Component {
         dataIndex: 'paymentstatus',
         key: 'status',
         render: (_, row) => {
-          const { payDate, operation } = row
+          const { id, passengerId, payDate } = row
 
-          const getText = status => {
-            if (payDate && paymentOperations.Credit === status) {
-              return 'Pago'
-            }
+          const isPaid = !!payDate
 
-            if (paymentOperations.ChargeBack === status) {
-              return 'Estorno'
-            }
-
-            if (paymentOperations.Canceled === status) {
-              return 'Cancelado'
-            }
-
-            return 'A pagar'
+          const payload = {
+            passengerId,
+            paymentId: id,
           }
-
-          const getClassName = status => {
-            if (payDate && paymentOperations.Credit === status) {
-              return 'text-success'
-            }
-
-            if (paymentOperations.ChargeBack === status) {
-              return 'text-warning'
-            }
-
-            if (paymentOperations.Canceled === status) {
-              return 'text-danger'
-            }
-
-            return 'text-warning'
-          }
-
-          const text = getText(operation)
-          const className = getClassName(operation)
-
-          // if (paymentStatus.auto) text += ' (automático)'
 
           return (
-            <span className={className}>
-              {text}
-              {/* TODO: ajustar link */}
-              {/* {!paymentStatus.paid && !paymentStatus.auto && <Button type="link">Pagou</Button>} */}
-            </span>
+            <PaymentSelect
+              isPaid={isPaid}
+              onChange={() => (isPaid ? setToUnpaid(payload) : setToPaid(payload))}
+            />
           )
         },
       },
@@ -502,7 +477,7 @@ class PassengerList extends Component {
           okText="Atualizar"
         >
           <Table
-            rowKey={(record, index) => `${index}${record.payDate}${record.operation}`}
+            rowKey={record => `${record.id}${record.payDate}${record.operation}`}
             className="utils__scrollTable"
             scroll={{ x: '100%' }}
             columns={this.columnsForPayments()}
@@ -518,7 +493,7 @@ class PassengerList extends Component {
 
 const mapStateToProps = ({
   passenger: { isLoading: isPassengerLoading, filter, payload: passengers },
-  customer: { payload: customersList },
+  customerList: { payload: customersList },
   payments: {
     payload: paymentsList,
     isVisible: isPaymentsModalVisible,
@@ -538,6 +513,10 @@ const mapDispatchToProps = dispatch => ({
   getPassengers: () => dispatch({ type: passengerActions.GET_PASSENGERS }),
   getPayments: passengerId =>
     dispatch({ type: paymentsActions.GET_PAYMENTS, payload: { passengerId } }),
+  setToPaid: ({ passengerId, paymentId }) =>
+    dispatch({ type: paymentsActions.SET_TO_PAID, payload: { passengerId, paymentId } }),
+  setToUnpaid: ({ passengerId, paymentId }) =>
+    dispatch({ type: paymentsActions.SET_TO_UNPAID, payload: { passengerId, paymentId } }),
   getCustomers: () => dispatch({ type: customerActions.GET_CUSTOMERS }),
   closePayments: () => dispatch({ type: paymentsActions.TOGGLE_VISIBILITY, payload: false }),
   clearPayments: () => dispatch({ type: paymentsActions.SET_STATE, payload: [] }),
