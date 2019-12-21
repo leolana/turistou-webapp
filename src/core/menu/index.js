@@ -17,7 +17,7 @@ export async function getLeftMenuData() {
     {
       title: 'Clientes',
       key: 'customers',
-      url: '/customer/list',
+      url: '/clientes/lista',
       icon: 'fa fa-users',
     },
     // {
@@ -55,7 +55,7 @@ export async function getTopMenuData() {
         {
           title: 'Clientes',
           key: 'customers',
-          url: '/customer',
+          url: '/clientes',
         },
       ],
     },
