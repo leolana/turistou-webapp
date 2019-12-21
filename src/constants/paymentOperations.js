@@ -1,6 +1,8 @@
-const OPERATIONS = {
-  CHARGE_BACK: 'Estorno',
-  CREDIT: 'Crédito',
+const paymentOperations = {
+  Debit: 'DEBIT',
+  Credit: 'CREDIT',
+  ChargeBack: 'CHARGE_BACK',
+  Canceled: 'CANCELED',
 }
 
-export default OPERATIONS
+export default paymentOperations

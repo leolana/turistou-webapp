@@ -25,6 +25,7 @@ export const fetchPayments = ({ passengerId }) => ({
             createdAt
             updatedAt
             operation
+            method
           }
         }
       `,

@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Button, Tag, Modal, Form, InputNumber, Row, Col, Select, Table } from 'antd'
 import { paymentType } from 'constants/options'
-import OPERATIONS from 'constants/paymentOperations'
+import paymentOperations from 'constants/paymentOperations'
+import paymentMethods from 'constants/paymentMethods'
 
 import { statuses, statusesCode, statusesEnum } from 'mock/passengers'
 import passengerActions from 'redux/passenger/actions'
@@ -39,10 +40,10 @@ class PassengerList extends Component {
       },
       {
         title: 'Forma de pagamento',
-        dataIndex: 'operation',
-        key: 'operation',
+        dataIndex: 'method',
+        key: 'method',
         render: x => {
-          const text = OPERATIONS[x] || 'Não especificado'
+          const text = paymentMethods[x] || 'Não especificado'
 
           return text
         },
@@ -52,9 +53,43 @@ class PassengerList extends Component {
         dataIndex: 'paymentstatus',
         key: 'status',
         render: (_, row) => {
-          const { payDate } = row
-          const text = payDate ? 'Pago' : 'A pagar'
-          const className = payDate ? 'text-success' : 'text-warning'
+          const { payDate, operation } = row
+
+          const getText = status => {
+            if (payDate && paymentOperations.Credit === status) {
+              return 'Pago'
+            }
+
+            if (paymentOperations.ChargeBack === status) {
+              return 'Estorno'
+            }
+
+            if (paymentOperations.Canceled === status) {
+              return 'Cancelado'
+            }
+
+            return 'A pagar'
+          }
+
+          const getClassName = status => {
+            if (payDate && paymentOperations.Credit === status) {
+              return 'text-success'
+            }
+
+            if (paymentOperations.ChargeBack === status) {
+              return 'text-warning'
+            }
+
+            if (paymentOperations.Canceled === status) {
+              return 'text-danger'
+            }
+
+            return 'text-warning'
+          }
+
+          const text = getText(operation)
+          const className = getClassName(operation)
+
           // if (paymentStatus.auto) text += ' (automático)'
 
           return (
@@ -375,7 +410,7 @@ class PassengerList extends Component {
           if (row.status !== statusesCode.waiting)
             return (
               <span className={row.paidColor}>
-                R$ {row.paid} / R$ {row.ticketPrice.price}
+                R$ {row.amountPaid} / R$ {row.ticketPrice.price}
               </span>
             )
           return ''
@@ -423,13 +458,27 @@ class PassengerList extends Component {
     } = this.props
     const tableColumns = this.columnsForStatus()
 
-    const passengersList = passengers.map(x => {
-      const paymentPercent = x.paid / x.total
-      if (paymentPercent === 1) x.paidColor = 'text-success'
-      else if (paymentPercent > 0.5) x.paidColor = 'text-warning'
-      else x.paidColor = 'text-danger'
+    const getPaidColor = paymentPercent => {
+      if (paymentPercent === 1) {
+        return 'text-success'
+      }
 
-      return x
+      if (paymentPercent > 0.5) {
+        return 'text-warning'
+      }
+
+      return 'text-danger'
+    }
+
+    const passengersList = passengers.map(passenger => {
+      const paymentPercent = passenger.paid / passenger.total
+
+      const passengerPresenterModified = {
+        paidColor: getPaidColor(paymentPercent),
+        spot: passenger.spot.toString().padStart(2, '0'),
+      }
+
+      return { ...passenger, ...passengerPresenterModified }
     })
 
     // TODO:
