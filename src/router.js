@@ -58,16 +58,16 @@ const routes = [
 
   // Customers
   {
-    path: '/customer/list',
+    path: '/clientes/lista',
     component: loadable(() => import('containers/customer/list')),
   },
   {
-    path: '/customer/',
+    path: '/clientes/',
     component: loadable(() => import('containers/customer/box')),
     exact: true,
   },
   {
-    path: '/customer/:id',
+    path: '/clientes/:id',
     component: loadable(() => import('containers/customer/box')),
     exact: true,
   },

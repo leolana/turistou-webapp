@@ -3,20 +3,29 @@ import { Helmet } from 'react-helmet'
 import { connect } from 'react-redux'
 import FormSteps from 'components/Step/FormSteps'
 
+import actions from 'redux/customerDetail/actions'
 import CustomerForm from './CustomerForm'
-import CustomerPersonal from './form/CustomerPersonal'
-import CustomerAddress from './form/CustomerAddress'
-import CustomerContact from './form/CustomerContact'
-import CustomerEmergency from './form/CustomerEmergency'
-import CustomerAdditionalInfo from './form/CustomerAdditionalInfo'
+import CustomerPersonal, { formFields as customerPersonalFormFields } from './form/CustomerPersonal'
+import CustomerAddress, { formFields as customerAddressFormFields } from './form/CustomerAddress'
+import CustomerContact, { formFields as customerContactFormFields } from './form/CustomerContact'
+import CustomerEmergency, {
+  formFields as customerEmergencyFormFields,
+} from './form/CustomerEmergency'
+import CustomerAdditionalInfo, {
+  formFields as customerAdditionalInfoFormFields,
+} from './form/CustomerAdditionalInfo'
 
 const pageTitle = 'Novo cliente'
 const formSteps = [
-  { component: CustomerPersonal, title: 'Dados pessoais' },
-  { component: CustomerAddress, title: 'Endereço' },
-  { component: CustomerContact, title: 'Contato' },
-  { component: CustomerEmergency, title: 'Emergência' },
-  { component: CustomerAdditionalInfo, title: 'Informações adicionais' },
+  { component: CustomerPersonal, title: 'Dados pessoais', fields: customerPersonalFormFields },
+  { component: CustomerAddress, title: 'Endereço', fields: customerAddressFormFields },
+  { component: CustomerContact, title: 'Contato', fields: customerContactFormFields },
+  { component: CustomerEmergency, title: 'Emergência', fields: customerEmergencyFormFields },
+  {
+    component: CustomerAdditionalInfo,
+    title: 'Informações adicionais',
+    fields: customerAdditionalInfoFormFields,
+  },
 ]
 
 @connect(({ user }) => ({ user }))
@@ -27,7 +36,7 @@ class Customers extends Component {
     form.validateFields((error, values) => {
       if (!error) {
         dispatch({
-          type: 'customer/SAVE',
+          type: actions.SAVE_CUSTOMER,
           payload: values,
         })
       }

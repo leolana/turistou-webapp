@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { Row, Col, Form, Input } from 'antd'
 
+export const formFields = ['foodRestriction', 'howHearAbout', 'notes']
+
 export default class CustomerAdditionalInfo extends Component {
   render() {
     const { form } = this.props

@@ -4,6 +4,8 @@ import MaskedInput from 'react-editmask'
 
 import MASK from 'constants/mask'
 
+export const formFields = ['zipcode', 'address', 'number', 'area', 'complement', 'city', 'state']
+
 export default class CustomerAddress extends Component {
   render() {
     const { form } = this.props

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Input, Form } from 'antd'
-import actions from 'redux/customer/actions'
+import actions from 'redux/customerList/actions'
 
 class CustomerFilter extends Component {
   constructor() {

@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Button } from 'antd'
 
-import actions from 'redux/customer/actions'
+import actions from 'redux/customerList/actions'
 import SkeletonTable from 'components/SkeletonTable/SkeletonTable'
 
 class CustomerList extends Component {
@@ -70,16 +70,13 @@ class CustomerList extends Component {
   }
 }
 
-const mapStateToProps = ({ customer }) => ({
-  query: customer.query,
-  customers: customer.payload,
+const mapStateToProps = ({ customerList }) => ({
+  query: customerList.query,
+  customers: customerList.payload,
 })
 
 const mapDispatchToProps = dispatch => ({
   getCustomers: () => dispatch({ type: actions.GET_CUSTOMERS }),
 })
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(CustomerList)
+export default connect(mapStateToProps, mapDispatchToProps)(CustomerList)
