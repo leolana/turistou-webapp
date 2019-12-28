@@ -4,7 +4,6 @@ import { Button, Tag, Modal, Form, InputNumber, Row, Col, Select, Table } from '
 import { paymentType } from 'constants/options'
 import paymentMethods from 'constants/paymentMethods'
 
-import { statuses, statusesCode, statusesEnum } from 'mock/passengers'
 import passengerActions from 'redux/passenger/actions'
 import paymentsActions from 'redux/payments/actions'
 import CustomerSelect from 'components/CustomerSelect/CustomerSelect'
@@ -13,6 +12,39 @@ import customerActions from 'redux/customerList/actions'
 
 import PaymentSelect from 'components/PaymentSelect/PaymentSelect'
 
+const statusesEnum = {
+  '1': 'BOOKED',
+  '2': 'WAITING',
+  '3': 'CANCELED',
+}
+
+const statusesCode = {
+  booked: 1,
+  waiting: 2,
+  canceled: 3,
+}
+
+const statuses = [
+  {
+    id: 1,
+    value: 'BOOKED',
+    description: 'Reservado',
+    type: 'success',
+  },
+  {
+    id: 2,
+    value: 'WAITING',
+    description: 'Em espera',
+    type: 'warning',
+  },
+  {
+    id: 3,
+    value: 'CANCELED',
+    description: 'Desistência',
+    type: 'danger',
+  },
+]
+
 class PassengerList extends Component {
   static defaultProps = {
     isPaymentsModalVisible: false,
@@ -20,8 +52,9 @@ class PassengerList extends Component {
   }
 
   componentDidMount() {
-    const { getPassengers } = this.props
-    getPassengers()
+    const { getPassengers, id, filter } = this.props
+    const payload = { ...filter, excursionId: id }
+    getPassengers(payload)
   }
 
   columnsForPayments = () => {
@@ -113,8 +146,8 @@ class PassengerList extends Component {
         <Row>
           <Col md={12}>
             <Form>
-              {/* <Form.Item label="Motivo da desistência">
-                <Input size="default" maxLength={150} />
+              {/* <Form.Item label='Motivo da desistência'>
+                <Input size='default' maxLength={150} />
               </Form.Item> */}
               <Form.Item label="Valor devolvido">
                 <InputNumber size="default" min={0} />
@@ -231,7 +264,7 @@ class PassengerList extends Component {
     })
   }
 
-  renderActionsButtons = (id, statusId) => {
+  renderActionsButtons = (id, status) => {
     const buttonsAction = {
       booked: (
         <div className="table-action-buttons">
@@ -319,16 +352,16 @@ class PassengerList extends Component {
         </div>
       ),
     }
-    return buttonsAction[statusesEnum[statusId]]
+    return buttonsAction[statusesEnum[status]]
   }
 
   filterData(passengers) {
     const {
-      filter: { statusId, query, startPay, fullPay },
+      filter: { status, query, startPay, fullPay },
     } = this.props
     let filteredData = passengers
 
-    if (statusId) filteredData = filteredData.filter(x => x.status === statusId)
+    if (status) filteredData = filteredData.filter(x => x.status === status)
     if (fullPay) filteredData = filteredData.filter(x => x.paid === x.total)
     else if (startPay) filteredData = filteredData.filter(x => x.paid > 0)
     if (query)
@@ -342,13 +375,13 @@ class PassengerList extends Component {
 
   columnsForStatus() {
     const {
-      filter: { statusId },
+      filter: { status },
     } = this.props
     const allColumns = {
       actions: {
         dataIndex: 'id',
         key: 'id',
-        render: id => this.renderActionsButtons(id, statusId),
+        render: id => this.renderActionsButtons(id, status),
       },
       status: {
         title: 'Situação',
@@ -356,7 +389,7 @@ class PassengerList extends Component {
         key: 'status',
         className: 'text-center',
         render: () => {
-          const { description, type } = statuses.find(s => s.id === statusId)
+          const { description, type } = statuses.find(s => s.value === status)
           return <Tag className={`text-white bg-${type} mr-0`}>{description}</Tag>
         },
       },
@@ -403,7 +436,7 @@ class PassengerList extends Component {
       },
     }
 
-    switch (statusId) {
+    switch (status) {
       case statusesCode.booked:
         return [
           allColumns.actions,
@@ -510,7 +543,7 @@ const mapStateToProps = ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  getPassengers: () => dispatch({ type: passengerActions.GET_PASSENGERS }),
+  getPassengers: filter => dispatch({ type: passengerActions.GET_PASSENGERS, filter }),
   getPayments: passengerId =>
     dispatch({ type: paymentsActions.GET_PAYMENTS, payload: { passengerId } }),
   setToPaid: ({ passengerId, paymentId }) =>
