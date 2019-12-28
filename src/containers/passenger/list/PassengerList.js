@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Button, Tag, Modal, Form, InputNumber, Row, Col, Select, Table } from 'antd'
 import { paymentType } from 'constants/options'
-import OPERATIONS from 'constants/paymentOperations'
+import paymentMethods from 'constants/paymentMethods'
 
 import { statuses, statusesCode, statusesEnum } from 'mock/passengers'
 import passengerActions from 'redux/passengerList/actions'
@@ -10,6 +10,8 @@ import paymentsActions from 'redux/payments/actions'
 import CustomerSelect from 'components/CustomerSelect/CustomerSelect'
 import SkeletonTable from 'components/SkeletonTable/SkeletonTable'
 import customerActions from 'redux/customerList/actions'
+
+import PaymentSelect from 'components/PaymentSelect/PaymentSelect'
 
 class PassengerList extends Component {
   static defaultProps = {
@@ -23,26 +25,31 @@ class PassengerList extends Component {
   }
 
   columnsForPayments = () => {
+    const { setToPaid, setToUnpaid } = this.props
+
     const columns = [
       {
         title: 'Data',
         dataIndex: 'payDate',
         key: 'payDate',
+        width: '30%',
         render: x => x && new Date(x).toLocaleDateString(),
       },
       {
         title: 'Valor',
         dataIndex: 'value',
         key: 'value',
-        className: 'text-right',
+        width: '20%',
+        className: 'text-left',
         render: x => `R$ ${x}`,
       },
       {
         title: 'Forma de pagamento',
-        dataIndex: 'operation',
-        key: 'operation',
+        dataIndex: 'method',
+        key: 'method',
+        width: '20%',
         render: x => {
-          const text = OPERATIONS[x] || 'Não especificado'
+          const text = paymentMethods[x] || 'Não especificado'
 
           return text
         },
@@ -52,17 +59,20 @@ class PassengerList extends Component {
         dataIndex: 'paymentstatus',
         key: 'status',
         render: (_, row) => {
-          const { payDate } = row
-          const text = payDate ? 'Pago' : 'A pagar'
-          const className = payDate ? 'text-success' : 'text-warning'
-          // if (paymentStatus.auto) text += ' (automático)'
+          const { id, passengerId, payDate } = row
+
+          const isPaid = !!payDate
+
+          const payload = {
+            passengerId,
+            paymentId: id,
+          }
 
           return (
-            <span className={className}>
-              {text}
-              {/* TODO: ajustar link */}
-              {/* {!paymentStatus.paid && !paymentStatus.auto && <Button type="link">Pagou</Button>} */}
-            </span>
+            <PaymentSelect
+              isPaid={isPaid}
+              onChange={() => (isPaid ? setToUnpaid(payload) : setToPaid(payload))}
+            />
           )
         },
       },
@@ -375,7 +385,7 @@ class PassengerList extends Component {
           if (row.status !== statusesCode.waiting)
             return (
               <span className={row.paidColor}>
-                R$ {row.paid} / R$ {row.ticketPrice.price}
+                R$ {row.amountPaid} / R$ {row.ticketPrice.price}
               </span>
             )
           return ''
@@ -423,13 +433,27 @@ class PassengerList extends Component {
     } = this.props
     const tableColumns = this.columnsForStatus()
 
-    const passengersList = passengers.map(x => {
-      const paymentPercent = x.paid / x.total
-      if (paymentPercent === 1) x.paidColor = 'text-success'
-      else if (paymentPercent > 0.5) x.paidColor = 'text-warning'
-      else x.paidColor = 'text-danger'
+    const getPaidColor = paymentPercent => {
+      if (paymentPercent === 1) {
+        return 'text-success'
+      }
 
-      return x
+      if (paymentPercent > 0.5) {
+        return 'text-warning'
+      }
+
+      return 'text-danger'
+    }
+
+    const passengersList = passengers.map(passenger => {
+      const paymentPercent = passenger.paid / passenger.total
+
+      const passengerPresenterModified = {
+        paidColor: getPaidColor(paymentPercent),
+        spot: passenger.spot.toString().padStart(2, '0'),
+      }
+
+      return { ...passenger, ...passengerPresenterModified }
     })
 
     // TODO:
@@ -453,7 +477,7 @@ class PassengerList extends Component {
           okText="Atualizar"
         >
           <Table
-            rowKey={(record, index) => `${index}${record.payDate}${record.operation}`}
+            rowKey={record => `${record.id}${record.payDate}${record.operation}`}
             className="utils__scrollTable"
             scroll={{ x: '100%' }}
             columns={this.columnsForPayments()}
@@ -489,6 +513,10 @@ const mapDispatchToProps = dispatch => ({
   getPassengers: () => dispatch({ type: passengerActions.GET_PASSENGERS }),
   getPayments: passengerId =>
     dispatch({ type: paymentsActions.GET_PAYMENTS, payload: { passengerId } }),
+  setToPaid: ({ passengerId, paymentId }) =>
+    dispatch({ type: paymentsActions.SET_TO_PAID, payload: { passengerId, paymentId } }),
+  setToUnpaid: ({ passengerId, paymentId }) =>
+    dispatch({ type: paymentsActions.SET_TO_UNPAID, payload: { passengerId, paymentId } }),
   getCustomers: () => dispatch({ type: customerActions.GET_CUSTOMERS }),
   closePayments: () => dispatch({ type: paymentsActions.TOGGLE_VISIBILITY, payload: false }),
   clearPayments: () => dispatch({ type: paymentsActions.SET_STATE, payload: [] }),
