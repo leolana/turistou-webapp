@@ -446,7 +446,7 @@ class PassengerList extends Component {
     }
 
     const passengersList = passengers.map(passenger => {
-      const paymentPercent = passenger.paid / passenger.total
+      const paymentPercent = passenger.amountPaid / passenger.ticketPrice.price
 
       const passengerPresenterModified = {
         paidColor: getPaidColor(paymentPercent),
