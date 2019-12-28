@@ -3,7 +3,6 @@ import gql from 'graphql-tag'
 import { query } from 'core/api/apollo'
 
 const actions = {
-  // TODO: ajustar os nomes e padronizar
   SET_STATE: 'excursionList/SET_STATE',
   GET_EXCURSIONS: 'excursionList/GET_DATA',
   GET_EXCURSIONS_FAILURE: 'excursionList/GET_EXCURSIONS_FAILURE',

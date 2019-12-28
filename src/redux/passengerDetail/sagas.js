@@ -1,7 +1,11 @@
 import { all, put, takeEvery, call } from 'redux-saga/effects'
 
 import { notification } from 'antd'
-import actions, { savePassenger, savePassengerSuccess, savePassengerFailure } from './actions'
+import passengerActions, {
+  savePassenger,
+  savePassengerSuccess,
+  savePassengerFailure,
+} from './actions'
 
 export function* getData({ payload }) {
   const result = yield call(savePassenger, payload)
@@ -23,5 +27,5 @@ export function* getData({ payload }) {
 }
 
 export default function* rootSaga() {
-  yield all([takeEvery(actions.SAVE_PASSENGER, getData)])
+  yield all([takeEvery(passengerActions.SAVE_PASSENGER, getData)])
 }

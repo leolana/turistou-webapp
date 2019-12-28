@@ -14,15 +14,8 @@ export default function reducer(state = initialState, action) {
     case actions.SAVE_EXCURSION:
       return { ...state, isLoading: true, payload: action.payload }
 
-    case actions.SAVE_EXCURSION_FAILURE:
-      state.isLoading = false
-      // TODO:
-      return state
-
-    case actions.SAVE_EXCURSION_SUCCESS:
-      state.isLoading = false
-      // TODO:
-      return state
+    case actions.GET_EXCURSION_BY_ID:
+      return { ...state, isLoading: true, payload: {} }
 
     default:
       return state

@@ -43,13 +43,13 @@ class CustomerForm extends Component {
   }
 
   render() {
-    const { current, formSteps, form, isLoading } = this.props
+    const { currentStep, formSteps, form, isLoading } = this.props
 
     return (
       <SkeletonForm isLoading={isLoading}>
         <Form layout="vertical" className="customer-form">
           {formSteps.map((x, i) => (
-            <div key={x.title} style={{ display: current === i ? 'block' : 'none' }}>
+            <div key={x.title} style={{ display: currentStep === i ? 'block' : 'none' }}>
               <x.component form={form} />
               <div className="form-actions">
                 <FormStepButtonsActions
@@ -68,7 +68,7 @@ class CustomerForm extends Component {
 }
 
 const mapStateToProps = ({ step }) => ({
-  current: step.current,
+  currentStep: step.current,
 })
 
 const mapDispatchToProps = dispatch => ({

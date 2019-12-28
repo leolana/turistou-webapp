@@ -1,13 +1,17 @@
+// @flow
 import gql from 'graphql-tag'
 import { DateTime } from 'luxon'
 
-import { mutate } from 'core/api/apollo'
+import { mutate, query } from 'core/api/apollo'
 
 const actions = {
   SET_STATE: 'excursionDetail/SET_STATE',
   SAVE_EXCURSION: 'excursionDetail/SAVE_EXCURSION',
   SAVE_EXCURSION_FAILURE: 'excursionDetail/SAVE_EXCURSION_FAILURE',
   SAVE_EXCURSION_SUCCESS: 'excursionDetail/SAVE_EXCURSION_SUCCESS',
+  GET_EXCURSION_BY_ID: 'excursionDetail/GET_EXCURSION_BY_ID',
+  GET_EXCURSION_BY_ID_FAILURE: 'excursionDetail/GET_EXCURSION_BY_ID_FAILURE',
+  GET_EXCURSION_BY_ID_SUCCESS: 'excursionDetail/GET_EXCURSION_BY_ID_SUCCESS',
 }
 
 export const saveExcursion = form => {
@@ -95,7 +99,44 @@ export const saveExcursionSuccess = (payload: any) => ({
 })
 
 export const saveExcursionFailure = (payload: any) => ({
-  type: actions.GET_EXCURSIONS_FAILURE,
+  type: actions.SAVE_EXCURSION_FAILURE,
+  payload: { ...payload },
+  isLoading: false,
+})
+
+export const getExcursionById = (id: string) => ({
+  type: actions.GET_EXCURSION_BY_ID,
+  payload: { loading: true },
+  request: () =>
+    query({
+      query: gql`
+        query Excursion($id: String!) {
+          excursion(id: $id) {
+            id
+            destination
+            departureDate
+            regressDate
+            transports {
+              capacity
+            }
+            passengers {
+              spot
+            }
+          }
+        }
+      `,
+      variables: { id },
+    }),
+})
+
+export const getExcursionByIdSuccess = (payload: any) => ({
+  type: actions.SET_STATE,
+  payload: payload.excursions,
+  isLoading: false,
+})
+
+export const getExcursionByIdFailure = (payload: any) => ({
+  type: actions.GET_EXCURSION_BY_ID_FAILURE,
   payload: { ...payload },
   isLoading: false,
 })
