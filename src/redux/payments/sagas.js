@@ -2,8 +2,7 @@ import { all, put, takeEvery, call, select } from 'redux-saga/effects'
 
 import actions, {
   fetchPayments,
-  togglePaymentListVisibility,
-  togglePaymentsUpdateVisibility,
+  toggleVisibility,
   setStateSuccess,
   setStateFailure,
   toggleLoading,
@@ -11,31 +10,17 @@ import actions, {
   setToUnpaid,
 } from './actions'
 
-const getPayments = state => state.payments
+const getPaymentsFromState = state => state.payments
 
-export function* getPaymentsUpdate({ payload }) {
+export function* getPayments({ payload }) {
   yield put(toggleLoading(true))
 
-  yield put(togglePaymentsUpdateVisibility(true))
+  yield put(toggleVisibility(true))
 
   const fetch = fetchPayments(payload)
   const result = yield call(fetch.request)
 
-  if (result.response.data) {
-    yield put(setStateSuccess(result.response.data))
-  } else {
-    const validationError = result.networkError.result.errors[0]
-    yield put(setStateFailure(validationError))
-  }
-}
-
-export function* getPaymentsList({ payload }) {
-  yield put(toggleLoading(true))
-
-  yield put(togglePaymentListVisibility(true))
-
-  const fetch = fetchPayments(payload)
-  const result = yield call(fetch.request)
+  console.log('RESULT===', result)
 
   if (result.response.data) {
     yield put(
@@ -59,7 +44,7 @@ export function* setPayDayToPaid({ payload }) {
   const result = yield call(fetch.request)
 
   if (result.response.data.setPayDateToPaid) {
-    const statePayments = yield select(getPayments)
+    const statePayments = yield select(getPaymentsFromState)
 
     const parsedPayments = statePayments.payload.map(p => {
       if (p.id === result.response.data.setPayDateToPaid.id) {
@@ -87,7 +72,7 @@ export function* setPayDateToUnpaid({ payload }) {
   const result = yield call(fetch.request)
 
   if (result.response.data.setPayDateToUnpaid) {
-    const statePayments = yield select(getPayments)
+    const statePayments = yield select(getPaymentsFromState)
 
     const parsedPayments = statePayments.payload.map(p => {
       if (p.id === result.response.data.setPayDateToUnpaid.id) {
@@ -116,8 +101,7 @@ export function* SET_STATE() {
 
 export default function* rootSaga() {
   yield all([
-    takeEvery(actions.GET_PAYMENTS_LIST, getPaymentsList),
-    takeEvery(actions.GET_PAYMENTS_UPDATE, getPaymentsUpdate),
+    takeEvery(actions.GET_PAYMENTS, getPayments),
     takeEvery(actions.SET_TO_PAID, setPayDayToPaid),
     takeEvery(actions.SET_TO_UNPAID, setPayDateToUnpaid),
     SET_STATE(), // run once on app load to init listeners
