@@ -1,23 +1,29 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Button, Tag, Modal, Form, InputNumber, Row, Col, Select, Table } from 'antd'
-import { paymentType } from 'constants/options'
+import { Button, Tag, Modal, Form, InputNumber, Row, Col, Table } from 'antd'
 import paymentMethods from 'constants/paymentMethods'
 
 import { statuses, statusesCode, statusesEnum } from 'mock/passengers'
 import passengerActions from 'redux/passenger/actions'
 import paymentsActions from 'redux/payments/actions'
+import paymentFormActions from 'redux/paymentForm/actions'
 import CustomerSelect from 'components/CustomerSelect/CustomerSelect'
 import SkeletonTable from 'components/SkeletonTable/SkeletonTable'
 import customerActions from 'redux/customerList/actions'
 
 import PaymentSelect from 'components/PaymentSelect/PaymentSelect'
+import PaymentUpdateForm from 'components/PaymentUpdateForm/PaymentUpdateForm'
 
 class PassengerList extends Component {
   static defaultProps = {
     isPaymentListVisible: false,
-    isPaymentUpdateVisible: false,
+    isPaymentFormLoading: false,
     payments: [],
+    paymentStatus: {
+      amountPaid: 0,
+      remaining: 0,
+      previousPaid: 0,
+    },
   }
 
   componentDidMount() {
@@ -107,64 +113,22 @@ class PassengerList extends Component {
   }
 
   contentForPaymentsUpdate() {
-    const { payments } = this.props
-
-    const previousPaid = payments
-      .filter(payment => !!payment.payDate)
-      .reduce((prev, curr, index) => {
-        if (index === payments.length - 1) {
-          return curr.value
-        }
-
-        const prevPayDate = prev ? new Date(prev.payDate) : prev
-        const currPayDate = new Date(curr.payDate)
-
-        const dateDiffFromNow = date => date - new Date()
-
-        if (!prevPayDate || dateDiffFromNow(currPayDate) < dateDiffFromNow(prevPayDate)) {
-          return curr
-        }
-
-        return prev
-      }, null)
-
-    const totalPaid = payments
-      .filter(payment => !!payment.payDate)
-      .reduce((prev, curr) => {
-        return prev + curr.value
-      }, 0)
+    const { paymentStatus } = this.props
 
     const content = (
       <Row>
         <Col sm={12}>
-          <Form>
-            <Form.Item label="Valor do pagamento">
-              <InputNumber
-                onChange={value => {
-                  this.setState({ paymentValue: value })
-                }}
-              />
-            </Form.Item>
-            <Form.Item label="Forma de pagamento">
-              <Select size="default">
-                {paymentType.map(x => (
-                  <Select.Option key={x.value} value={x.value} title={x.label}>
-                    {x.label}
-                  </Select.Option>
-                ))}
-              </Select>
-            </Form.Item>
-          </Form>
+          <PaymentUpdateForm formId="paymentUpdateForm" />
         </Col>
         <Col sm={12} className="pl-4">
           <div>
-            Valor pago anteriormente: <span>{previousPaid}</span>
+            Valor pago anteriormente: <span>{paymentStatus.previousPaid}</span>
           </div>
           <div>
-            Total pago: <span>{totalPaid}</span>
+            Total pago: <span>{paymentStatus.amountPaid}</span>
           </div>
           <div>
-            Valor faltante: <span>{0}</span>
+            Valor faltante: <span>{paymentStatus.remaining}</span>
           </div>
         </Col>
       </Row>
@@ -212,15 +176,15 @@ class PassengerList extends Component {
   }
 
   handleHistory(id) {
-    const { getPaymentsList } = this.props
+    const { getPayments } = this.props
 
-    getPaymentsList(id)
+    getPayments(id)
   }
 
   handleUpdate(id) {
-    const { getPaymentsUpdate } = this.props
+    const { getPaymentStatus } = this.props
 
-    getPaymentsUpdate(id)
+    getPaymentStatus(id)
   }
 
   handleBook(id) {
@@ -408,7 +372,7 @@ class PassengerList extends Component {
           if (row.status !== statusesCode.waiting)
             return (
               <span className={row.paidColor}>
-                R$ {row.amountPaid} / R$ {row.ticketPrice.price}
+                {/* R$ {row.amountPaid} / R$ {row.ticketPrice.price} */}
               </span>
             )
           return ''
@@ -449,12 +413,12 @@ class PassengerList extends Component {
       isPassengerLoading,
       passengers,
       isPaymentListVisible,
-      isPaymentUpdateVisible,
+      // isPaymentFormLoading,
       closePaymentsListModal,
-      closePaymentsUpdateModal,
       clearPayments,
       payments,
       isPaymentsLoading,
+      isPaymentFormVisible,
     } = this.props
     const tableColumns = this.columnsForStatus()
 
@@ -514,14 +478,20 @@ class PassengerList extends Component {
         <Modal
           title="Atualizar pagamento"
           width={700}
-          visible={isPaymentUpdateVisible}
-          okCancel
-          onCancel={closePaymentsUpdateModal}
-          afterClose={clearPayments}
-          okText="Atualizar"
+          visible={isPaymentFormVisible}
+          // onCancel={closePaymentsUpdateModal}
+          // afterClose={clearPayments}
           // onOk={() => this.update(id)}
+          footer={[
+            <Button onClick={() => {}} type="default" key="cancel" htmlType="button">
+              Cancelar
+            </Button>,
+            <Button type="primary" form="paymentUpdateForm" key="submit" htmlType="submit">
+              Atualizar
+            </Button>,
+          ]}
         >
-          {isPaymentUpdateVisible && this.contentForPaymentsUpdate()}
+          {this.contentForPaymentsUpdate()}
         </Modal>
       </React.Fragment>
     )
@@ -531,11 +501,11 @@ class PassengerList extends Component {
 const mapStateToProps = ({
   passenger: { isLoading: isPassengerLoading, filter, payload: passengers },
   customerList: { payload: customersList },
-  payments: {
-    payload: payments,
-    isPaymentListVisible,
-    isPaymentUpdateVisible,
-    isLoading: isPaymentsLoading,
+  payments: { payload: payments, isVisible: isPaymentListVisible, isLoading: isPaymentsLoading },
+  paymentForm: {
+    isVisible: isPaymentFormVisible,
+    isLoading: isPaymentFormLoading,
+    payload: { data: paymentStatus },
   },
 }) => ({
   isPassengerLoading,
@@ -544,23 +514,25 @@ const mapStateToProps = ({
   customersList,
   payments,
   isPaymentListVisible,
-  isPaymentUpdateVisible,
   isPaymentsLoading,
+  isPaymentFormVisible,
+  isPaymentFormLoading,
+  paymentStatus,
 })
 
 const mapDispatchToProps = dispatch => ({
   getPassengers: () => dispatch({ type: passengerActions.GET_PASSENGERS }),
-  getPaymentsList: passengerId =>
-    dispatch({ type: paymentsActions.GET_PAYMENTS_LIST, payload: { passengerId } }),
-  getPaymentsUpdate: passengerId =>
-    dispatch({ type: paymentsActions.GET_PAYMENTS_UPDATE, payload: { passengerId } }),
+  getPayments: passengerId =>
+    dispatch({ type: paymentsActions.GET_PAYMENTS, payload: { passengerId } }),
+  getPaymentStatus: passengerId =>
+    dispatch({ type: paymentFormActions.GET_PAYMENT_STATUS, payload: { passengerId } }),
   setToPaid: ({ passengerId, paymentId }) =>
     dispatch({ type: paymentsActions.SET_TO_PAID, payload: { passengerId, paymentId } }),
   setToUnpaid: ({ passengerId, paymentId }) =>
     dispatch({ type: paymentsActions.SET_TO_UNPAID, payload: { passengerId, paymentId } }),
   getCustomers: () => dispatch({ type: customerActions.GET_CUSTOMERS }),
   closePaymentsListModal: () =>
-    dispatch({ type: paymentsActions.TOGGLE_PAYMENTS_LIST_VISIBILITY, payload: false }),
+    dispatch({ type: paymentsActions.TOGGLE_VISIBILITY, payload: false }),
   closePaymentsUpdateModal: () =>
     dispatch({ type: paymentsActions.TOGGLE_PAYMENTS_UPDATE_VISIBILITY, payload: false }),
   clearPayments: () => dispatch({ type: paymentsActions.SET_STATE, payload: [] }),
