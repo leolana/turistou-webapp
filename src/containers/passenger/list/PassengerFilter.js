@@ -1,14 +1,17 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import actions from 'redux/passenger/actions'
 import { Form, Row, Col, Radio, Input } from 'antd'
 
-import { tableData } from 'mock/excursions'
+import passengerActions from 'redux/passenger/actions'
 
 @Form.create()
 class PassengerFilter extends Component {
   constructor(props) {
     super(props)
+
+    this.state = {
+      status: 'BOOKED',
+    }
 
     this.handleChangeStartPay = this.handleChangeStartPay.bind(this)
     this.handleChangeFullPay = this.handleChangeFullPay.bind(this)
@@ -16,47 +19,44 @@ class PassengerFilter extends Component {
     this.handleChangeFilter = this.handleChangeFilter.bind(this)
   }
 
+  componentWillMount() {
+    const { getPassengers, filter, id } = this.props
+    const { status } = this.state
+    const payload = { ...filter, status, excursionId: id }
+    getPassengers(payload)
+  }
+
   handleChangeStartPay(e) {
     const startPay = e.target.checked
-    const { dispatch } = this.props
-    dispatch({
-      type: actions.SET_STATE,
-      payload: { startPay },
-    })
+    const { setFilter } = this.props
+    setFilter({ startPay })
   }
 
   handleChangeFullPay(e) {
     const fullPay = e.target.checked
-    const { dispatch } = this.props
-    dispatch({
-      type: actions.SET_STATE,
-      payload: { fullPay },
-    })
+    const { setFilter } = this.props
+    setFilter({ fullPay })
   }
 
   handleChangeStatus(e) {
-    const statusId = e.target.value
-    const { dispatch } = this.props
-    dispatch({
-      type: actions.SET_STATE,
-      payload: { statusId },
-    })
+    const status = e.target.value
+    const { getPassengers, filter } = this.props
+    const payload = { ...filter, status }
+    getPassengers(payload)
+    this.setState({ status })
   }
 
   handleChangeFilter(e) {
     const query = e.target.value
-    const { dispatch } = this.props
-    dispatch({
-      type: actions.SET_STATE,
-      payload: { query },
-    })
+    const { setFilter } = this.props
+    setFilter({ query })
   }
 
   render() {
-    // const { id, startPay, fullPay, statusId } = this.props
-    const { id, statusId } = this.props
+    const { id, passengers } = this.props
+    const { status } = this.state
 
-    const excursion = tableData.find(x => x.id === +id)
+    const excursion = passengers.find(x => x.id === id)
 
     return (
       <Form layout="inline" className="form-filter">
@@ -81,7 +81,7 @@ class PassengerFilter extends Component {
             <Form.Item label="Excursão">
               {form.getFieldDecorator('excursion', { rules: [{ required: false }] })(
                 <Select>
-                  {tableData.map(x => <Select.Option key={x.id} value={x.id}>{x.destination} <i className="fa fa-calendar ml-2" /> {new Date(x.departure).toLocaleDateString()}</Select.Option>)}
+                  {passengers.map(x => <Select.Option key={x.id} value={x.id}>{x.destination} <i className="fa fa-calendar ml-2" /> {new Date(x.departure).toLocaleDateString()}</Select.Option>)}
                 </Select>
               )}
             </Form.Item>
@@ -91,12 +91,13 @@ class PassengerFilter extends Component {
             <Radio.Group
               className="mb-1"
               onChange={this.handleChangeStatus}
-              defaultValue={statusId || 1}
+              defaultValue="BOOKED"
+              value={status}
               buttonStyle="solid"
             >
-              <Radio.Button value={1}>Reservado</Radio.Button>
-              <Radio.Button value={2}>Em espera</Radio.Button>
-              <Radio.Button value={3}>Desistente</Radio.Button>
+              <Radio.Button value="BOOKED">Reservado</Radio.Button>
+              <Radio.Button value="WAITING">Em espera</Radio.Button>
+              <Radio.Button value="CANCELED">Desistente</Radio.Button>
             </Radio.Group>
           </Col>
           {/* TODO: Descomentar até achar um jeito melhor de acompanhar os filtros entre tabelas */}
@@ -121,4 +122,14 @@ class PassengerFilter extends Component {
   }
 }
 
-export default connect()(PassengerFilter)
+const mapStateToProps = ({ passenger: { filter, payload: passengers } }) => ({
+  filter,
+  passengers,
+})
+
+const mapDispatchToProps = dispatch => ({
+  setFilter: filter => dispatch({ type: passengerActions.SET_STATE, filter }),
+  getPassengers: filter => dispatch({ type: passengerActions.GET_PASSENGERS, filter }),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(PassengerFilter)
