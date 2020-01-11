@@ -9,10 +9,21 @@ class PassengerFilter extends Component {
   constructor(props) {
     super(props)
 
+    this.state = {
+      status: 'BOOKED',
+    }
+
     this.handleChangeStartPay = this.handleChangeStartPay.bind(this)
     this.handleChangeFullPay = this.handleChangeFullPay.bind(this)
     this.handleChangeStatus = this.handleChangeStatus.bind(this)
     this.handleChangeFilter = this.handleChangeFilter.bind(this)
+  }
+
+  componentWillMount() {
+    const { getPassengers, filter, id } = this.props
+    const { status } = this.state
+    const payload = { ...filter, status, excursionId: id }
+    getPassengers(payload)
   }
 
   handleChangeStartPay(e) {
@@ -32,6 +43,7 @@ class PassengerFilter extends Component {
     const { getPassengers, filter } = this.props
     const payload = { ...filter, status }
     getPassengers(payload)
+    this.setState({ status })
   }
 
   handleChangeFilter(e) {
@@ -41,8 +53,8 @@ class PassengerFilter extends Component {
   }
 
   render() {
-    const { id, passengers, filter } = this.props
-    const { status } = filter
+    const { id, passengers } = this.props
+    const { status } = this.state
 
     const excursion = passengers.find(x => x.id === id)
 
