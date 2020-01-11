@@ -13,15 +13,9 @@ import customerActions from 'redux/customerList/actions'
 import PaymentSelect from 'components/PaymentSelect/PaymentSelect'
 
 const statusesEnum = {
-  '1': 'BOOKED',
-  '2': 'WAITING',
-  '3': 'CANCELED',
-}
-
-const statusesCode = {
-  booked: 1,
-  waiting: 2,
-  canceled: 3,
+  booked: 'BOOKED',
+  waiting: 'WAITING',
+  canceled: 'CANCELED',
 }
 
 const statuses = [
@@ -265,94 +259,107 @@ class PassengerList extends Component {
   }
 
   renderActionsButtons = (id, status) => {
-    const buttonsAction = {
-      booked: (
-        <div className="table-action-buttons">
-          <Button
-            ghost
-            size="small"
-            type="primary"
-            title="Atualizar pagamento"
-            onClick={() => {
-              this.handleUpdate(id)
-            }}
-          >
-            <i className="fa fa-dollar" />
-          </Button>
-          <Button
-            ghost
-            size="small"
-            type="primary"
-            title="Histórico de pagamento"
-            onClick={() => {
-              this.handleHistory(id)
-            }}
-          >
-            <i className="fa fa-calendar" />
-          </Button>
-          <Button
-            ghost
-            size="small"
-            type="primary"
-            title="Trocar passageiro"
-            onClick={() => {
-              this.handleExchange(id)
-            }}
-          >
-            <i className="fa fa-exchange" />
-          </Button>
-          <Button
-            ghost
-            size="small"
-            type="danger"
-            title="Passageiro desistiu"
-            onClick={() => this.handleRemove(id)}
-          >
-            <i className="fa fa-times" />
-          </Button>
-        </div>
-      ),
-      waiting: (
-        <div className="table-action-buttons">
-          <Button
-            ghost
-            size="small"
-            type="primary"
-            title="Reservar passageiro"
-            onClick={() => {
-              this.handleBook(id)
-            }}
-          >
-            <i className="fa fa-check" />
-          </Button>
-          <Button
-            ghost
-            size="small"
-            type="danger"
-            title="Remover passageiro"
-            onClick={() => this.handleRemove(id)}
-          >
-            <i className="fa fa-times" />
-          </Button>
-        </div>
-      ),
-      canceled: (
-        <div className="table-action-buttons">
-          <Button
-            ghost
-            size="small"
-            type="primary"
-            title="Reservar passageiro"
-            onClick={() => {
-              this.handleBook(id)
-            }}
-          >
-            <i className="fa fa-check" />
-          </Button>
-        </div>
-      ),
+    const bookedActions = (
+      <div className="table-action-buttons">
+        <Button
+          ghost
+          size="small"
+          type="primary"
+          title="Atualizar pagamento"
+          onClick={() => {
+            this.handleUpdate(id)
+          }}
+        >
+          <i className="fa fa-dollar" />
+        </Button>
+        <Button
+          ghost
+          size="small"
+          type="primary"
+          title="Histórico de pagamento"
+          onClick={() => {
+            this.handleHistory(id)
+          }}
+        >
+          <i className="fa fa-calendar" />
+        </Button>
+        <Button
+          ghost
+          size="small"
+          type="primary"
+          title="Trocar passageiro"
+          onClick={() => {
+            this.handleExchange(id)
+          }}
+        >
+          <i className="fa fa-exchange" />
+        </Button>
+        <Button
+          ghost
+          size="small"
+          type="danger"
+          title="Passageiro desistiu"
+          onClick={() => this.handleRemove(id)}
+        >
+          <i className="fa fa-times" />
+        </Button>
+      </div>
+    )
+
+    const waitingActions = (
+      <div className="table-action-buttons">
+        <Button
+          ghost
+          size="small"
+          type="primary"
+          title="Reservar passageiro"
+          onClick={() => {
+            this.handleBook(id)
+          }}
+        >
+          <i className="fa fa-check" />
+        </Button>
+        <Button
+          ghost
+          size="small"
+          type="danger"
+          title="Remover passageiro"
+          onClick={() => this.handleRemove(id)}
+        >
+          <i className="fa fa-times" />
+        </Button>
+      </div>
+    )
+
+    const canceledActions = (
+      <div className="table-action-buttons">
+        <Button
+          ghost
+          size="small"
+          type="primary"
+          title="Reservar passageiro"
+          onClick={() => {
+            this.handleBook(id)
+          }}
+        >
+          <i className="fa fa-check" />
+        </Button>
+      </div>
+    )
+
+    if (statusesEnum.booked === status) {
+      return bookedActions
     }
-    return buttonsAction[statusesEnum[status]]
+
+    if (statusesEnum.waiting === status) {
+      return waitingActions
+    }
+
+    if (statusesEnum.canceled === status) {
+      return canceledActions
+    }
+
+    throw new Error(`Status ${status} not defined in statusesEnum`)
   }
 
   filterData(passengers) {
@@ -377,6 +384,7 @@ class PassengerList extends Component {
     const {
       filter: { status },
     } = this.props
+
     const allColumns = {
       actions: {
         dataIndex: 'id',
@@ -415,7 +423,7 @@ class PassengerList extends Component {
         key: 'value',
         className: 'text-center',
         render: (_, row) => {
-          if (row.status !== statusesCode.waiting)
+          if (row.status !== statusesEnum.waiting)
             return (
               <span className={row.paidColor}>
                 R$ {row.amountPaid} / R$ {row.ticketPrice.price}
@@ -437,7 +445,7 @@ class PassengerList extends Component {
     }
 
     switch (status) {
-      case statusesCode.booked:
+      case statusesEnum.booked:
         return [
           allColumns.actions,
           allColumns.name,
@@ -445,9 +453,9 @@ class PassengerList extends Component {
           allColumns.ticketType,
           allColumns.spot,
         ]
-      case statusesCode.waiting:
+      case statusesEnum.waiting:
         return [allColumns.actions, allColumns.name, allColumns.telephone]
-      case statusesCode.canceled:
+      case statusesEnum.canceled:
         return [allColumns.actions, allColumns.name, allColumns.reimbursedValue]
       default:
         return [allColumns.status, allColumns.name]
