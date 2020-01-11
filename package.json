@@ -39,6 +39,7 @@
     "connected-react-router": "^6.6.1",
     "cz-conventional-changelog": "^3.0.2",
     "enquire-js": "^0.2.1",
+    "eslint": "^6.8.0",
     "flow-bin": "^0.104.0",
     "graphql": "^14.5.8",
     "graphql-tag": "^2.10.1",
