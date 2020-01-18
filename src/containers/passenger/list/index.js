@@ -49,7 +49,7 @@ class Passenger extends Component {
           </div>
           <div className="card-body">
             <PassengerFilter id={id} />
-            <PassengerList />
+            <PassengerList id={id} />
 
             <div className="form-actions">
               <DropdownAdd placement="topRight" />
