@@ -413,7 +413,7 @@ class PassengerList extends Component {
           if (row.status !== statusesEnum.waiting)
             return (
               <span className={row.paidColor}>
-                {/* R$ {row.amountPaid} / R$ {row.ticketPrice.price} */}
+                R$ {row.amountPaid} / R$ {row.ticketPrice?.price}
               </span>
             )
           return ''
@@ -477,7 +477,7 @@ class PassengerList extends Component {
     }
 
     const passengersList = passengers.map(passenger => {
-      const paymentPercent = passenger.amountPaid / passenger.ticketPrice.price
+      const paymentPercent = passenger.amountPaid / passenger.ticketPrice?.price
 
       const passengerPresenterModified = {
         paidColor: getPaidColor(paymentPercent),
