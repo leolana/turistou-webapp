@@ -116,6 +116,12 @@ export const getExcursionById = (id: string) => ({
             destination
             departureDate
             regressDate
+            ticketPriceDefault
+            ticketPrices {
+              id
+              description
+              price
+            }
             transports {
               capacity
             }
@@ -131,7 +137,7 @@ export const getExcursionById = (id: string) => ({
 
 export const getExcursionByIdSuccess = (payload: any) => ({
   type: actions.SET_STATE,
-  payload: payload.excursions,
+  payload: payload.excursion,
   isLoading: false,
 })
 
