@@ -23,19 +23,22 @@ const passengerFragment = gql`
     amountPaid
   }
 `
-export const fetchPassengers = () => ({
+export const fetchPassengers = ({ filter }) => ({
   type: actions.GET_PASSENGERS,
   payload: { loading: true },
   request: () =>
     query({
       query: gql`
-        {
-          passengers {
+        query Passenger($filter: SearchPassengersInput!) {
+          passengers(filter: $filter) {
             ...PassengerFragment
           }
         }
         ${passengerFragment}
       `,
+      variables: {
+        filter,
+      },
     }),
 })
 
