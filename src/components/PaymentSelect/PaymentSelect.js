@@ -23,6 +23,12 @@ const PaymentSelect = ({ isPaid, onChange }) => {
         value: 'unpaid',
         className: style.unpaid,
       },
+      {
+        id: 3,
+        description: 'Cancelado',
+        value: 'canceled',
+        className: style.canceled,
+      },
     ],
     [],
   )
