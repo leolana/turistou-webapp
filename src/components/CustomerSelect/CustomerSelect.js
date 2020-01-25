@@ -5,8 +5,10 @@ import actions from 'redux/customerList/actions'
 
 export class CustomerSelect extends Component {
   componentDidMount() {
-    const { customers, getCustomers } = this.props
+    const { customers, getCustomers, onChange } = this.props
     if (!customers || !customers.length) getCustomers()
+
+    this.triggerChange = onChange.bind(this)
   }
 
   render() {
@@ -19,14 +21,15 @@ export class CustomerSelect extends Component {
         filterOption={(q, option) =>
           q.split(' ').every(x => option.props.children.toLowerCase().includes(x))
         }
+        onChange={this.triggerChange}
         dropdownRender={menu => (
-          <div>
+          <>
             {menu}
             <Divider style={{ margin: '4px 0' }} />
             <div style={{ padding: '8px', cursor: 'pointer' }}>
               <i className="fa fa-plus" /> Novo cliente
             </div>
-          </div>
+          </>
         )}
       >
         {customers.map(x => (

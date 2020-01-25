@@ -26,7 +26,7 @@ const Installment = ({ form, index }) => {
                       'À vista'
                     ) : (
                       <>
-                        {x}&times; ({(price / x).toFixed(2)})
+                        {x}&times; {`(${price ? (price / x).toFixed(2) : ''})`}
                       </>
                     )}
                   </Select.Option>
