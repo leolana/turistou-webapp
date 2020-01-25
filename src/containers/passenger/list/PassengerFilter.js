@@ -122,7 +122,7 @@ class PassengerFilter extends Component {
   }
 }
 
-const mapStateToProps = ({ passenger: { filter, payload: passengers } }) => ({
+const mapStateToProps = ({ passengerList: { filter, payload: passengers } }) => ({
   filter,
   passengers,
 })

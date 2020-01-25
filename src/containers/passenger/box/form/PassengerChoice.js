@@ -18,18 +18,25 @@ class PassengerChoice extends Component {
     return options
   }
 
+  getSelectedTicket(id) {
+    if (id === undefined) {
+      const { form } = this.props
+      id = form.getFieldValue('ticketPriceId')
+    }
+
+    return this.getTicketOptions().filter(x => x.value === id)[0]
+  }
+
   render() {
     const { form } = this.props
     const ticketOptions = this.getTicketOptions()
-    const selectedTicket = ticketOptions.filter(
-      x => x.value === form.getFieldValue('ticketPriceId'),
-    )[0]
+    const selectedTicket = this.getSelectedTicket()
 
     return (
       <Row>
         <Col xs={24}>
           <Form.Item label="Cliente">
-            {form.getFieldDecorator('customer', {
+            {form.getFieldDecorator('customerId', {
               rules: [{ required: false }],
             })(<CustomerSelect />)}
           </Form.Item>

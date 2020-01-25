@@ -6,45 +6,45 @@ import { paymentType } from 'constants/options'
 const dateFormat = 'DD/MM/YYYY'
 const MAX_INSTALLMENT = 10
 
-/* TODO: installment
-  BankSlip    dueDate
-  CreditCard  firtDueDate
-*/
-const Installment = ({ form, price, index }) => (
-  <div>
-    <Col xs={24} sm={12} lg={7}>
-      <Form.Item label="Parcelas">
-        {/* TODO: send installment value */}
-        {form.getFieldDecorator(`installmentQuantity[${index}]`, {
-          rules: [{ required: false }],
-        })(
-          <Select size="default">
-            {[...Array(MAX_INSTALLMENT).keys()]
-              .map(x => x + 1)
-              .map(x => (
-                <Select.Option key={x} value={x}>
-                  {x === 1 ? (
-                    'À vista'
-                  ) : (
-                    <span>
-                      {x}&times; ({(price / x).toFixed(2)})
-                    </span>
-                  )}
-                </Select.Option>
-              ))}
-          </Select>,
-        )}
-      </Form.Item>
-    </Col>
-    <Col xs={18} sm={10} lg={5}>
-      <Form.Item label="Primeira parcela">
-        {form.getFieldDecorator(`paymentFirstDue[${index}]`, {
-          rules: [{ required: false }],
-        })(<DatePicker size="default" format={dateFormat} />)}
-      </Form.Item>
-    </Col>
-  </div>
-)
+const Installment = ({ form, index }) => {
+  const price = form.getFieldValue(`paymentValue[${index}]`)
+
+  return (
+    <>
+      <Col xs={24} sm={12} lg={7}>
+        <Form.Item label="Parcelas">
+          {/* TODO: send installment value */}
+          {form.getFieldDecorator(`installmentQuantity[${index}]`, {
+            rules: [{ required: false }],
+          })(
+            <Select size="default">
+              {[...Array(MAX_INSTALLMENT).keys()]
+                .map(x => x + 1)
+                .map(x => (
+                  <Select.Option key={x} value={x}>
+                    {x === 1 ? (
+                      'À vista'
+                    ) : (
+                      <>
+                        {x}&times; ({(price / x).toFixed(2)})
+                      </>
+                    )}
+                  </Select.Option>
+                ))}
+            </Select>,
+          )}
+        </Form.Item>
+      </Col>
+      <Col xs={18} sm={10} lg={5}>
+        <Form.Item label="Primeira parcela">
+          {form.getFieldDecorator(`paymentFirstDue[${index}]`, {
+            rules: [{ required: false }],
+          })(<DatePicker size="default" format={dateFormat} />)}
+        </Form.Item>
+      </Col>
+    </>
+  )
+}
 
 class PaymentConditions extends Component {
   constructor() {
@@ -54,6 +54,18 @@ class PaymentConditions extends Component {
 
     this.handleChangePaymentCondition = this.handleChangePaymentCondition.bind(this)
     this.handleRemove = this.handleRemove.bind(this)
+  }
+
+  getSelectedPrice() {
+    const {
+      form,
+      excursion: { ticketPrices, ticketPriceDefault },
+    } = this.props
+    const ticketPriceId = form.getFieldValue('ticketPriceId')
+    const price = ticketPriceId
+      ? ticketPrices.find(x => x.id === ticketPriceId).price
+      : ticketPriceDefault
+    return price
   }
 
   handleRemove(id) {
@@ -104,14 +116,11 @@ class PaymentConditions extends Component {
           <Form.Item label="Valor">
             {form.getFieldDecorator(`paymentValue[${index}]`, {
               rules: [{ required: false }],
-            })(<InputNumber precision={2} />)}
+            })(<InputNumber precision={2} decimalSeparator="," />)}
           </Form.Item>
         </Col>
-        {/* NOTE:
-          PaymentCondition gera 
-         */}
 
-        {isInstallable && <Installment {...this.props} price={230.0} />}
+        {isInstallable && <Installment {...{ form, index }} />}
 
         <Col className="float-right" xs={6} sm={2} lg={2}>
           <Button

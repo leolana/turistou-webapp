@@ -13,7 +13,7 @@ import 'costom.scss'
 const pageTitle = 'Novo passageiro'
 const formSteps = [
   { title: 'Passageiro', component: PassengerChoice },
-  { title: 'Pagamentos efetuados', component: PassengerPayment },
+  { title: 'Pagamentos combinados', component: PassengerPayment },
   { title: 'Assento', component: PassengerPlace },
 ]
 

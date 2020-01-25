@@ -55,9 +55,8 @@ class PassengerForm extends Component {
   }
 }
 
-const mapStateToProps = ({ step, excursionList }) => ({
+const mapStateToProps = ({ step }) => ({
   currentStep: step.current,
-  excursionList,
 })
 
 const mapDispatchToProps = dispatch => ({
