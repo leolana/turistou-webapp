@@ -2,11 +2,14 @@ import actions from './actions'
 
 const initialState = {
   isLoading: true,
-  payload: [],
+  payload: {
+    form: {},
+    data: {},
+  },
   isVisible: false,
 }
 
-export default function paymentsReducer(state = initialState, action) {
+export default function paymentFormReducer(state = initialState, action) {
   switch (action.type) {
     case actions.TOGGLE_VISIBILITY:
       return {
@@ -21,7 +24,11 @@ export default function paymentsReducer(state = initialState, action) {
       }
 
     case actions.SET_STATE:
-      return { ...state, isLoading: false, payload: action.payload }
+      return {
+        ...state,
+        isLoading: false,
+        payload: { ...state.payload, ...action.payload },
+      }
 
     default:
       return state

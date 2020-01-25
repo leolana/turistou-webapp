@@ -12,11 +12,13 @@ const PaymentSelect = ({ isPaid, onChange }) => {
   const options = useMemo(
     () => [
       {
+        id: 1,
         description: 'Pago',
         value: 'paid',
         className: style.paid,
       },
       {
+        id: 2,
         description: 'A Pagar',
         value: 'unpaid',
         className: style.unpaid,
@@ -32,7 +34,7 @@ const PaymentSelect = ({ isPaid, onChange }) => {
       onChange={onChange}
     >
       {options.map(option => (
-        <Select.Option value={option.value} className={option.className}>
+        <Select.Option key={option.id} value={option.value} className={option.className}>
           {option.description}
         </Select.Option>
       ))}

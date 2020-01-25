@@ -4,9 +4,8 @@ import { query, mutate } from 'core/api/apollo'
 
 const actions = {
   SET_STATE: 'payments/SET_STATE',
+  SET_STATE_FAILURE: 'payments/SET_STATE_FAILURE',
   GET_PAYMENTS: 'payments/GET_PAYMENTS',
-  GET_PAYMENTS_SUCCESS: 'payments/GET_PAYMENTS_SUCCESS',
-  GET_PASSENGERS_FAILURE: 'payments/GET_PASSENGERS_FAILURE',
   TOGGLE_VISIBILITY: 'payments/TOGGLE_VISIBILITY',
   TOGGLE_LOADING: 'payments/TOGGLE_LOADING',
   SET_TO_PAID: 'payments/SET_TO_PAID',
@@ -14,8 +13,7 @@ const actions = {
 }
 
 export const fetchPayments = ({ passengerId }) => ({
-  type: actions.GET_PAYMENTS,
-  payload: { loading: true, passengerId },
+  payload: { loading: true },
   request: () =>
     query({
       query: gql`
@@ -97,7 +95,7 @@ export const setStateSuccess = payload => ({
 })
 
 export const setStateFailure = payload => ({
-  type: actions.GET_PASSENGERS_FAILURE,
+  type: actions.SET_STATE_FAILURE,
   payload: { ...payload },
   isLoading: false,
 })

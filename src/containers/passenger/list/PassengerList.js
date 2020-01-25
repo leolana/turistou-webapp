@@ -1,16 +1,17 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Button, Tag, Modal, Form, InputNumber, Row, Col, Select, Table } from 'antd'
-import { paymentType } from 'constants/options'
+import { Button, Tag, Modal, Form, InputNumber, Row, Col, Table } from 'antd'
 import paymentMethods from 'constants/paymentMethods'
 
 import passengerActions from 'redux/passengerList/actions'
 import paymentsActions from 'redux/payments/actions'
+import paymentStatusActions from 'redux/paymentStatus/actions'
 import CustomerSelect from 'components/CustomerSelect/CustomerSelect'
 import SkeletonTable from 'components/SkeletonTable/SkeletonTable'
 import customerActions from 'redux/customerList/actions'
 
 import PaymentSelect from 'components/PaymentSelect/PaymentSelect'
+import PaymentUpdateForm from 'components/PaymentUpdateForm/PaymentUpdateForm'
 
 const statusesEnum = {
   booked: 'BOOKED',
@@ -41,8 +42,14 @@ const statuses = [
 
 class PassengerList extends Component {
   static defaultProps = {
-    isPaymentsModalVisible: false,
-    paymentsList: [],
+    isPaymentListVisible: false,
+    isPaymentFormLoading: false,
+    payments: [],
+    paymentStatus: {
+      amountPaid: 0,
+      remaining: 0,
+      previousPaid: 0,
+    },
   }
 
   componentDidMount() {
@@ -132,6 +139,31 @@ class PassengerList extends Component {
     console.log('update: ', id, paymentValue)
   }
 
+  contentForPaymentsUpdate() {
+    const { paymentStatus, addPayment } = this.props
+
+    const content = (
+      <Row>
+        <Col sm={12}>
+          <PaymentUpdateForm formId="paymentUpdateForm" onSubmit={addPayment} />
+        </Col>
+        <Col sm={12} className="pl-4">
+          <div>
+            Valor pago anteriormente: <span>{paymentStatus.previousPaid}</span>
+          </div>
+          <div>
+            Total pago: <span>{paymentStatus.amountPaid}</span>
+          </div>
+          <div>
+            Valor faltante: <span>{paymentStatus.remaining}</span>
+          </div>
+        </Col>
+      </Row>
+    )
+
+    return content
+  }
+
   handleRemove(id) {
     Modal.error({
       title: 'Removendo o passageiro da excursão',
@@ -177,54 +209,9 @@ class PassengerList extends Component {
   }
 
   handleUpdate(id) {
-    const { paymentValue } = this.state
+    const { getPaymentStatus } = this.props
 
-    const paid = 500
-    const total = paid + paymentValue
-
-    Modal.error({
-      title: 'Atualizar pagamento',
-      width: 700,
-      okCancel: true,
-      cancelText: 'Cancelar',
-      okText: 'Atualizar',
-      onOk: () => this.update(id),
-      content: (
-        <Row>
-          <Col sm={12}>
-            <Form>
-              <Form.Item label="Valor do pagamento">
-                <InputNumber
-                  onChange={value => {
-                    this.setState({ paymentValue: value })
-                  }}
-                />
-              </Form.Item>
-              <Form.Item label="Forma de pagamento">
-                <Select size="default">
-                  {paymentType.map(x => (
-                    <Select.Option key={x.value} value={x.value} title={x.label}>
-                      {x.label}
-                    </Select.Option>
-                  ))}
-                </Select>
-              </Form.Item>
-            </Form>
-          </Col>
-          <Col sm={12} className="pl-4">
-            <div>
-              Valor pago anteriormente: <span>{paid}</span>
-            </div>
-            <div>
-              Total pago: <span>{total}</span>
-            </div>
-            <div>
-              Valor faltante: <span>{total}</span>
-            </div>
-          </Col>
-        </Row>
-      ),
-    })
+    getPaymentStatus(id)
   }
 
   handleBook(id) {
@@ -426,7 +413,7 @@ class PassengerList extends Component {
           if (row.status !== statusesEnum.waiting)
             return (
               <span className={row.paidColor}>
-                R$ {row.amountPaid} / R$ {row.ticketPrice.price}
+                R$ {row.amountPaid} / R$ {row.ticketPrice?.price}
               </span>
             )
           return ''
@@ -466,12 +453,15 @@ class PassengerList extends Component {
     const {
       isPassengerLoading,
       passengers,
-      isPaymentsModalVisible,
-      closePayments,
+      isPaymentListVisible,
+      closePaymentsListModal,
       clearPayments,
-      paymentsList,
+      payments,
       isPaymentsLoading,
+      isPaymentFormVisible,
+      clearPaymentStatus,
     } = this.props
+
     const tableColumns = this.columnsForStatus()
 
     const getPaidColor = paymentPercent => {
@@ -487,7 +477,7 @@ class PassengerList extends Component {
     }
 
     const passengersList = passengers.map(passenger => {
-      const paymentPercent = passenger.amountPaid / passenger.ticketPrice.price
+      const paymentPercent = passenger.amountPaid / passenger.ticketPrice?.price
 
       const passengerPresenterModified = {
         paidColor: getPaidColor(paymentPercent),
@@ -507,13 +497,12 @@ class PassengerList extends Component {
           tableColumns={tableColumns}
           tableData={filteredData}
         />
-
         <Modal
           title="Datas de pagamento"
           width={700}
-          visible={isPaymentsModalVisible}
+          visible={isPaymentListVisible}
           okCancel
-          onCancel={closePayments}
+          onCancel={closePaymentsListModal}
           afterClose={clearPayments}
           okText="Atualizar"
         >
@@ -522,10 +511,26 @@ class PassengerList extends Component {
             className="utils__scrollTable"
             scroll={{ x: '100%' }}
             columns={this.columnsForPayments()}
-            dataSource={paymentsList}
+            dataSource={payments}
             pagination={false}
             loading={isPaymentsLoading}
           />
+        </Modal>
+
+        <Modal
+          title="Atualizar pagamento"
+          width={700}
+          visible={isPaymentFormVisible}
+          footer={[
+            <Button onClick={clearPaymentStatus} type="default" key="cancel" htmlType="button">
+              Cancelar
+            </Button>,
+            <Button type="primary" form="paymentUpdateForm" key="submit" htmlType="submit">
+              Atualizar
+            </Button>,
+          ]}
+        >
+          {this.contentForPaymentsUpdate()}
         </Modal>
       </React.Fragment>
     )
@@ -535,32 +540,42 @@ class PassengerList extends Component {
 const mapStateToProps = ({
   passengerList: { isLoading: isPassengerLoading, filter, payload: passengers },
   customerList: { payload: customersList },
-  payments: {
-    payload: paymentsList,
-    isVisible: isPaymentsModalVisible,
-    isLoading: isPaymentsLoading,
+  payments: { payload: payments, isVisible: isPaymentListVisible, isLoading: isPaymentsLoading },
+  paymentStatus: {
+    isVisible: isPaymentFormVisible,
+    isLoading: isPaymentFormLoading,
+    payload: paymentStatus,
   },
 }) => ({
   isPassengerLoading,
   filter,
   passengers,
   customersList,
-  paymentsList,
-  isPaymentsModalVisible,
+  payments,
+  isPaymentListVisible,
   isPaymentsLoading,
+  isPaymentFormVisible,
+  isPaymentFormLoading,
+  paymentStatus,
 })
 
 const mapDispatchToProps = dispatch => ({
   getPassengers: filter => dispatch({ type: passengerActions.GET_PASSENGERS, filter }),
   getPayments: passengerId =>
     dispatch({ type: paymentsActions.GET_PAYMENTS, payload: { passengerId } }),
+  getPaymentStatus: passengerId =>
+    dispatch({ type: paymentStatusActions.GET_PAYMENT_STATUS, payload: { passengerId } }),
   setToPaid: ({ passengerId, paymentId }) =>
     dispatch({ type: paymentsActions.SET_TO_PAID, payload: { passengerId, paymentId } }),
   setToUnpaid: ({ passengerId, paymentId }) =>
     dispatch({ type: paymentsActions.SET_TO_UNPAID, payload: { passengerId, paymentId } }),
   getCustomers: () => dispatch({ type: customerActions.GET_CUSTOMERS }),
-  closePayments: () => dispatch({ type: paymentsActions.TOGGLE_VISIBILITY, payload: false }),
+  closePaymentsListModal: () =>
+    dispatch({ type: paymentsActions.TOGGLE_VISIBILITY, payload: false }),
   clearPayments: () => dispatch({ type: paymentsActions.SET_STATE, payload: [] }),
+  addPayment: values =>
+    dispatch({ type: paymentStatusActions.PAYMENT_INSERT, payload: { values } }),
+  clearPaymentStatus: () => dispatch({ type: paymentStatusActions.CLEAR_PAYMENT_STATUS }),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(PassengerList)
