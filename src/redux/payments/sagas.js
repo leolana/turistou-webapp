@@ -7,7 +7,7 @@ import actions, {
   setStateFailure,
   toggleLoading,
   setToPaid,
-  setToUnpaid,
+  setToPending,
 } from './actions'
 
 const getPaymentsFromState = state => state.payments
@@ -65,20 +65,48 @@ export function* setPayDayToPaid({ payload }) {
   }
 }
 
-export function* setPayDateToUnpaid({ payload }) {
+export function* setPayDateToPending({ payload }) {
   yield put(toggleLoading(true))
 
-  const fetch = setToUnpaid(payload)
+  const fetch = setToPending(payload)
   const result = yield call(fetch.request)
 
-  if (result.response.data.setPayDateToUnpaid) {
+  if (result.response.data.setPayDateToPending) {
     const statePayments = yield select(getPaymentsFromState)
 
     const parsedPayments = statePayments.payload.map(p => {
-      if (p.id === result.response.data.setPayDateToUnpaid.id) {
+      if (p.id === result.response.data.setPayDateToPending.id) {
         return {
           ...p,
-          ...result.response.data.setPayDateToUnpaid,
+          ...result.response.data.setPayDateToPending,
+        }
+      }
+
+      return p
+    })
+
+    yield put(setStateSuccess(parsedPayments))
+  } else {
+    const validationError = result.networkError.result.errors[0]
+
+    yield put(setStateFailure(validationError))
+  }
+}
+
+export function* setStatusPaymentToCanceled({ payload }) {
+  yield put(toggleLoading(true))
+
+  const fetch = setToPending(payload)
+  const result = yield call(fetch.request)
+
+  if (result.response.data.setStatusPaymentToCanceled) {
+    const statePayments = yield select(getPaymentsFromState)
+
+    const parsedPayments = statePayments.payload.map(p => {
+      if (p.id === result.response.data.setStatusPaymentToCanceled.id) {
+        return {
+          ...p,
+          ...result.response.data.setStatusPaymentToCanceled,
         }
       }
 
@@ -103,7 +131,8 @@ export default function* rootSaga() {
   yield all([
     takeEvery(actions.GET_PAYMENTS, getPayments),
     takeEvery(actions.SET_TO_PAID, setPayDayToPaid),
-    takeEvery(actions.SET_TO_UNPAID, setPayDateToUnpaid),
+    takeEvery(actions.SET_TO_UNPAID, setPayDateToPending),
+    takeEvery(actions.SET_TO_CANCELED, setStatusPaymentToCanceled),
     SET_STATE(), // run once on app load to init listeners
   ])
 }

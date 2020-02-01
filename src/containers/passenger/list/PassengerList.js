@@ -59,7 +59,7 @@ class PassengerList extends Component {
   }
 
   columnsForPayments = () => {
-    const { setToPaid, setToUnpaid } = this.props
+    const { setToPaid, setToPending } = this.props
 
     const columns = [
       {
@@ -90,9 +90,9 @@ class PassengerList extends Component {
       },
       {
         title: 'Situação',
-        dataIndex: 'paymentstatus',
+        dataIndex: 'status',
         key: 'status',
-        render: (_, row) => {
+        render: (status, row) => {
           const { id, passengerId, payDate } = row
 
           const isPaid = !!payDate
@@ -102,10 +102,13 @@ class PassengerList extends Component {
             paymentId: id,
           }
 
+          console.log('------------ status -------------')
+          console.log(status)
+
           return (
             <PaymentSelect
               isPaid={isPaid}
-              onChange={() => (isPaid ? setToUnpaid(payload) : setToPaid(payload))}
+              onChange={() => (isPaid ? setToPending(payload) : setToPaid(payload))}
             />
           )
         },
@@ -567,8 +570,10 @@ const mapDispatchToProps = dispatch => ({
     dispatch({ type: paymentStatusActions.GET_PAYMENT_STATUS, payload: { passengerId } }),
   setToPaid: ({ passengerId, paymentId }) =>
     dispatch({ type: paymentsActions.SET_TO_PAID, payload: { passengerId, paymentId } }),
-  setToUnpaid: ({ passengerId, paymentId }) =>
+  setToPending: ({ passengerId, paymentId }) =>
     dispatch({ type: paymentsActions.SET_TO_UNPAID, payload: { passengerId, paymentId } }),
+  setStatusToCanceled: ({ passengerId, paymentId }) =>
+    dispatch({ type: paymentsActions.SET_TO_CANCELED, payload: { passengerId, paymentId } }),
   getCustomers: () => dispatch({ type: customerActions.GET_CUSTOMERS }),
   closePaymentsListModal: () =>
     dispatch({ type: paymentsActions.TOGGLE_VISIBILITY, payload: false }),

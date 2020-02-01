@@ -20,8 +20,8 @@ const PaymentSelect = ({ isPaid, onChange }) => {
       {
         id: 2,
         description: 'A Pagar',
-        value: 'unpaid',
-        className: style.unpaid,
+        value: 'pending',
+        className: style.pending,
       },
       {
         id: 3,
@@ -35,8 +35,8 @@ const PaymentSelect = ({ isPaid, onChange }) => {
 
   return (
     <Select
-      defaultValue={isPaid ? 'paid' : 'unpaid'}
-      className={isPaid ? style.paid : style.unpaid}
+      defaultValue={isPaid ? 'paid' : 'pending'}
+      className={isPaid ? style.paid : style.pending}
       onChange={onChange}
     >
       {options.map(option => (
