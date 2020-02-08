@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
 import { Form } from 'antd'
 
 import FormStepButtonsActions from 'components/Step/FormStepButtonsActions'
@@ -19,6 +20,28 @@ class PassengerForm extends Component {
     getExcursion(params.excursionId)
   }
 
+  onSaveFormAndAddNew = () => {
+    const { form, saveForm, history } = this.props
+
+    form.validateFields(async (error, values) => {
+      if (!error) {
+        await saveForm(values)
+        history.push(`${history.location.pathname}`)
+      }
+    })
+  }
+
+  onSubmit = event => {
+    event.preventDefault()
+    const { form, saveForm, history } = this.props
+    form.validateFields(async (error, values) => {
+      if (!error) {
+        await saveForm(values)
+        history.push(`${history.location.pathname}/list`)
+      }
+    })
+  }
+
   saveStepHandler = (fields, doSuccess) => {
     const { form, saveStep } = this.props
     form.validateFields(fields, { first: true }, (error, values) => {
@@ -35,7 +58,7 @@ class PassengerForm extends Component {
 
     return (
       <SkeletonForm isLoading={isLoading} rows={3}>
-        <Form layout="vertical" className="passenger-form">
+        <Form layout="vertical" className="passenger-form" onSubmit={this.onSubmit}>
           {formSteps.map((x, i) => (
             <div key={x.title} style={{ display: currentStep === i ? 'block' : 'none' }}>
               <x.component form={form} />
@@ -66,4 +89,4 @@ const mapDispatchToProps = dispatch => ({
     dispatch({ type: excursionActions.GET_EXCURSION_BY_ID, id: excursionId }),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(PassengerForm)
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(PassengerForm))

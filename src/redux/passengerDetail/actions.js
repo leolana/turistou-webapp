@@ -4,16 +4,16 @@ import { mutate } from 'core/api/apollo'
 
 const actions = {
   SET_STATE: 'passengerDetail/SET_STATE',
-  SAVE_PASSENGER: 'passengerDetail/GET_PASSENGERS',
+  SAVE_PASSENGER: 'passengerDetail/SAVE_PASSENGER',
   SAVE_PASSENGER_FAILURE: 'passengerDetail/SAVE_PASSENGER_FAILURE',
   SAVE_PASSENGER_SUCCESS: 'passengerDetail/SAVE_PASSENGER_SUCCESS',
 }
 
 export const savePassenger = form => {
-  const { customerId } = form
-
   const payload = {
-    customerId,
+    ...form,
+    excursionId: '5dbde2686aac4e44e8b1c02e', // TODO:
+    status: 'BOOKED', // TODO:
   }
 
   return mutate({

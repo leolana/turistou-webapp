@@ -14,7 +14,7 @@ class PassengerChoice extends Component {
       label: x.description,
       price: x.price,
     }))
-    options.unshift({ value: 0, label: 'Passagem normal', price: ticketPriceDefault })
+    options.unshift({ value: null, label: 'Passagem normal', price: ticketPriceDefault })
     return options
   }
 
@@ -44,7 +44,7 @@ class PassengerChoice extends Component {
         <Col xs={24}>
           <Form.Item label="Tipos de passagem">
             {form.getFieldDecorator('ticketPriceId', {
-              initialValue: 0,
+              initialValue: null,
               rules: [{ required: false }],
             })(<Radio.Group options={ticketOptions} />)}
           </Form.Item>
