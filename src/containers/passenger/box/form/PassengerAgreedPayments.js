@@ -61,20 +61,9 @@ class PassengerAgreedPayments extends Component {
           <Form.Item key={`payment-condition--${i}`}>
             {form.getFieldDecorator(`paymentCondition[${i}]`, {
               initialValue: condition,
-            })(<AgreedPayment />)}
+            })(<AgreedPayment index={i} />)}
           </Form.Item>
         ))}
-
-        {/* {ticket &&
-          payments.map(x => (
-            <PaymentConditions
-              key={x}
-              index={x}
-              removePayment={this.removePayment}
-              price={ticket.price}
-              {...this.props}
-            />
-          ))} */}
 
         <Row type="flex" justify="center">
           <Col xs={16} md={8}>
