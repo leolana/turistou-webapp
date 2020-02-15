@@ -83,7 +83,7 @@ const mapStateToProps = ({ step }) => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  saveStep: values => dispatch({ type: passengerActions.SET_STATE, payload: values }),
+  saveStep: values => dispatch({ type: passengerActions.SET_PAYLOAD, payload: values }),
   saveForm: values => dispatch({ type: passengerActions.SAVE_PASSENGER, payload: values }),
   getExcursion: excursionId =>
     dispatch({ type: excursionActions.GET_EXCURSION_BY_ID, id: excursionId }),

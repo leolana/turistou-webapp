@@ -11,24 +11,8 @@ class PassengerPayment extends Component {
       payments: [1],
     }
 
-    this.removePayment = this.removePayment.bind(this)
     this.addPayment = this.addPayment.bind(this)
     this.removePayment = this.removePayment.bind(this)
-  }
-
-  getSelectedCustomer() {
-    const { form, customers } = this.props
-    const customerId = form.getFieldValue('customerId')
-    return customers.find(x => x.id === customerId) || {}
-  }
-
-  getSelectedPrice() {
-    const { form, excursion } = this.props
-    const { ticketPrices, ticketPriceDefault } = excursion
-    const ticketPriceId = form.getFieldValue('ticketPriceId')
-    return ticketPriceId
-      ? ticketPrices.find(x => x.id === ticketPriceId)
-      : { price: ticketPriceDefault }
   }
 
   addPayment() {
@@ -46,9 +30,9 @@ class PassengerPayment extends Component {
 
   render() {
     const { payments } = this.state
-
-    const ticket = this.getSelectedPrice()
-    const customer = this.getSelectedCustomer()
+    const {
+      passengerDetail: { customerName, ticket },
+    } = this.props
 
     const { form } = this.props
     console.log('\n\n\nform', form.getFieldsValue())
@@ -58,25 +42,28 @@ class PassengerPayment extends Component {
         <Row className="mb-5">
           <Col xs={24} md={12}>
             <b>Passageiro: </b>
-            <span>{customer.name}</span>
+            <span>{customerName}</span>
           </Col>
           <Col xs={24} md={12}>
             <b>Tipo de passagem: </b>
-            <>
-              {ticket.description} (R$ {ticket.price})
-            </>
+            {ticket && (
+              <>
+                {ticket.description}(R$ {ticket.price})
+              </>
+            )}
           </Col>
         </Row>
 
-        {payments.map(x => (
-          <PaymentConditions
-            key={x}
-            index={x}
-            removePayment={this.removePayment}
-            price={ticket.price}
-            {...this.props}
-          />
-        ))}
+        {ticket &&
+          payments.map(x => (
+            <PaymentConditions
+              key={x}
+              index={x}
+              removePayment={this.removePayment}
+              price={ticket.price}
+              {...this.props}
+            />
+          ))}
 
         <Row>
           <Col xs={{ span: 16, offset: 4 }} md={{ span: 8, offset: 8 }}>
@@ -90,9 +77,9 @@ class PassengerPayment extends Component {
   }
 }
 
-const mapStateToProps = ({ excursionDetail, customerList }) => ({
+const mapStateToProps = ({ excursionDetail, passengerDetail: { customerName, ticket } }) => ({
   excursion: excursionDetail.payload,
-  customers: customerList.payload,
+  passengerDetail: { customerName, ticket },
 })
 
 export default connect(mapStateToProps)(PassengerPayment)

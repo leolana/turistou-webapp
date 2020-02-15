@@ -4,6 +4,7 @@ import { mutate } from 'core/api/apollo'
 
 const actions = {
   SET_STATE: 'passengerDetail/SET_STATE',
+  SET_PAYLOAD: 'passengerDetail/SET_PAYLOAD',
   SAVE_PASSENGER: 'passengerDetail/SAVE_PASSENGER',
   SAVE_PASSENGER_FAILURE: 'passengerDetail/SAVE_PASSENGER_FAILURE',
   SAVE_PASSENGER_SUCCESS: 'passengerDetail/SAVE_PASSENGER_SUCCESS',
