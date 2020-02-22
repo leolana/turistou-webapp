@@ -4,42 +4,45 @@ import { Form, Row, Col, Button } from 'antd'
 
 import AgreedPayment from './AgreedPayment'
 
+let conditionLastId = 1
+
 class PassengerAgreedPayments extends Component {
   constructor() {
     super()
-    this.state = { conditionsAmount: 1 }
 
-    this.addPayment = this.addPayment.bind(this)
-    this.removePayment = this.removePayment.bind(this)
+    this.handleAddPayment = this.handleAddPayment.bind(this)
+    this.handleRemovePayment = this.handleRemovePayment.bind(this)
   }
 
-  addPayment() {
-    const { conditionsAmount } = this.state
-
-    this.setState({ conditionsAmount: conditionsAmount + 1 })
+  handleAddPayment() {
+    conditionLastId += 1
+    const { form } = this.props
+    const keys = form.getFieldValue('keys')
+    const nextKeys = keys.concat(conditionLastId)
+    form.setFieldsValue({
+      keys: nextKeys,
+    })
   }
 
-  removePayment(index) {
-    const {
-      form: { getFieldValue, setFieldsValue },
-    } = this.props
-    let paymentCondition = getFieldValue('paymentCondition')
-    paymentCondition = paymentCondition.filter(x => index !== x)
-    setFieldsValue({ paymentCondition })
+  handleRemovePayment(k) {
+    const { form } = this.props
+    const keys = form.getFieldValue('keys')
+    if (keys.length === 1) return
+
+    form.setFieldsValue({
+      keys: keys.filter(key => key !== k),
+    })
   }
 
   render() {
-    const { conditionsAmount } = this.state
     const {
       passengerDetail: { customerName, ticket },
+      form,
     } = this.props
 
-    const { form } = this.props
-    console.log('\n\n\nform', form.getFieldsValue())
+    form.getFieldDecorator('keys', { initialValue: [{}] })
+    const keys = form.getFieldValue('keys')
 
-    const paymentMap = Array(conditionsAmount)
-      .fill(null)
-      .map((_, i) => i + 1)
     return (
       <>
         <Row className="mb-5">
@@ -57,17 +60,17 @@ class PassengerAgreedPayments extends Component {
           </Col>
         </Row>
 
-        {paymentMap.map((condition, i) => (
-          <Form.Item key={`payment-condition--${i}`}>
-            {form.getFieldDecorator(`paymentCondition[${i}]`, {
-              initialValue: condition,
-            })(<AgreedPayment index={i} />)}
+        {keys.map((k, i) => (
+          <Form.Item key={`payment-condition--${k}`}>
+            {form.getFieldDecorator(`paymentConditions[${k}]`, {
+              initialValue: {},
+            })(<AgreedPayment index={i} onRemove={() => this.handleRemovePayment(k)} />)}
           </Form.Item>
         ))}
 
         <Row type="flex" justify="center">
           <Col xs={16} md={8}>
-            <Button block type="dashed" onClick={this.addPayment}>
+            <Button block type="dashed" onClick={this.handleAddPayment}>
               <i className="fa fa-plus mr-3" /> Adicionar pagamento
             </Button>
           </Col>
