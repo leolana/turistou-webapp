@@ -14,32 +14,25 @@ class PassengerForm extends Component {
     super(props)
 
     const {
+      excursion,
       getExcursion,
       match: { params },
     } = props
-    getExcursion(params.excursionId)
+
+    const { excursionId } = params
+    if (!excursion || excursion.id !== excursionId) getExcursion(excursionId)
   }
 
   onSaveFormAndAddNew = () => {
-    const { form, saveForm, history } = this.props
-
-    form.validateFields(async (error, values) => {
-      if (!error) {
-        await saveForm(values)
-        history.push(`${history.location.pathname}`)
-      }
-    })
+    const { history } = this.props
+    this.saveAndRedirectTo(`${history.location.pathname}`)
   }
 
   onSubmit = event => {
     event.preventDefault()
-    const { form, saveForm, history } = this.props
-    form.validateFields(async (error, values) => {
-      if (!error) {
-        await saveForm(values)
-        history.push(`${history.location.pathname}/list`)
-      }
-    })
+    const { history } = this.props
+
+    this.saveAndRedirectTo(`${history.location.pathname}/list`)
   }
 
   saveStepHandler = (fields, doSuccess) => {
@@ -49,6 +42,25 @@ class PassengerForm extends Component {
         saveStep(values)
 
         doSuccess()
+      }
+    })
+  }
+
+  saveAndRedirectTo(redirect) {
+    const {
+      form,
+      saveForm,
+      history,
+      match: {
+        params: { excursionId },
+      },
+    } = this.props
+
+    form.validateFields(async (error, values) => {
+      if (!error) {
+        const { keys, ...data } = values
+        await saveForm({ ...data, excursionId })
+        history.push(redirect)
       }
     })
   }
@@ -78,8 +90,9 @@ class PassengerForm extends Component {
   }
 }
 
-const mapStateToProps = ({ step }) => ({
+const mapStateToProps = ({ step, excursionDetail }) => ({
   currentStep: step.current,
+  excursion: excursionDetail.payload,
 })
 
 const mapDispatchToProps = dispatch => ({

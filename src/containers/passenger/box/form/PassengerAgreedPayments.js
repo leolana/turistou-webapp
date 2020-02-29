@@ -40,7 +40,7 @@ class PassengerAgreedPayments extends Component {
       form,
     } = this.props
 
-    form.getFieldDecorator('keys', { initialValue: [{}] })
+    form.getFieldDecorator('keys', { initialValue: [conditionLastId] })
     const keys = form.getFieldValue('keys')
 
     return (
@@ -62,9 +62,9 @@ class PassengerAgreedPayments extends Component {
 
         {keys.map((k, i) => (
           <Form.Item key={`payment-condition--${k}`}>
-            {form.getFieldDecorator(`paymentConditions[${k}]`, {
+            {form.getFieldDecorator(`paymentConditions[${i}]`, {
               initialValue: {},
-            })(<AgreedPayment index={i} onRemove={() => this.handleRemovePayment(k)} />)}
+            })(<AgreedPayment onRemove={() => this.handleRemovePayment(k)} />)}
           </Form.Item>
         ))}
 

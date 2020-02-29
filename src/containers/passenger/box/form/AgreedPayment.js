@@ -32,7 +32,7 @@ class AgreedPayment extends Component {
   }
 
   render() {
-    const { form, value, index, onRemove } = this.props
+    const { form, value, onRemove } = this.props
     const { isInstallable } = this.state
     const price = form.getFieldValue('value')
     const selectLabel = x => (
@@ -105,11 +105,7 @@ class AgreedPayment extends Component {
         </Col>
 
         <Col className="float-right" xs={6} sm={2} lg={2}>
-          <Button
-            type="danger"
-            className="button-side-field float-right mr-0"
-            onClick={() => onRemove(index)}
-          >
+          <Button type="danger" className="button-side-field float-right mr-0" onClick={onRemove}>
             <i className="fa fa-trash" />
           </Button>
         </Col>

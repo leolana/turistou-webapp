@@ -22,7 +22,7 @@ class PassengerChoice extends Component {
       label: x.description,
       price: x.price,
     }))
-    options.unshift({ value: null, label: 'Passagem normal', price: ticketPriceDefault })
+    options.unshift({ value: 0, label: 'Passagem normal', price: ticketPriceDefault })
     return options
   }
 
@@ -32,7 +32,7 @@ class PassengerChoice extends Component {
       id = form.getFieldValue('ticketPriceId')
     }
 
-    return this.getTicketOptions().filter(x => x.value === id)[0]
+    return this.getTicketOptions().find(x => x.value === id)
   }
 
   storagePassengerName(customerId) {
@@ -79,7 +79,7 @@ class PassengerChoice extends Component {
             onChange={e => this.storagePassengerTicket(e.target.value)}
           >
             {form.getFieldDecorator('ticketPriceId', {
-              initialValue: null,
+              initialValue: 0,
               rules: [{ required: false }],
             })(<Radio.Group options={ticketOptions} />)}
           </Form.Item>

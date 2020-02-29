@@ -2,8 +2,8 @@ import { all, put, takeEvery, call } from 'redux-saga/effects'
 
 import actions, { fetchPassengers, fetchPassengersSuccess, fetchPassengersFailure } from './actions'
 
-export function* getData(excursionId) {
-  const fetchPassenger = fetchPassengers(excursionId)
+export function* getData(payload) {
+  const fetchPassenger = fetchPassengers(payload)
   const result = yield call(fetchPassenger.request)
 
   if (result.response.data) {

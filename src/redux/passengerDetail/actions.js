@@ -13,7 +13,6 @@ const actions = {
 export const savePassenger = form => {
   const payload = {
     ...form,
-    excursionId: '5dbde2686aac4e44e8b1c02e', // TODO:
     status: 'BOOKED', // TODO:
   }
 

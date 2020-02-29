@@ -9,7 +9,7 @@ import passengerActions, {
 
 export function* getData({ payload }) {
   const result = yield call(savePassenger, payload)
-  if (result.response.data) {
+  if (result.response && result.response.data) {
     yield put(savePassengerSuccess(result.response.data.savePassenger))
 
     notification.success({
@@ -17,7 +17,7 @@ export function* getData({ payload }) {
       description: 'Novo passageiro cadastrado com sucesso!',
     })
   } else {
-    const validationError = result.networkError.result.errors[0]
+    const validationError = result.networkError && result.networkError.result.errors[0]
     yield put(savePassengerFailure(validationError))
     notification.error({
       message: 'Error',
