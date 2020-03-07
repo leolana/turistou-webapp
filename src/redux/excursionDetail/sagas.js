@@ -33,9 +33,13 @@ export function* getById({ id }) {
   const getExcursion = getExcursionById(id)
   const result = yield call(getExcursion.request)
 
-  if (result.response.data) {
+  if (result.response && result.response.data) {
     yield put(getExcursionByIdSuccess(result.response.data))
   } else {
+    notification.error({
+      message: 'Error',
+      description: 'Houve algum problema ao obter os dados da excursão!',
+    })
     const validationError = result.networkError.result.errors[0]
     yield put(getExcursionByIdFailure(validationError))
   }

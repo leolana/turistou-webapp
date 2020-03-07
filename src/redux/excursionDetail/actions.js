@@ -123,6 +123,9 @@ export const getExcursionById = (id: string) => ({
               price
             }
             transports {
+              id
+              type
+              plate
               capacity
             }
             passengers {
