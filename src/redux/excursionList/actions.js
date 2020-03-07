@@ -6,8 +6,6 @@ const actions = {
   SET_STATE: 'excursionList/SET_STATE',
   GET_EXCURSIONS: 'excursionList/GET_DATA',
   GET_EXCURSIONS_FAILURE: 'excursionList/GET_EXCURSIONS_FAILURE',
-  GET_DATA: 'excursionList/GET_DATA',
-  GET_DATA_SUCCESS: 'excursionList/GET_DATA_SUCCESS',
   DELETE_DATA: 'excursionList/DELETE_DATA',
   DELETE_DATA_SUCCESS: 'excursionList/DELETE_DATA_SUCCESS',
 }
@@ -42,16 +40,19 @@ export const fetchExcursions = () => ({
     }),
 })
 
-export const fetchExcursionsSuccess = (payload: any) => ({
+export const fetchExcursionsSuccess = payload => ({
   type: actions.SET_STATE,
-  payload: payload.excursions,
-  isLoading: false,
+  payload: {
+    payload: payload.excursions,
+    isLoading: false,
+  },
 })
 
-export const fetchExcursionsFailure = (payload: any) => ({
+export const fetchExcursionsFailure = () => ({
   type: actions.GET_EXCURSIONS_FAILURE,
-  payload: { ...payload },
-  isLoading: false,
+  payload: {
+    isLoading: false,
+    payload: [],
+  },
 })
-
 export default actions

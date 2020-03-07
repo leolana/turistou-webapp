@@ -19,7 +19,7 @@ class PassengerFilter extends Component {
     this.handleChangeFilter = this.handleChangeFilter.bind(this)
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const { getPassengers, filter, id } = this.props
     const { status } = this.state
     const payload = { ...filter, status, excursionId: id }

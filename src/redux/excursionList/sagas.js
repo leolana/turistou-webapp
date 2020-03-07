@@ -5,11 +5,14 @@ import actions, { fetchExcursions, fetchExcursionsSuccess, fetchExcursionsFailur
 export function* getData() {
   const fetchExcursion = fetchExcursions()
   const result = yield call(fetchExcursion.request)
-  if (result.response.data) {
+
+  if (result.response && result.response.data) {
     yield put(fetchExcursionsSuccess(result.response.data))
   } else {
-    const validationError = result.networkError.result.errors[0]
-    yield put(fetchExcursionsFailure(validationError))
+    yield put(fetchExcursionsFailure())
+    const error = result.error && result.error.networkError.result
+    const validationError = error && error.errors[0]
+    throw new Error(validationError)
   }
 }
 
