@@ -5,10 +5,10 @@ import style from './style.module.scss'
 
 const defaultProps = {
   onChange: () => {},
-  isPaid: false,
+  status: 'pending',
 }
 
-const PaymentSelect = ({ isPaid, onChange }) => {
+const PaymentSelect = ({ status, onChange }) => {
   const options = useMemo(
     () => [
       {
@@ -35,8 +35,8 @@ const PaymentSelect = ({ isPaid, onChange }) => {
 
   return (
     <Select
-      defaultValue={isPaid ? 'paid' : 'pending'}
-      className={isPaid ? style.paid : style.pending}
+      value={status.toLowerCase()}
+      className={options.filter(o => o.value === status.toLowerCase())[0].className}
       onChange={onChange}
     >
       {options.map(option => (

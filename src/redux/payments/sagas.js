@@ -8,6 +8,7 @@ import actions, {
   toggleLoading,
   setToPaid,
   setToPending,
+  setStatusToCanceled,
 } from './actions'
 
 const getPaymentsFromState = state => state.payments
@@ -96,7 +97,7 @@ export function* setPayDateToPending({ payload }) {
 export function* setStatusPaymentToCanceled({ payload }) {
   yield put(toggleLoading(true))
 
-  const fetch = setToPending(payload)
+  const fetch = setStatusToCanceled(payload)
   const result = yield call(fetch.request)
 
   if (result.response.data.setStatusPaymentToCanceled) {

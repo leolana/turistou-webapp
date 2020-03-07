@@ -59,7 +59,7 @@ class PassengerList extends Component {
   }
 
   columnsForPayments = () => {
-    const { setToPaid, setToPending } = this.props
+    const { setToPaid, setToPending, setStatusToCanceled } = this.props
 
     const columns = [
       {
@@ -92,23 +92,32 @@ class PassengerList extends Component {
         title: 'Situação',
         dataIndex: 'status',
         key: 'status',
-        render: (status, row) => {
-          const { id, passengerId, payDate } = row
-
-          const isPaid = !!payDate
+        render: (_, row) => {
+          const { id, passengerId, status } = row
 
           const payload = {
             passengerId,
             paymentId: id,
           }
 
-          console.log('------------ status -------------')
-          console.log(status)
-
           return (
             <PaymentSelect
-              isPaid={isPaid}
-              onChange={() => (isPaid ? setToPending(payload) : setToPaid(payload))}
+              status={status}
+              onChange={statusModified => {
+                if (statusModified === 'paid') {
+                  return setToPaid(payload)
+                }
+
+                if (statusModified === 'pending') {
+                  return setToPending(payload)
+                }
+
+                if (statusModified === 'canceled') {
+                  return setStatusToCanceled(payload)
+                }
+
+                throw Error(`ERROR: status payment not found: ${statusModified}`)
+              }}
             />
           )
         },

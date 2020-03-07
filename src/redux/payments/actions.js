@@ -53,6 +53,8 @@ export const setToPaid = ({ passengerId, paymentId }) => ({
             createdAt
             updatedAt
             operation
+            method
+            status
           }
         }
       `,
@@ -79,6 +81,8 @@ export const setToPending = ({ passengerId, paymentId }) => ({
             createdAt
             updatedAt
             operation
+            method
+            status
           }
         }
       `,
@@ -105,6 +109,8 @@ export const setStatusToCanceled = ({ passengerId, paymentId }) => ({
             createdAt
             updatedAt
             operation
+            method
+            status
           }
         }
       `,
