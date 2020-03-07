@@ -128,6 +128,10 @@ export const getExcursionById = (id: string) => ({
             passengers {
               spot
             }
+            stopPoints {
+              id
+              stopPoint
+            }
           }
         }
       `,
