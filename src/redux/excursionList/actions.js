@@ -20,6 +20,7 @@ const excursionFragment = gql`
       capacity
     }
     passengers {
+      id
       spot
     }
   }
@@ -40,7 +41,7 @@ export const fetchExcursions = () => ({
     }),
 })
 
-export const fetchExcursionsSuccess = payload => ({
+export const fetchExcursionsSuccess = (payload) => ({
   type: actions.SET_STATE,
   payload: {
     payload: payload.excursions,

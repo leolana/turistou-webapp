@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { withRouter } from 'react-router'
 import { connect } from 'react-redux'
 import { Form, Row, Col, Radio, Input } from 'antd'
 
@@ -20,10 +21,18 @@ class PassengerFilter extends Component {
   }
 
   componentDidMount() {
-    const { getPassengers, filter, id } = this.props
+    const {
+      getPassengers,
+      filter,
+      setFilter,
+      match: { params },
+    } = this.props
+    const { excursionId } = params
+
     const { status } = this.state
-    const payload = { ...filter, status, excursionId: id }
+    const payload = { ...filter, status, excursionId }
     getPassengers(payload)
+    setFilter(payload)
   }
 
   handleChangeStartPay(e) {
@@ -56,7 +65,7 @@ class PassengerFilter extends Component {
     const { id, passengers } = this.props
     const { status } = this.state
 
-    const excursion = passengers.find(x => x.id === id)
+    const excursion = passengers.find((x) => x.id === id)
 
     return (
       <Form layout="inline" className="form-filter">
@@ -127,9 +136,9 @@ const mapStateToProps = ({ passengerList: { filter, payload: passengers } }) => 
   passengers,
 })
 
-const mapDispatchToProps = dispatch => ({
-  setFilter: filter => dispatch({ type: passengerActions.SET_STATE, filter }),
-  getPassengers: filter => dispatch({ type: passengerActions.GET_PASSENGERS, filter }),
+const mapDispatchToProps = (dispatch) => ({
+  setFilter: (filter) => dispatch({ type: passengerActions.SET_STATE, filter }),
+  getPassengers: (filter) => dispatch({ type: passengerActions.GET_PASSENGERS, filter }),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(PassengerFilter)
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(PassengerFilter))

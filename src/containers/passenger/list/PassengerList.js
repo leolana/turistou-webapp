@@ -52,12 +52,6 @@ class PassengerList extends Component {
     },
   }
 
-  componentDidMount() {
-    const { getPassengers, id, filter } = this.props
-    const payload = { ...filter, excursionId: id }
-    getPassengers(payload)
-  }
-
   columnsForPayments = () => {
     const { setToPaid, setToUnpaid } = this.props
 
@@ -67,7 +61,7 @@ class PassengerList extends Component {
         dataIndex: 'payDate',
         key: 'payDate',
         width: '30%',
-        render: x => x && new Date(x).toLocaleDateString(),
+        render: (x) => x && new Date(x).toLocaleDateString(),
       },
       {
         title: 'Valor',
@@ -75,14 +69,14 @@ class PassengerList extends Component {
         key: 'value',
         width: '20%',
         className: 'text-left',
-        render: x => `R$ ${x}`,
+        render: (x) => `R$ ${x}`,
       },
       {
         title: 'Forma de pagamento',
         dataIndex: 'method',
         key: 'method',
         width: '20%',
-        render: x => {
+        render: (x) => {
           const text = paymentMethods[x] || 'Não especificado'
 
           return text
@@ -115,26 +109,26 @@ class PassengerList extends Component {
     return columns
   }
 
-  exchange = id => {
+  exchange = (id) => {
     console.log('id', id)
     // TODO: replace passenger
   }
 
-  book = id => {
+  book = (id) => {
     console.log('id', id)
     // TODO: move
   }
 
-  remove = id => {
+  remove = (id) => {
     console.log('delete', id)
     // TODO: exclude...
 
     const { passengersList } = this.state
-    const udPassengersList = passengersList.filter(x => x.id !== id)
+    const udPassengersList = passengersList.filter((x) => x.id !== id)
     this.setState({ passengersList: udPassengersList })
   }
 
-  update = id => {
+  update = (id) => {
     const { paymentValue } = this.state
     console.log('update: ', id, paymentValue)
   }
@@ -355,13 +349,13 @@ class PassengerList extends Component {
     } = this.props
     let filteredData = passengers
 
-    if (status) filteredData = filteredData.filter(x => x.status === status)
-    if (fullPay) filteredData = filteredData.filter(x => x.paid === x.total)
-    else if (startPay) filteredData = filteredData.filter(x => x.paid > 0)
+    if (status) filteredData = filteredData.filter((x) => x.status === status)
+    if (fullPay) filteredData = filteredData.filter((x) => x.paid === x.total)
+    else if (startPay) filteredData = filteredData.filter((x) => x.paid > 0)
     if (query)
-      filteredData = filteredData.filter(x => {
+      filteredData = filteredData.filter((x) => {
         const queryPart = query.toLowerCase().split(' ')
-        return queryPart.every(q => x.customer.name.toLowerCase().includes(q))
+        return queryPart.every((q) => x.customer.name.toLowerCase().includes(q))
       })
 
     return filteredData
@@ -376,7 +370,7 @@ class PassengerList extends Component {
       actions: {
         dataIndex: 'id',
         key: 'id',
-        render: id => this.renderActionsButtons(id, status),
+        render: (id) => this.renderActionsButtons(id, status),
       },
       status: {
         title: 'Situação',
@@ -384,7 +378,7 @@ class PassengerList extends Component {
         key: 'status',
         className: 'text-center',
         render: () => {
-          const { description, type } = statuses.find(s => s.value === status)
+          const { description, type } = statuses.find((s) => s.value === status)
           return <Tag className={`text-white bg-${type} mr-0`}>{description}</Tag>
         },
       },
@@ -402,7 +396,7 @@ class PassengerList extends Component {
         title: 'Valor devolvido',
         dataIndex: 'reimbursedValue',
         key: 'reimbursedValue',
-        render: value => <span>R$ {value}</span>,
+        render: (value) => <span>R$ {value}</span>,
       },
       value: {
         title: 'Valor pago / Valor total',
@@ -464,7 +458,7 @@ class PassengerList extends Component {
 
     const tableColumns = this.columnsForStatus()
 
-    const getPaidColor = paymentPercent => {
+    const getPaidColor = (paymentPercent) => {
       if (paymentPercent === 1) {
         return 'text-success'
       }
@@ -476,7 +470,7 @@ class PassengerList extends Component {
       return 'text-danger'
     }
 
-    const passengersList = passengers.map(passenger => {
+    const passengersList = passengers.map((passenger) => {
       const paymentPercent = passenger.amountPaid / passenger.ticketPrice?.price
 
       const passengerPresenterModified = {
@@ -507,7 +501,7 @@ class PassengerList extends Component {
           okText="Atualizar"
         >
           <Table
-            rowKey={record => `${record.id}${record.payDate}${record.operation}`}
+            rowKey={(record) => `${record.id}${record.payDate}${record.operation}`}
             className="utils__scrollTable"
             scroll={{ x: '100%' }}
             columns={this.columnsForPayments()}
@@ -559,11 +553,11 @@ const mapStateToProps = ({
   paymentStatus,
 })
 
-const mapDispatchToProps = dispatch => ({
-  getPassengers: filter => dispatch({ type: passengerActions.GET_PASSENGERS, filter }),
-  getPayments: passengerId =>
+const mapDispatchToProps = (dispatch) => ({
+  getPassengers: (filter) => dispatch({ type: passengerActions.GET_PASSENGERS, filter }),
+  getPayments: (passengerId) =>
     dispatch({ type: paymentsActions.GET_PAYMENTS, payload: { passengerId } }),
-  getPaymentStatus: passengerId =>
+  getPaymentStatus: (passengerId) =>
     dispatch({ type: paymentStatusActions.GET_PAYMENT_STATUS, payload: { passengerId } }),
   setToPaid: ({ passengerId, paymentId }) =>
     dispatch({ type: paymentsActions.SET_TO_PAID, payload: { passengerId, paymentId } }),
@@ -573,7 +567,7 @@ const mapDispatchToProps = dispatch => ({
   closePaymentsListModal: () =>
     dispatch({ type: paymentsActions.TOGGLE_VISIBILITY, payload: false }),
   clearPayments: () => dispatch({ type: paymentsActions.SET_STATE, payload: [] }),
-  addPayment: values =>
+  addPayment: (values) =>
     dispatch({ type: paymentStatusActions.PAYMENT_INSERT, payload: { values } }),
   clearPaymentStatus: () => dispatch({ type: paymentStatusActions.CLEAR_PAYMENT_STATUS }),
 })

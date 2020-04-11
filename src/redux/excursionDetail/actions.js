@@ -14,7 +14,7 @@ const actions = {
   GET_EXCURSION_BY_ID_SUCCESS: 'excursionDetail/GET_EXCURSION_BY_ID_SUCCESS',
 }
 
-export const saveExcursion = form => {
+export const saveExcursion = (form) => {
   const {
     destination,
     departurePoint,
@@ -58,11 +58,11 @@ export const saveExcursion = form => {
       hour: regressTime.hour(),
       minute: regressTime.minute(),
     }),
-    stoppingPoints: stopPointsKeys.map(k => ({
+    stoppingPoints: stopPointsKeys.map((k) => ({
       stopPoint: stopPoint[k],
     })),
     ticketPriceDefault,
-    prices: priceKeys.map(k => ({
+    prices: priceKeys.map((k) => ({
       ticketDescription: ticketDescription[k],
       ticketPrice: ticketPrice[k],
       isFrom: isFrom[k],
@@ -70,7 +70,7 @@ export const saveExcursion = form => {
       untilAge: untilAge[k],
       ageFinal: ageFinal[k],
     })),
-    excursionTransports: transportsKeys.map(k => ({
+    excursionTransports: transportsKeys.map((k) => ({
       type: type[k],
       plate: plate[k],
       capacity: capacity[k],
@@ -129,6 +129,7 @@ export const getExcursionById = (id: string) => ({
               capacity
             }
             passengers {
+              id
               spot
             }
             stopPoints {
