@@ -8,8 +8,9 @@ import SkeletonTable from 'components/SkeletonTable/SkeletonTable'
 import { EXCURSION_STATUS_ENUM } from 'constants/excursionStatus'
 
 class ExcursionList extends Component {
-  componentDidMount() {
-    const { getExcursions } = this.props
+  constructor(props) {
+    super(props)
+    const { getExcursions } = props
     getExcursions()
   }
 

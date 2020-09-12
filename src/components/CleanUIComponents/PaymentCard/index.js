@@ -11,7 +11,7 @@ class PaymentCard extends React.Component {
     footer: '',
   }
 
-  componentWillMount() {
+  componentDidMount () {
     this.getParams()
   }
 

@@ -21,13 +21,13 @@ class MenuTop extends React.Component {
     selectedKeys: store.get('app.menu.selectedKeys') || [],
   }
 
-  componentWillMount() {
+  componentDidMount () {
     this.setSelectedKeys(this.props)
   }
 
-  componentWillReceiveProps(newProps) {
-    this.setSelectedKeys(newProps)
-  }
+  // componentWillReceiveProps(newProps) {
+  //   this.setSelectedKeys(newProps)
+  // }
 
   setSelectedKeys = props => {
     const { menuData } = this.props

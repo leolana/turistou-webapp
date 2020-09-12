@@ -21,9 +21,9 @@ class Breadcrumbs extends React.Component {
     this.setBreadcrumbs(this.props)
   }
 
-  componentWillReceiveProps(newProps) {
-    this.setBreadcrumbs(newProps)
-  }
+  // componentWillReceiveProps(newProps) {
+  //   this.setBreadcrumbs(newProps)
+  // }
 
   setBreadcrumbs = props => {
     const { isMenuTop, menuTopData, menuLeftData } = this.props

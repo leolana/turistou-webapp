@@ -27,18 +27,18 @@ class MenuLeft extends React.Component {
     openedKeys: store.get('app.menu.openedKeys') || [],
   }
 
-  componentWillMount() {
+  componentDidMount () {
     this.setSelectedKeys(this.props)
   }
 
-  componentWillReceiveProps(newProps) {
-    if (newProps.isMenuCollapsed && !newProps.isMobileView) {
-      this.setState({
-        openedKeys: [],
-      })
-    }
-    this.setSelectedKeys(newProps)
-  }
+  // componentWillReceiveProps(newProps) {
+  //   if (newProps.isMenuCollapsed && !newProps.isMobileView) {
+  //     this.setState({
+  //       openedKeys: [],
+  //     })
+  //   }
+  //   this.setSelectedKeys(newProps)
+  // }
 
   setSelectedKeys = props => {
     const { menuData } = this.props
