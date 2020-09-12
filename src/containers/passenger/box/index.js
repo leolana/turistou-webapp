@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { Helmet } from 'react-helmet'
 import { Card } from 'antd'
 
@@ -18,20 +18,18 @@ const formSteps = [
   { title: 'Assento', component: PassengerPlace },
 ]
 
-class ExcursionPassengers extends Component {
-  render() {
-    return (
-      <div>
-        <Helmet title={pageTitle} />
+const ExcursionPassengers = (props) => {
+  return (
+    <div>
+      <Helmet title={pageTitle} />
 
-        <Card title={pageTitle}>
-          <FormSteps formSteps={formSteps} {...this.props} />
-          <br />
-          <PassengerForm formSteps={formSteps} {...this.props} />
-        </Card>
-      </div>
-    )
-  }
+      <Card title={pageTitle}>
+        <FormSteps formSteps={formSteps} {...props} />
+        <br />
+        <PassengerForm formSteps={formSteps} {...props} />
+      </Card>
+    </div>
+  )
 }
 
 export default ExcursionPassengers

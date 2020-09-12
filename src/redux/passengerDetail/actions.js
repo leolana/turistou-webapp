@@ -11,8 +11,11 @@ const actions = {
 }
 
 export const savePassenger = form => {
+  const { ticketPriceId, paymentConditions, stopPointId, ...dest } = form;
   const payload = {
-    ...form,
+    ...dest,
+    // ticketPriceId: ticketPriceId || '', // TODO:
+    // stopPointId: stopPointId || '', // TODO:
     status: 'BOOKED', // TODO:
   }
 

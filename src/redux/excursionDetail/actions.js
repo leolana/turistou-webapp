@@ -112,35 +112,35 @@ export const getExcursionById = (id: string) => ({
       query: gql`
         query Excursion($id: String!) {
           excursion(id: $id) {
-            id
-            destination
-            departureDate
-            regressDate
-            ticketPriceDefault
-            ticketPrices {
               id
-              description
-              price
-            }
-            transports {
-              id
-              type
-              plate
-              capacity
-            }
-            passengers {
-              id
-              spot
-            }
-            stopPoints {
-              id
-              stopPoint
-            }
-          }
+              destination
+              departureDate
+              regressDate
+              ticketPriceDefault
+              ticketPrices {
+                  id
+                  description
+                  price
+              }
+              transports {
+                  id
+                  type
+                  plate
+                  capacity
+              }
+              passengers {
+                  id
+                  spot
+              }
+              stopPoints {
+                  id
+                  stopPoint
+              }
         }
-      `,
-      variables: { id },
-    }),
+      }
+    `,
+    variables: { id },
+  }),
 })
 
 export const getExcursionByIdSuccess = (payload: any) => ({

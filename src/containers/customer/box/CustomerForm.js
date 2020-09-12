@@ -47,7 +47,7 @@ class CustomerForm extends Component {
 
     return (
       <SkeletonForm isLoading={isLoading}>
-        <Form layout="vertical" className="customer-form">
+        <Form layout="vertical" className="customer-form" onSubmit={this.onSubmit}>
           {formSteps.map((x, i) => (
             <div key={x.title} style={{ display: currentStep === i ? 'block' : 'none' }}>
               <x.component form={form} />
