@@ -23,6 +23,14 @@ const excursionFragment = gql`
       id
       spot
     }
+    ticketPriceDefault
+    # ticketPrices {
+    #   id
+    #   # description
+    #   # price
+    #   # ageInitial
+    #   # ageFinal
+    # }
   }
 `
 export const fetchExcursions = () => ({

@@ -65,10 +65,10 @@ export const saveExcursion = (form) => {
     prices: priceKeys.map((k) => ({
       ticketDescription: ticketDescription[k],
       ticketPrice: ticketPrice[k],
-      isFrom: isFrom[k],
-      ageInitial: ageInitial[k],
-      untilAge: untilAge[k],
-      ageFinal: ageFinal[k],
+      isFrom: !!isFrom[k],
+      ageInitial: ageInitial[k] || 0,
+      untilAge: !!untilAge[k],
+      ageFinal: ageFinal[k] || 0,
     })),
     excursionTransports: transportsKeys.map((k) => ({
       type: type[k],
@@ -136,11 +136,12 @@ export const getExcursionById = (id: string) => ({
                   id
                   stopPoint
               }
+          }
         }
       }
     `,
-    variables: { id },
-  }),
+      variables: { id },
+    }),
 })
 
 export const getExcursionByIdSuccess = (payload: any) => ({
