@@ -1,105 +1,69 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom'
+import React, { useCallback } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useHistory } from 'react-router-dom'
 import { Form } from 'antd'
 
 import FormStepButtonsActions from 'components/Step/FormStepButtonsActions'
 import SkeletonForm from 'components/SkeletonForm/SkeletonForm'
 import passengerActions from 'redux/passengerDetail/actions'
-import excursionActions from 'redux/excursionDetail/actions'
 
-@Form.create()
-class PassengerForm extends Component {
-  constructor(props) {
-    super(props)
+const PassengerForm = ({ form, formSteps }) => {
+  const dispatch = useDispatch()
+  const history = useHistory()
+  const { current: currentStep } = useSelector(state => state.step)
+  const { payload: excursion, isLoading } = useSelector(state => state.excursionDetail)
 
-    const {
-      excursion,
-      getExcursion,
-      match: { params },
-    } = props
+  const onSaveFormAndAddNew = useCallback(() => {
+    saveAndRedirectTo(`${history.location.pathname}`)
+  }, [saveAndRedirectTo, history])
 
-    const { excursionId } = params
-    if (!excursion || excursion.id !== excursionId) getExcursion(excursionId)
-  }
-
-  onSaveFormAndAddNew = () => {
-    const { history } = this.props
-    this.saveAndRedirectTo(`${history.location.pathname}`)
-  }
-
-  onSubmit = event => {
+  const onSubmit = useCallback(event => {
     event.preventDefault()
-    const { history } = this.props
 
-    this.saveAndRedirectTo(`${history.location.pathname}/list`)
-  }
+    saveAndRedirectTo(`${history.location.pathname}/list`)
+  }, [saveAndRedirectTo, history])
 
-  saveStepHandler = (fields, doSuccess) => {
-    const { form, saveStep } = this.props
+  const saveStepHandler = useCallback((fields, doSuccess) => {
     form.validateFields(fields, { first: true }, (error, values) => {
       if (!error) {
-        saveStep(values)
+        dispatch({ type: passengerActions.SET_PAYLOAD, payload: values })
 
         doSuccess()
       }
     })
-  }
+  }, [form, dispatch])
 
-  saveAndRedirectTo(redirect) {
-    const {
-      form,
-      saveForm,
-      history,
-      match: {
-        params: { excursionId },
-      },
-    } = this.props
-
+  const saveAndRedirectTo = useCallback((redirect) => {
     form.validateFields(async (error, values) => {
+      if (!excursion || !excursion.id)
+        return
       if (!error) {
         const { keys, ...data } = values
-        await saveForm({ ...data, excursionId })
+        await dispatch({ type: passengerActions.SAVE_PASSENGER, payload: { ...data, excursionId: excursion.id } })
         history.push(redirect)
       }
     })
-  }
+  }, [excursion, form, history, dispatch])
 
-  render() {
-    const { isLoading, currentStep, formSteps, form } = this.props
-
-    return (
-      <SkeletonForm isLoading={isLoading} rows={3}>
-        <Form id="passenger-form" hideRequiredMark colon={false} onSubmit={this.onSubmit}>
-          {formSteps.map((x, i) => (
-            <div key={x.title} style={{ display: currentStep === i ? 'block' : 'none' }}>
-              <x.component form={form} />
-              <div className="form-actions">
-                <FormStepButtonsActions
-                  lastStep={formSteps.length - 1}
-                  validationFields={x.fields}
-                  onSaveStep={this.saveStepHandler}
-                  onSaveFormAndAddNew={this.onSaveFormAndAddNew}
-                />
-              </div>
+  return (
+    <SkeletonForm isLoading={isLoading} rows={3}>
+      <Form id="passenger-form" hideRequiredMark colon={false} onSubmit={onSubmit}>
+        {formSteps.map((x, i) => (
+          <div key={x.title} style={{ display: currentStep === i ? 'block' : 'none' }}>
+            <x.component form={form} />
+            <div className="form-actions">
+              <FormStepButtonsActions
+                lastStep={formSteps.length - 1}
+                validationFields={x.fields}
+                onSaveStep={saveStepHandler}
+                onSaveFormAndAddNew={onSaveFormAndAddNew}
+              />
             </div>
-          ))}
-        </Form>
-      </SkeletonForm>
-    )
-  }
+          </div>
+        ))}
+      </Form>
+    </SkeletonForm>
+  )
 }
 
-const mapStateToProps = ({ step, excursionDetail }) => ({
-  currentStep: step.current,
-  excursion: excursionDetail.payload,
-})
-
-const mapDispatchToProps = dispatch => ({
-  saveStep: values => dispatch({ type: passengerActions.SET_PAYLOAD, payload: values }),
-  saveForm: values => dispatch({ type: passengerActions.SAVE_PASSENGER, payload: values }),
-  getExcursion: excursionId =>
-    dispatch({ type: excursionActions.GET_EXCURSION_BY_ID, id: excursionId }),
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(PassengerForm))
+export default Form.create()(PassengerForm)

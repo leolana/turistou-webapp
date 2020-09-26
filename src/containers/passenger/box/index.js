@@ -1,7 +1,10 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useDispatch } from 'react-redux'
+import { useParams } from 'react-router'
 import { Helmet } from 'react-helmet'
 import { Card } from 'antd'
 
+import actions from 'redux/excursionDetail/actions'
 import FormSteps from 'components/Step/FormSteps'
 import PassengerForm from './PassengerForm'
 
@@ -19,6 +22,13 @@ const formSteps = [
 ]
 
 const ExcursionPassengers = (props) => {
+  const dispatch = useDispatch();
+  const { excursionId } = useParams();
+
+  useEffect(() => {
+    dispatch({ type: actions.GET_EXCURSION_BY_ID, payload: excursionId })
+  }, [excursionId, dispatch])
+
   return (
     <div>
       <Helmet title={pageTitle} />

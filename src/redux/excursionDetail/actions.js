@@ -138,8 +138,7 @@ export const getExcursionById = (id: string) => ({
               }
           }
         }
-      }
-    `,
+      `,
       variables: { id },
     }),
 })
@@ -150,9 +149,12 @@ export const getExcursionByIdSuccess = (payload: any) => ({
   isLoading: false,
 })
 
-export const getExcursionByIdFailure = (payload: any) => ({
-  type: actions.GET_EXCURSION_BY_ID_FAILURE,
-  payload: { ...payload },
+export const getExcursionByIdFailure = () => ({
+  type: actions.SET_STATE,
+  payload: {
+    isLoading: false,
+    error: true
+  },
   isLoading: false,
 })
 

@@ -5,11 +5,10 @@ import { Row, Col, Form, Radio } from 'antd'
 import passengerActions from 'redux/passengerDetail/actions'
 import CustomerSelect from 'components/CustomerSelect/CustomerSelect'
 
-const PassengerChoice = (props) => {
+const PassengerChoice = ({ form }) => {
   const dispatch = useDispatch()
   const { payload: excursion } = useSelector(state => state.excursionDetail)
   const { payload: customers } = useSelector(state => state.customerList)
-  const { form } = props;
 
   const storagePassenger = useCallback((payload) => dispatch({ type: passengerActions.SET_STATE, payload }), [dispatch]);
   const storagePassengerName = useCallback((customerId) => {

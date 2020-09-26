@@ -29,7 +29,7 @@ export function* save({ payload }) {
   }
 }
 
-export function* getById({ id }) {
+export function* getById({ payload: id }) {
   const getExcursion = getExcursionById(id)
   const result = yield call(getExcursion.request)
 
@@ -40,8 +40,8 @@ export function* getById({ id }) {
       message: 'Error',
       description: 'Houve algum problema ao obter os dados da excursão!',
     })
-    const validationError = result.networkError.result.errors[0]
-    yield put(getExcursionByIdFailure(validationError))
+    // const validationError = result && result.networkError && result.networkError.result.errors[0]
+    yield put(getExcursionByIdFailure())
   }
 }
 

@@ -9,7 +9,7 @@ export const CustomerSelect = ({ onChange }, ref) => {
   const { payload: customers } = useSelector(state => state.customerList)
 
   useEffect(() => {
-    if (!customers)
+    if (!customers || !customers.length)
       dispatch({ type: actions.GET_CUSTOMERS })
   }, [customers, dispatch])
 
