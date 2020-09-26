@@ -5,7 +5,7 @@ import { Row, Col, Form, Radio } from 'antd'
 import passengerActions from 'redux/passengerDetail/actions'
 import CustomerSelect from 'components/CustomerSelect/CustomerSelect'
 
-const PassengerChoice = (props, ref = "") => {
+const PassengerChoice = (props) => {
   const dispatch = useDispatch()
   const { payload: excursion } = useSelector(state => state.excursionDetail)
   const { payload: customers } = useSelector(state => state.customerList)
@@ -49,7 +49,7 @@ const PassengerChoice = (props, ref = "") => {
   }, [ticketOptions, form])
 
   return (
-    <Row ref={ref}>
+    <Row>
       <Col xs={24}>
         <Form.Item label="Cliente">
           {form.getFieldDecorator('customerId', {
@@ -76,4 +76,4 @@ const PassengerChoice = (props, ref = "") => {
     </Row>
   )
 }
-export default React.forwardRef(PassengerChoice);
+export default PassengerChoice;
