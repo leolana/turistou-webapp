@@ -11,7 +11,7 @@ const PassengerForm = ({ form, formSteps }) => {
   const dispatch = useDispatch()
   const history = useHistory()
   const { current: currentStep } = useSelector(state => state.step)
-  const { payload: excursion, isLoading } = useSelector(state => state.excursionDetail)
+  const { isLoading } = useSelector(state => state.excursionDetail)
 
   const onSaveFormAndAddNew = useCallback(() => {
     saveAndRedirectTo(`${history.location.pathname}`)
@@ -35,15 +35,13 @@ const PassengerForm = ({ form, formSteps }) => {
 
   const saveAndRedirectTo = useCallback((redirect) => {
     form.validateFields(async (error, values) => {
-      if (!excursion || !excursion.id)
-        return
       if (!error) {
         const { keys, ...data } = values
-        await dispatch({ type: passengerActions.SAVE_PASSENGER, payload: { ...data, excursionId: excursion.id } })
+        await dispatch({ type: passengerActions.SAVE_PASSENGER, payload: data })
         history.push(redirect)
       }
     })
-  }, [excursion, form, history, dispatch])
+  }, [form, history, dispatch])
 
   return (
     <SkeletonForm isLoading={isLoading} rows={3}>

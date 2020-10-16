@@ -1,4 +1,4 @@
-import { all, put, takeEvery, call } from 'redux-saga/effects'
+import { all, put, takeEvery, call, select } from 'redux-saga/effects'
 
 import { notification } from 'antd'
 import passengerActions, {
@@ -8,7 +8,9 @@ import passengerActions, {
 } from './actions'
 
 export function* getData({ payload }) {
-  const result = yield call(savePassenger, payload)
+  const { id } = yield select(state => state.excursionDetail.payload)
+
+  const result = yield call(savePassenger, { ...payload, excursionId: id })
   if (result.response && result.response.data) {
     yield put(savePassengerSuccess(result.response.data.savePassenger))
 

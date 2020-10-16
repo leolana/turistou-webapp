@@ -144,7 +144,7 @@ export const getExcursionById = (id: string) => ({
 })
 
 export const getExcursionByIdSuccess = (payload: any) => ({
-  type: actions.SET_STATE,
+  type: actions.GET_EXCURSION_BY_ID_SUCCESS,
   payload: payload.excursion,
   isLoading: false,
 })

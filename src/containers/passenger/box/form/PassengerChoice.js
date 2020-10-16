@@ -19,16 +19,10 @@ const PassengerChoice = ({ form }) => {
   const storagePassengerTicket = useCallback((ticketPriceId) => {
     const { ticketPrices, ticketPriceDefault } = excursion
 
-    const ticket = ticketPriceId
-      ? ticketPrices.find(x => x.id === ticketPriceId)
-      : { description: 'Normal', price: ticketPriceDefault }
+    const ticket = ticketPrices?.find(x => x.id === ticketPriceId) || ({ description: 'Normal', price: ticketPriceDefault })
 
-    storagePassenger({
-      ticket: {
-        description: ticket.description,
-        price: ticket.price,
-      },
-    })
+    storagePassenger({ ticket })
+    return ticket
   }, [excursion, storagePassenger])
 
   const ticketOptions = useMemo(() => {
@@ -44,8 +38,9 @@ const PassengerChoice = ({ form }) => {
 
   const selectedTicket = useMemo(() => {
     const id = form.getFieldValue('ticketPriceId')
-    return ticketOptions.find(x => x.value === id)
-  }, [ticketOptions, form])
+    storagePassengerTicket(id)
+    return id ? ticketOptions.find(x => x.value === id) : ticketOptions[0]
+  }, [ticketOptions, form, storagePassengerTicket])
 
   return (
     <Row>
