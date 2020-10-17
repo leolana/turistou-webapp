@@ -51,7 +51,7 @@ class AgreedPayment extends Component {
             })(
               <Select onChange={this.handleChangePaymentCondition}>
                 {paymentTypesList.map(x => (
-                  <Select.Option key={x.value} value={x.value} title={x.label}>
+                  <Select.Option key={x.value} value={x.valueAsString} title={x.label}>
                     {x.label}
                   </Select.Option>
                 ))}

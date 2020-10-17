@@ -1,23 +1,23 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Form, Row, Col, Button } from 'antd'
 
 import AgreedPayment from './AgreedPayment'
 
-let conditionLastId = 1
-
 const PassengerAgreedPayments = ({ form }) => {
-  // const { payload: excursion } = useSelector(state => state.excursionDetail)
   const { customerName, ticket } = useSelector(state => state.passengerDetail)
 
+  const [conditionLastId, setConditionLastId] = useState(1)
+
   const handleAddPayment = useCallback(() => {
-    conditionLastId += 1
+    setConditionLastId(conditionLastId + 1)
+
     const keys = form.getFieldValue('keys')
     const nextKeys = keys.concat(conditionLastId)
     form.setFieldsValue({
       keys: nextKeys,
     })
-  }, [form])
+  }, [conditionLastId, setConditionLastId, form])
 
   const handleRemovePayment = useCallback((k) => {
     const keys = form.getFieldValue('keys')
