@@ -45,7 +45,7 @@ const PassengerAgreedPayments = ({ form }) => {
       </Row>
 
       {keys.map((k, i) => (
-        <Form.Item key={`payment-condition--${k}`}>
+        <Form.Item key={`payment-condition--${i}`}>
           {form.getFieldDecorator(`paymentConditions[${i}]`, {
             initialValue: {},
           })(<AgreedPayment onRemove={() => handleRemovePayment(k)} />)}

@@ -19,9 +19,9 @@ export const companyType = [
   { value: 0, label: 'Outros' },
 ]
 export const paymentType = [
-  { value: 1, isInstallable: false, label: 'Dinheiro', valueAsString: 'MONEY' },
-  { value: 2, isInstallable: true, label: 'Cartão de crédito', valueAsString: 'CREDITCARD' },
-  { value: 3, isInstallable: false, label: 'Cartão de débito', valueAsString: 'DEBIT' },
-  { value: 4, isInstallable: true, label: 'Boleto', valueAsString: 'PAYMENTBANKSLIP' },
-  { value: 5, isInstallable: false, label: 'Transferência', valueAsString: 'BANKTRANSFER' },
+  { value: 'MONEY', isInstallable: false, label: 'Dinheiro' },
+  { value: 'CREDIT_CARD', isInstallable: true, label: 'Cartão de crédito' },
+  { value: 'DEBIT', isInstallable: false, label: 'Cartão de débito' },
+  { value: 'PAYMENT_BANK_SLIP', isInstallable: true, label: 'Boleto' },
+  { value: 'BANK_TRANSFER', isInstallable: false, label: 'Transferência' },
 ]
