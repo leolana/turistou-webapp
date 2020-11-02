@@ -1,5 +1,4 @@
 import antdData from 'antd/lib/locale-provider/fr_FR'
-import localeData from 'react-intl/locale-data/fr'
 
 const messages = {
   'topBar.issuesHistory': 'Histoire des problèmes',
@@ -19,6 +18,5 @@ const messages = {
 export default {
   locale: 'fr-FR',
   antdData,
-  localeData,
   messages,
 }

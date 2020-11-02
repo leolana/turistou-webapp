@@ -28,7 +28,7 @@ class LanguageSelector extends React.Component {
           <span role="img" aria-label="Português brasileiro" className="mr-2">
             🇬🇧
           </span>
-          English
+          Portuguese
         </Menu.Item>
         <Menu.Item key="en-US">
           <span role="img" aria-label="English" className="mr-2">
@@ -37,22 +37,10 @@ class LanguageSelector extends React.Component {
           English
         </Menu.Item>
         <Menu.Item key="fr-FR">
-          <span role="img" aria-label="French" className="mr-2">
+          <span role="img" aria-label="French">
             🇫🇷
           </span>
           French
-        </Menu.Item>
-        <Menu.Item key="ru-RU">
-          <span role="img" aria-label="Русский" className="mr-2">
-            🇷🇺
-          </span>
-          Русский
-        </Menu.Item>
-        <Menu.Item key="zh-CN">
-          <span role="img" aria-label="简体中文" className="mr-2">
-            🇨🇳
-          </span>
-          简体中文
         </Menu.Item>
       </Menu>
     )
