@@ -11,7 +11,10 @@ const actions = {
 const passengerFragment = gql`
   fragment PassengerFragment on Passenger {
     id
-    spot
+    spot {
+      number
+      transportId
+    }
     status
     customer {
       name

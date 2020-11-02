@@ -112,30 +112,33 @@ export const getExcursionById = (id: string) => ({
       query: gql`
         query Excursion($id: String!) {
           excursion(id: $id) {
+            id
+            destination
+            departureDate
+            regressDate
+            ticketPriceDefault
+            ticketPrices {
               id
-              destination
-              departureDate
-              regressDate
-              ticketPriceDefault
-              ticketPrices {
-                  id
-                  description
-                  price
+              description
+              price
+            }
+            transports {
+              id
+              type
+              plate
+              capacity
+            }
+            passengers {
+              id
+              spot {
+                number
+                transportId
               }
-              transports {
-                  id
-                  type
-                  plate
-                  capacity
-              }
-              passengers {
-                  id
-                  spot
-              }
-              stopPoints {
-                  id
-                  stopPoint
-              }
+            }
+            stopPoints {
+              id
+              stopPoint
+            }
           }
         }
       `,
@@ -153,7 +156,7 @@ export const getExcursionByIdFailure = () => ({
   type: actions.SET_STATE,
   payload: {
     isLoading: false,
-    error: true
+    error: true,
   },
   isLoading: false,
 })

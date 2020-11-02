@@ -21,16 +21,19 @@ const excursionFragment = gql`
     }
     passengers {
       id
-      spot
+      spot {
+        number
+        transportId
+      }
     }
     ticketPriceDefault
-    # ticketPrices {
-    #   id
-    #   # description
-    #   # price
-    #   # ageInitial
-    #   # ageFinal
-    # }
+    ticketPrices {
+      id
+      description
+      price
+      # ageInitial
+      # ageFinal
+    }
   }
 `
 export const fetchExcursions = () => ({
