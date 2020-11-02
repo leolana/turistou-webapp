@@ -1,3 +1,4 @@
+import { notification } from 'antd'
 import actions from './actions'
 
 const initialState = {
@@ -9,30 +10,19 @@ const initialState = {
 }
 
 export default function reducer(state = initialState, action) {
-  switch (action.type) {
+  const { type, payload } = action
+
+  switch (type) {
     case actions.SET_STATE:
-      return { ...state, ...action }
+      return { ...state, ...payload }
+
     case actions.GET_EXCURSIONS_FAILURE:
-      return { ...state, ...action }
-    case actions.GET_DATA:
-      state.isLoading = true
-      // TODO:
-      return state
+      notification.error({
+        message: 'Falha',
+        description: 'Não foi possível trazer os dados das excursões',
+      })
+      return { ...state, ...payload }
 
-    case actions.GET_DATA_SUCCESS:
-      state.isLoading = false
-      // TODO:
-      return state
-
-    case actions.DELETE_DATA:
-      state.isLoading = true
-      // TODO:
-      return state
-
-    case actions.DELETE_DATA_SUCCESS:
-      state.isLoading = false
-      // TODO:
-      return state
     default:
       return state
   }

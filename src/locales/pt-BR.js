@@ -1,5 +1,4 @@
 import antdData from 'antd/lib/locale-provider/pt_BR'
-import localeData from 'react-intl/locale-data/pt'
 
 const messages = {
   'topBar.typeToSearch': 'Pesquise no site...',
@@ -15,6 +14,5 @@ const messages = {
 export default {
   locale: 'pt-BR',
   antdData,
-  localeData,
   messages,
 }

@@ -19,7 +19,9 @@
     "no-param-reassign": 0,
     "import/no-unresolved": 0,
     "no-console": 0,
-    "prefer-default-export": 0
+    "no-debugger": 0,
+    "prefer-default-export": 0,
+    "react/no-array-index-key": 0
   },
   "parserOptions": {
     "ecmaFeatures": {

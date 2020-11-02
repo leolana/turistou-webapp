@@ -9,7 +9,7 @@ class PaymentTransaction extends React.Component {
     footer: '',
   }
 
-  componentWillMount() {
+  componentDidMount () {
     this.getParams()
   }
 

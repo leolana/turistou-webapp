@@ -8,8 +8,9 @@ import SkeletonTable from 'components/SkeletonTable/SkeletonTable'
 import { EXCURSION_STATUS_ENUM } from 'constants/excursionStatus'
 
 class ExcursionList extends Component {
-  componentDidMount() {
-    const { getExcursions } = this.props
+  constructor(props) {
+    super(props)
+    const { getExcursions } = props
     getExcursions()
   }
 
@@ -92,7 +93,11 @@ class ExcursionList extends Component {
   render() {
     const { excursions, isLoading } = this.props
     const tableData = this.filterTable(excursions).map(excursion => {
-      const spotsFormatter = (transports, passengers) => {
+      const spotsFormatter = (transports = [], passengers) => {
+        if (!transports.length)
+          return { text: 'Nenhum transporte cadastrado!', style: 'text-danger' }
+
+        // FIXME: when has more transports
         const { capacity } = transports[0]
         const places = passengers.length
 

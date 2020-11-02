@@ -1,11 +1,15 @@
-import React, { Component } from 'react'
+import React, { useEffect } from 'react'
+import { useDispatch } from 'react-redux'
+import { useParams } from 'react-router'
 import { Helmet } from 'react-helmet'
+import { Card } from 'antd'
 
+import actions from 'redux/excursionDetail/actions'
 import FormSteps from 'components/Step/FormSteps'
 import PassengerForm from './PassengerForm'
 
 import PassengerChoice from './form/PassengerChoice'
-import PassengerPayment from './form/PassengerPayment'
+import PassengerAgreedPayments from './form/PassengerAgreedPayments'
 import PassengerPlace from './form/PassengerPlace'
 
 import 'costom.scss'
@@ -13,31 +17,29 @@ import 'costom.scss'
 const pageTitle = 'Novo passageiro'
 const formSteps = [
   { title: 'Passageiro', component: PassengerChoice },
-  { title: 'Pagamentos efetuados', component: PassengerPayment },
+  { title: 'Pagamentos combinados', component: PassengerAgreedPayments },
   { title: 'Assento', component: PassengerPlace },
 ]
 
-class ExcursionPassengers extends Component {
-  render() {
-    return (
-      <div>
-        <Helmet title={pageTitle} />
-        <div className="card">
-          <div className="card-header">
-            <div className="utils__title">
-              <strong>{pageTitle}</strong>
-            </div>
-          </div>
-          <div className="card-header">
-            <FormSteps formSteps={formSteps} {...this.props} />
-          </div>
-          <div className="card-body">
-            <PassengerForm formSteps={formSteps} {...this.props} />
-          </div>
-        </div>
-      </div>
-    )
-  }
+const ExcursionPassengers = (props) => {
+  const dispatch = useDispatch();
+  const { excursionId } = useParams();
+
+  useEffect(() => {
+    dispatch({ type: actions.GET_EXCURSION_BY_ID, payload: excursionId })
+  }, [excursionId, dispatch])
+
+  return (
+    <div>
+      <Helmet title={pageTitle} />
+
+      <Card title={pageTitle}>
+        <FormSteps formSteps={formSteps} {...props} />
+        <br />
+        <PassengerForm formSteps={formSteps} {...props} />
+      </Card>
+    </div>
+  )
 }
 
 export default ExcursionPassengers

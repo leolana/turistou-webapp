@@ -1,69 +1,73 @@
-import React, { Component } from 'react'
+import React, { useCallback, useMemo } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import { Row, Col, Form, Radio } from 'antd'
 
-import { tableData } from 'mock/customers'
+import passengerActions from 'redux/passengerDetail/actions'
 import CustomerSelect from 'components/CustomerSelect/CustomerSelect'
 
-const passagePrices = [
-  { id: 0, description: 'Normal', price: '320,00' },
-  { id: 1, description: 'Estudante', price: '200,00' },
-  { id: 2, description: 'Idoso', price: '189,90' },
-]
+const PassengerChoice = ({ form }) => {
+  const dispatch = useDispatch()
+  const { payload: excursion } = useSelector(state => state.excursionDetail)
+  const { payload: customers } = useSelector(state => state.customerList)
 
-class PassengerChoice extends Component {
-  constructor() {
-    super()
-    this.state = { price: null }
-  }
+  const storagePassenger = useCallback((payload) => dispatch({ type: passengerActions.SET_STATE, payload }), [dispatch]);
+  const storagePassengerName = useCallback((customerId) => {
+    const customer = customers.find(x => x.id === customerId) || {}
+    storagePassenger({ customerName: customer.name || 'Alguém' })
+  }, [customers, storagePassenger])
 
-  componentDidMount() {
-    this.setState({ price: '320,00' })
-  }
+  const storagePassengerTicket = useCallback((ticketPriceId) => {
+    const { ticketPrices, ticketPriceDefault } = excursion
 
-  onChangePassage = event => {
-    const id = event.target.value
-    const selected = passagePrices.find(x => x.id === id)
-    if (selected) this.setState({ price: selected.price })
-  }
+    const ticket = ticketPrices?.find(x => x.id === ticketPriceId) || ({ description: 'Normal', price: ticketPriceDefault })
 
-  render() {
-    const { form } = this.props
-    const { price } = this.state
-    const options = passagePrices.map(x => ({ value: x.id, label: x.description }))
+    storagePassenger({ ticket })
+    return ticket
+  }, [excursion, storagePassenger])
 
-    return (
-      <div>
-        <Row>
-          <Col xs={24}>
-            <Form.Item label="Cliente">
-              {form.getFieldDecorator('customer', {
-                rules: [{ required: false }],
-              })(<CustomerSelect customers={tableData} />)}
-            </Form.Item>
-          </Col>
-        </Row>
-        <Row>
-          <Col xs={24}>
-            <Form.Item label="Tipos de passagem">
-              {form.getFieldDecorator('ticketPriceId', { rules: [{ required: false }] })(
-                <Radio.Group
-                  options={options}
-                  size="default"
-                  initialValue={null}
-                  onChange={this.onChangePassage}
-                />,
-              )}
-            </Form.Item>
-          </Col>
-          <Col xs={24}>
-            <div>
-              Valor: <b>R$ {price}</b>
-            </div>
-          </Col>
-        </Row>
-      </div>
-    )
-  }
+  const ticketOptions = useMemo(() => {
+    const { ticketPrices, ticketPriceDefault } = excursion
+    const options = (ticketPrices || []).map(x => ({
+      value: x.id,
+      label: x.description,
+      price: x.price,
+    }))
+    options.unshift({ value: 0, label: 'Passagem normal', price: ticketPriceDefault })
+    return options
+  }, [excursion])
+
+  const selectedTicket = useMemo(() => {
+    const id = form.getFieldValue('ticketPriceId')
+    storagePassengerTicket(id)
+    return id ? ticketOptions.find(x => x.value === id) : ticketOptions[0]
+  }, [ticketOptions, form, storagePassengerTicket])
+
+  return (
+    <Row>
+      <Col xs={24}>
+        <Form.Item label="Cliente">
+          {form.getFieldDecorator('customerId', {
+            rules: [{ required: true, message: 'Por favor, selecione o cliente.' }],
+          })(<CustomerSelect onChange={storagePassengerName} />)}
+        </Form.Item>
+      </Col>
+      <Col xs={24}>
+        <Form.Item
+          label="Tipos de passagem"
+          onChange={e => storagePassengerTicket(e.target.value)}
+        >
+          {form.getFieldDecorator('ticketPriceId', {
+            initialValue: 0,
+            rules: [{ required: false }],
+          })(<Radio.Group options={ticketOptions} />)}
+        </Form.Item>
+      </Col>
+      {selectedTicket && (
+        <Col xs={24}>
+          Valor: <b>R$ {selectedTicket.price || ''}</b>
+        </Col>
+      )}
+    </Row>
+  )
 }
-
-export default PassengerChoice
+export default PassengerChoice;

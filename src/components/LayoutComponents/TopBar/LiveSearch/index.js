@@ -10,7 +10,7 @@ class LiveSearch extends React.Component {
     // searchText: '',
   }
 
-  componentWillMount() {
+  componentDidMount () {
     document.addEventListener('keydown', this.handleKeyDown, false)
   }
 
