@@ -59,7 +59,7 @@ class PassengerList extends Component {
   }
 
   columnsForPayments = () => {
-    const { setToPaid, setToUnpaid } = this.props
+    const { setToPaid, setToPending, setStatusToCanceled } = this.props
 
     const columns = [
       {
@@ -90,12 +90,10 @@ class PassengerList extends Component {
       },
       {
         title: 'Situação',
-        dataIndex: 'paymentstatus',
+        dataIndex: 'status',
         key: 'status',
         render: (_, row) => {
-          const { id, passengerId, payDate } = row
-
-          const isPaid = !!payDate
+          const { id, passengerId, status } = row
 
           const payload = {
             passengerId,
@@ -104,8 +102,22 @@ class PassengerList extends Component {
 
           return (
             <PaymentSelect
-              isPaid={isPaid}
-              onChange={() => (isPaid ? setToUnpaid(payload) : setToPaid(payload))}
+              status={status}
+              onChange={statusModified => {
+                if (statusModified === 'paid') {
+                  return setToPaid(payload)
+                }
+
+                if (statusModified === 'pending') {
+                  return setToPending(payload)
+                }
+
+                if (statusModified === 'canceled') {
+                  return setStatusToCanceled(payload)
+                }
+
+                throw Error(`ERROR: status payment not found: ${statusModified}`)
+              }}
             />
           )
         },
@@ -567,8 +579,10 @@ const mapDispatchToProps = dispatch => ({
     dispatch({ type: paymentStatusActions.GET_PAYMENT_STATUS, payload: { passengerId } }),
   setToPaid: ({ passengerId, paymentId }) =>
     dispatch({ type: paymentsActions.SET_TO_PAID, payload: { passengerId, paymentId } }),
-  setToUnpaid: ({ passengerId, paymentId }) =>
+  setToPending: ({ passengerId, paymentId }) =>
     dispatch({ type: paymentsActions.SET_TO_UNPAID, payload: { passengerId, paymentId } }),
+  setStatusToCanceled: ({ passengerId, paymentId }) =>
+    dispatch({ type: paymentsActions.SET_TO_CANCELED, payload: { passengerId, paymentId } }),
   getCustomers: () => dispatch({ type: customerActions.GET_CUSTOMERS }),
   closePaymentsListModal: () =>
     dispatch({ type: paymentsActions.TOGGLE_VISIBILITY, payload: false }),

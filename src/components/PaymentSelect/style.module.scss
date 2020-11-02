@@ -2,6 +2,10 @@
   color: var(--success);
 }
 
-.unpaid {
+.pending {
   color: var(--warning);
+}
+
+.canceled {
+  color: var(--danger);
 }
