@@ -3,23 +3,16 @@ import actions from './actions'
 const initialState = {
   isLoading: true,
   payload: [],
-  filter: {
-    excursionId: null,
-    query: '',
-    status: 'BOOKED',
-    startPay: false,
-    fullPay: false,
-  },
 }
 
-export default function passengerReducer(state = initialState, action) {
-  switch (action.type) {
+export default function passengerReducer(state = initialState, { type, payload }) {
+  switch (type) {
     case actions.SET_STATE:
-      return { ...state, ...action }
+      return { ...state, ...payload }
     case actions.GET_PASSENGERS:
-      return { ...state, ...action }
+      return { ...state, ...payload }
     case actions.GET_PASSENGERS_SUCCESS:
-      return { ...state, ...action }
+      return { ...state, ...payload }
     default:
       return state
   }

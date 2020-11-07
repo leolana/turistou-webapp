@@ -1,144 +1,62 @@
-import React, { Component } from 'react'
-import { withRouter } from 'react-router'
-import { connect } from 'react-redux'
+import React, { useCallback } from 'react'
+import { useParams } from 'react-router'
+import { useSelector } from 'react-redux'
 import { Form, Row, Col, Radio, Input } from 'antd'
 
-import passengerActions from 'redux/passengerList/actions'
+const PassengerFilter = ({ setFilter }) => {
+  const { excursionId } = useParams()
 
-@Form.create()
-class PassengerFilter extends Component {
-  constructor(props) {
-    super(props)
+  // const { payload: passengers } = useSelector(state => state.passengerList)
+  const { payload: excursion } = useSelector((state) => state.excursionDetail)
 
-    this.state = {
-      status: 'BOOKED',
-    }
+  const handleChangeFilter = useCallback(
+    (field, value) => {
+      setFilter((filter) => ({ ...filter, [field]: value }))
+    },
+    [setFilter],
+  )
 
-    this.handleChangeStartPay = this.handleChangeStartPay.bind(this)
-    this.handleChangeFullPay = this.handleChangeFullPay.bind(this)
-    this.handleChangeStatus = this.handleChangeStatus.bind(this)
-    this.handleChangeFilter = this.handleChangeFilter.bind(this)
-  }
-
-  componentDidMount() {
-    const {
-      getPassengers,
-      filter,
-      setFilter,
-      match: { params },
-    } = this.props
-    const { excursionId } = params
-
-    const { status } = this.state
-    const payload = { ...filter, status, excursionId }
-    getPassengers(payload)
-    setFilter(payload)
-  }
-
-  handleChangeStartPay(e) {
-    const startPay = e.target.checked
-    const { setFilter } = this.props
-    setFilter({ startPay })
-  }
-
-  handleChangeFullPay(e) {
-    const fullPay = e.target.checked
-    const { setFilter } = this.props
-    setFilter({ fullPay })
-  }
-
-  handleChangeStatus(e) {
-    const status = e.target.value
-    const { getPassengers, filter } = this.props
-    const payload = { ...filter, status }
-    getPassengers(payload)
-    this.setState({ status })
-  }
-
-  handleChangeFilter(e) {
-    const query = e.target.value
-    const { setFilter } = this.props
-    setFilter({ query })
-  }
-
-  render() {
-    const { id, passengers } = this.props
-    const { status } = this.state
-
-    const excursion = passengers.find((x) => x.id === id)
-
-    return (
-      <Form layout="inline" className="form-filter">
-        <Row>
-          <Col md={24}>
-            {excursion && (
-              <h5>
-                {excursion.destination}
-                <small className="ml-2">
-                  <i className="fa fa-calendar-o" />{' '}
-                  {new Date(excursion.departure).toLocaleDateString()}
-                </small>
-                <small className="ml-2">
-                  <i className="fa fa-calendar-o" />{' '}
-                  {new Date(excursion.regress).toLocaleDateString()}
-                </small>
-              </h5>
-            )}
-          </Col>
-          {/*
-          <Col md={10}>
-            <Form.Item label="Excursão">
-              {form.getFieldDecorator('excursion', { rules: [{ required: false }] })(
-                <Select>
-                  {passengers.map(x => <Select.Option key={x.id} value={x.id}>{x.destination} <i className="fa fa-calendar ml-2" /> {new Date(x.departure).toLocaleDateString()}</Select.Option>)}
-                </Select>
-              )}
-            </Form.Item>
-          </Col>
-          */}
-          <Col md={12}>
-            <Radio.Group
-              className="mb-1"
-              onChange={this.handleChangeStatus}
-              defaultValue="BOOKED"
-              value={status}
-              buttonStyle="solid"
-            >
-              <Radio.Button value="BOOKED">Reservado</Radio.Button>
-              <Radio.Button value="WAITING">Em espera</Radio.Button>
-              <Radio.Button value="CANCELED">Desistente</Radio.Button>
-            </Radio.Group>
-          </Col>
-          {/* TODO: Descomentar até achar um jeito melhor de acompanhar os filtros entre tabelas */}
-          {/* <Col md={16}>
-            <Checkbox checked={startPay} onChange={this.handleChangeStartPay}>
-              Deram entrada
-            </Checkbox>
-            <Checkbox checked={fullPay} onChange={this.handleChangeFullPay}>
-              Pago 100%
-            </Checkbox>
-          </Col> */}
-          <Col md={12}>
-            <Input
-              onChange={this.handleChangeFilter}
-              addonBefore={<i className="fa fa-search" />}
-              placeholder="Filtrar pelo nome"
-            />
-          </Col>
-        </Row>
-      </Form>
-    )
-  }
+  return (
+    <Form layout="inline" className="form-filter">
+      <Row>
+        <Col md={24}>
+          <h5 hidden={excursion.id !== excursionId}>
+            {excursion.destination}
+            <small className="ml-2">
+              <i className="fa fa-calendar-o" />{' '}
+              {new Date(excursion.departureDate).toLocaleDateString()}
+            </small>
+            <small className="ml-2">
+              <i className="fa fa-calendar-o" />{' '}
+              {new Date(excursion.regressDate).toLocaleDateString()}
+            </small>
+          </h5>
+        </Col>
+        {/* <Col md={10}><Form.Item label="Excursão">{form.getFieldDecorator('excursion', { rules: [{ required: false }] })(<Select>{passengers.map(x => <Select.Option key={x.id} value={x.id}>{x.destination} <i className="fa fa-calendar ml-2" /> {new Date(x.departure).toLocaleDateString()}</Select.Option>)}</Select>)}</Form.Item></Col> */}
+        <Col md={12}>
+          <Radio.Group
+            className="mb-1"
+            onChange={(e) => handleChangeFilter('status', e.target.value)}
+            defaultValue="BOOKED"
+            buttonStyle="solid"
+          >
+            <Radio.Button value="BOOKED">Reservado</Radio.Button>
+            <Radio.Button value="WAITING">Em espera</Radio.Button>
+            <Radio.Button value="CANCELED">Desistente</Radio.Button>
+          </Radio.Group>
+        </Col>
+        {/* TODO: Descomentar até achar um jeito melhor de acompanhar os filtros entre tabelas */}
+        {/* <Col md={16}><Checkbox checked={startPay} onChange={handleChangeFilter('startPay', e.target.checked)}>Deram entrada</Checkbox><Checkbox checked={fullPay} onChange={handleChangeFilter('fullPay', e.target.checked)}>Pago 100%</Checkbox></Col> */}
+        <Col md={12}>
+          <Input
+            onChange={(e) => handleChangeFilter('query', e.target.value)}
+            addonBefore={<i className="fa fa-search" />}
+            placeholder="Filtrar pelo nome"
+          />
+        </Col>
+      </Row>
+    </Form>
+  )
 }
 
-const mapStateToProps = ({ passengerList: { filter, payload: passengers } }) => ({
-  filter,
-  passengers,
-})
-
-const mapDispatchToProps = (dispatch) => ({
-  setFilter: (filter) => dispatch({ type: passengerActions.SET_STATE, filter }),
-  getPassengers: (filter) => dispatch({ type: passengerActions.GET_PASSENGERS, filter }),
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(PassengerFilter))
+export default PassengerFilter
