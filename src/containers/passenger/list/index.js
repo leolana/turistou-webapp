@@ -1,8 +1,11 @@
-import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { Link, useParams } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
 import { Row, Button, Col, Dropdown, Menu } from 'antd'
 
+import { fetchPassengers } from 'redux/passengerList/actions'
+import { getExcursionById } from 'redux/excursionDetail/actions'
 import PassengerList from './PassengerList'
 import PassengerFilter from './PassengerFilter'
 
@@ -26,38 +29,51 @@ const DropdownAdd = ({ placement }) => (
   </Dropdown>
 )
 
-class Passenger extends Component {
-  render() {
-    const { match } = this.props
-    const { id } = match.params
+const Passenger = () => {
+  const dispatch = useDispatch()
+  const { excursionId, id } = useParams()
 
-    return (
-      <div>
-        <Helmet title={pageTitle} />
-        <div className="card">
-          <div className="card-header">
-            <Row>
-              <Col xs={18}>
-                <div className="utils__title">
-                  <strong>{pageTitle}</strong>
-                </div>
-              </Col>
-              <Col xs={6}>
-                <DropdownAdd />
-              </Col>
-            </Row>
-          </div>
-          <div className="card-body">
-            <PassengerFilter id={id} />
-            <PassengerList id={id} />
+  const [filter, setFilter] = useState({
+    excursionId,
+    query: '',
+    status: 'BOOKED',
+    startPay: false,
+    fullPay: false,
+  })
 
-            <div className="form-actions">
-              <DropdownAdd placement="topRight" />
-            </div>
+  useEffect(() => {
+    dispatch(fetchPassengers(filter))
+  }, [filter, dispatch])
+  useEffect(() => {
+    dispatch(getExcursionById(excursionId))
+  }, [excursionId, dispatch])
+
+  return (
+    <div>
+      <Helmet title={pageTitle} />
+      <div className="card">
+        <div className="card-header">
+          <Row>
+            <Col xs={18}>
+              <div className="utils__title">
+                <strong>{pageTitle}</strong>
+              </div>
+            </Col>
+            <Col xs={6}>
+              <DropdownAdd />
+            </Col>
+          </Row>
+        </div>
+        <div className="card-body">
+          <PassengerFilter setFilter={setFilter} />
+          <PassengerList id={id} filter={filter} />
+
+          <div className="form-actions">
+            <DropdownAdd placement="topRight" />
           </div>
         </div>
       </div>
-    )
-  }
+    </div>
+  )
 }
 export default Passenger

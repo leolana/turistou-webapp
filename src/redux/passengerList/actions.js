@@ -26,9 +26,9 @@ const passengerFragment = gql`
     amountPaid
   }
 `
-export const fetchPassengers = ({ filter }) => ({
+export const fetchPassengers = (filter) => ({
   type: actions.GET_PASSENGERS,
-  payload: { loading: true },
+  payload: { isLoading: true },
   request: () =>
     query({
       query: gql`
@@ -45,16 +45,17 @@ export const fetchPassengers = ({ filter }) => ({
     }),
 })
 
-export const fetchPassengersSuccess = (payload: any) => ({
+export const fetchPassengersSuccess = ({ passengers }) => ({
   type: actions.SET_STATE,
-  payload: payload.passengers,
-  isLoading: false,
+  payload: {
+    payload: passengers,
+    isLoading: false,
+  },
 })
 
-export const fetchPassengersFailure = (payload: any) => ({
-  type: actions.GET_PASSENGERS_FAILURE,
-  payload: { ...payload },
-  isLoading: false,
+export const fetchPassengersFailure = () => ({
+  type: actions.SET_STATE,
+  payload: { isLoading: false },
 })
 
 export default actions

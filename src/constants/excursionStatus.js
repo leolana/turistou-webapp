@@ -1,7 +1,7 @@
 export const EXCURSION_STATUS = [
   {
     id: 3,
-    key: 'nexties',
+    key: 'next',
     description: 'Futuras',
   },
   {
@@ -13,7 +13,7 @@ export const EXCURSION_STATUS = [
 
 export const EXCURSION_STATUS_ENUM = (() => {
   const statusEnum = {}
-  EXCURSION_STATUS.forEach(x => {
+  EXCURSION_STATUS.forEach((x) => {
     statusEnum[x.key] = x.id
   })
   return statusEnum

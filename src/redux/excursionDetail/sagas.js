@@ -5,7 +5,6 @@ import actions, {
   saveExcursion,
   saveExcursionSuccess,
   saveExcursionFailure,
-  getExcursionById,
   getExcursionByIdSuccess,
   getExcursionByIdFailure,
 } from './actions'
@@ -29,9 +28,8 @@ export function* save({ payload }) {
   }
 }
 
-export function* getById({ payload: id }) {
-  const getExcursion = getExcursionById(id)
-  const result = yield call(getExcursion.request)
+export function* getById({ request }) {
+  const result = yield call(request)
 
   if (result.response && result.response.data) {
     yield put(getExcursionByIdSuccess(result.response.data))

@@ -1,14 +1,13 @@
 import { all, put, takeEvery, call } from 'redux-saga/effects'
 import { notification } from 'antd'
 
-import actions, { fetchPassengers, fetchPassengersSuccess, fetchPassengersFailure } from './actions'
+import actions, { fetchPassengersSuccess, fetchPassengersFailure } from './actions'
 
-export function* getData(payload) {
-  const fetchPassenger = fetchPassengers(payload)
-  const result = yield call(fetchPassenger.request)
+export function* getData({ request }) {
+  const result = yield call(request)
 
   try {
-    if (result.response.data) {
+    if (result.response && result.response.data) {
       yield put(fetchPassengersSuccess(result.response.data))
     } else {
       const validationError = result.networkError.result.errors[0]

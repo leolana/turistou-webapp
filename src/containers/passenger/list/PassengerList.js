@@ -97,7 +97,7 @@ class PassengerList extends Component {
           return (
             <PaymentSelect
               status={status}
-              onChange={statusModified => {
+              onChange={(statusModified) => {
                 if (statusModified === 'paid') {
                   return setToPaid(payload)
                 }
@@ -544,7 +544,7 @@ class PassengerList extends Component {
 }
 
 const mapStateToProps = ({
-  passengerList: { isLoading: isPassengerLoading, filter, payload: passengers },
+  passengerList: { isLoading: isPassengerLoading, payload: passengers },
   customerList: { payload: customersList },
   payments: { payload: payments, isVisible: isPaymentListVisible, isLoading: isPaymentsLoading },
   paymentStatus: {
@@ -554,7 +554,6 @@ const mapStateToProps = ({
   },
 }) => ({
   isPassengerLoading,
-  filter,
   passengers,
   customersList,
   payments,
