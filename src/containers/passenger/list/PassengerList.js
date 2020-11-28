@@ -8,7 +8,7 @@ import paymentsActions from 'redux/payments/actions'
 import paymentStatusActions from 'redux/paymentStatus/actions'
 import CustomerSelect from 'components/CustomerSelect/CustomerSelect'
 import SkeletonTable from 'components/SkeletonTable/SkeletonTable'
-import customerActions from 'redux/customerList/actions'
+import { fetchCustomers } from 'redux/customerList/actions'
 
 import PaymentSelect from 'components/PaymentSelect/PaymentSelect'
 import PaymentUpdateForm from 'components/PaymentUpdateForm/PaymentUpdateForm'
@@ -576,7 +576,7 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch({ type: paymentsActions.SET_TO_UNPAID, payload: { passengerId, paymentId } }),
   setStatusToCanceled: ({ passengerId, paymentId }) =>
     dispatch({ type: paymentsActions.SET_TO_CANCELED, payload: { passengerId, paymentId } }),
-  getCustomers: () => dispatch({ type: customerActions.GET_CUSTOMERS }),
+  getCustomers: () => dispatch(fetchCustomers()),
   closePaymentsListModal: () =>
     dispatch({ type: paymentsActions.TOGGLE_VISIBILITY, payload: false }),
   clearPayments: () => dispatch({ type: paymentsActions.SET_STATE, payload: [] }),

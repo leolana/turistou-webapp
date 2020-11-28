@@ -10,44 +10,53 @@ import passengerActions from 'redux/passengerDetail/actions'
 const PassengerForm = ({ form, formSteps }) => {
   const dispatch = useDispatch()
   const history = useHistory()
-  const { current: currentStep } = useSelector(state => state.step)
-  const { isLoading } = useSelector(state => state.excursionDetail)
+  const { current: currentStep } = useSelector((state) => state.step)
+  const { isLoading } = useSelector((state) => state.excursionDetail)
 
   const onSaveFormAndAddNew = useCallback(() => {
     saveAndRedirectTo(`${history.location.pathname}`)
   }, [saveAndRedirectTo, history])
 
-  const onSubmit = useCallback(event => {
-    event.preventDefault()
+  const onSubmit = useCallback(
+    (event) => {
+      event.preventDefault()
 
-    saveAndRedirectTo(`${history.location.pathname}/list`)
-  }, [saveAndRedirectTo, history])
+      saveAndRedirectTo(`${history.location.pathname}/list`)
+    },
+    [saveAndRedirectTo, history],
+  )
 
-  const saveStepHandler = useCallback((fields, doSuccess) => {
-    form.validateFields(fields, { first: true }, (error, values) => {
-      if (!error) {
-        dispatch({ type: passengerActions.SET_PAYLOAD, payload: values })
+  const saveStepHandler = useCallback(
+    (fields, doSuccess) => {
+      form.validateFields(fields, { first: true }, (error, values) => {
+        if (!error) {
+          dispatch({ type: passengerActions.SET_PAYLOAD, payload: values })
 
-        doSuccess()
-      }
-    })
-  }, [form, dispatch])
+          doSuccess()
+        }
+      })
+    },
+    [form, dispatch],
+  )
 
-  const saveAndRedirectTo = useCallback((redirect) => {
-    form.validateFields(async (error, values) => {
-      if (!error) {
-        const { keys, ...data } = values
-        await dispatch({ type: passengerActions.SAVE_PASSENGER, payload: data })
-        history.push(redirect)
-      }
-    })
-  }, [form, history, dispatch])
+  const saveAndRedirectTo = useCallback(
+    (redirect) => {
+      form.validateFields(async (error, values) => {
+        if (!error) {
+          const { keys, ...data } = values
+          await dispatch({ type: passengerActions.SAVE_PASSENGER, payload: data })
+          history.push(redirect)
+        }
+      })
+    },
+    [form, history, dispatch],
+  )
 
   return (
     <SkeletonForm isLoading={isLoading} rows={3}>
       <Form id="passenger-form" hideRequiredMark colon={false} onSubmit={onSubmit}>
         {formSteps.map((x, i) => (
-          <div key={x.title} style={{ display: currentStep === i ? 'block' : 'none' }}>
+          <div key={x.title} hidden={currentStep !== i}>
             <x.component form={form} />
             <div className="form-actions">
               <FormStepButtonsActions
