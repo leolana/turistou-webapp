@@ -1,82 +1,78 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
+import React, { useCallback } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useHistory } from 'react-router'
 import { Form } from 'antd'
-import { push } from 'react-router-redux'
 
 import actions from 'redux/excursionDetail/actions'
 import FormStepButtonsActions from 'components/Step/FormStepButtonsActions'
 import SkeletonForm from 'components/SkeletonForm/SkeletonForm'
 
-@Form.create()
-class ExcursionForm extends Component {
-  onSaveFormAndAddNew = () => {
-    const { form, saveForm, resetForm } = this.props
+const ExcursionForm = ({ form, formSteps }) => {
+  const dispatch = useDispatch()
+  const history = useHistory()
+
+  const { isLoading } = useSelector((state) => state.excursionDetail)
+  const { current } = useSelector((state) => state.step)
+
+  const saveForm = useCallback((payload) => dispatch({ type: actions.SAVE_EXCURSION, payload }), [
+    dispatch,
+  ])
+
+  const onSaveFormAndAddNew = useCallback(() => {
     form.validateFields(async (error, values) => {
       if (!error) {
         await saveForm(values)
-        resetForm()
+        history.push('/excursion')
       }
     })
-  }
+  }, [form, history, saveForm])
 
-  onSubmit = event => {
-    event.preventDefault()
-    const { form, saveForm, redirectToExcursionList } = this.props
-    form.validateFields(async (error, values) => {
-      if (!error) {
-        await saveForm(values)
-        redirectToExcursionList()
-      }
-    })
-  }
+  const onSubmit = useCallback(
+    (event) => {
+      event.preventDefault()
+      form.validateFields(async (error, values) => {
+        if (!error) {
+          await saveForm(values)
+          history.push('/excursion/list')
+        }
+      })
+    },
+    [form, history, saveForm],
+  )
 
-  saveStepHandler = (fields, doSuccess) => {
-    const { form, saveStep } = this.props
-    form.validateFields(fields, { first: true }, (error, values) => {
-      if (!error) {
-        saveStep(values)
+  const saveStepHandler = useCallback(
+    (fields, doSuccess) => {
+      form.validateFields(fields, { first: true }, (error, values) => {
+        if (!error) {
+          dispatch({ type: actions.SET_STATE, payload: values })
 
-        doSuccess()
-      }
-    })
-  }
+          doSuccess()
+        }
+      })
+    },
+    [form, dispatch],
+  )
 
-  render() {
-    const { current, formSteps, form, isLoading } = this.props
-
-    return (
-      <SkeletonForm isLoading={isLoading}>
-        <Form layout="vertical" className="customer-form" onSubmit={this.onSubmit}>
-          {formSteps.map((x, i) => (
-            <div key={x.title} style={{ display: current === i ? 'block' : 'none' }}>
-              <x.component form={form} />
-              <div className="form-actions">
-                <FormStepButtonsActions
-                  lastStep={formSteps.length - 1}
-                  validationFields={x.fields}
-                  // todo: da para utilizar curring com ramda.js
-                  onSaveStep={this.saveStepHandler}
-                  onSaveFormAndAddNew={this.onSaveFormAndAddNew}
-                />
-              </div>
+  return (
+    <SkeletonForm isLoading={isLoading}>
+      <Form layout="vertical" className="customer-form" onSubmit={onSubmit}>
+        {formSteps.map((x, i) => (
+          <div key={x.title} hidden={current !== i}>
+            <x.component form={form} />
+            <div className="form-actions">
+              <FormStepButtonsActions
+                lastStep={formSteps.length - 1}
+                validationFields={x.fields}
+                // todo: da para utilizar curring com ramda.js
+                onSaveStep={saveStepHandler}
+                onSaveFormAndAddNew={onSaveFormAndAddNew}
+              />
             </div>
-          ))}
-        </Form>
-      </SkeletonForm>
-    )
-  }
+          </div>
+        ))}
+      </Form>
+    </SkeletonForm>
+  )
 }
 
-const mapStateToProps = store => ({
-  current: store.step.current,
-  isLoading: store.excursionDetail.isLoading,
-})
-
-const mapDispatchToProps = dispatch => ({
-  saveStep: values => dispatch({ type: actions.SET_STATE, payload: values }),
-  saveForm: values => dispatch({ type: actions.SAVE_EXCURSION, payload: values }),
-  resetForm: () => dispatch(push('/excursion')),
-  redirectToExcursionList: () => dispatch(push('/excursion/list')),
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(ExcursionForm)
+export default Form.create()(ExcursionForm)
