@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router'
 import { Form } from 'antd'
@@ -11,10 +11,13 @@ const ExcursionForm = ({ form, formSteps }) => {
   const dispatch = useDispatch()
   const history = useHistory()
 
-  const { isLoading, payload: data } = useSelector((state) => state.excursionDetail)
+  const { isLoading } = useSelector((state) => state.excursionDetail)
   const { current } = useSelector((state) => state.step)
 
-  console.debug('data', data)
+  const { payload: excursionDetail } = useSelector((state) => state.excursionDetail)
+  const initialValues = useMemo(() => {
+    return excursionDetail.id ? excursionDetail : {}
+  }, [excursionDetail])
 
   const saveForm = useCallback((payload) => dispatch({ type: actions.SAVE_EXCURSION, payload }), [
     dispatch,
@@ -60,7 +63,7 @@ const ExcursionForm = ({ form, formSteps }) => {
       <Form layout="vertical" className="customer-form" onSubmit={onSubmit}>
         {formSteps.map((x, i) => (
           <div key={x.title} hidden={current !== i}>
-            <x.component form={form} data={data} />
+            <x.component form={form} initialValues={initialValues} />
             <div className="form-actions">
               <FormStepButtonsActions
                 lastStep={formSteps.length - 1}

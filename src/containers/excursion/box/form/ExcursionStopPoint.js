@@ -1,36 +1,39 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { Button, Row, Col } from 'antd'
 import StopAddress from './StopAddress'
 
-const ExcursionStopPoint = (props) => {
-  const [stopPoints, setStopPoints] = useState([])
+const ExcursionStopPoint = ({ form, initialValues }) => {
+  const [stopPoints, setStopPoints] = useState(null)
 
   const addStopPoint = useCallback(() => {
     setStopPoints((stopPoints) => {
-      const last = stopPoints.length ? stopPoints[stopPoints.length - 1] : 0
-      return [...stopPoints, last + 1]
+      const last = stopPoints.length ? stopPoints[stopPoints.length - 1].key : 0
+      return [...stopPoints, { key: last + 1, stopPoint: '' }]
     })
   }, [])
 
-  const removeStopPoint = useCallback((index) => {
-    setStopPoints((stopPoints) => stopPoints.filter((x) => index !== x))
+  // TODO: pop confirm do delete
+  const removeStopPoint = useCallback((key) => {
+    setStopPoints((stopPoints) => stopPoints.filter((x) => key !== x.key))
   }, [])
 
-  const {
-    form: { getFieldDecorator, getFieldValue },
-  } = props
-  getFieldDecorator('stopPointsKeys', { initialValue: stopPoints })
-  const stopPointsKeys = getFieldValue('stopPointsKeys')
+  useEffect(() => {
+    if (!initialValues.id) {
+      setStopPoints([])
+    } else if (stopPoints === null) {
+      setStopPoints(initialValues.stopPoints.map((x, i) => ({ ...x, key: i })))
+    }
+  }, [initialValues, stopPoints])
 
   return (
     <Row>
       <Col>
-        {stopPointsKeys.map((x, index) => (
+        {stopPoints?.map((stopPoint) => (
           <StopAddress
-            key={index.toString()}
-            index={x}
+            key={stopPoint.key}
             removeStopPoint={removeStopPoint}
-            {...props}
+            form={form}
+            data={stopPoint}
           />
         ))}
       </Col>

@@ -24,8 +24,7 @@ export const saveExcursion = (form) => {
     regressDate,
     regressTime,
     ticketPriceDefault,
-    stopPointsKeys,
-    stopPoint,
+    stoppingPoints,
     priceKeys,
     ticketDescription,
     ticketPrice,
@@ -62,9 +61,7 @@ export const saveExcursion = (form) => {
         hour: regressTime.hour(),
         minute: regressTime.minute(),
       }),
-    stoppingPoints: stopPointsKeys.map((k) => ({
-      stopPoint: stopPoint[k],
-    })),
+    stoppingPoints,
     ticketPriceDefault,
     prices: (priceKeys || []).map((k) => ({
       ticketDescription: ticketDescription[k],
