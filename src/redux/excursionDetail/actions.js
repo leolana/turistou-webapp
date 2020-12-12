@@ -43,26 +43,30 @@ export const saveExcursion = (form) => {
   const payload = {
     destination,
     departurePoint,
-    departureDatetime: DateTime.fromObject({
-      year: departureDate.year(),
-      month: departureDate.month() + 1,
-      day: departureDate.date(),
-      hour: departureTime.hour(),
-      minute: departureTime.minute(),
-    }),
+    departureDatetime:
+      departureDate &&
+      DateTime.fromObject({
+        year: departureDate.year(),
+        month: departureDate.month() + 1,
+        day: departureDate.date(),
+        hour: departureTime.hour(),
+        minute: departureTime.minute(),
+      }),
     arrivalPoint,
-    regressDatetime: DateTime.fromObject({
-      year: regressDate.year(),
-      month: regressDate.month() + 1,
-      day: regressDate.date(),
-      hour: regressTime.hour(),
-      minute: regressTime.minute(),
-    }),
+    regressDatetime:
+      regressDate &&
+      DateTime.fromObject({
+        year: regressDate.year(),
+        month: regressDate.month() + 1,
+        day: regressDate.date(),
+        hour: regressTime.hour(),
+        minute: regressTime.minute(),
+      }),
     stoppingPoints: stopPointsKeys.map((k) => ({
       stopPoint: stopPoint[k],
     })),
     ticketPriceDefault,
-    prices: priceKeys.map((k) => ({
+    prices: (priceKeys || []).map((k) => ({
       ticketDescription: ticketDescription[k],
       ticketPrice: ticketPrice[k],
       isFrom: !!isFrom[k],
@@ -115,6 +119,8 @@ export const getExcursionById = (id: string) => ({
             id
             destination
             departureDate
+            departurePoint
+            arrivalPoint
             regressDate
             ticketPriceDefault
             ticketPrices {

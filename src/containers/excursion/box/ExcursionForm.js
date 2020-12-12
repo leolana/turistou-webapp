@@ -11,8 +11,10 @@ const ExcursionForm = ({ form, formSteps }) => {
   const dispatch = useDispatch()
   const history = useHistory()
 
-  const { isLoading } = useSelector((state) => state.excursionDetail)
+  const { isLoading, payload: data } = useSelector((state) => state.excursionDetail)
   const { current } = useSelector((state) => state.step)
+
+  console.debug('data', data)
 
   const saveForm = useCallback((payload) => dispatch({ type: actions.SAVE_EXCURSION, payload }), [
     dispatch,
@@ -58,7 +60,7 @@ const ExcursionForm = ({ form, formSteps }) => {
       <Form layout="vertical" className="customer-form" onSubmit={onSubmit}>
         {formSteps.map((x, i) => (
           <div key={x.title} hidden={current !== i}>
-            <x.component form={form} />
+            <x.component form={form} data={data} />
             <div className="form-actions">
               <FormStepButtonsActions
                 lastStep={formSteps.length - 1}

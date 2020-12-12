@@ -11,7 +11,7 @@ import actions, {
 
 export function* save({ payload }) {
   const result = yield call(saveExcursion, payload)
-  if (result.response.data) {
+  if (result.response?.data) {
     yield put(saveExcursionSuccess(result.response.data.saveExcursion))
 
     notification.success({
@@ -19,7 +19,7 @@ export function* save({ payload }) {
       description: 'Nova excursão cadastrada com sucesso!',
     })
   } else {
-    const validationError = result.networkError.result.errors[0]
+    const validationError = result.networkError?.result?.errors[0]
     yield put(saveExcursionFailure(validationError))
     notification.error({
       message: 'Error',

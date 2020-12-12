@@ -1,3 +1,4 @@
+import moment from 'moment'
 import actions from './actions'
 
 const initialState = {
@@ -17,8 +18,14 @@ export default function reducer(state = initialState, action) {
     case actions.GET_EXCURSION_BY_ID:
       return { ...state, isLoading: true, payload: {} }
 
-    case actions.GET_EXCURSION_BY_ID_SUCCESS:
-      return { ...state, isLoading: false, payload: action.payload }
+    case actions.GET_EXCURSION_BY_ID_SUCCESS: {
+      const data = {
+        ...action.payload,
+        departureTime: moment(moment(action.payload.departureDate).format()),
+        regressTime: moment(moment(action.payload.regressDate).format()),
+      }
+      return { ...state, isLoading: false, payload: data }
+    }
 
     case actions.GET_EXCURSION_BY_ID_FAILURE:
       return { ...state, isLoading: false, error: true }
