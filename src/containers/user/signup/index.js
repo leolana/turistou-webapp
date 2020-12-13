@@ -5,13 +5,13 @@ import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import MaskedInput from 'react-editmask'
 
-import MASK from 'constants/mask'
+import MASK from '@constants/mask'
 import styles from './style.module.scss'
 
 @Form.create()
 @connect(({ user }) => ({ user }))
 class Signup extends Component {
-  onSubmit = event => {
+  onSubmit = (event) => {
     event.preventDefault()
     const { form, dispatch } = this.props
     console.log(form)

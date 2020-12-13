@@ -1,6 +1,6 @@
 import gql from 'graphql-tag'
 
-import { mutate } from 'core/api/apollo'
+import { mutate } from '@core/api/apollo'
 
 const actions = {
   SET_STATE: 'customerDetail/SET_STATE',
@@ -9,7 +9,7 @@ const actions = {
   SAVE_CUSTOMER_SUCCESS: 'customerDetail/SAVE_CUSTOMER_SUCCESS',
 }
 
-export const saveCustomer = form => {
+export const saveCustomer = (form) => {
   const {
     name,
     email,
@@ -80,13 +80,13 @@ export const saveCustomer = form => {
   })
 }
 
-export const saveCustomerSuccess = payload => ({
+export const saveCustomerSuccess = (payload) => ({
   payload: { ...payload },
   type: actions.SET_STATE,
   isLoading: false,
 })
 
-export const saveCustomerFailure = payload => ({
+export const saveCustomerFailure = (payload) => ({
   type: actions.GET_CUSTOMERS_FAILURE,
   payload: { ...payload },
   isLoading: false,

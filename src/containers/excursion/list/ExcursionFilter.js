@@ -2,8 +2,8 @@ import React, { useCallback } from 'react'
 import { useDispatch } from 'react-redux'
 import { Form, Radio, Input, Row, Col } from 'antd'
 
-import { EXCURSION_STATUS } from 'constants/excursionStatus'
-import actions from 'redux/excursionList/actions'
+import { EXCURSION_STATUS } from '@constants/excursionStatus'
+import actions from '@redux/excursionList/actions'
 
 const ExcursionFilter = ({ defaultFilter, setFilter }) => {
   const dispatch = useDispatch()

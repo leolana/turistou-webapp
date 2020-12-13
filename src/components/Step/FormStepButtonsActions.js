@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Button } from 'antd'
 import { connect } from 'react-redux'
 
-import actions from 'redux/step/actions'
+import actions from '@redux/step/actions'
 
 class FormStepButtonsActions extends Component {
   constructor(props) {
@@ -59,7 +59,7 @@ class FormStepButtonsActions extends Component {
   }
 }
 
-const mapStateToProps = store => ({
+const mapStateToProps = (store) => ({
   current: store.step.current,
 })
 

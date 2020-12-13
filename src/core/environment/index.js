@@ -1,5 +1,4 @@
-// @flow
-export function getOsEnv(key: string) {
+export function getOsEnv(key) {
   if (typeof process.env[key] === 'undefined') {
     throw new Error(`Environment variable ${key} is not set.`)
   }
@@ -7,14 +6,14 @@ export function getOsEnv(key: string) {
   return process.env[key]
 }
 
-export function getOsEnvOptional(key: string) {
+export function getOsEnvOptional(key) {
   return process.env[key]
 }
 
-export function toNumber(value: string): number {
+export function toNumber(value) {
   return parseInt(value, 10)
 }
 
-export function toBool(value: string): boolean {
+export function toBool(value) {
   return value === 'true'
 }

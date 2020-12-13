@@ -7,13 +7,13 @@ import { routerMiddleware } from 'connected-react-router'
 import { createStore, applyMiddleware, compose } from 'redux'
 import createSagaMiddleware from 'redux-saga'
 import { createBrowserHistory } from 'history'
-import reducers from 'redux/reducers'
-import sagas from 'redux/sagas'
-import Router from 'router'
 import { ApolloProvider } from 'react-apollo'
 
-import Localization from 'components/LayoutComponents/Localization'
-import apolloClient from './core/api/apollo'
+import Localization from '@components/LayoutComponents/Localization'
+import apolloClient from '@core/api/apollo'
+import Router from '@router'
+import sagas from '@redux/sagas'
+import reducers from '@redux/reducers'
 import * as serviceWorker from './serviceWorker'
 
 // app styles

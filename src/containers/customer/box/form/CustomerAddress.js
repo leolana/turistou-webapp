@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Row, Col, Input, InputNumber, Form } from 'antd'
 import MaskedInput from 'react-editmask'
 
-import MASK from 'constants/mask'
+import MASK from '@constants/mask'
 
 export const formFields = ['zipcode', 'address', 'number', 'area', 'complement', 'city', 'state']
 

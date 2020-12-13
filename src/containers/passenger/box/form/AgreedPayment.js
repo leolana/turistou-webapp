@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo, useState } from 'react'
 import { Row, Col, Form, Select, InputNumber, DatePicker, Divider, Button } from 'antd'
 
-import { paymentType as paymentTypesList } from 'constants/options'
+import { paymentType as paymentTypesList } from '@constants/options'
 
 const dateFormat = 'DD/MM/YYYY'
 const MAX_INSTALLMENT = 10
@@ -9,35 +9,50 @@ const MAX_INSTALLMENT = 10
 const AgreedPayment = ({ form, value, onRemove, onChange }) => {
   const [isInstallable, setIsInstallable] = useState(false)
 
-  const triggerChangeForm = useCallback((key, newValue) => {
-    const values = form.getFieldsValue()
-    onChange({ ...values, [key]: newValue })
-  }, [form, onChange])
+  const triggerChangeForm = useCallback(
+    (key, newValue) => {
+      const values = form.getFieldsValue()
+      onChange({ ...values, [key]: newValue })
+    },
+    [form, onChange],
+  )
 
-  const handleChangePaymentCondition = useCallback((paymentTypeValue) => {
-    const filter = paymentTypesList.filter(x => x.value === paymentTypeValue)
-    if (filter.length) {
-      setIsInstallable(filter[0].isInstallable)
-    }
-    triggerChangeForm('paymentType', paymentTypeValue)
-  }, [triggerChangeForm])
+  const handleChangePaymentCondition = useCallback(
+    (paymentTypeValue) => {
+      const filter = paymentTypesList.filter((x) => x.value === paymentTypeValue)
+      if (filter.length) {
+        setIsInstallable(filter[0].isInstallable)
+      }
+      triggerChangeForm('paymentType', paymentTypeValue)
+    },
+    [triggerChangeForm],
+  )
 
-  const selectLabel = useCallback(x => {
-    const price = form.getFieldValue('value')
+  const selectLabel = useCallback(
+    (x) => {
+      const price = form.getFieldValue('value')
 
-    return (<>{x}&times; {`(${price ? (price / x).toFixed(2) : ''})`}</>)
-  }, [form])
+      return (
+        <>
+          {x}&times; {`(${price ? (price / x).toFixed(2) : ''})`}
+        </>
+      )
+    },
+    [form],
+  )
 
-  const installments = useMemo(() =>
-    Array(MAX_INSTALLMENT)
-      .fill(null)
-      .map((_, i) => i + 1)
-      .map(x => (
-        <Select.Option key={x} value={x}>
-          {x === 1 ? 'À vista / Parcela única' : selectLabel(x)}
-        </Select.Option>
-      ))
-    , [selectLabel])
+  const installments = useMemo(
+    () =>
+      Array(MAX_INSTALLMENT)
+        .fill(null)
+        .map((_, i) => i + 1)
+        .map((x) => (
+          <Select.Option key={x} value={x}>
+            {x === 1 ? 'À vista / Parcela única' : selectLabel(x)}
+          </Select.Option>
+        )),
+    [selectLabel],
+  )
 
   return (
     <Row>
@@ -48,7 +63,7 @@ const AgreedPayment = ({ form, value, onRemove, onChange }) => {
             rules: [{ required: true }],
           })(
             <Select onChange={handleChangePaymentCondition}>
-              {paymentTypesList.map(x => (
+              {paymentTypesList.map((x) => (
                 <Select.Option key={x.value} value={x.value} title={x.label}>
                   {x.label}
                 </Select.Option>
@@ -65,7 +80,7 @@ const AgreedPayment = ({ form, value, onRemove, onChange }) => {
             <InputNumber
               precision={2}
               decimalSeparator=","
-              onChange={newValue => triggerChangeForm('value', newValue)}
+              onChange={(newValue) => triggerChangeForm('value', newValue)}
             />,
           )}
         </Form.Item>
@@ -75,9 +90,7 @@ const AgreedPayment = ({ form, value, onRemove, onChange }) => {
         <Form.Item label="Parcelas">
           {/* TODO: send installment value */}
           {form.getFieldDecorator('installmentQuantity')(
-            <Select
-              onChange={newValue => triggerChangeForm('installmentQuantity', newValue)}
-            >
+            <Select onChange={(newValue) => triggerChangeForm('installmentQuantity', newValue)}>
               {installments}
             </Select>,
           )}
@@ -89,7 +102,7 @@ const AgreedPayment = ({ form, value, onRemove, onChange }) => {
           {form.getFieldDecorator('paymentFirstDue')(
             <DatePicker
               format={dateFormat}
-              onChange={newValue => triggerChangeForm('paymentFirstDue', newValue.startOf('day'))}
+              onChange={(newValue) => triggerChangeForm('paymentFirstDue', newValue.startOf('day'))}
             />,
           )}
         </Form.Item>

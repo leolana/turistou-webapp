@@ -1,11 +1,11 @@
 import React from 'react'
 import { Button, Table } from 'antd'
 import { Helmet } from 'react-helmet'
-import PaymentCard from 'components/CleanUIComponents/PaymentCard'
-import PaymentAccount from 'components/CleanUIComponents/PaymentAccount'
-import PaymentTransaction from 'components/CleanUIComponents/PaymentTransaction'
-import ChartCard from 'components/CleanUIComponents/ChartCard'
-import Authorize from 'components/LayoutComponents/Authorize'
+import PaymentCard from '@components/CleanUIComponents/PaymentCard'
+import PaymentAccount from '@components/CleanUIComponents/PaymentAccount'
+import PaymentTransaction from '@components/CleanUIComponents/PaymentTransaction'
+import ChartCard from '@components/CleanUIComponents/ChartCard'
+import Authorize from '@components/LayoutComponents/Authorize'
 import { tableData } from './data.json'
 
 class DashboardAlpha extends React.Component {

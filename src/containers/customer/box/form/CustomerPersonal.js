@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import { Row, Col, Form, Input, DatePicker, Radio } from 'antd'
 import { MaskedInput } from 'react-editmask'
 
-import MASK from 'constants/mask'
-import { genderOptions } from 'constants/options'
+import MASK from '@constants/mask'
+import { genderOptions } from '@constants/options'
 
 export const formFields = ['name', 'cpf', 'documentState', 'document', 'birthDate', 'gender']
 

@@ -1,6 +1,6 @@
 import gql from 'graphql-tag'
 
-import { query } from 'core/api/apollo'
+import { query } from '@core/api/apollo'
 
 const actions = {
   SET_STATE: 'customerList/SET_STATE',
@@ -36,7 +36,7 @@ export const fetchCustomers = () => ({
     }),
 })
 
-export const fetchCustomersSuccess = payload => {
+export const fetchCustomersSuccess = (payload) => {
   return {
     type: actions.SET_STATE,
     payload: payload.customers,
@@ -44,7 +44,7 @@ export const fetchCustomersSuccess = payload => {
   }
 }
 
-export const fetchCustomersFailure = payload => ({
+export const fetchCustomersFailure = (payload) => ({
   type: actions.GET_CUSTOMERS_FAILURE,
   payload: { ...payload },
   isLoading: false,

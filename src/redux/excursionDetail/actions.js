@@ -1,8 +1,7 @@
-// @flow
 import gql from 'graphql-tag'
 import { DateTime } from 'luxon'
 
-import { mutate, query } from 'core/api/apollo'
+import { mutate, query } from '@core/api/apollo'
 
 const actions = {
   SET_STATE: 'excursionDetail/SET_STATE',
@@ -92,19 +91,19 @@ export const saveExcursion = (form) => {
   })
 }
 
-export const saveExcursionSuccess = (payload: any) => ({
+export const saveExcursionSuccess = (payload) => ({
   payload: { ...payload },
   type: actions.SET_STATE,
   isLoading: false,
 })
 
-export const saveExcursionFailure = (payload: any) => ({
+export const saveExcursionFailure = (payload) => ({
   type: actions.SAVE_EXCURSION_FAILURE,
   payload: { ...payload },
   isLoading: false,
 })
 
-export const getExcursionById = (id: string) => ({
+export const getExcursionById = (id) => ({
   type: actions.GET_EXCURSION_BY_ID,
   payload: { loading: true },
   request: () =>
@@ -146,7 +145,7 @@ export const getExcursionById = (id: string) => ({
     }),
 })
 
-export const getExcursionByIdSuccess = (payload: any) => ({
+export const getExcursionByIdSuccess = (payload) => ({
   type: actions.GET_EXCURSION_BY_ID_SUCCESS,
   payload: payload.excursion,
   isLoading: false,

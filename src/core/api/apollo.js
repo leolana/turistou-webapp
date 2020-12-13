@@ -5,9 +5,9 @@ import { setContext } from 'apollo-link-context'
 import { onError } from 'apollo-link-error'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 
-import { getIdToken } from 'core/auth'
+import { getIdToken } from '@core/auth'
 
-import config from 'config'
+import config from '@config'
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors) {
@@ -42,20 +42,20 @@ const apolloClient = new ApolloClient({
   cache: new InMemoryCache(),
 })
 
-export const query = options =>
+export const query = (options) =>
   apolloClient
     .query(options)
-    .then(response => {
+    .then((response) => {
       return { response }
     })
-    .catch(error => ({ error }))
+    .catch((error) => ({ error }))
 
-export const mutate = options =>
+export const mutate = (options) =>
   apolloClient
     .mutate(options)
-    .then(response => {
+    .then((response) => {
       return { response }
     })
-    .catch(error => ({ error }))
+    .catch((error) => ({ error }))
 
 export default apolloClient

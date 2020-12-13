@@ -1,6 +1,6 @@
 import gql from 'graphql-tag'
 
-import { query } from 'core/api/apollo'
+import { query } from '@core/api/apollo'
 
 const actions = {
   SET_STATE: 'paymentStatus/SET_STATE',
@@ -30,24 +30,24 @@ export const fetchPaymentStatus = ({ passengerId }) => ({
     }),
 })
 
-export const setStateSuccess = payload => ({
+export const setStateSuccess = (payload) => ({
   type: actions.SET_STATE,
   payload,
   isLoading: false,
 })
 
-export const setStateFailure = payload => ({
+export const setStateFailure = (payload) => ({
   type: actions.SET_STATE_FAILURE,
   payload: { ...payload },
   isLoading: false,
 })
 
-export const toggleVisibility = payload => ({
+export const toggleVisibility = (payload) => ({
   type: actions.TOGGLE_VISIBILITY,
   payload,
 })
 
-export const toggleLoading = payload => ({
+export const toggleLoading = (payload) => ({
   type: actions.TOGGLE_LOADING,
   payload,
 })

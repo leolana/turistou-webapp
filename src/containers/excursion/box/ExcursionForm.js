@@ -3,9 +3,9 @@ import { connect } from 'react-redux'
 import { Form } from 'antd'
 import { push } from 'react-router-redux'
 
-import actions from 'redux/excursionDetail/actions'
-import FormStepButtonsActions from 'components/Step/FormStepButtonsActions'
-import SkeletonForm from 'components/SkeletonForm/SkeletonForm'
+import actions from '@redux/excursionDetail/actions'
+import FormStepButtonsActions from '@components/Step/FormStepButtonsActions'
+import SkeletonForm from '@components/SkeletonForm/SkeletonForm'
 
 @Form.create()
 class ExcursionForm extends Component {
@@ -19,7 +19,7 @@ class ExcursionForm extends Component {
     })
   }
 
-  onSubmit = event => {
+  onSubmit = (event) => {
     event.preventDefault()
     const { form, saveForm, redirectToExcursionList } = this.props
     form.validateFields(async (error, values) => {
@@ -67,14 +67,14 @@ class ExcursionForm extends Component {
   }
 }
 
-const mapStateToProps = store => ({
+const mapStateToProps = (store) => ({
   current: store.step.current,
   isLoading: store.excursionDetail.isLoading,
 })
 
-const mapDispatchToProps = dispatch => ({
-  saveStep: values => dispatch({ type: actions.SET_STATE, payload: values }),
-  saveForm: values => dispatch({ type: actions.SAVE_EXCURSION, payload: values }),
+const mapDispatchToProps = (dispatch) => ({
+  saveStep: (values) => dispatch({ type: actions.SET_STATE, payload: values }),
+  saveForm: (values) => dispatch({ type: actions.SAVE_EXCURSION, payload: values }),
   resetForm: () => dispatch(push('/excursion')),
   redirectToExcursionList: () => dispatch(push('/excursion/list')),
 })

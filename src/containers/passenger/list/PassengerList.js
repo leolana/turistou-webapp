@@ -1,17 +1,17 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Button, Tag, Modal, Form, InputNumber, Row, Col, Table } from 'antd'
-import paymentMethods from 'constants/paymentMethods'
+import paymentMethods from '@constants/paymentMethods'
 
-import passengerActions from 'redux/passengerList/actions'
-import paymentsActions from 'redux/payments/actions'
-import paymentStatusActions from 'redux/paymentStatus/actions'
-import CustomerSelect from 'components/CustomerSelect/CustomerSelect'
-import SkeletonTable from 'components/SkeletonTable/SkeletonTable'
-import customerActions from 'redux/customerList/actions'
+import passengerActions from '@redux/passengerList/actions'
+import paymentsActions from '@redux/payments/actions'
+import paymentStatusActions from '@redux/paymentStatus/actions'
+import CustomerSelect from '@components/CustomerSelect/CustomerSelect'
+import SkeletonTable from '@components/SkeletonTable/SkeletonTable'
+import customerActions from '@redux/customerList/actions'
 
-import PaymentSelect from 'components/PaymentSelect/PaymentSelect'
-import PaymentUpdateForm from 'components/PaymentUpdateForm/PaymentUpdateForm'
+import PaymentSelect from '@components/PaymentSelect/PaymentSelect'
+import PaymentUpdateForm from '@components/PaymentUpdateForm/PaymentUpdateForm'
 
 const statusesEnum = {
   booked: 'BOOKED',

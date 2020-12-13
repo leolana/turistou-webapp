@@ -1,6 +1,6 @@
 import gql from 'graphql-tag'
 
-import { query } from 'core/api/apollo'
+import { query } from '@core/api/apollo'
 
 const actions = {
   SET_STATE: 'passengerList/SET_STATE',

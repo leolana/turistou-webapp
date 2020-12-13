@@ -5,8 +5,8 @@ import { Helmet } from 'react-helmet'
 import { connect } from 'react-redux'
 import MaskedInput from 'react-editmask'
 
-import MASK from 'constants/mask'
-import { genderOptions } from 'constants/options'
+import MASK from '@constants/mask'
+import { genderOptions } from '@constants/options'
 
 import styles from './style.module.scss'
 
@@ -15,7 +15,7 @@ const RadioGroup = Radio.Group
 @Form.create()
 @connect(({ user }) => ({ user }))
 class Step2 extends Component {
-  onSubmit = event => {
+  onSubmit = (event) => {
     event.preventDefault()
     const { form, dispatch } = this.props
     console.log(form)

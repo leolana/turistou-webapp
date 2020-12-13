@@ -4,8 +4,8 @@ import { Link, useParams } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
 import { Row, Button, Col, Dropdown, Menu } from 'antd'
 
-import { fetchPassengers } from 'redux/passengerList/actions'
-import { getExcursionById } from 'redux/excursionDetail/actions'
+import { fetchPassengers } from '@redux/passengerList/actions'
+import { getExcursionById } from '@redux/excursionDetail/actions'
 import PassengerList from './PassengerList'
 import PassengerFilter from './PassengerFilter'
 

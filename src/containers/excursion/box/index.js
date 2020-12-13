@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Helmet } from 'react-helmet'
 
-import FormSteps from 'components/Step/FormSteps'
+import FormSteps from '@components/Step/FormSteps'
 import ExcursionForm from './ExcursionForm'
 
 import ExcursionDetail, { formFields as excursionDetailFormFields } from './form/ExcursionDetail'
@@ -10,7 +10,7 @@ import ExcursionStopPoint from './form/ExcursionStopPoint'
 import ExcursionPricing, { formFields as excursionPricingFormFields } from './form/ExcursionPricing'
 import ExcursionTransport from './form/ExcursionTransport'
 
-import 'costom.scss'
+import '@costom.scss'
 
 const pageTitle = 'Nova excursão'
 const formSteps = [

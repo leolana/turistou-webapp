@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import { Helmet } from 'react-helmet'
 import { connect } from 'react-redux'
-import FormSteps from 'components/Step/FormSteps'
+import FormSteps from '@components/Step/FormSteps'
 
-import actions from 'redux/customerDetail/actions'
+import actions from '@redux/customerDetail/actions'
 import CustomerForm from './CustomerForm'
 import CustomerPersonal, { formFields as customerPersonalFormFields } from './form/CustomerPersonal'
 import CustomerAddress, { formFields as customerAddressFormFields } from './form/CustomerAddress'
@@ -30,7 +30,7 @@ const formSteps = [
 
 @connect(({ user }) => ({ user }))
 class Customers extends Component {
-  onSubmit = event => {
+  onSubmit = (event) => {
     event.preventDefault()
     const { form, dispatch } = this.props
     form.validateFields((error, values) => {

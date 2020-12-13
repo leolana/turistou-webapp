@@ -3,8 +3,8 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Button } from 'antd'
 
-import actions from 'redux/customerList/actions'
-import SkeletonTable from 'components/SkeletonTable/SkeletonTable'
+import actions from '@redux/customerList/actions'
+import SkeletonTable from '@components/SkeletonTable/SkeletonTable'
 
 class CustomerList extends Component {
   componentDidMount() {
@@ -20,13 +20,13 @@ class CustomerList extends Component {
     let filteredData = customers
     if (query) {
       const lowerQuery = query.toLowerCase()
-      filteredData = filteredData.filter(customer => {
+      filteredData = filteredData.filter((customer) => {
         const { name, city } = customer
         const customData = `${name.toLowerCase()} ${city.toLowerCase()}`
 
         if (customData.includes(lowerQuery)) return true
 
-        return lowerQuery.split(' ').every(q => customData.includes(q.trim()))
+        return lowerQuery.split(' ').every((q) => customData.includes(q.trim()))
       })
     }
     return filteredData
@@ -41,7 +41,7 @@ class CustomerList extends Component {
       {
         dataIndex: 'id',
         key: 'actions',
-        render: id => (
+        render: (id) => (
           <Link to={`./${id}`}>
             <Button ghost type="primary" size="small">
               <i className="fa fa-pencil" />
@@ -75,7 +75,7 @@ const mapStateToProps = ({ customerList }) => ({
   customers: customerList.payload,
 })
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   getCustomers: () => dispatch({ type: actions.GET_CUSTOMERS }),
 })
 

@@ -2,10 +2,10 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router'
 
-import Loader from 'components/LayoutComponents/Loader'
-import actions from 'redux/user/actions'
+import Loader from '@components/LayoutComponents/Loader'
+import actions from '@redux/user/actions'
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   user: state.user,
 })
 
