@@ -132,6 +132,9 @@ export const getExcursionById = (id: string) => ({
               type
               plate
               capacity
+              drivers {
+                name
+              }
             }
             passengers {
               id
