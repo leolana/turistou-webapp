@@ -67,9 +67,9 @@ export const saveExcursion = (form) => {
       ticketDescription: ticketDescription[k],
       ticketPrice: ticketPrice[k],
       isFrom: !!isFrom[k],
-      ageInitial: ageInitial[k] || 0,
+      ageInitial: isFrom[k] ? ageInitial[k] : null,
       untilAge: !!untilAge[k],
-      ageFinal: ageFinal[k] || 0,
+      ageFinal: untilAge[k] ? ageFinal[k] : null,
     })),
     excursionTransports: transportsKeys.map((k) => ({
       type: type[k],
@@ -124,6 +124,8 @@ export const getExcursionById = (id: string) => ({
               id
               description
               price
+              ageInitial
+              ageFinal
             }
             transports {
               id

@@ -1,68 +1,62 @@
-import React, { Component } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { Row, Col, Button, Form, InputNumber, Divider } from 'antd'
 import Price from './Price'
 
 export const formFields = ['ticketPriceDefault']
 
-class ExcursionPricing extends Component {
-  constructor() {
-    super()
-    this.state = { prices: [] }
-  }
+const ExcursionPricing = ({ form, initialValues }) => {
+  const [prices, setPrices] = useState(null)
 
-  addPrice = () => {
-    const { prices } = this.state
-    const last = prices.length ? prices[prices.length - 1] : 0
-    prices.push(last + 1)
-    this.setState({ prices })
-  }
+  const addPrice = useCallback(() => {
+    setPrices((prices) => {
+      const last = prices.length ? prices[prices.length - 1] : 0
+      prices.push(last + 1)
+      return prices
+    })
+  }, [])
 
-  removePrice = index => {
-    let { prices } = this.state
-    prices = prices.filter(x => index !== x)
-    this.setState({ prices })
-  }
+  const removePrice = useCallback((index) => {
+    setPrices((prices) => prices.filter((x) => index !== x))
+  }, [])
 
-  render() {
-    const { form } = this.props
-    const { getFieldDecorator, getFieldValue } = form
-    const { prices } = this.state
+  useEffect(() => {
+    if (!initialValues.id) {
+      setPrices([])
+    } else if (prices === null) {
+      setPrices(initialValues.ticketPrices.map((x, i) => ({ ...x, key: i })))
+    }
+  }, [initialValues, prices])
 
-    getFieldDecorator('priceKeys', { initialValue: prices })
-    const priceKeys = getFieldValue('priceKeys')
+  form.getFieldDecorator('priceKeys', { initialValue: prices || [] })
+  const priceKeys = form.getFieldValue('priceKeys')
 
-    return (
-      <Row>
-        <Col xs={24} md={6}>
-          <Form.Item label="Valor inteira (padrão)">
-            {form.getFieldDecorator('ticketPriceDefault', {
-              rules: [{ required: true, message: 'Por favor, insira o valor inteira (padrão)' }],
-            })(<InputNumber className="ant-input" maxLength={5} />)}
-          </Form.Item>
-        </Col>
-        <Col xs={0} md={12} />
+  return (
+    <Row>
+      <Col xs={24} md={6}>
+        <Form.Item label="Valor inteira (padrão)">
+          {form.getFieldDecorator('ticketPriceDefault', {
+            initialValue: initialValues?.ticketPriceDefault,
+            rules: [{ required: true, message: 'Por favor, insira o valor inteira (padrão)' }],
+          })(<InputNumber className="ant-input" maxLength={5} />)}
+        </Form.Item>
+      </Col>
+      <Col xs={0} md={12} />
 
-        <Divider dashed />
+      <Divider dashed />
 
-        <Col xs={24}>
-          {priceKeys.map((x, index) => (
-            <Price
-              key={index.toString()}
-              index={x}
-              removePrice={this.removePrice}
-              {...this.props}
-            />
-          ))}
-        </Col>
+      <Col xs={24}>
+        {priceKeys.map((data, index) => (
+          <Price key={index.toString()} data={data} removePrice={removePrice} form={form} />
+        ))}
+      </Col>
 
-        <Col xs={{ span: 16, offset: 4 }} md={{ span: 8, offset: 8 }}>
-          <Button block type="dashed" onClick={this.addPrice}>
-            <i className="fa fa-plus mr-3" />
-            Adicionar preço
-          </Button>
-        </Col>
-      </Row>
-    )
-  }
+      <Col xs={{ span: 16, offset: 4 }} md={{ span: 8, offset: 8 }}>
+        <Button block type="dashed" onClick={addPrice}>
+          <i className="fa fa-plus mr-3" />
+          Adicionar preço
+        </Button>
+      </Col>
+    </Row>
+  )
 }
 export default ExcursionPricing
