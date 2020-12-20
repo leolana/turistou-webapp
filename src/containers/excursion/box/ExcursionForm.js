@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router'
 import { Form } from 'antd'
 
-import actions from 'redux/excursionDetail/actions'
+import { setExcursionState, saveExcursion } from 'redux/excursionDetail/actions'
 import FormStepButtonsActions from 'components/Step/FormStepButtonsActions'
 import SkeletonForm from 'components/SkeletonForm/SkeletonForm'
 
@@ -19,9 +19,12 @@ const ExcursionForm = ({ form, formSteps }) => {
     return excursionDetail.id ? excursionDetail : {}
   }, [excursionDetail])
 
-  const saveForm = useCallback((payload) => dispatch({ type: actions.SAVE_EXCURSION, payload }), [
-    dispatch,
-  ])
+  const saveForm = useCallback(
+    (payload) => {
+      dispatch(saveExcursion(payload))
+    },
+    [dispatch],
+  )
 
   const onSaveFormAndAddNew = useCallback(() => {
     form.validateFields(async (error, values) => {
@@ -49,7 +52,7 @@ const ExcursionForm = ({ form, formSteps }) => {
     (fields, doSuccess) => {
       form.validateFields(fields, { first: true }, (error, values) => {
         if (!error) {
-          dispatch({ type: actions.SET_STATE, payload: values })
+          dispatch(setExcursionState(values))
 
           doSuccess()
         }

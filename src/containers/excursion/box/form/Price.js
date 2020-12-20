@@ -14,7 +14,7 @@ class Price extends Component {
         <Row>
           <Col xs={24} sm={16} md={8}>
             <FormItem label="Tipo de passagem">
-              {form.getFieldDecorator(`ticketDescription[${key}]`, {
+              {form.getFieldDecorator(`ticketPrices[${key}].description`, {
                 initialValue: description,
                 rules: [{ required: false }],
               })(<Input size="default" maxLength={30} />)}
@@ -22,7 +22,7 @@ class Price extends Component {
           </Col>
           <Col xs={24} sm={8} md={4}>
             <FormItem label="Preço">
-              {form.getFieldDecorator(`ticketPrice[${key}]`, {
+              {form.getFieldDecorator(`ticketPrices[${key}].price`, {
                 initialValue: price,
                 rules: [{ required: false }],
               })(<InputNumber size="default" maxLength={5} />)}
@@ -31,7 +31,7 @@ class Price extends Component {
 
           <Col xs={5} sm={3} md={2}>
             <FormItem label="De">
-              {form.getFieldDecorator(`isFrom[${key}]`, {
+              {form.getFieldDecorator(`ticketPrices[${key}].isFrom`, {
                 valuePropName: 'checked',
                 initialValue: !!ageInitial,
                 rules: [{ required: false }],
@@ -40,7 +40,7 @@ class Price extends Component {
           </Col>
           <Col xs={19} sm={7} md={3}>
             <FormItem label="Idade">
-              {form.getFieldDecorator(`ageInitial[${key}]`, {
+              {form.getFieldDecorator(`ticketPrices[${key}].ageInitial`, {
                 initialValue: ageInitial,
                 rules: [{ required: false }],
               })(<InputNumber onClick={this.handleAbleFromAge} size="default" maxLength={6} />)}
@@ -48,7 +48,7 @@ class Price extends Component {
           </Col>
           <Col xs={5} sm={{ span: 3, offset: 1 }} md={{ span: 2, offset: 0 }}>
             <FormItem label="até">
-              {form.getFieldDecorator(`untilAge[${key}]`, {
+              {form.getFieldDecorator(`ticketPrices[${key}].untilAge`, {
                 valuePropName: 'checked',
                 initialValue: !!ageFinal,
                 rules: [{ required: false }],
@@ -57,7 +57,7 @@ class Price extends Component {
           </Col>
           <Col xs={15} sm={7} md={3}>
             <FormItem label="Idade">
-              {form.getFieldDecorator(`ageFinal[${key}]`, {
+              {form.getFieldDecorator(`ticketPrices[${key}].ageFinal`, {
                 initialValue: ageFinal,
                 rules: [{ required: false }],
               })(<InputNumber size="default" maxLength={3} />)}

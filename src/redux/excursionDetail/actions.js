@@ -14,6 +14,11 @@ const actions = {
   GET_EXCURSION_BY_ID_SUCCESS: 'excursionDetail/GET_EXCURSION_BY_ID_SUCCESS',
 }
 
+export const setExcursionState = (payload) => ({
+  type: actions.SET_STATE,
+  payload,
+})
+
 export const saveExcursion = (form) => {
   const {
     destination,
@@ -24,19 +29,9 @@ export const saveExcursion = (form) => {
     regressDate,
     regressTime,
     ticketPriceDefault,
-    stoppingPoints,
-    priceKeys,
-    ticketDescription,
-    ticketPrice,
-    isFrom,
-    ageInitial,
-    ageFinal,
-    untilAge,
-    transportsKeys,
-    type,
-    plate,
-    capacity,
-    driver,
+    stopPoints,
+    ticketPrices,
+    transports,
   } = form
 
   const payload = {
@@ -61,36 +56,39 @@ export const saveExcursion = (form) => {
         hour: regressTime.hour(),
         minute: regressTime.minute(),
       }),
-    stoppingPoints,
+    stopPoints,
     ticketPriceDefault,
-    prices: (priceKeys || []).map((k) => ({
-      ticketDescription: ticketDescription[k],
-      ticketPrice: ticketPrice[k],
-      isFrom: !!isFrom[k],
-      ageInitial: isFrom[k] ? ageInitial[k] : null,
-      untilAge: !!untilAge[k],
-      ageFinal: untilAge[k] ? ageFinal[k] : null,
-    })),
-    excursionTransports: transportsKeys.map((k) => ({
-      type: type[k],
-      plate: plate[k],
-      capacity: capacity[k],
-      driver: driver[k],
-    })),
+    ticketPrices: ticketPrices?.map((t) => {
+      const { isFrom, untilAge, ageInitial, ageFinal, ...prices } = t
+
+      return {
+        ...prices,
+        ageInitial: isFrom ? ageInitial : null,
+        ageFinal: untilAge ? ageFinal : null,
+      }
+    }),
+    transports,
   }
 
-  return mutate({
-    mutation: gql`
-      mutation saveExcursion($input: SaveExcursionInput!) {
-        saveExcursion(input: $input) {
-          id
-        }
-      }
-    `,
-    variables: {
-      input: payload,
+  return {
+    type: actions.SAVE_EXCURSION,
+    payload: {
+      payload,
+      loading: true,
     },
-  })
+    request: mutate({
+      mutation: gql`
+        mutation saveExcursion($input: SaveExcursionInput!) {
+          saveExcursion(input: $input) {
+            id
+          }
+        }
+      `,
+      variables: {
+        input: payload,
+      },
+    }),
+  }
 }
 
 export const saveExcursionSuccess = (payload: any) => ({

@@ -28,13 +28,8 @@ const ExcursionStopPoint = ({ form, initialValues }) => {
   return (
     <Row>
       <Col>
-        {stopPoints?.map((stopPoint) => (
-          <StopAddress
-            key={stopPoint.key}
-            removeStopPoint={removeStopPoint}
-            form={form}
-            data={stopPoint}
-          />
+        {stopPoints?.map((data) => (
+          <StopAddress key={data.key} removeStopPoint={removeStopPoint} form={form} data={data} />
         ))}
       </Col>
       <Col xs={{ span: 16, offset: 4 }} md={{ span: 8, offset: 8 }}>

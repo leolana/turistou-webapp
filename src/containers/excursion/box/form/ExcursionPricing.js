@@ -10,11 +10,11 @@ const ExcursionPricing = ({ form, initialValues }) => {
   const addPrice = useCallback(() => {
     setPrices((prices) => {
       const last = prices.length ? prices[prices.length - 1] : 0
-      prices.push(last + 1)
-      return prices
+      return [...prices, { key: last + 1 }]
     })
   }, [])
 
+  // TODO: pop confirm do delete
   const removePrice = useCallback((index) => {
     setPrices((prices) => prices.filter((x) => index !== x))
   }, [])
@@ -26,9 +26,6 @@ const ExcursionPricing = ({ form, initialValues }) => {
       setPrices(initialValues.ticketPrices.map((x, i) => ({ ...x, key: i })))
     }
   }, [initialValues, prices])
-
-  form.getFieldDecorator('priceKeys', { initialValue: prices || [] })
-  const priceKeys = form.getFieldValue('priceKeys')
 
   return (
     <Row>
@@ -45,8 +42,8 @@ const ExcursionPricing = ({ form, initialValues }) => {
       <Divider dashed />
 
       <Col xs={24}>
-        {priceKeys.map((data, index) => (
-          <Price key={index.toString()} data={data} removePrice={removePrice} form={form} />
+        {prices?.map((data) => (
+          <Price key={data.key} removePrice={removePrice} form={form} data={data} />
         ))}
       </Col>
 

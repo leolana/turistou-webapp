@@ -7,12 +7,12 @@ const ExcursionTransport = ({ form, initialValues }) => {
 
   const addTransport = useCallback(() => {
     setTransports((transports) => {
-      const last = transports.length ? transports[transports.length - 1] : 0
-      transports.push(last + 1)
-      return transports
+      const last = transports.length ? transports[transports.length - 1].key : 0
+      return [...transports, { key: last + 1 }]
     })
   }, [])
 
+  // TODO: pop confirm do delete
   const removeTransport = useCallback((index) => {
     setTransports((transports) => transports.filter((x) => index !== x))
   }, [])
@@ -25,20 +25,11 @@ const ExcursionTransport = ({ form, initialValues }) => {
     }
   }, [initialValues, transports])
 
-  form.getFieldDecorator('transportsKeys', { initialValue: transports || [] })
-  const transportsKeys = form.getFieldValue('transportsKeys')
-
   return (
     <Row>
       <Col>
-        {transportsKeys.map((data, index) => (
-          <Transport
-            key={index.toString()}
-            data={data}
-            removeTransport={removeTransport}
-            initialValues={initialValues}
-            form={form}
-          />
+        {transports?.map((data) => (
+          <Transport key={data.key} removeTransport={removeTransport} form={form} data={data} />
         ))}
       </Col>
 

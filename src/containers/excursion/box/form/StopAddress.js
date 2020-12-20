@@ -3,13 +3,13 @@ import { Row, Col, Input, Button } from 'antd'
 import FormItem from 'antd/lib/form/FormItem'
 
 const StopAddress = ({ form, removeStopPoint, data: { id, stopPoint, key } }) => {
-  form.getFieldDecorator(`stoppingPoints[${key}].id`, { initialValue: id })
+  form.getFieldDecorator(`stopPoints[${key}].id`, { initialValue: id })
 
   return (
     <Row>
       <Col xs={20} md={22}>
         <FormItem label="Ponto de parada">
-          {form.getFieldDecorator(`stoppingPoints[${key}].stopPoint`, {
+          {form.getFieldDecorator(`stopPoints[${key}].stopPoint`, {
             initialValue: stopPoint,
             rules: [{ required: false }],
           })(<Input size="default" maxLength={200} />)}
