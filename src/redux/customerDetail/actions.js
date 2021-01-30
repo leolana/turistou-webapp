@@ -9,15 +9,8 @@ const actions = {
   SAVE_CUSTOMER_SUCCESS: 'customerDetail/SAVE_CUSTOMER_SUCCESS',
 }
 
-export const saveCustomer = form => {
+export const saveCustomer = (form) => {
   const {
-    name,
-    email,
-    cpf,
-    documentState,
-    document,
-    birthDate,
-    gender,
     zipcode,
     addressLine,
     number,
@@ -25,45 +18,27 @@ export const saveCustomer = form => {
     complement,
     city,
     state,
-    cellphone,
-    telephone,
-    healthPlan,
-    allergy,
-    contactName,
-    contactPhone,
-    foodRestriction,
-    howHearAbout,
-    notes,
+
+    cpf,
+    documentNumber,
+    ...rest
   } = form
 
   const payload = {
-    name,
-    email,
-    gender,
-    cpf,
-    document,
-    documentState,
-    birthDate,
-    cellphone,
-    telephone,
-    healthPlan,
-    allergy,
-    contactName,
-    contactPhone,
-    foodRestriction,
-    howHearAbout,
-    notes,
+    ...rest,
+    cpf: cpf.replace(/\D/g, ''),
+    documentNumber: documentNumber.replace(/\D/g, ''),
     address: {
-      zipcode,
+      zipcode: zipcode.replace(/\D/g, ''),
       addressLine,
-      number,
+      number: number.toString(),
       area,
       complement,
       city,
       state,
     },
     active: true,
-    organizationId: '123',
+    organizationId: '123', // TODO:
   }
 
   return mutate({
@@ -80,13 +55,13 @@ export const saveCustomer = form => {
   })
 }
 
-export const saveCustomerSuccess = payload => ({
+export const saveCustomerSuccess = (payload) => ({
   payload: { ...payload },
   type: actions.SET_STATE,
   isLoading: false,
 })
 
-export const saveCustomerFailure = payload => ({
+export const saveCustomerFailure = (payload) => ({
   type: actions.GET_CUSTOMERS_FAILURE,
   payload: { ...payload },
   isLoading: false,
