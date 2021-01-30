@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Steps, Popover } from 'antd'
 
-import actions from 'redux/step/actions'
+import actions from '@redux/step/actions'
 
 class FormSteps extends Component {
   constructor(props) {
@@ -34,7 +34,7 @@ class FormSteps extends Component {
   }
 }
 
-const mapStateToProps = store => ({
+const mapStateToProps = (store) => ({
   current: store.step.current,
 })
 

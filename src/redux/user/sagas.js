@@ -1,8 +1,8 @@
 import { all, takeEvery, put, call, takeLatest } from 'redux-saga/effects'
 import { notification } from 'antd'
 import JwtDecode from 'jwt-decode'
-import * as auth from 'core/auth'
-import actions from 'redux/user/actions'
+import * as auth from '@core/auth'
+import actions from '@redux/user/actions'
 
 export function* LOGIN() {
   yield call(auth.handleAuthentication)

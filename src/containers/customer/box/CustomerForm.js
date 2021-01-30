@@ -2,9 +2,9 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Form } from 'antd'
 
-import FormStepButtonsActions from 'components/Step/FormStepButtonsActions'
-import SkeletonForm from 'components/SkeletonForm/SkeletonForm'
-import actions from 'redux/customerDetail/actions'
+import FormStepButtonsActions from '@components/Step/FormStepButtonsActions'
+import SkeletonForm from '@components/SkeletonForm/SkeletonForm'
+import actions from '@redux/customerDetail/actions'
 import { push } from 'connected-react-router'
 
 @Form.create()
@@ -20,7 +20,7 @@ class CustomerForm extends Component {
     })
   }
 
-  onSubmit = event => {
+  onSubmit = (event) => {
     event.preventDefault()
     const { form, saveForm, redirectToCustomerList } = this.props
     form.validateFields(async (error, values) => {
@@ -71,9 +71,9 @@ const mapStateToProps = ({ step }) => ({
   currentStep: step.current,
 })
 
-const mapDispatchToProps = dispatch => ({
-  saveStep: values => dispatch({ type: actions.SET_STATE, payload: values }),
-  saveForm: values => dispatch({ type: actions.SAVE_CUSTOMER, payload: values }),
+const mapDispatchToProps = (dispatch) => ({
+  saveStep: (values) => dispatch({ type: actions.SET_STATE, payload: values }),
+  saveForm: (values) => dispatch({ type: actions.SAVE_CUSTOMER, payload: values }),
   resetForm: () => dispatch(push('/clientes')),
   redirectToCustomerList: () => dispatch(push('/clientes/list')),
 })

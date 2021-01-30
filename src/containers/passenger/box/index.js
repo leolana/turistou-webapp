@@ -4,7 +4,7 @@ import { useParams } from 'react-router'
 import { Helmet } from 'react-helmet'
 import { Card } from 'antd'
 
-import actions from 'redux/excursionDetail/actions'
+import { getExcursionById } from 'redux/excursionDetail/actions'
 import FormSteps from 'components/Step/FormSteps'
 import PassengerForm from './PassengerForm'
 
@@ -12,7 +12,7 @@ import PassengerChoice from './form/PassengerChoice'
 import PassengerAgreedPayments from './form/PassengerAgreedPayments'
 import PassengerPlace from './form/PassengerPlace'
 
-import 'costom.scss'
+import '@costom.scss'
 
 const pageTitle = 'Novo passageiro'
 const formSteps = [
@@ -22,11 +22,11 @@ const formSteps = [
 ]
 
 const ExcursionPassengers = (props) => {
-  const dispatch = useDispatch();
-  const { excursionId } = useParams();
+  const dispatch = useDispatch()
+  const { excursionId } = useParams()
 
   useEffect(() => {
-    dispatch({ type: actions.GET_EXCURSION_BY_ID, payload: excursionId })
+    dispatch(getExcursionById(excursionId))
   }, [excursionId, dispatch])
 
   return (

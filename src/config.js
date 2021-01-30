@@ -1,4 +1,4 @@
-import { getOsEnv } from './core/environment'
+import { getOsEnv } from '@core/environment'
 
 const config = {
   app: {

@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 import { Button, Row, Col } from 'antd'
 import { Link } from 'react-router-dom'
-// import Authorize from 'components/LayoutComponents/Authorize'
+// import Authorize from '@components/LayoutComponents/Authorize'
 import { Helmet } from 'react-helmet'
 
-import 'costom.scss'
+import '@costom.scss'
 import CustomerList from './CustomerList'
 import CustomerFilter from './CustomerFilter'
 

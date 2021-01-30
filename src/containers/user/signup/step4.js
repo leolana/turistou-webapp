@@ -4,8 +4,8 @@ import { Helmet } from 'react-helmet'
 import { connect } from 'react-redux'
 import MaskedInput from 'react-editmask'
 
-import MASK from 'constants/mask'
-import { typeUserOptions, companyType, personType } from 'constants/options'
+import MASK from '@constants/mask'
+import { typeUserOptions, companyType, personType } from '@constants/options'
 
 import styles from './style.module.scss'
 
@@ -20,7 +20,7 @@ class Step4 extends Component {
     this.state = { identityType: 'F' }
   }
 
-  onSubmit = event => {
+  onSubmit = (event) => {
     event.preventDefault()
     const { form, dispatch } = this.props
     console.log(form)
@@ -34,7 +34,7 @@ class Step4 extends Component {
     })
   }
 
-  onChangeIdentityType = event => {
+  onChangeIdentityType = (event) => {
     this.setState({ identityType: event.target.value })
   }
 
@@ -93,7 +93,7 @@ class Step4 extends Component {
                             ],
                           })(
                             <Select>
-                              {companyType.map(opt => (
+                              {companyType.map((opt) => (
                                 <SelectOption key={opt.value} value={opt.value}>
                                   {opt.label}
                                 </SelectOption>
@@ -136,7 +136,7 @@ class Step4 extends Component {
                           ],
                         })(
                           <Select>
-                            {personType.map(opt => (
+                            {personType.map((opt) => (
                               <SelectOption key={opt.value} value={opt.value}>
                                 {opt.label}
                               </SelectOption>

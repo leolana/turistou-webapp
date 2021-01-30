@@ -1,6 +1,5 @@
-// @flow
 import gql from 'graphql-tag'
-import { mutate } from 'core/api/apollo'
+import { mutate } from '@core/api/apollo'
 
 const actions = {
   SET_STATE: 'passengerDetail/SET_STATE',
@@ -10,8 +9,8 @@ const actions = {
   SAVE_PASSENGER_SUCCESS: 'passengerDetail/SAVE_PASSENGER_SUCCESS',
 }
 
-export const savePassenger = form => {
-  const { ...dest } = form;
+export const savePassenger = (form) => {
+  const { ...dest } = form
   const payload = {
     ...dest,
     status: 'BOOKED', // TODO:
@@ -31,13 +30,13 @@ export const savePassenger = form => {
   })
 }
 
-export const savePassengerSuccess = (payload: any) => ({
+export const savePassengerSuccess = (payload) => ({
   payload: { ...payload },
   type: actions.SET_STATE,
   isLoading: false,
 })
 
-export const savePassengerFailure = (payload: any) => ({
+export const savePassengerFailure = (payload) => ({
   type: actions.SAVE_PASSENGER_FAILURE,
   payload: { ...payload },
   isLoading: false,

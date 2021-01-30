@@ -8,38 +8,33 @@ const PassengerAgreedPayments = ({ form }) => {
   const { customerName, ticket } = useSelector((state) => state.passengerDetail)
 
   const [conditionLastId, setConditionLastId] = useState(1)
+  const [keys, setKeys] = useState([1])
 
   const handleAddPayment = useCallback(() => {
-    setConditionLastId(conditionLastId + 1)
-
-    const keys = form.getFieldValue('keys')
-    const nextKeys = keys.concat(conditionLastId)
-    form.setFieldsValue({ keys: nextKeys })
-  }, [conditionLastId, setConditionLastId, form])
+    const newId = conditionLastId + 1
+    setConditionLastId(newId)
+    setKeys((keys) => [...keys, newId]) // eslint-disable-line
+  }, [conditionLastId])
 
   const handleRemovePayment = useCallback(
     (k) => {
-      const keys = form.getFieldValue('keys')
       if (keys.length === 1) return
 
-      form.setFieldsValue({ keys: keys.filter((key) => key !== k) })
+      setKeys((keys) => keys.filter((key) => key !== k)) // eslint-disable-line
     },
-    [form],
+    [keys],
   )
 
   const paymentTotal = useMemo(() => {
     const paymentConditions = form.getFieldValue('paymentConditions')
 
-    if (paymentConditions?.reduce)
+    if (Array.isArray(paymentConditions))
       return paymentConditions.reduce((total, payment) => {
         return total + (payment?.value || 0)
       }, 0)
 
     return 0
   }, [form])
-
-  form.getFieldDecorator('keys', { initialValue: [conditionLastId] })
-  const keys = form.getFieldValue('keys')
 
   return (
     <>
@@ -53,6 +48,7 @@ const PassengerAgreedPayments = ({ form }) => {
           {ticket && `${ticket.description}(R$ ${ticket.price})`}
         </Col>
       </Row>
+      {/* TODO: fix warning */}
       {keys.map((k, i) => (
         <Form.Item key={`payment-condition--${k}`}>
           {form.getFieldDecorator(`paymentConditions[${i}]`, {

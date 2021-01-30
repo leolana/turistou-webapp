@@ -10,7 +10,7 @@
   ],
   "scripts": {
     "start": "react-app-rewired start",
-    "build": "babel src/ -d lib/ & react-app-rewired build",
+    "build": "npx babel src/ -d lib/ & react-app-rewired build",
     "prepare": "npm run build",
     "test": "react-app-rewired test",
     "lint-staged": "lint-staged",
@@ -20,8 +20,6 @@
     "flow": "flow"
   },
   "dependencies": {
-    "@commitlint/cli": "^11.0.0",
-    "@commitlint/config-conventional": "^11.0.0",
     "@rowno/sparkline": "^4.0.0",
     "antd": "^4.8.0",
     "apollo-boost": "^0.4.9",
@@ -34,10 +32,7 @@
     "auth0-js": "^9.14.0",
     "bootstrap-css-only": "^4.4.1",
     "classnames": "^2.2.6",
-    "commitizen": "^4.2.2",
-    "commitlint": "^11.0.0",
     "connected-react-router": "^6.8.0",
-    "cz-conventional-changelog": "^3.3.0",
     "enquire-js": "^0.2.1",
     "flow-bin": "^0.137.0",
     "graphql": "^15.4.0",
@@ -71,7 +66,13 @@
     "store": "^2.0.12"
   },
   "devDependencies": {
-    "@babel/plugin-proposal-decorators": "^7.12.1",
+    "commitizen": "^3.1.1",
+    "commitlint": "^11.0.0",
+    "@commitlint/cli": "^11.0.0",
+    "@commitlint/config-conventional": "^11.0.0",
+    "cz-conventional-changelog": "^3.3.0",
+    "@babel/plugin-proposal-class-properties": "^7.12.1",
+    "@babel/plugin-proposal-decorators": "^7.12.12",
     "@babel/preset-flow": "^7.12.1",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",

@@ -2,7 +2,7 @@ import auth0 from 'auth0-js'
 import { DateTime } from 'luxon'
 import { notification } from 'antd'
 
-import config from 'config'
+import config from '@config'
 
 const TURISTOU_AUTH_IDTOKEN = 'turistou_auth_idToken'
 const TURISTOU_AUTH_EXPIRESAT = 'turistou_auth_expiresAt'
@@ -73,7 +73,7 @@ export function handleAuthentication() {
   })
 }
 
-const setSession = authResult => {
+const setSession = (authResult) => {
   if (!authResult) return
   const { idToken } = authResult
   // set the time that the id token will expire at

@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
 import { Button, Row, Col } from 'antd'
 import { Link } from 'react-router-dom'
-// import Authorize from 'components/LayoutComponents/Authorize'
+// import Authorize from '@components/LayoutComponents/Authorize'
 import { Helmet } from 'react-helmet'
 
-import 'costom.scss'
+import '@costom.scss'
 
-import { EXCURSION_STATUS_ENUM } from 'constants/excursionStatus'
+import { EXCURSION_STATUS_ENUM } from '@constants/excursionStatus'
 import ExcursionFilter from './ExcursionFilter'
 import ExcursionList from './ExcursionList'
 

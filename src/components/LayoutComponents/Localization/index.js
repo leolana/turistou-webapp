@@ -2,9 +2,9 @@ import React from 'react'
 import { ConfigProvider } from 'antd'
 import { IntlProvider } from 'react-intl'
 import { connect } from 'react-redux'
-import portuguese from 'locales/pt-BR'
-import english from 'locales/en-US'
-import french from 'locales/fr-FR'
+import portuguese from '@locales/pt-BR'
+import english from '@locales/en-US'
+import french from '@locales/fr-FR'
 
 const locales = {
   'pt-BR': portuguese,

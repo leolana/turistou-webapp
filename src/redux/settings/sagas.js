@@ -1,7 +1,7 @@
 import { all, takeEvery, put } from 'redux-saga/effects'
 import store from 'store'
 import qs from 'qs'
-import { history, store as reduxStore } from 'index'
+import { history, store as reduxStore } from '@index'
 import actions from './actions'
 
 export function* CHANGE_SETTING({ payload: { setting, value } }) {
@@ -16,9 +16,9 @@ export function* CHANGE_SETTING({ payload: { setting, value } }) {
 
 export function* SETUP() {
   // load settings from url on app load
-  const changeSettings = search => {
+  const changeSettings = (search) => {
     const query = qs.parse(search, { ignoreQueryPrefix: true })
-    Object.keys(query).forEach(key => {
+    Object.keys(query).forEach((key) => {
       reduxStore.dispatch({
         type: 'settings/CHANGE_SETTING',
         payload: {
@@ -29,7 +29,7 @@ export function* SETUP() {
     })
   }
   yield changeSettings(history.location.search)
-  yield history.listen(params => {
+  yield history.listen((params) => {
     const { search } = params
     changeSettings(search)
   })

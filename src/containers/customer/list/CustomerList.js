@@ -1,47 +1,47 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
+import React, { useEffect, useMemo } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Button } from 'antd'
 
-import actions from 'redux/customerList/actions'
+import { fetchCustomers } from 'redux/customerList/actions'
 import SkeletonTable from 'components/SkeletonTable/SkeletonTable'
 
-class CustomerList extends Component {
-  componentDidMount() {
-    const { getCustomers } = this.props
-    getCustomers()
-  }
+const CustomerList = () => {
+  const dispatch = useDispatch()
+  const { /* filter, */ payload: customers, isLoading } = useSelector((state) => state.customerList)
 
-  filterCustomers(customers) {
-    const {
-      filter: { query },
-    } = this.props
+  useEffect(() => {
+    dispatch(fetchCustomers())
+  }, [dispatch])
 
-    let filteredData = customers
-    if (query) {
-      const lowerQuery = query.toLowerCase()
-      filteredData = filteredData.filter(customer => {
-        const { name, city } = customer
-        const customData = `${name.toLowerCase()} ${city.toLowerCase()}`
+  // FIXME: filters
+  // const filterCustomers = useCallback(() => {
+  //   const { query } = filter
 
-        if (customData.includes(lowerQuery)) return true
+  //   let filteredData = customers
+  //   if (query) {
+  //     const lowerQuery = query.toLowerCase()
+  //     filteredData = filteredData.filter(customer => {
+  //       const { name, city } = customer
+  //       const customData = `${name.toLowerCase()} ${city.toLowerCase()}`
 
-        return lowerQuery.split(' ').every(q => customData.includes(q.trim()))
-      })
-    }
-    return filteredData
-  }
+  //       if (customData.includes(lowerQuery)) return true
+  //       return lowerQuery.split(' ').every(q => customData.includes(q.trim()))
+  //     })
+  //   }
+  //   return filteredData
+  // }, [customers, filter])
 
-  render() {
-    const { isLoading, customers } = this.props
-    // FIXME: filters
-    // const filteredData = this.filterCustomers(customers)
+  // FIXME: filters
+  // const filteredData = useMemo(() => filterCustomers(), [])
+  // console.log('filteredData', filteredData)
 
-    const tableColumns = [
+  const tableColumns = useMemo(
+    () => [
       {
         dataIndex: 'id',
         key: 'actions',
-        render: id => (
+        render: (id) => (
           <Link to={`./${id}`}>
             <Button ghost type="primary" size="small">
               <i className="fa fa-pencil" />
@@ -64,19 +64,11 @@ class CustomerList extends Component {
         dataIndex: 'address.city',
         key: 'city',
       },
-    ]
+    ],
+    [],
+  )
 
-    return <SkeletonTable isLoading={isLoading} tableData={customers} tableColumns={tableColumns} />
-  }
+  return <SkeletonTable isLoading={isLoading} tableData={customers} tableColumns={tableColumns} />
 }
 
-const mapStateToProps = ({ customerList }) => ({
-  query: customerList.query,
-  customers: customerList.payload,
-})
-
-const mapDispatchToProps = dispatch => ({
-  getCustomers: () => dispatch({ type: actions.GET_CUSTOMERS }),
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(CustomerList)
+export default CustomerList
