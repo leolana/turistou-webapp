@@ -13,13 +13,18 @@ const customerFragment = gql`
     id
     name
     cellphone
-    document
+    document {
+      documentNumber
+      documentDispatcher
+      documentDispatcherState
+    }
     address {
       city
     }
   }
 `
 
+// TODO: add filter by company
 export const fetchCustomers = () => ({
   type: actions.GET_CUSTOMERS,
   payload: { loading: true },

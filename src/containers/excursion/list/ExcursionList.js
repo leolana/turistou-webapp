@@ -3,9 +3,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Button, Modal } from 'antd'
 import { DateTime } from 'luxon'
-import actions from '@redux/excursionList/actions'
-import SkeletonTable from '@components/SkeletonTable/SkeletonTable'
-import { EXCURSION_STATUS_ENUM } from '@constants/excursionStatus'
+import { deleteExcursion, fetchExcursions } from 'redux/excursionList/actions'
+import SkeletonTable from 'components/SkeletonTable/SkeletonTable'
+import { EXCURSION_STATUS_ENUM } from 'constants/excursionStatus'
 
 const ExcursionList = ({ filter }) => {
   const dispatch = useDispatch()
@@ -13,33 +13,29 @@ const ExcursionList = ({ filter }) => {
   const { isLoading, payload: excursions } = useSelector((state) => state.excursionList)
 
   useEffect(() => {
-    dispatch({ type: actions.GET_EXCURSIONS })
+    dispatch(fetchExcursions())
   }, [dispatch])
 
-  const remove = useCallback(
-    () => (id) => {
-      console.log('remove', id)
-      // TODO: exclude excursion
-    },
-    [],
-  )
-
   const handleRemove = useCallback(
-    () => (id) => {
+    (id) => {
       Modal.error({
         title: 'Deseja remover esta excursão?',
         content: 'Esta ação não poderá ser desfeita',
         okText: 'Sim',
         okType: 'danger',
-        onOk: () => remove(id),
+        onOk: () => {
+          dispatch(deleteExcursion(id))
+        },
         okCancel: true,
         cancelText: 'Não',
       })
     },
-    [remove],
+    [dispatch],
   )
 
   const filterTable = useCallback(() => {
+    if (!excursions || !excursions.length) return []
+
     const { query, statusId } = filter
     let filtered = excursions
 

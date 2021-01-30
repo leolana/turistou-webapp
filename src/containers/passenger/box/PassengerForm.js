@@ -56,7 +56,7 @@ const PassengerForm = ({ form, formSteps }) => {
     <SkeletonForm isLoading={isLoading} rows={3}>
       <Form id="passenger-form" hideRequiredMark colon={false} onSubmit={onSubmit}>
         {formSteps.map((x, i) => (
-          <div key={x.title} style={{ display: currentStep === i ? 'block' : 'none' }}>
+          <div key={x.title} hidden={currentStep !== i}>
             <x.component form={form} />
             <div className="form-actions">
               <FormStepButtonsActions

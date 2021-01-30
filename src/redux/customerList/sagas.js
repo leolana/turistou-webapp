@@ -1,9 +1,8 @@
 import { all, call, put, takeEvery } from 'redux-saga/effects'
-import actions, { fetchCustomersSuccess, fetchCustomersFailure, fetchCustomers } from './actions'
+import actions, { fetchCustomersSuccess, fetchCustomersFailure } from './actions'
 
-export function* getData() {
-  const fetchCustomer = fetchCustomers()
-  const result = yield call(fetchCustomer.request)
+export function* getData({ request }) {
+  const result = yield call(request)
 
   if (result.response && result.response.data) {
     yield put(fetchCustomersSuccess(result.response.data))

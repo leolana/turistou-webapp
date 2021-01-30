@@ -4,8 +4,8 @@ import { useParams } from 'react-router'
 import { Helmet } from 'react-helmet'
 import { Card } from 'antd'
 
-import actions from '@redux/excursionDetail/actions'
-import FormSteps from '@components/Step/FormSteps'
+import { getExcursionById } from 'redux/excursionDetail/actions'
+import FormSteps from 'components/Step/FormSteps'
 import PassengerForm from './PassengerForm'
 
 import PassengerChoice from './form/PassengerChoice'
@@ -26,7 +26,7 @@ const ExcursionPassengers = (props) => {
   const { excursionId } = useParams()
 
   useEffect(() => {
-    dispatch({ type: actions.GET_EXCURSION_BY_ID, payload: excursionId })
+    dispatch(getExcursionById(excursionId))
   }, [excursionId, dispatch])
 
   return (
