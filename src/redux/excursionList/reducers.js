@@ -23,6 +23,13 @@ export default function reducer(state = initialState, action) {
       })
       return { ...state, ...payload }
 
+    case actions.DELETE_EXCURSION_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        payload: state.payload.filter((x) => x.id !== payload.id),
+      }
+
     default:
       return state
   }

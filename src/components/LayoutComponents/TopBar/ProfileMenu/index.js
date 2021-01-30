@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { Menu, Dropdown, /* Avatar, */ Badge } from 'antd'
+import { Menu, Dropdown, Avatar, Badge, Icon } from 'antd'
 import { FormattedMessage } from 'react-intl'
 import styles from './style.module.scss'
 
@@ -65,13 +65,12 @@ class ProfileMenu extends React.Component {
       <Dropdown overlay={menu} trigger={['click']}>
         <div className={styles.dropdown}>
           <Badge count={count}>
-            {/* <Avatar
+            <Avatar
               src={user.avatar}
               className={styles.avatar}
-              shape="square"
               size="large"
               icon={<Icon type="user" />}
-            /> */}
+            />
           </Badge>
         </div>
       </Dropdown>
