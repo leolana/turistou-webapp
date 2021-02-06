@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useHistory } from 'react-router'
+import { useHistory, useParams } from 'react-router'
 import { Form } from 'antd'
 
 import { setExcursionState, saveExcursion } from 'redux/excursionDetail/actions'
@@ -10,6 +10,7 @@ import SkeletonForm from 'components/SkeletonForm/SkeletonForm'
 const ExcursionForm = ({ form, formSteps }) => {
   const dispatch = useDispatch()
   const history = useHistory()
+  const { excursionId } = useParams()
 
   const { isLoading } = useSelector((state) => state.excursionDetail)
   const { current } = useSelector((state) => state.step)
@@ -21,9 +22,9 @@ const ExcursionForm = ({ form, formSteps }) => {
 
   const saveForm = useCallback(
     (payload) => {
-      dispatch(saveExcursion(payload))
+      dispatch(saveExcursion({ ...payload, id: excursionId }))
     },
-    [dispatch],
+    [dispatch, excursionId],
   )
 
   const onSaveFormAndAddNew = useCallback(() => {
@@ -39,10 +40,12 @@ const ExcursionForm = ({ form, formSteps }) => {
     (event) => {
       event.preventDefault()
       form.validateFields(async (error, values) => {
-        if (!error) {
-          await saveForm(values)
-          history.push('/excursion/list')
+        if (error) {
+          // TODO: tratar erro
+          return
         }
+        await saveForm(values)
+        history.push('/excursion/list')
       })
     },
     [form, history, saveForm],
@@ -51,11 +54,13 @@ const ExcursionForm = ({ form, formSteps }) => {
   const saveStepHandler = useCallback(
     (fields, doSuccess) => {
       form.validateFields(fields, { first: true }, (error, values) => {
-        if (!error) {
-          dispatch(setExcursionState(values))
-
-          doSuccess()
+        if (error) {
+          // TODO: tratar erro
+          return
         }
+        dispatch(setExcursionState(values))
+
+        doSuccess()
       })
     },
     [form, dispatch],
@@ -63,7 +68,7 @@ const ExcursionForm = ({ form, formSteps }) => {
 
   return (
     <SkeletonForm isLoading={isLoading}>
-      <Form layout="vertical" className="customer-form" onSubmit={onSubmit}>
+      <Form layout="vertical" className="excursion-form" onSubmit={onSubmit}>
         {formSteps.map((x, i) => (
           <div key={x.title} hidden={current !== i}>
             <x.component form={form} initialValues={initialValues} />

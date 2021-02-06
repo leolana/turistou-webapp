@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { Row, Col, Input, Button, Select, InputNumber } from 'antd'
 import FormItem from 'antd/lib/form/FormItem'
 
@@ -35,18 +35,21 @@ const availableTransports = [
 
 const Transport = ({ form, removeTransport, data }) => {
   const { key, id, capacity, plate, type, drivers } = data
+  const isEditable = useMemo(() => !id, [id])
 
+  // FIXME: unblock transports edition when fix it in api
   form.getFieldDecorator(`transports[${key}].id`, { initialValue: id })
   return (
     <Row>
       <Col xs={24} sm={7}>
-        <FormItem label="Transport">
+        <FormItem label="Tipo de transporte">
           {form.getFieldDecorator(`transports[${key}].type`, {
             initialValue: type,
             rules: [{ required: true, message: 'Por favor, escolha o tipo de transporte' }],
           })(
             <Select
               showSearch
+              disabled={!isEditable}
               filterOption={(query, option) =>
                 query
                   .toLowerCase()
@@ -55,7 +58,11 @@ const Transport = ({ form, removeTransport, data }) => {
               }
             >
               {availableTransports.map((x, availableTransportsIndex) => (
-                <Select.Option key={availableTransportsIndex.toString()} value={x.id}>
+                <Select.Option
+                  key={availableTransportsIndex.toString()}
+                  value={x.id}
+                  disabled={!isEditable}
+                >
                   {x.name}
                 </Select.Option>
               ))}
@@ -68,7 +75,7 @@ const Transport = ({ form, removeTransport, data }) => {
           {form.getFieldDecorator(`transports[${key}].plate`, {
             initialValue: plate,
             rules: [{ required: false }],
-          })(<Input size="default" maxLength={30} />)}
+          })(<Input size="default" maxLength={30} disabled={!isEditable} />)}
         </FormItem>
       </Col>
       <Col xs={20} sm={3} md={4}>
@@ -76,15 +83,16 @@ const Transport = ({ form, removeTransport, data }) => {
           {form.getFieldDecorator(`transports[${key}].capacity`, {
             initialValue: capacity,
             rules: [{ required: false }],
-          })(<InputNumber size="default" maxLength={3} />)}
+          })(<InputNumber size="default" maxLength={3} disabled={!isEditable} />)}
         </FormItem>
       </Col>
       <Col xs={24} sm={6}>
         <FormItem label="Motorista">
           {form.getFieldDecorator(`transports[${key}].driver`, {
-            initialValue: drivers[0].name,
+            // FIXME: mais de um motorista
+            initialValue: drivers && drivers[0] && drivers[0].name,
             rules: [{ required: false }],
-          })(<Input size="default" maxLength={30} />)}
+          })(<Input size="default" maxLength={30} disabled={!isEditable} />)}
         </FormItem>
       </Col>
       <Col xs={4} sm={3} md={2}>

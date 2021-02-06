@@ -20,23 +20,10 @@ export const setExcursionState = (payload) => ({
 })
 
 export const saveExcursion = (form) => {
-  const {
-    destination,
-    departurePoint,
-    departureDate,
-    departureTime,
-    arrivalPoint,
-    regressDate,
-    regressTime,
-    ticketPriceDefault,
-    stopPoints,
-    ticketPrices,
-    transports,
-  } = form
+  const { departureDate, departureTime, regressDate, regressTime, ticketPrices, ...rest } = form
 
   const payload = {
-    destination,
-    departurePoint,
+    ...rest,
     departureDatetime:
       departureDate &&
       DateTime.fromObject({
@@ -46,7 +33,6 @@ export const saveExcursion = (form) => {
         hour: departureTime.hour(),
         minute: departureTime.minute(),
       }),
-    arrivalPoint,
     regressDatetime:
       regressDate &&
       DateTime.fromObject({
@@ -56,8 +42,6 @@ export const saveExcursion = (form) => {
         hour: regressTime.hour(),
         minute: regressTime.minute(),
       }),
-    stopPoints,
-    ticketPriceDefault,
     ticketPrices: ticketPrices?.map((t) => {
       const { isFrom, untilAge, ageInitial, ageFinal, ...prices } = t
 
@@ -67,7 +51,6 @@ export const saveExcursion = (form) => {
         ageFinal: untilAge ? ageFinal : null,
       }
     }),
-    transports,
   }
 
   return {

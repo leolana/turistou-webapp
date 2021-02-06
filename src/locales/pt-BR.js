@@ -9,6 +9,17 @@ const messages = {
   'topBar.profileMenu.phone': 'Phone',
   'topBar.profileMenu.editProfile': 'Editar perfil',
   'topBar.profileMenu.logout': 'Sair',
+
+  // excursão
+  'excursion.title.new': 'Nova excursão',
+  'excursion.title.edit': 'Editar excursão',
+  'excursion.step.detail': 'Detalhes da viagem',
+  'excursion.step.stopPoints': 'Pontos de parada',
+  'excursion.step.ticketPrices': 'Valores das passagens',
+  'excursion.step.transports': 'Transportes',
+
+  // passageiro
+  // cliente
 }
 
 export default {
