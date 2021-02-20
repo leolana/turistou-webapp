@@ -20,6 +20,12 @@ const messages = {
 
   // passageiro
   // cliente
+
+  // general
+  next: 'Avançar',
+  back: 'Voltar',
+  save: 'Salvar',
+  saveAndNew: 'Salvar e adicionar novo',
 }
 
 export default {

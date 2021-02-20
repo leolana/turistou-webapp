@@ -1,5 +1,6 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { FormattedMessage } from 'react-intl'
 import { Button } from 'antd'
 
 import actions from 'redux/step/actions'
@@ -24,14 +25,14 @@ const FormStepButtonsActions = (props) => {
         onClick={() => onSaveStep(validationFields, () => dispatchStep(current - 1))}
         disabled={current === 0}
       >
-        Voltar
+        <FormattedMessage id="back" />
       </Button>
       <Button
         type="primary"
         onClick={() => onSaveStep(validationFields, () => dispatchStep(current + 1))}
         hidden={current >= lastStep}
       >
-        Avançar
+        <FormattedMessage id="next" />
       </Button>
       <Button
         type="primary"
@@ -42,10 +43,10 @@ const FormStepButtonsActions = (props) => {
         }}
         hidden={current !== lastStep}
       >
-        Salvar e adicionar novo
+        <FormattedMessage id="saveAndNew" />
       </Button>
       <Button type="primary" htmlType="submit" hidden={current !== lastStep}>
-        Salvar
+        <FormattedMessage id="save" />
       </Button>
     </>
   )
