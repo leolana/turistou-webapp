@@ -18,12 +18,12 @@ const ExcursionStopPoint = ({ form, initialValues }) => {
   }, [])
 
   useEffect(() => {
-    if (!initialValues.id) {
+    if (!initialValues.id || !initialValues.stopPoints) {
       setStopPoints([])
-    } else if (stopPoints === null) {
+    } else {
       setStopPoints(initialValues.stopPoints.map((x, i) => ({ ...x, key: i })))
     }
-  }, [initialValues, stopPoints])
+  }, [initialValues])
 
   return (
     <Row>

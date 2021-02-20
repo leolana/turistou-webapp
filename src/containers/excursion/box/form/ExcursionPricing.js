@@ -20,12 +20,12 @@ const ExcursionPricing = ({ form, initialValues }) => {
   }, [])
 
   useEffect(() => {
-    if (!initialValues.id) {
+    if (!initialValues.id || !initialValues.ticketPrices) {
       setPrices([])
-    } else if (prices === null) {
+    } else {
       setPrices(initialValues.ticketPrices.map((x, i) => ({ ...x, key: i })))
     }
-  }, [initialValues, prices])
+  }, [initialValues])
 
   return (
     <Row>

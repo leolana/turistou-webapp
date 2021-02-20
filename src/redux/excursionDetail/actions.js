@@ -6,6 +6,7 @@ import { mutate, query } from 'core/api/apollo'
 
 const actions = {
   SET_STATE: 'excursionDetail/SET_STATE',
+  CLEAR_STATE: 'excursionDetail/CLEAR_STATE',
   SAVE_EXCURSION: 'excursionDetail/SAVE_EXCURSION',
   SAVE_EXCURSION_FAILURE: 'excursionDetail/SAVE_EXCURSION_FAILURE',
   SAVE_EXCURSION_SUCCESS: 'excursionDetail/SAVE_EXCURSION_SUCCESS',
@@ -19,6 +20,10 @@ export const setExcursionState = (payload) => ({
   payload,
 })
 
+export const clearExcursionState = () => ({
+  type: actions.CLEAR_STATE,
+})
+
 export const saveExcursion = (form) => {
   const { departureDate, departureTime, regressDate, regressTime, ticketPrices, ...rest } = form
 
@@ -30,8 +35,8 @@ export const saveExcursion = (form) => {
         year: departureDate.year(),
         month: departureDate.month() + 1,
         day: departureDate.date(),
-        hour: departureTime.hour(),
-        minute: departureTime.minute(),
+        hour: departureTime?.hour() || 0,
+        minute: departureTime?.minute() || 0,
       }),
     regressDatetime:
       regressDate &&
@@ -39,8 +44,8 @@ export const saveExcursion = (form) => {
         year: regressDate.year(),
         month: regressDate.month() + 1,
         day: regressDate.date(),
-        hour: regressTime.hour(),
-        minute: regressTime.minute(),
+        hour: regressTime?.hour() || 0,
+        minute: regressTime?.minute() || 0,
       }),
     ticketPrices: ticketPrices?.map((t) => {
       const { isFrom, untilAge, ageInitial, ageFinal, ...prices } = t
@@ -59,18 +64,19 @@ export const saveExcursion = (form) => {
       payload,
       loading: true,
     },
-    request: mutate({
-      mutation: gql`
-        mutation saveExcursion($input: SaveExcursionInput!) {
-          saveExcursion(input: $input) {
-            id
+    request: () =>
+      mutate({
+        mutation: gql`
+          mutation saveExcursion($input: SaveExcursionInput!) {
+            saveExcursion(input: $input) {
+              id
+            }
           }
-        }
-      `,
-      variables: {
-        input: payload,
-      },
-    }),
+        `,
+        variables: {
+          input: payload,
+        },
+      }),
   }
 }
 

@@ -12,6 +12,9 @@ export default function reducer(state = initialState, action) {
     case actions.SET_STATE:
       return { isLoading: false, payload: { ...state.payload, ...action.payload } }
 
+    case actions.CLEAR_STATE:
+      return { isLoading: false, payload: {} }
+
     case actions.SAVE_EXCURSION:
       return { ...state, isLoading: true, payload: action.payload }
 

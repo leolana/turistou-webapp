@@ -35,15 +35,16 @@ const availableTransports = [
 
 const Transport = ({ form, removeTransport, data }) => {
   const { key, id, capacity, plate, type, drivers } = data
+  const index = key - 1
   const isEditable = useMemo(() => !id, [id])
 
   // FIXME: unblock transports edition when fix it in api
-  form.getFieldDecorator(`transports[${key}].id`, { initialValue: id })
+  form.getFieldDecorator(`transports[${index}].id`, { initialValue: id })
   return (
     <Row>
       <Col xs={24} sm={7}>
         <FormItem label="Tipo de transporte">
-          {form.getFieldDecorator(`transports[${key}].type`, {
+          {form.getFieldDecorator(`transports[${index}].type`, {
             initialValue: type,
             rules: [{ required: true, message: 'Por favor, escolha o tipo de transporte' }],
           })(
@@ -87,10 +88,9 @@ const Transport = ({ form, removeTransport, data }) => {
         </FormItem>
       </Col>
       <Col xs={24} sm={6}>
-        <FormItem label="Motorista">
+        <FormItem label="Motorista" help="Separe os nomes com ';' (ponto-e-vírgula)">
           {form.getFieldDecorator(`transports[${key}].driver`, {
-            // FIXME: mais de um motorista
-            initialValue: drivers && drivers[0] && drivers[0].name,
+            initialValue: drivers && drivers.map((x) => x.name).join(' ; '),
             rules: [{ required: false }],
           })(<Input size="default" maxLength={30} disabled={!isEditable} />)}
         </FormItem>

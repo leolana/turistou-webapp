@@ -18,12 +18,12 @@ const ExcursionTransport = ({ form, initialValues }) => {
   }, [])
 
   useEffect(() => {
-    if (!initialValues.id) {
+    if (!initialValues.id || !initialValues.transports) {
       setTransports([])
-    } else if (transports === null) {
+    } else {
       setTransports(initialValues.transports.map((x, i) => ({ ...x, key: i })))
     }
-  }, [initialValues, transports])
+  }, [initialValues])
 
   return (
     <Row>
