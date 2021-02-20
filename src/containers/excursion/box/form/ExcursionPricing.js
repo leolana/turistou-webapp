@@ -42,8 +42,8 @@ const ExcursionPricing = ({ form, initialValues }) => {
       <Divider dashed />
 
       <Col xs={24}>
-        {prices?.map((data) => (
-          <Price key={data.key} removePrice={removePrice} form={form} data={data} />
+        {prices?.map((data, index) => (
+          <Price index={index} key={data.key} removePrice={removePrice} form={form} data={data} />
         ))}
       </Col>
 

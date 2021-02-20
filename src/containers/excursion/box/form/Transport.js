@@ -33,9 +33,8 @@ const availableTransports = [
   },
 ]
 
-const Transport = ({ form, removeTransport, data }) => {
+const Transport = ({ form, removeTransport, data, index }) => {
   const { key, id, capacity, plate, type, drivers } = data
-  const index = key - 1
   const isEditable = useMemo(() => !id, [id])
 
   // FIXME: unblock transports edition when fix it in api
@@ -73,7 +72,7 @@ const Transport = ({ form, removeTransport, data }) => {
       </Col>
       <Col xs={24} sm={4}>
         <FormItem label="Placa">
-          {form.getFieldDecorator(`transports[${key}].plate`, {
+          {form.getFieldDecorator(`transports[${index}].plate`, {
             initialValue: plate,
             rules: [{ required: false }],
           })(<Input size="default" maxLength={30} disabled={!isEditable} />)}
@@ -81,7 +80,7 @@ const Transport = ({ form, removeTransport, data }) => {
       </Col>
       <Col xs={20} sm={3} md={4}>
         <FormItem label="Capacidade">
-          {form.getFieldDecorator(`transports[${key}].capacity`, {
+          {form.getFieldDecorator(`transports[${index}].capacity`, {
             initialValue: capacity,
             rules: [{ required: false }],
           })(<InputNumber size="default" maxLength={3} disabled={!isEditable} />)}
@@ -89,7 +88,7 @@ const Transport = ({ form, removeTransport, data }) => {
       </Col>
       <Col xs={24} sm={6}>
         <FormItem label="Motorista" help="Separe os nomes com ';' (ponto-e-vírgula)">
-          {form.getFieldDecorator(`transports[${key}].driver`, {
+          {form.getFieldDecorator(`transports[${index}].driver`, {
             initialValue: drivers && drivers.map((x) => x.name).join(' ; '),
             rules: [{ required: false }],
           })(<Input size="default" maxLength={30} disabled={!isEditable} />)}
