@@ -42,9 +42,10 @@ class AppMenu extends React.Component {
             getContainer={null}
             level="all"
             open={isMobileMenuOpen}
-            onMaskClick={this.toggleOpen}
             onHandleClick={this.toggleOpen}
+            onClose={this.toggleOpen}
             className={isLightTheme ? 'drawer-light' : ''}
+            maskClosable
           >
             <MenuLeft />
           </DrawerMenu>
