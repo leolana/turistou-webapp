@@ -29,7 +29,13 @@ const ExcursionTransport = ({ form, initialValues }) => {
     <Row>
       <Col>
         {transports?.map((data, index) => (
-          <Transport index={index} removeTransport={removeTransport} form={form} data={data} />
+          <Transport
+            key={index}
+            index={index}
+            removeTransport={removeTransport}
+            form={form}
+            data={data}
+          />
         ))}
       </Col>
 

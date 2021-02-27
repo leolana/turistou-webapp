@@ -3,7 +3,8 @@ import { Button, Row, Col } from 'antd'
 import StopAddress from './StopAddress'
 
 const ExcursionStopPoint = ({ form, initialValues }) => {
-  const [stopPoints, setStopPoints] = useState(null)
+  const [stopPoints, setStopPoints] = useState([])
+  const [setUp, setSetUp] = useState(false)
 
   const addStopPoint = useCallback(() => {
     setStopPoints((stopPoints) => {
@@ -14,16 +15,23 @@ const ExcursionStopPoint = ({ form, initialValues }) => {
 
   // TODO: pop confirm do delete
   const removeStopPoint = useCallback((key) => {
-    setStopPoints((stopPoints) => stopPoints.filter((x) => key !== x.key))
+    setStopPoints((stopPoints) =>
+      stopPoints.map((x) => {
+        if (key === x.key) x.deleted = true
+        return x
+      }),
+    )
   }, [])
 
   useEffect(() => {
+    if (setUp) return
     if (!initialValues.id || !initialValues.stopPoints) {
       setStopPoints([])
     } else {
       setStopPoints(initialValues.stopPoints.map((x, i) => ({ ...x, key: i })))
+      setSetUp(true)
     }
-  }, [initialValues])
+  }, [initialValues, setUp])
 
   return (
     <Row>

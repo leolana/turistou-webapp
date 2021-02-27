@@ -6,6 +6,7 @@ export const formFields = ['ticketPriceDefault']
 
 const ExcursionPricing = ({ form, initialValues }) => {
   const [prices, setPrices] = useState(null)
+  const [setUp, setSetUp] = useState(false)
 
   const addPrice = useCallback(() => {
     setPrices((prices) => {
@@ -20,12 +21,14 @@ const ExcursionPricing = ({ form, initialValues }) => {
   }, [])
 
   useEffect(() => {
+    if (setUp) return
     if (!initialValues.id || !initialValues.ticketPrices) {
       setPrices([])
     } else {
       setPrices(initialValues.ticketPrices.map((x, i) => ({ ...x, key: i })))
+      setSetUp(true)
     }
-  }, [initialValues])
+  }, [initialValues, setUp])
 
   return (
     <Row>
