@@ -10,11 +10,10 @@ const actions = {
   SAVE_PASSENGER_SUCCESS: 'passengerDetail/SAVE_PASSENGER_SUCCESS',
 }
 
-export const savePassenger = form => {
-  const { ...dest } = form;
+export const savePassenger = (form) => {
+  const { ...dest } = form
   const payload = {
     ...dest,
-    status: 'BOOKED', // TODO:
   }
 
   return mutate({

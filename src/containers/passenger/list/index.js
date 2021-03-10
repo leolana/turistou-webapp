@@ -14,10 +14,10 @@ const pageTitle = 'Lista de passageiros'
 const menu = (
   <Menu>
     <Menu.Item>
-      <Link to="./"> à excursão</Link>
+      <Link to="./booked"> à excursão</Link>
     </Menu.Item>
     <Menu.Item>
-      <Link to="./"> à lista de espera</Link>
+      <Link to="./waiting"> à lista de espera</Link>
     </Menu.Item>
   </Menu>
 )
