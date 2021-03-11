@@ -4,6 +4,7 @@ import { Button, Tag, Modal, Form, InputNumber, Row, Col, Table } from 'antd'
 import paymentMethods from 'constants/paymentMethods'
 
 import passengerActions from 'redux/passengerList/actions'
+import passengerStatusActions from 'redux/passengerStatus/actions'
 import paymentsActions from 'redux/payments/actions'
 import paymentStatusActions from 'redux/paymentStatus/actions'
 import CustomerSelect from 'components/CustomerSelect/CustomerSelect'
@@ -127,8 +128,8 @@ class PassengerList extends Component {
   }
 
   book = (id) => {
-    console.log('id', id)
-    // TODO: move
+    const { setStatusToBooked } = this.props
+    setStatusToBooked(id)
   }
 
   remove = (id) => {
@@ -566,6 +567,8 @@ const mapStateToProps = ({
 
 const mapDispatchToProps = (dispatch) => ({
   getPassengers: (filter) => dispatch({ type: passengerActions.GET_PASSENGERS, filter }),
+  setStatusToBooked: (passengerId) =>
+    dispatch({ type: passengerStatusActions.SET_TO_BOOKED, payload: { passengerId } }),
   getPayments: (passengerId) =>
     dispatch({ type: paymentsActions.GET_PAYMENTS, payload: { passengerId } }),
   getPaymentStatus: (passengerId) =>

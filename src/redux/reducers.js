@@ -8,12 +8,13 @@ import excursionList from 'redux/excursionList/reducers'
 import excursionDetail from 'redux/excursionDetail/reducers'
 import passengerList from 'redux/passengerList/reducers'
 import passengerDetail from 'redux/passengerDetail/reducers'
+import passengerStatus from 'redux/passengerStatus/reducers'
 import customerList from 'redux/customerList/reducers'
 import customerDetail from 'redux/customerDetail/reducers'
 import payments from 'redux/payments/reducers'
 import paymentStatus from 'redux/paymentStatus/reducers'
 
-export default history =>
+export default (history) =>
   combineReducers({
     router: connectRouter(history),
     user,
@@ -24,6 +25,7 @@ export default history =>
     excursionDetail,
     passengerList,
     passengerDetail,
+    passengerStatus,
     customerList,
     customerDetail,
     payments,
