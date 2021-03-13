@@ -1,20 +1,22 @@
 import React, { useCallback, useEffect, useMemo } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Button, Modal } from 'antd'
 import { DateTime } from 'luxon'
 import { deleteExcursion, fetchExcursions } from 'redux/excursionList/actions'
 import SkeletonTable from 'components/SkeletonTable/SkeletonTable'
 import { EXCURSION_STATUS_ENUM } from 'constants/excursionStatus'
+import { useQuery } from '@apollo/react-hooks'
 
 const ExcursionList = ({ filter }) => {
   const dispatch = useDispatch()
-
-  const { isLoading, payload: excursions } = useSelector((state) => state.excursionList)
+  const { loading, data, refetch: listExcursions } = useQuery(fetchExcursions)
 
   useEffect(() => {
-    dispatch(fetchExcursions())
-  }, [dispatch])
+    listExcursions()
+  }, [listExcursions])
+
+  const excursions = useMemo(() => data?.excursions || [], [data])
 
   const handleRemove = useCallback(
     (id) => {
@@ -67,9 +69,9 @@ const ExcursionList = ({ filter }) => {
     return filtered
   }, [filter, excursions])
 
-  const tableData = useMemo(
+  const filteredData = useMemo(
     () =>
-      filterTable(excursions).map((excursion) => {
+      filterTable().map((excursion) => {
         const spotsFormatter = (transports = [], passengers) => {
           if (!transports.length)
             return { text: 'Nenhum transporte cadastrado!', style: 'text-danger' }
@@ -100,17 +102,15 @@ const ExcursionList = ({ filter }) => {
           }
         }
 
-        const data = {
+        return {
           id: excursion.id,
           places: spotsFormatter(excursion.transports, excursion.passengers),
           destination: excursion.destination,
           departureDate: DateTime.fromISO(excursion.departureDate),
           regressDate: DateTime.fromISO(excursion.regressDate),
         }
-
-        return data
       }),
-    [excursions, filterTable],
+    [filterTable],
   )
 
   const tableColumns = useMemo(() => {
@@ -169,12 +169,8 @@ const ExcursionList = ({ filter }) => {
       },
     ]
   }, [handleRemove])
-  const props = {
-    isLoading,
-    tableData,
-    tableColumns,
-  }
-  return <SkeletonTable {...props} />
+
+  return <SkeletonTable isLoading={loading} tableData={filteredData} tableColumns={tableColumns} />
 }
 
 export default ExcursionList
