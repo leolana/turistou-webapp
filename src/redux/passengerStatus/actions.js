@@ -6,11 +6,16 @@ const actions = {
   SET_STATE: 'passengerStatus/SET_STATE',
   SAVE_STATUS_FAILURE: 'passengerStatus/SET_STATE_FAILURE',
   SET_TO_BOOKED: 'passengerStatus/SET_TO_BOOKED',
-  TOGGLE_LOADING: 'passengerStatus/TOGGLE_LOADING',
+  SET_TO_CANCELED: 'passengerStatus/SET_TO_CANCELED',
+}
+
+const statusActions = {
+  booked: actions.SET_TO_BOOKED,
+  canceled: actions.SET_TO_CANCELED,
 }
 
 const setPassengerStatus = (status) => (passengerId) => ({
-  type: actions.SET_TO_BOOKED,
+  type: statusActions[status],
   payload: { loading: true },
   request: () =>
     mutate({
@@ -32,6 +37,8 @@ const setPassengerStatus = (status) => (passengerId) => ({
 })
 
 export const setToBooked = setPassengerStatus('BOOKED')
+
+export const setToCanceled = setPassengerStatus('CANCELED')
 
 export const savePassengerStatusSuccess = (payload: any) => ({
   payload: { ...payload },

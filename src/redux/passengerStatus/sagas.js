@@ -4,11 +4,24 @@ import actions, {
   setToBooked,
   savePassengerStatusSuccess,
   savePassengerStatusFailure,
+  setToCanceled,
 } from './actions'
 
 export function* bookPassenger({ payload }) {
-  debugger
   const fetch = setToBooked(payload.passengerId)
+
+  const result = yield call(fetch.request)
+
+  if (result.response.data) {
+    yield put(savePassengerStatusSuccess({}))
+  } else {
+    const validationError = result.networkError.result.errors[0]
+    yield put(savePassengerStatusFailure(validationError))
+  }
+}
+
+export function* cancelPassenger({ payload }) {
+  const fetch = setToCanceled(payload.passengerId)
 
   const result = yield call(fetch.request)
 
@@ -29,6 +42,7 @@ export function* SET_STATE() {
 export default function* rootSaga() {
   yield all([
     takeEvery(actions.SET_TO_BOOKED, bookPassenger),
+    takeEvery(actions.SET_TO_CANCELED, cancelPassenger),
     SET_STATE(), // run once on app load to init listeners
   ])
 }

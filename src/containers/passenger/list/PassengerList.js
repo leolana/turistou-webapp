@@ -54,7 +54,7 @@ class PassengerList extends Component {
   }
 
   columnsForPayments = () => {
-    const { setToPaid, setToPending, setStatusToCanceled } = this.props
+    const { setToPaid, setToPending, setPaymentStatusToCanceled } = this.props
 
     const columns = [
       {
@@ -108,7 +108,7 @@ class PassengerList extends Component {
                 }
 
                 if (statusModified === 'canceled') {
-                  return setStatusToCanceled(payload)
+                  return setPaymentStatusToCanceled(payload)
                 }
 
                 throw Error(`ERROR: status payment not found: ${statusModified}`)
@@ -133,12 +133,14 @@ class PassengerList extends Component {
   }
 
   remove = (id) => {
-    console.log('delete', id)
+    const { setStatusToCanceled } = this.props
+    setStatusToCanceled(id)
+
     // TODO: exclude...
 
-    const { passengersList } = this.state
-    const udPassengersList = passengersList.filter((x) => x.id !== id)
-    this.setState({ passengersList: udPassengersList })
+    // const { passengersList } = this.state
+    // const udPassengersList = passengersList.filter((x) => x.id !== id)
+    // this.setState({ passengersList: udPassengersList })
   }
 
   update = (id) => {
@@ -205,7 +207,10 @@ class PassengerList extends Component {
       cancelText: 'Cancelar',
       okText: 'Remover',
       okType: 'danger',
-      onOk: () => this.remove(id),
+      onOk: () => {
+        debugger
+        this.remove(id)
+      },
     })
   }
 
@@ -569,6 +574,8 @@ const mapDispatchToProps = (dispatch) => ({
   getPassengers: (filter) => dispatch({ type: passengerActions.GET_PASSENGERS, filter }),
   setStatusToBooked: (passengerId) =>
     dispatch({ type: passengerStatusActions.SET_TO_BOOKED, payload: { passengerId } }),
+  setStatusToCanceled: (passengerId) =>
+    dispatch({ type: passengerStatusActions.SET_TO_CANCELED, payload: { passengerId } }),
   getPayments: (passengerId) =>
     dispatch({ type: paymentsActions.GET_PAYMENTS, payload: { passengerId } }),
   getPaymentStatus: (passengerId) =>
@@ -577,7 +584,7 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch({ type: paymentsActions.SET_TO_PAID, payload: { passengerId, paymentId } }),
   setToPending: ({ passengerId, paymentId }) =>
     dispatch({ type: paymentsActions.SET_TO_UNPAID, payload: { passengerId, paymentId } }),
-  setStatusToCanceled: ({ passengerId, paymentId }) =>
+  setPaymentStatusToCanceled: ({ passengerId, paymentId }) =>
     dispatch({ type: paymentsActions.SET_TO_CANCELED, payload: { passengerId, paymentId } }),
   getCustomers: () => dispatch(fetchCustomers()),
   closePaymentsListModal: () =>
