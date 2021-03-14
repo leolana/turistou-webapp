@@ -8,7 +8,6 @@ const initialState = {
 export default function passengerStatusReducer(state = initialState, action) {
   switch (action.type) {
     case actions.SET_STATUS:
-      debugger
       return {
         ...state,
         payload: action.payload,

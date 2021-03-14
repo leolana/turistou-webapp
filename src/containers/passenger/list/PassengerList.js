@@ -208,7 +208,6 @@ class PassengerList extends Component {
       okText: 'Remover',
       okType: 'danger',
       onOk: () => {
-        debugger
         this.remove(id)
       },
     })
