@@ -21,7 +21,7 @@ export function* bookPassenger({ payload }) {
 }
 
 export function* cancelPassenger({ payload }) {
-  const fetch = setToCanceled(payload.passengerId)
+  const fetch = setToCanceled(payload.passengerId, payload.amountRefunded)
 
   const result = yield call(fetch.request)
 
