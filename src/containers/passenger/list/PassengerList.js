@@ -221,7 +221,11 @@ const PassengerList = (props) => {
     const content = (
       <Row>
         <Col sm={12}>
-          <PaymentUpdateForm formId="paymentUpdateForm" onSubmit={addPayment} />
+          <PaymentUpdateForm
+            formId="paymentUpdateForm"
+            onSubmit={addPayment}
+            remaining={paymentStatus.remaining}
+          />
         </Col>
         <Col sm={12} className="pl-4">
           <div>
@@ -566,6 +570,7 @@ const PassengerList = (props) => {
         title="Atualizar pagamento"
         width={700}
         visible={isPaymentFormVisible}
+        onCancel={clearPaymentStatus}
         footer={[
           <Button onClick={clearPaymentStatus} type="default" key="cancel" htmlType="button">
             Cancelar
