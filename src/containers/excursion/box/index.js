@@ -1,7 +1,9 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
+import React, { useEffect, useMemo } from 'react'
+import { useDispatch } from 'react-redux'
+import { useParams } from 'react-router'
 import { Helmet } from 'react-helmet'
 
+import { getExcursionById } from 'redux/excursionDetail/actions'
 import FormSteps from 'components/Step/FormSteps'
 import ExcursionForm from './ExcursionForm'
 
@@ -12,7 +14,6 @@ import ExcursionTransport from './form/ExcursionTransport'
 
 import 'costom.scss'
 
-const pageTitle = 'Nova excursão'
 const formSteps = [
   {
     component: ExcursionDetail,
@@ -28,28 +29,36 @@ const formSteps = [
   { component: ExcursionTransport, title: 'Transportes', fields: [] },
 ]
 
-@connect(({ user }) => ({ user }))
-class ExcursionBox extends Component {
-  render() {
-    return (
-      <div>
-        <Helmet title={pageTitle} />
-        <div className="card">
-          <div className="card-header">
-            <div className="utils__title">
-              <strong>{pageTitle}</strong>
-            </div>
-          </div>
-          <div className="card-header">
-            <FormSteps formSteps={formSteps} {...this.props} />
-          </div>
-          <div className="card-body">
-            <ExcursionForm formSteps={formSteps} {...this.props} />
+const ExcursionBox = (props) => {
+  const { excursionId } = useParams()
+  const dispatch = useDispatch()
+
+  const pageTitle = useMemo(() => (excursionId ? 'Editar excursão' : 'Nova excursão'), [
+    excursionId,
+  ])
+
+  useEffect(() => {
+    if (excursionId) dispatch(getExcursionById(excursionId))
+  }, [excursionId, dispatch])
+
+  return (
+    <div>
+      <Helmet title={pageTitle} />
+      <div className="card">
+        <div className="card-header">
+          <div className="utils__title">
+            <strong>{pageTitle}</strong>
           </div>
         </div>
+        <div className="card-header">
+          <FormSteps formSteps={formSteps} {...props} />
+        </div>
+        <div className="card-body">
+          <ExcursionForm formSteps={formSteps} {...props} />
+        </div>
       </div>
-    )
-  }
+    </div>
+  )
 }
 
 export default ExcursionBox
