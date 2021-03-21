@@ -8,7 +8,7 @@ const defaultProps = {
   status: 'pending',
 }
 
-const PaymentSelect = ({ status, onChange }) => {
+const PaymentSelect = ({ status, onChange, disabled = false }) => {
   const options = useMemo(
     () => [
       {
@@ -36,10 +36,11 @@ const PaymentSelect = ({ status, onChange }) => {
   return (
     <Select
       value={status.toLowerCase()}
-      className={options.filter(o => o.value === status.toLowerCase())[0].className}
+      disabled={disabled}
+      className={options.filter((o) => o.value === status.toLowerCase())[0].className}
       onChange={onChange}
     >
-      {options.map(option => (
+      {options.map((option) => (
         <Select.Option key={option.id} value={option.value} className={option.className}>
           {option.description}
         </Select.Option>
