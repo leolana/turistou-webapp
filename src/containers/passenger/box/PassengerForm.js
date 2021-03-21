@@ -13,6 +13,19 @@ const PassengerForm = ({ form, formSteps }) => {
   const { current: currentStep } = useSelector((state) => state.step)
   const { isLoading } = useSelector((state) => state.excursionDetail)
 
+  const saveAndRedirectTo = useCallback(
+    (redirect) => {
+      form.validateFields(async (error, values) => {
+        if (!error) {
+          const { keys, ...data } = values
+          await dispatch({ type: passengerActions.SAVE_PASSENGER, payload: data })
+          history.push(redirect)
+        }
+      })
+    },
+    [form, history, dispatch],
+  )
+
   const onSaveFormAndAddNew = useCallback(() => {
     saveAndRedirectTo(`${history.location.pathname}`)
   }, [saveAndRedirectTo, history])
@@ -37,19 +50,6 @@ const PassengerForm = ({ form, formSteps }) => {
       })
     },
     [form, dispatch],
-  )
-
-  const saveAndRedirectTo = useCallback(
-    (redirect) => {
-      form.validateFields(async (error, values) => {
-        if (!error) {
-          const { keys, ...data } = values
-          await dispatch({ type: passengerActions.SAVE_PASSENGER, payload: data })
-          history.push(redirect)
-        }
-      })
-    },
-    [form, history, dispatch],
   )
 
   return (

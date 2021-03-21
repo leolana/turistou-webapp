@@ -2,8 +2,13 @@ import React, { useCallback, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory, useParams } from 'react-router'
 import { Form } from 'antd'
+import { useMutation } from '@apollo/react-hooks'
 
-import { setExcursionState, saveExcursion } from 'redux/excursionDetail/actions'
+import {
+  setExcursionState,
+  SAVE_EXCURSION,
+  sequelizeExcursionDetail,
+} from 'redux/excursionDetail/actions'
 import FormStepButtonsActions from 'components/Step/FormStepButtonsActions'
 import SkeletonForm from 'components/SkeletonForm/SkeletonForm'
 
@@ -12,7 +17,8 @@ const ExcursionForm = ({ form, formSteps }) => {
   const history = useHistory()
   const { excursionId } = useParams()
 
-  const { isLoading } = useSelector((state) => state.excursionDetail)
+  const [save, { loading }] = useMutation(SAVE_EXCURSION)
+
   const { current } = useSelector((state) => state.step)
 
   const { payload: excursionDetail } = useSelector((state) => state.excursionDetail)
@@ -22,9 +28,10 @@ const ExcursionForm = ({ form, formSteps }) => {
 
   const saveForm = useCallback(
     (payload) => {
-      dispatch(saveExcursion({ ...payload, id: excursionId }))
+      const input = sequelizeExcursionDetail({ ...payload, id: excursionId })
+      save({ mutation: SAVE_EXCURSION, variables: { input } })
     },
-    [dispatch, excursionId],
+    [save, excursionId],
   )
 
   const onSaveFormAndAddNew = useCallback(() => {
@@ -67,7 +74,7 @@ const ExcursionForm = ({ form, formSteps }) => {
   )
 
   return (
-    <SkeletonForm isLoading={isLoading}>
+    <SkeletonForm isLoading={loading}>
       <Form layout="vertical" className="excursion-form" onSubmit={onSubmit}>
         {formSteps.map((x, i) => (
           <div key={x.title} hidden={current !== i}>
