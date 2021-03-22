@@ -29,51 +29,53 @@ export const SAVE_EXCURSION = gql`
   }
 `
 
+export const GET_EXCURSION_BY_ID = gql`
+  query Excursion($id: String!) {
+    excursion(id: $id) {
+      id
+      destination
+      departureDate
+      departurePoint
+      arrivalPoint
+      regressDate
+      ticketPriceDefault
+      ticketPrices {
+        id
+        description
+        price
+        ageInitial
+        ageFinal
+      }
+      transports {
+        id
+        type
+        plate
+        capacity
+        drivers {
+          name
+        }
+      }
+      passengers {
+        id
+        spot {
+          number
+          transportId
+        }
+      }
+      stopPoints {
+        id
+        stopPoint
+      }
+    }
+  }
+`
+
 export const getExcursionById = (id: string) => ({
   type: actions.GET_EXCURSION_BY_ID,
   payload: { loading: true },
   request: () =>
     query({
-      query: gql`
-        query Excursion($id: String!) {
-          excursion(id: $id) {
-            id
-            destination
-            departureDate
-            departurePoint
-            arrivalPoint
-            regressDate
-            ticketPriceDefault
-            ticketPrices {
-              id
-              description
-              price
-              ageInitial
-              ageFinal
-            }
-            transports {
-              id
-              type
-              plate
-              capacity
-              drivers {
-                name
-              }
-            }
-            passengers {
-              id
-              spot {
-                number
-                transportId
-              }
-            }
-            stopPoints {
-              id
-              stopPoint
-            }
-          }
-        }
-      `,
+      query: GET_EXCURSION_BY_ID,
       variables: { id },
     }),
 })

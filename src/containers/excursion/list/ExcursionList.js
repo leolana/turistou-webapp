@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import { useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Button, Modal } from 'antd'
@@ -10,11 +10,7 @@ import { useQuery } from '@apollo/react-hooks'
 
 const ExcursionList = ({ filter }) => {
   const dispatch = useDispatch()
-  const { loading, data, refetch: listExcursions } = useQuery(fetchExcursions)
-
-  useEffect(() => {
-    listExcursions()
-  }, [listExcursions])
+  const { loading, data } = useQuery(fetchExcursions)
 
   const excursions = useMemo(() => data?.excursions || [], [data])
 
