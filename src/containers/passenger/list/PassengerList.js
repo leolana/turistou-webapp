@@ -154,8 +154,13 @@ const PassengerList = (props) => {
         dataIndex: 'method',
         key: 'method',
         width: '20%',
-        render: (x) => {
-          const text = paymentMethods[x] || 'Não especificado'
+        render: (x, row) => {
+          let text
+          if (row.operation === 'CHARGE_BACK') {
+            text = 'Devolução'
+          } else {
+            text = paymentMethods[x] || 'Não especificado'
+          }
 
           return text
         },
@@ -165,7 +170,7 @@ const PassengerList = (props) => {
         dataIndex: 'status',
         key: 'status',
         render: (_, row) => {
-          const { id, passengerId, status } = row
+          const { id, passengerId, status, operation } = row
 
           const payload = {
             passengerId,
@@ -175,6 +180,7 @@ const PassengerList = (props) => {
           return (
             <PaymentSelect
               status={status}
+              disabled={operation === 'CHARGE_BACK'}
               onChange={(statusModified) => {
                 if (statusModified === 'paid') {
                   return setToPaid(payload)
@@ -550,10 +556,9 @@ const PassengerList = (props) => {
         title="Datas de pagamento"
         width={700}
         visible={isPaymentListVisible}
-        okCancel
         onCancel={closePaymentsListModal}
+        onOk={closePaymentsListModal}
         afterClose={clearPayments}
-        okText="Atualizar"
       >
         <Table
           rowKey={(record) => `${record.id}${record.payDate}${record.operation}`}
