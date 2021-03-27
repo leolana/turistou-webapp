@@ -7,6 +7,7 @@ import customerDetail from './customerDetail/sagas'
 import excursionList from './excursionList/sagas'
 import excursionDetail from './excursionDetail/sagas'
 import passengerList from './passengerList/sagas'
+import passengerToSwapList from './passengerToSwapList/sagas'
 import passengerDetail from './passengerDetail/sagas'
 import passengerStatus from './passengerStatus/sagas'
 import payments from './payments/sagas'
@@ -22,6 +23,7 @@ export default function* rootSaga() {
     excursionList(),
     excursionDetail(),
     passengerList(),
+    passengerToSwapList(),
     passengerDetail(),
     passengerStatus(),
     payments(),

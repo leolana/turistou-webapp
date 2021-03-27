@@ -3,19 +3,14 @@ import gql from 'graphql-tag'
 import { query } from 'core/api/apollo'
 
 const actions = {
-  SET_STATE: 'passengerList/SET_STATE',
-  GET_PASSENGERS: 'passengerList/GET_PASSENGERS',
-  GET_PASSENGERS_SUCCESS: 'passengerList/GET_PASSENGERS_SUCCESS',
+  SET_STATE: 'passengerToSwapList/SET_STATE',
+  GET_PASSENGERS: 'passengerToSwapList/GET_PASSENGERS',
+  GET_PASSENGERS_SUCCESS: 'passengerToSwapList/GET_PASSENGERS_SUCCESS',
 }
 
 const passengerFragment = gql`
   fragment PassengerFragment on Passenger {
     id
-    spot {
-      number
-      transportId
-    }
-    status
     customer {
       name
       document {
@@ -25,15 +20,9 @@ const passengerFragment = gql`
         city
       }
     }
-    ticketPrice {
-      description
-      price
-    }
-    amountPaid
-    amountRefunded
   }
 `
-export const fetchPassengers = (filter) => ({
+export const fetchPassengersToSwap = (excursionId) => ({
   type: actions.GET_PASSENGERS,
   payload: { isLoading: true },
   request: () =>
@@ -47,7 +36,12 @@ export const fetchPassengers = (filter) => ({
         ${passengerFragment}
       `,
       variables: {
-        filter,
+        filter: {
+          excursionId,
+          status: 'WAITING',
+          startPay: false,
+          fullPay: false,
+        },
       },
     }),
 })
