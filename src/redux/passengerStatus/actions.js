@@ -10,7 +10,7 @@ const actions = {
   TOGGLE_REMOVE_PASSENGER_VISIBILITY: 'passengerStatus/TOGGLE_REMOVE_PASSENGER_VISIBILITY',
   TOGGLE_SWAP_PASSENGER_VISIBILITY: 'passengerStatus/TOGGLE_SWAP_PASSENGER_VISIBILITY',
   CLEAR_PASSENGER_STATUS: 'passengerStatus/CLEAR_PASSENGER_STATUS',
-  SET_PASSENGER_TO_CHANGE_STATUS: 'passengerStatus/SET_PASSENGER_TO_CHANGE_STATUS',
+  SET_PASSENGER_TO_REMOVE: 'passengerStatus/SET_PASSENGER_TO_REMOVE',
   SET_PASSENGER_TO_SWAP: 'passengerStatus/SET_PASSENGER_TO_SWAP',
   SET_PASSENGER_TO_BE_SWAPPED_WITH: 'passengerStatus/SET_PASSENGER_TO_BE_SWAPPED_WITH',
   SWAP_PASSENGERS: 'passengerStatus/SWAP_PASSENGERS',
@@ -107,9 +107,9 @@ export const savePassengerStatusFailure = (payload: any) => ({
   },
 })
 
-export const setPassengerToChangeStatus = (payload: any) => ({
+export const setPassengerToRemove = (payload: any) => ({
   payload: { ...payload },
-  type: actions.SET_PASSENGER_TO_CHANGE_STATUS,
+  type: actions.SET_PASSENGER_TO_REMOVE,
 })
 
 export const setPassengerToSwap = (payload: any) => ({
