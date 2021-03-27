@@ -4,19 +4,44 @@ import { mutate } from 'core/api/apollo'
 
 const actions = {
   SET_STATE: 'passengerStatus/SET_STATE',
-  SAVE_STATUS_SUCCESS: 'passengerStatus/SAVE_STATUS_SUCCESS',
-  SAVE_STATUS_FAILURE: 'passengerStatus/SET_STATE_FAILURE',
   SET_PAYLOAD: 'passengerStatus/SET_PAYLOAD',
   SET_TO_BOOKED: 'passengerStatus/SET_TO_BOOKED',
   SET_TO_CANCELED: 'passengerStatus/SET_TO_CANCELED',
-  TOGGLE_VISIBILITY: 'passengerStatus/TOGGLE_VISIBILITY',
+  TOGGLE_REMOVE_PASSENGER_VISIBILITY: 'passengerStatus/TOGGLE_REMOVE_PASSENGER_VISIBILITY',
+  TOGGLE_SWAP_PASSENGER_VISIBILITY: 'passengerStatus/TOGGLE_SWAP_PASSENGER_VISIBILITY',
   CLEAR_PASSENGER_STATUS: 'passengerStatus/CLEAR_PASSENGER_STATUS',
   SET_PASSENGER_TO_CHANGE_STATUS: 'passengerStatus/SET_PASSENGER_TO_CHANGE_STATUS',
+  SET_PASSENGER_TO_SWAP: 'passengerStatus/SET_PASSENGER_TO_SWAP',
+  SET_PASSENGER_TO_BE_SWAPPED_WITH: 'passengerStatus/SET_PASSENGER_TO_BE_SWAPPED_WITH',
+  SWAP_PASSENGERS: 'passengerStatus/SWAP_PASSENGERS',
 }
 
 const statusActions = {
   booked: actions.SET_TO_BOOKED,
   canceled: actions.SET_TO_CANCELED,
+}
+
+export const swapPassengersStatus = (passengerId, idOfPassengerToBeSwappedWith) => {
+  return {
+    type: actions.SWAP_PASSENGERS,
+    payload: { loading: true },
+    request: () =>
+      mutate({
+        mutation: gql`
+          mutation swapPassengers($input: SwapPassengersInput!) {
+            swapPassengers(SwapPassengersInput: $input) {
+              id
+            }
+          }
+        `,
+        variables: {
+          input: {
+            id: passengerId,
+            idOfPassengerToBeSwappedWith,
+          },
+        },
+      }),
+  }
 }
 
 const setPassengerStatus = (status) => (passengerId, amountRefunded) => {
@@ -48,8 +73,15 @@ export const setToBooked = setPassengerStatus('BOOKED')
 
 export const setToCanceled = setPassengerStatus('CANCELED')
 
-export const toggleVisibility = (payload) => ({
-  type: actions.TOGGLE_VISIBILITY,
+export const setToWaiting = setPassengerStatus('WAITING')
+
+export const toggleRemovePassengerVisibility = (payload) => ({
+  type: actions.TOGGLE_REMOVE_PASSENGER_VISIBILITY,
+  payload,
+})
+
+export const toggleSwapPassengerVisibility = (payload) => ({
+  type: actions.TOGGLE_SWAP_PASSENGER_VISIBILITY,
   payload,
 })
 
@@ -58,20 +90,36 @@ export const clearPassengerStatus = () => ({
 })
 
 export const savePassengerStatusSuccess = (payload: any) => ({
-  payload: { ...payload },
-  type: actions.SAVE_STATUS_SUCCESS,
-  isLoading: false,
+  type: actions.SET_STATE,
+  payload: {
+    ...payload,
+    isRemovePassengerVisible: false,
+    isSwapPassengerVisible: false,
+  },
 })
 
 export const savePassengerStatusFailure = (payload: any) => ({
-  type: actions.SAVE_STATUS_FAILURE,
-  payload: { ...payload },
-  isLoading: false,
+  type: actions.SET_STATE,
+  payload: {
+    payload,
+    isRemovePassengerVisible: false,
+    isSwapPassengerVisible: false,
+  },
 })
 
 export const setPassengerToChangeStatus = (payload: any) => ({
   payload: { ...payload },
   type: actions.SET_PASSENGER_TO_CHANGE_STATUS,
+})
+
+export const setPassengerToSwap = (payload: any) => ({
+  payload: { ...payload },
+  type: actions.SET_PASSENGER_TO_SWAP,
+})
+
+export const setPassengerToBeSwappedWith = (payload: any) => ({
+  payload: { ...payload },
+  type: actions.SET_PASSENGER_TO_BE_SWAPPED_WITH,
 })
 
 export default actions

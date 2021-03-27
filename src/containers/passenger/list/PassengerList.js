@@ -50,6 +50,34 @@ const PassengerList = (props) => {
       }),
     [dispatch],
   )
+
+  const setPassengerToSwap = useCallback(
+    (id) =>
+      dispatch({
+        type: passengerStatusActions.SET_PASSENGER_TO_SWAP,
+        payload: { id },
+      }),
+    [dispatch],
+  )
+
+  const setPassengerToBeSwappedWith = useCallback(
+    (idOfPassengerToBeSwappedWith) =>
+      dispatch({
+        type: passengerStatusActions.SET_PASSENGER_TO_BE_SWAPPED_WITH,
+        payload: { idOfPassengerToBeSwappedWith },
+      }),
+    [dispatch],
+  )
+
+  const swapPassengers = useCallback(
+    ({ id, idOfPassengerToBeSwappedWith }) =>
+      dispatch({
+        type: passengerStatusActions.SWAP_PASSENGERS,
+        payload: { id, idOfPassengerToBeSwappedWith },
+      }),
+    [dispatch],
+  )
+
   const setStatusToBooked = useCallback(
     (passengerId) =>
       dispatch({ type: passengerStatusActions.SET_TO_BOOKED, payload: { passengerId } }),
@@ -64,7 +92,13 @@ const PassengerList = (props) => {
     [dispatch],
   )
   const closeDeletePassengerModal = useCallback(
-    () => dispatch({ type: passengerStatusActions.TOGGLE_VISIBILITY, payload: false }),
+    () =>
+      dispatch({ type: passengerStatusActions.TOGGLE_REMOVE_PASSENGER_VISIBILITY, payload: false }),
+    [dispatch],
+  )
+  const closeSwapPassengerModal = useCallback(
+    () =>
+      dispatch({ type: passengerStatusActions.TOGGLE_SWAP_PASSENGER_VISIBILITY, payload: false }),
     [dispatch],
   )
   const clearPassengerStatus = useCallback(
@@ -115,7 +149,6 @@ const PassengerList = (props) => {
   const { isLoading: isPassengerLoading, payload: passengers } = useSelector(
     (state) => state.passengerList,
   )
-  const { payload: customersList } = useSelector((state) => state.customerList)
   const {
     payload: payments = [],
     isVisible: isPaymentListVisible = false,
@@ -129,9 +162,14 @@ const PassengerList = (props) => {
       previousPaid: 0,
     },
   } = useSelector((state) => state.paymentStatus)
-  const { isRemovePassengerVisible, payload: passengerStatus } = useSelector(
-    (state) => state.passengerStatus,
-  )
+  const {
+    isRemovePassengerVisible,
+    isSwapPassengerVisible,
+    payload: passengerStatus,
+  } = useSelector((state) => state.passengerStatus)
+
+  const { payload: passengerToSwapList } = useSelector((state) => state.passengerToSwapList)
+
   const columnsForPayments = () => {
     const columns = [
       {
@@ -205,9 +243,8 @@ const PassengerList = (props) => {
     return columns
   }
 
-  const exchange = (id) => {
-    console.log('id', id)
-    // TODO: replace passenger
+  const swap = () => {
+    swapPassengers(passengerStatus)
   }
 
   const book = (id) => {
@@ -273,22 +310,8 @@ const PassengerList = (props) => {
     })
   }
 
-  const handleExchange = (id) => {
-    Modal.confirm({
-      title: 'Troca de passageiro',
-      okCancel: true,
-      cancelText: 'Cancelar',
-      okText: 'Trocar',
-      onOk: () => {
-        exchange(id)
-      },
-      content: (
-        <div>
-          <p>Trocar passageiro atual pelo(a)</p>
-          <CustomerSelect customers={customersList} />
-        </div>
-      ),
-    })
+  const handleSwapPassenger = (id) => {
+    setPassengerToSwap(id)
   }
 
   const renderActionsButtons = (passenger) => {
@@ -322,7 +345,7 @@ const PassengerList = (props) => {
           type="primary"
           title="Trocar passageiro"
           onClick={() => {
-            handleExchange(passenger.id)
+            handleSwapPassenger(passenger.id)
           }}
         >
           <i className="fa fa-exchange" />
@@ -521,6 +544,11 @@ const PassengerList = (props) => {
     return { ...passenger, ...passengerPresenterModified }
   })
 
+  const customerList = passengerToSwapList.map(({ customer, id }) => ({
+    id,
+    ...customer,
+  }))
+
   // TODO:
   const filteredData = passengersList // this.filterData(passengersList)
 
@@ -551,6 +579,26 @@ const PassengerList = (props) => {
         ]}
       >
         <DeletePassengerForm formId="deletePassengerForm" onSubmit={remove} />
+      </Modal>
+      <Modal
+        title="Troca de passageiro"
+        width={700}
+        visible={isSwapPassengerVisible}
+        afterClose={clearPassengerStatus}
+        onCancel={closeSwapPassengerModal}
+        footer={[
+          <Button onClick={closeSwapPassengerModal} type="default" key="cancel" htmlType="button">
+            Cancelar
+          </Button>,
+          <Button type="primary" key="swap" onClick={swap}>
+            Trocar passageiro
+          </Button>,
+        ]}
+      >
+        <div>
+          <p>Trocar passageiro atual pelo(a)</p>
+          <CustomerSelect onChange={setPassengerToBeSwappedWith} customerList={customerList} />
+        </div>
       </Modal>
       <Modal
         title="Datas de pagamento"
