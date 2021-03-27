@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory, useParams } from 'react-router'
 import { useMutation, useQuery } from '@apollo/react-hooks'
@@ -18,7 +18,7 @@ const ExcursionForm = ({ form, formSteps }) => {
   const history = useHistory()
   const { excursionId } = useParams()
 
-  const [save, { loading: saving }] = useMutation(SAVE_EXCURSION)
+  const [save, { loading: saving, error }] = useMutation(SAVE_EXCURSION)
   const {
     loading: getting,
     data: { excursion: excursionDetail } = {},
@@ -31,6 +31,7 @@ const ExcursionForm = ({ form, formSteps }) => {
   }, [excursionDetail])
 
   const isLoading = useMemo(() => saving || getting, [saving, getting])
+  const [waitSavingAndRedirectTo, setWaitSavingAndRedirectTo] = useState(false)
 
   const saveForm = useCallback(
     (payload) => {
@@ -42,12 +43,14 @@ const ExcursionForm = ({ form, formSteps }) => {
 
   const onSaveFormAndAddNew = useCallback(() => {
     form.validateFields(async (error, values) => {
-      if (!error) {
-        await saveForm(values)
-        history.push('/excursion')
+      if (error) {
+        // TODO: tratar erro
+        return
       }
+      await saveForm(values)
+      setWaitSavingAndRedirectTo('/excursion')
     })
-  }, [form, history, saveForm])
+  }, [form, saveForm, setWaitSavingAndRedirectTo])
 
   const onSubmit = useCallback(
     (event) => {
@@ -58,10 +61,10 @@ const ExcursionForm = ({ form, formSteps }) => {
           return
         }
         await saveForm(values)
-        history.push('/excursion/list')
+        setWaitSavingAndRedirectTo('/excursion/list')
       })
     },
-    [form, history, saveForm],
+    [form, saveForm, setWaitSavingAndRedirectTo],
   )
 
   const saveStepHandler = useCallback(
@@ -78,6 +81,14 @@ const ExcursionForm = ({ form, formSteps }) => {
     },
     [form, dispatch],
   )
+
+  useEffect(() => {
+    if (error)
+      // TODO:
+      return
+
+    if (waitSavingAndRedirectTo && !saving) history.push(waitSavingAndRedirectTo)
+  }, [waitSavingAndRedirectTo, saving, error, history])
 
   return (
     <SkeletonForm isLoading={isLoading}>
