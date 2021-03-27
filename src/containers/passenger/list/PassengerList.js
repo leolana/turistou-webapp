@@ -42,10 +42,10 @@ const statuses = [
 
 const PassengerList = (props) => {
   const dispatch = useDispatch()
-  const setPassengerToChangeStatus = useCallback(
+  const setPassengerToRemove = useCallback(
     (id, amountPaid) =>
       dispatch({
-        type: passengerStatusActions.SET_PASSENGER_TO_CHANGE_STATUS,
+        type: passengerStatusActions.SET_PASSENGER_TO_REMOVE,
         payload: { id, amountPaid, amountRefunded: 0 },
       }),
     [dispatch],
@@ -288,7 +288,7 @@ const PassengerList = (props) => {
   }
 
   const handleRemove = ({ id, amountPaid }) => {
-    setPassengerToChangeStatus(id, amountPaid)
+    setPassengerToRemove(id, amountPaid)
   }
 
   const handleHistory = (id) => {
