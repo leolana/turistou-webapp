@@ -24,6 +24,7 @@ const passengerFragment = gql`
       price
     }
     amountPaid
+    amountRefunded
   }
 `
 export const fetchPassengers = (filter) => ({
