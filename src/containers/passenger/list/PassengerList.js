@@ -6,10 +6,10 @@ import paymentMethods from 'constants/paymentMethods'
 import passengerStatusActions from 'redux/passengerStatus/actions'
 import paymentsActions from 'redux/payments/actions'
 import paymentStatusActions from 'redux/paymentStatus/actions'
-import CustomerSelect from 'components/CustomerSelect/CustomerSelect'
 import SkeletonTable from 'components/SkeletonTable/SkeletonTable'
 
 import PaymentSelect from 'components/PaymentSelect/PaymentSelect'
+import SwapPassengerForm from 'containers/passenger/box/swapForm/SwapPassengerForm'
 import PaymentUpdateForm from 'components/PaymentUpdateForm/PaymentUpdateForm'
 import DeletePassengerForm from 'containers/passenger/box/deleteForm/DeletePassengerForm'
 
@@ -60,20 +60,11 @@ const PassengerList = (props) => {
     [dispatch],
   )
 
-  const setPassengerToBeSwappedWith = useCallback(
-    (idOfPassengerToBeSwappedWith) =>
-      dispatch({
-        type: passengerStatusActions.SET_PASSENGER_TO_BE_SWAPPED_WITH,
-        payload: { idOfPassengerToBeSwappedWith },
-      }),
-    [dispatch],
-  )
-
   const swapPassengers = useCallback(
-    ({ id, idOfPassengerToBeSwappedWith }) =>
+    (id, idOfCustomerToBeSwappedWith) =>
       dispatch({
         type: passengerStatusActions.SWAP_PASSENGERS,
-        payload: { id, idOfPassengerToBeSwappedWith },
+        payload: { id, idOfCustomerToBeSwappedWith },
       }),
     [dispatch],
   )
@@ -168,8 +159,6 @@ const PassengerList = (props) => {
     payload: passengerStatus,
   } = useSelector((state) => state.passengerStatus)
 
-  const { payload: passengerToSwapList } = useSelector((state) => state.passengerToSwapList)
-
   const columnsForPayments = () => {
     const columns = [
       {
@@ -237,8 +226,8 @@ const PassengerList = (props) => {
     return columns
   }
 
-  const swap = () => {
-    swapPassengers(passengerStatus)
+  const swap = ({ customerId }) => {
+    swapPassengers(passengerStatus.id, customerId)
   }
 
   const book = (id) => {
@@ -534,11 +523,6 @@ const PassengerList = (props) => {
     return { ...passenger, ...passengerPresenterModified }
   })
 
-  const customerList = passengerToSwapList.map(({ customer, id }) => ({
-    id,
-    ...customer,
-  }))
-
   // TODO:
   const filteredData = passengersList // this.filterData(passengersList)
 
@@ -580,15 +564,12 @@ const PassengerList = (props) => {
           <Button onClick={closeSwapPassengerModal} type="default" key="cancel" htmlType="button">
             Cancelar
           </Button>,
-          <Button type="primary" key="swap" onClick={swap}>
+          <Button type="primary" form="swapPassengerForm" key="submit" htmlType="submit">
             Trocar passageiro
           </Button>,
         ]}
       >
-        <div>
-          <p>Trocar passageiro atual pelo(a)</p>
-          <CustomerSelect onChange={setPassengerToBeSwappedWith} customerList={customerList} />
-        </div>
+        <SwapPassengerForm formId="swapPassengerForm" onSubmit={swap} />
       </Modal>
       <Modal
         title="Datas de pagamento"

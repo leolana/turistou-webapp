@@ -4,8 +4,8 @@ import { Link, useParams } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
 import { Row, Button, Col, Dropdown, Menu } from 'antd'
 
+import { fetchCustomers } from 'redux/customerList/actions'
 import { fetchPassengers } from 'redux/passengerList/actions'
-import { fetchPassengersToSwap } from 'redux/passengerToSwapList/actions'
 import { getExcursionById } from 'redux/excursionDetail/actions'
 import PassengerList from './PassengerList'
 import PassengerFilter from './PassengerFilter'
@@ -46,8 +46,8 @@ const Passenger = () => {
     dispatch(fetchPassengers(filter))
   }, [filter, dispatch])
   useEffect(() => {
-    dispatch(fetchPassengersToSwap(excursionId))
-  }, [excursionId, dispatch])
+    dispatch(fetchCustomers())
+  }, [dispatch])
   useEffect(() => {
     dispatch(getExcursionById(excursionId))
   }, [excursionId, dispatch])

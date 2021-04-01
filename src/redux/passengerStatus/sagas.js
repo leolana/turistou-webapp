@@ -35,7 +35,7 @@ export function* cancelPassenger({ payload }) {
 }
 
 export function* swapPassengers({ payload }) {
-  const fetch = swapPassengersStatus(payload.id, payload.idOfPassengerToBeSwappedWith)
+  const fetch = swapPassengersStatus(payload.id, payload.idOfCustomerToBeSwappedWith)
   const result = yield call(fetch.request)
   if (result.response.data) {
     yield put(savePassengerStatusSuccess({}))
