@@ -9,7 +9,6 @@ import excursionDetail from 'redux/excursionDetail/reducers'
 import passengerList from 'redux/passengerList/reducers'
 import passengerDetail from 'redux/passengerDetail/reducers'
 import passengerStatus from 'redux/passengerStatus/reducers'
-import passengerToSwapList from 'redux/passengerToSwapList/reducers'
 import customerList from 'redux/customerList/reducers'
 import customerDetail from 'redux/customerDetail/reducers'
 import payments from 'redux/payments/reducers'
@@ -27,7 +26,6 @@ export default (history) =>
     passengerList,
     passengerDetail,
     passengerStatus,
-    passengerToSwapList,
     customerList,
     customerDetail,
     payments,

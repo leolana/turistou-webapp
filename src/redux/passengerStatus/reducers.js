@@ -8,7 +8,7 @@ const initialState = {
     amountRefunded: 0,
     amountPaid: 0,
     id: null,
-    idOfPassengerToBeSwappedWith: null,
+    idOfCustomerToBeSwappedWith: null,
   },
 }
 
@@ -55,7 +55,7 @@ export default function passengerStatusReducer(state = initialState, action) {
           amountRefunded: 0,
           amountPaid: 0,
           id: null,
-          idOfPassengerToBeSwappedWith: null,
+          idOfCustomerToBeSwappedWith: null,
         },
       }
     case actions.SET_STATE:

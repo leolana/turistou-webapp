@@ -21,7 +21,7 @@ const statusActions = {
   canceled: actions.SET_TO_CANCELED,
 }
 
-export const swapPassengersStatus = (passengerId, idOfPassengerToBeSwappedWith) => {
+export const swapPassengersStatus = (passengerId, idOfCustomerToBeSwappedWith) => {
   return {
     type: actions.SWAP_PASSENGERS,
     payload: { loading: true },
@@ -37,7 +37,7 @@ export const swapPassengersStatus = (passengerId, idOfPassengerToBeSwappedWith) 
         variables: {
           input: {
             id: passengerId,
-            idOfPassengerToBeSwappedWith,
+            idOfCustomerToBeSwappedWith,
           },
         },
       }),
