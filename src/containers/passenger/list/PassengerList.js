@@ -252,23 +252,27 @@ const PassengerList = (props) => {
   const contentForPaymentsUpdate = () => {
     const content = (
       <Row>
-        <Col sm={12}>
+        <Col sm={8}>
+          <div>
+            Valor pago anteriormente: <span>{paymentStatus.previousPaid}</span>
+          </div>
+        </Col>
+        <Col sm={8}>
+          <div>
+            Total pago: <span>{paymentStatus.amountPaid}</span>
+          </div>
+        </Col>
+        <Col sm={8}>
+          <div>
+            Valor faltante: <span>{paymentStatus.remaining}</span>
+          </div>
+        </Col>
+        <Col sm={24}>
           <PaymentUpdateForm
             formId="paymentUpdateForm"
             onSubmit={addPayment}
             remaining={paymentStatus.remaining}
           />
-        </Col>
-        <Col sm={12} className="pl-4">
-          <div>
-            Valor pago anteriormente: <span>{paymentStatus.previousPaid}</span>
-          </div>
-          <div>
-            Total pago: <span>{paymentStatus.amountPaid}</span>
-          </div>
-          <div>
-            Valor faltante: <span>{paymentStatus.remaining}</span>
-          </div>
         </Col>
       </Row>
     )
