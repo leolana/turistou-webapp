@@ -23,7 +23,13 @@ const formSteps = [
 
 const ExcursionPassengers = (props) => {
   const dispatch = useDispatch()
-  const { excursionId } = useParams()
+  const { excursionId, status } = useParams()
+
+  const passengerStatuses = {
+    booked: 'BOOKED',
+    waiting: 'WAITING',
+  }
+  const passengerStatus = passengerStatuses[status]
 
   useEffect(() => {
     dispatch(getExcursionById(excursionId))
@@ -36,7 +42,7 @@ const ExcursionPassengers = (props) => {
       <Card title={pageTitle}>
         <FormSteps formSteps={formSteps} {...props} />
         <br />
-        <PassengerForm formSteps={formSteps} {...props} />
+        <PassengerForm formSteps={formSteps} passengerStatus={passengerStatus} {...props} />
       </Card>
     </div>
   )

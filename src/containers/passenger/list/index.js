@@ -4,6 +4,7 @@ import { Link, useParams } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
 import { Row, Button, Col, Dropdown, Menu } from 'antd'
 
+import { fetchCustomers } from 'redux/customerList/actions'
 import { fetchPassengers } from 'redux/passengerList/actions'
 import { getExcursionById } from 'redux/excursionDetail/actions'
 import PassengerList from './PassengerList'
@@ -14,10 +15,10 @@ const pageTitle = 'Lista de passageiros'
 const menu = (
   <Menu>
     <Menu.Item>
-      <Link to="./"> à excursão</Link>
+      <Link to="./booked"> à excursão</Link>
     </Menu.Item>
     <Menu.Item>
-      <Link to="./"> à lista de espera</Link>
+      <Link to="./waiting"> à lista de espera</Link>
     </Menu.Item>
   </Menu>
 )
@@ -44,6 +45,9 @@ const Passenger = () => {
   useEffect(() => {
     dispatch(fetchPassengers(filter))
   }, [filter, dispatch])
+  useEffect(() => {
+    dispatch(fetchCustomers())
+  }, [dispatch])
   useEffect(() => {
     dispatch(getExcursionById(excursionId))
   }, [excursionId, dispatch])

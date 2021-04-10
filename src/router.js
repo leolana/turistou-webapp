@@ -10,7 +10,7 @@ import NotFoundPage from 'containers/404'
 import Callback from 'containers/callback'
 import * as auth from 'core/auth'
 
-const loadable = loader =>
+const loadable = (loader) =>
   Loadable({
     loader,
     delay: false,
@@ -78,7 +78,7 @@ const routes = [
     component: loadable(() => import('containers/passenger/list')),
   },
   {
-    path: '/excursion/:excursionId/passenger/',
+    path: '/excursion/:excursionId/passenger/:status(booked|waiting)',
     component: loadable(() => import('containers/passenger/box')),
   },
 
@@ -129,7 +129,7 @@ class Router extends React.Component {
           <Switch>
             {/* <Route exact path="/" render={() => <Redirect to="/dashboard/alpha" />} /> */}
             <Route exact path="/" render={() => <Redirect to="/excursion/list" />} />
-            {routes.map(route => (
+            {routes.map((route) => (
               <Route
                 path={route.path}
                 component={route.component}

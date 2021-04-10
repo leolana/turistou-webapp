@@ -1,33 +1,50 @@
-import React, { useCallback, useMemo } from 'react'
+import React, { useCallback, useMemo, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Row, Col, Form, Radio } from 'antd'
 
 import passengerActions from 'redux/passengerDetail/actions'
+import { fetchCustomers } from 'redux/customerList/actions'
 import CustomerSelect from 'components/CustomerSelect/CustomerSelect'
 
 const PassengerChoice = ({ form }) => {
   const dispatch = useDispatch()
-  const { payload: excursion } = useSelector(state => state.excursionDetail)
-  const { payload: customers } = useSelector(state => state.customerList)
+  const { payload: excursion } = useSelector((state) => state.excursionDetail)
+  const { payload: customers } = useSelector((state) => state.customerList)
 
-  const storagePassenger = useCallback((payload) => dispatch({ type: passengerActions.SET_STATE, payload }), [dispatch]);
-  const storagePassengerName = useCallback((customerId) => {
-    const customer = customers.find(x => x.id === customerId) || {}
-    storagePassenger({ customerName: customer.name || 'Alguém' })
-  }, [customers, storagePassenger])
+  useEffect(() => {
+    if (!customers || !customers.length) dispatch(fetchCustomers())
+  }, [customers, dispatch])
 
-  const storagePassengerTicket = useCallback((ticketPriceId) => {
-    const { ticketPrices, ticketPriceDefault } = excursion
+  const storagePassenger = useCallback(
+    (payload) => dispatch({ type: passengerActions.SET_STATE, payload }),
+    [dispatch],
+  )
+  const storagePassengerName = useCallback(
+    (customerId) => {
+      const customer = customers.find((x) => x.id === customerId) || {}
+      storagePassenger({ customerName: customer.name || 'Alguém' })
+    },
+    [customers, storagePassenger],
+  )
 
-    const ticket = ticketPrices?.find(x => x.id === ticketPriceId) || ({ description: 'Normal', price: ticketPriceDefault })
+  const storagePassengerTicket = useCallback(
+    (ticketPriceId) => {
+      const { ticketPrices, ticketPriceDefault } = excursion
 
-    storagePassenger({ ticket })
-    return ticket
-  }, [excursion, storagePassenger])
+      const ticket = ticketPrices?.find((x) => x.id === ticketPriceId) || {
+        description: 'Normal',
+        price: ticketPriceDefault,
+      }
+
+      storagePassenger({ ticket })
+      return ticket
+    },
+    [excursion, storagePassenger],
+  )
 
   const ticketOptions = useMemo(() => {
     const { ticketPrices, ticketPriceDefault } = excursion
-    const options = (ticketPrices || []).map(x => ({
+    const options = (ticketPrices || []).map((x) => ({
       value: x.id,
       label: x.description,
       price: x.price,
@@ -39,7 +56,7 @@ const PassengerChoice = ({ form }) => {
   const selectedTicket = useMemo(() => {
     const id = form.getFieldValue('ticketPriceId')
     storagePassengerTicket(id)
-    return id ? ticketOptions.find(x => x.value === id) : ticketOptions[0]
+    return id ? ticketOptions.find((x) => x.value === id) : ticketOptions[0]
   }, [ticketOptions, form, storagePassengerTicket])
 
   return (
@@ -48,13 +65,13 @@ const PassengerChoice = ({ form }) => {
         <Form.Item label="Cliente">
           {form.getFieldDecorator('customerId', {
             rules: [{ required: true, message: 'Por favor, selecione o cliente.' }],
-          })(<CustomerSelect onChange={storagePassengerName} />)}
+          })(<CustomerSelect onChange={storagePassengerName} customerList={customers} />)}
         </Form.Item>
       </Col>
       <Col xs={24}>
         <Form.Item
           label="Tipos de passagem"
-          onChange={e => storagePassengerTicket(e.target.value)}
+          onChange={(e) => storagePassengerTicket(e.target.value)}
         >
           {form.getFieldDecorator('ticketPriceId', {
             initialValue: 0,
@@ -70,4 +87,4 @@ const PassengerChoice = ({ form }) => {
     </Row>
   )
 }
-export default PassengerChoice;
+export default PassengerChoice
