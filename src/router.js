@@ -93,7 +93,7 @@ const routes = [
     exact: true,
   },
   {
-    path: '/excursion/:id',
+    path: '/excursion/:excursionId',
     component: loadable(() => import('containers/excursion/box')),
     exact: true,
   },
