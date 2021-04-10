@@ -1,22 +1,41 @@
-import React, { useCallback, useEffect, useMemo } from 'react'
-import { useDispatch } from 'react-redux'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Button, Modal } from 'antd'
+import { Button, Modal, notification } from 'antd'
 import { DateTime } from 'luxon'
-import { deleteExcursion, fetchExcursions } from 'redux/excursionList/actions'
+import { useMutation, useQuery } from '@apollo/react-hooks'
+
+import { DELETE_EXCURSION, FETCH_EXCURSIONS } from 'redux/excursionList/actions'
 import SkeletonTable from 'components/SkeletonTable/SkeletonTable'
 import { EXCURSION_STATUS_ENUM } from 'constants/excursionStatus'
-import { useQuery } from '@apollo/react-hooks'
 
 const ExcursionList = ({ filter }) => {
-  const dispatch = useDispatch()
-  const { loading, data, refetch: getExcursions } = useQuery(fetchExcursions)
+  const { loading, data, refetch: getExcursions } = useQuery(FETCH_EXCURSIONS)
+
+  const [exclude, { loading: deletingLoading, error: deletingError }] = useMutation(
+    DELETE_EXCURSION,
+  )
 
   const excursions = useMemo(() => data?.excursions || [], [data])
+  const [isDeleting, setIsDeleting] = useState(false)
 
   useEffect(() => {
-    getExcursions()
-  }, [getExcursions])
+    if (!deletingLoading && !deletingError) getExcursions()
+  }, [deletingLoading, deletingError, getExcursions])
+
+  useEffect(() => {
+    if (!isDeleting || deletingLoading) return
+
+    if (deletingError)
+      notification.error({
+        message: 'Erro',
+        description: 'Falha ao deletar excursão!',
+      })
+    else
+      notification.success({
+        message: 'Sucesso',
+        description: 'Excursão deletada!',
+      })
+  }, [isDeleting, deletingLoading, deletingError])
 
   const handleRemove = useCallback(
     (id) => {
@@ -26,13 +45,14 @@ const ExcursionList = ({ filter }) => {
         okText: 'Sim',
         okType: 'danger',
         onOk: () => {
-          dispatch(deleteExcursion(id))
+          exclude({ variables: { id } })
+          setIsDeleting(true)
         },
         okCancel: true,
         cancelText: 'Não',
       })
     },
-    [dispatch],
+    [exclude],
   )
 
   const filterTable = useCallback(() => {

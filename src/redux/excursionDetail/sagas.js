@@ -1,7 +1,7 @@
 import { all, call, put, takeLatest } from 'redux-saga/effects'
 import { notification } from 'antd'
 
-import actions, { getExcursionByIdSuccess, getExcursionByIdFailure } from './actions'
+import { actions, getExcursionByIdSuccess, getExcursionByIdFailure } from './actions'
 
 export function* getById({ request }) {
   const result = yield call(request)

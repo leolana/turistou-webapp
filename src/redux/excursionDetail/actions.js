@@ -4,7 +4,7 @@ import { DateTime } from 'luxon'
 
 import { query } from 'core/api/apollo'
 
-const actions = {
+export const actions = {
   SET_STATE: 'excursionDetail/SET_STATE',
   CLEAR_STATE: 'excursionDetail/CLEAR_STATE',
   GET_EXCURSION_BY_ID: 'excursionDetail/GET_EXCURSION_BY_ID',

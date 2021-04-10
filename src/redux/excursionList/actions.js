@@ -1,7 +1,5 @@
 import gql from 'graphql-tag'
 
-import { mutate } from 'core/api/apollo'
-
 const actions = {
   SET_STATE: 'excursionList/SET_STATE',
   GET_EXCURSIONS_FAILURE: 'excursionList/GET_EXCURSIONS_FAILURE',
@@ -37,7 +35,7 @@ const excursionFragment = gql`
   }
 `
 
-export const fetchExcursions = gql`
+export const FETCH_EXCURSIONS = gql`
   {
     excursions {
       ...ExcursionFragment
@@ -46,34 +44,9 @@ export const fetchExcursions = gql`
   ${excursionFragment}
 `
 
-export const deleteExcursion = (id) => ({
-  type: actions.DELETE_EXCURSION,
-  payload: { loading: true },
-  request: () =>
-    mutate({
-      mutation: gql`
-        mutation deleteExcursion($id: String!) {
-          deleteExcursion(id: $id)
-        }
-      `,
-      variables: {
-        id,
-      },
-    }),
-})
-
-export const deleteExcursionsSuccess = (id) => ({
-  type: actions.DELETE_EXCURSION_SUCCESS,
-  payload: {
-    id,
-  },
-})
-
-export const deleteExcursionsFailure = () => ({
-  type: actions.DELETE_EXCURSIONS_FAILURE,
-  payload: {
-    isLoading: false,
-  },
-})
-
+export const DELETE_EXCURSION = gql`
+  mutation deleteExcursion($id: String!) {
+    deleteExcursion(id: $id)
+  }
+`
 export default actions

@@ -53,22 +53,6 @@ const PassengerForm = ({ form, formSteps, passengerStatus }) => {
     [form, dispatch],
   )
 
-  const saveAndRedirectTo = useCallback(
-    (redirect) => {
-      form.validateFields(async (error, values) => {
-        if (!error) {
-          const { keys, ...data } = values
-          await dispatch({
-            type: passengerActions.SAVE_PASSENGER,
-            payload: { status: passengerStatus, ...data },
-          })
-          history.push(redirect)
-        }
-      })
-    },
-    [form, dispatch, passengerStatus, history],
-  )
-
   return (
     <SkeletonForm isLoading={isLoading} rows={3}>
       <Form id="passenger-form" hideRequiredMark colon={false} onSubmit={onSubmit}>
