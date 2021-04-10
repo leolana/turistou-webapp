@@ -78,7 +78,7 @@ const routes = [
     component: loadable(() => import('containers/passenger/list')),
   },
   {
-    path: '/excursion/:excursionId/passenger/',
+    path: '/excursion/:excursionId/passenger/:status(booked|waiting)',
     component: loadable(() => import('containers/passenger/box')),
   },
 

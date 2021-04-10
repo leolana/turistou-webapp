@@ -7,7 +7,7 @@ import FormStepButtonsActions from 'components/Step/FormStepButtonsActions'
 import SkeletonForm from 'components/SkeletonForm/SkeletonForm'
 import passengerActions from 'redux/passengerDetail/actions'
 
-const PassengerForm = ({ form, formSteps }) => {
+const PassengerForm = ({ form, formSteps, passengerStatus }) => {
   const dispatch = useDispatch()
   const history = useHistory()
   const { current: currentStep } = useSelector((state) => state.step)
@@ -43,6 +43,7 @@ const PassengerForm = ({ form, formSteps }) => {
     (fields, doSuccess) => {
       form.validateFields(fields, { first: true }, (error, values) => {
         if (!error) {
+          // TO DO: PERGUNTAR SE DEVO INSERIR STATUS NO PAYLOAD
           dispatch({ type: passengerActions.SET_PAYLOAD, payload: values })
 
           doSuccess()
@@ -50,6 +51,22 @@ const PassengerForm = ({ form, formSteps }) => {
       })
     },
     [form, dispatch],
+  )
+
+  const saveAndRedirectTo = useCallback(
+    (redirect) => {
+      form.validateFields(async (error, values) => {
+        if (!error) {
+          const { keys, ...data } = values
+          await dispatch({
+            type: passengerActions.SAVE_PASSENGER,
+            payload: { status: passengerStatus, ...data },
+          })
+          history.push(redirect)
+        }
+      })
+    },
+    [form, dispatch, passengerStatus, history],
   )
 
   return (

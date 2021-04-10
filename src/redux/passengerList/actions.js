@@ -18,12 +18,19 @@ const passengerFragment = gql`
     status
     customer {
       name
+      document {
+        documentNumber
+      }
+      address {
+        city
+      }
     }
     ticketPrice {
       description
       price
     }
     amountPaid
+    amountRefunded
   }
 `
 export const fetchPassengers = (filter) => ({
