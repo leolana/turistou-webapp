@@ -49,7 +49,7 @@ const PassengerChoice = ({ form }) => {
       label: x.description,
       price: x.price,
     }))
-    options.unshift({ value: 0, label: 'Passagem normal', price: ticketPriceDefault })
+    options.unshift({ value: '0', label: 'Passagem normal', price: ticketPriceDefault })
     return options
   }, [excursion])
 
@@ -74,7 +74,7 @@ const PassengerChoice = ({ form }) => {
           onChange={(e) => storagePassengerTicket(e.target.value)}
         >
           {form.getFieldDecorator('ticketPriceId', {
-            initialValue: 0,
+            initialValue: '0',
             rules: [{ required: false }],
           })(<Radio.Group options={ticketOptions} />)}
         </Form.Item>
