@@ -116,7 +116,7 @@ const ExcursionList = ({ filter }) => {
   const tableColumns = useMemo(() => {
     const renderActionsButtons = (id) => (
       <div className="table-action-buttons">
-        <Link to={`${id}/passenger`}>
+        <Link to={`${id}/passenger/booked`}>
           <Button ghost size="small" type="primary" title="Adicionar passageiro">
             <i className="fa fa-user-plus" />
           </Button>

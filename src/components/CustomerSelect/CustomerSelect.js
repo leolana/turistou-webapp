@@ -1,17 +1,7 @@
-import React, { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import React from 'react'
 import { Select, Divider } from 'antd'
-import { fetchCustomers } from 'redux/customerList/actions'
 
-export const CustomerSelect = ({ onChange }, ref) => {
-  const dispatch = useDispatch()
-
-  const { payload: customers } = useSelector((state) => state.customerList)
-
-  useEffect(() => {
-    if (!customers || !customers.length) dispatch(fetchCustomers())
-  }, [customers, dispatch])
-
+export const CustomerSelect = ({ onChange, customerList = [] }, ref) => {
   return (
     <Select
       ref={ref}
@@ -32,7 +22,7 @@ export const CustomerSelect = ({ onChange }, ref) => {
         </>
       )}
     >
-      {customers.map((x) => (
+      {customerList.map((x) => (
         <Select.Option key={x.id} value={x.id}>
           {`${x.name} - ${x.document.documentNumber} - ${x.address.city}`}
         </Select.Option>

@@ -1,55 +1,52 @@
-import React, { Component } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { Row, Col, Button } from 'antd'
 import Transport from './Transport'
 
-class ExcursionTransport extends Component {
-  constructor() {
-    super()
-    this.state = { transports: [] }
-  }
+const ExcursionTransport = ({ form, initialValues }) => {
+  const [transports, setTransports] = useState(null)
 
-  addTransport = () => {
-    const { transports } = this.state
-    const last = transports.length ? transports[transports.length - 1] : 0
-    transports.push(last + 1)
-    this.setState({ transports })
-  }
+  const addTransport = useCallback(() => {
+    setTransports((transports) => {
+      const last = transports.length ? transports[transports.length - 1].key : 0
+      return [...transports, { key: last + 1 }]
+    })
+  }, [])
 
-  removeTransport = index => {
-    let { transports } = this.state
-    transports = transports.filter(x => index !== x)
-    this.setState({ transports })
-  }
+  // TODO: pop confirm do delete
+  const removeTransport = useCallback((index) => {
+    setTransports((transports) => transports.filter((x) => index !== x))
+  }, [])
 
-  render() {
-    const { transports } = this.state
-    const { form } = this.props
-    const { getFieldDecorator, getFieldValue } = form
+  useEffect(() => {
+    if (!initialValues.id || !initialValues.transports) {
+      setTransports([])
+    } else {
+      setTransports(initialValues.transports.map((x, i) => ({ ...x, key: i })))
+    }
+  }, [initialValues])
 
-    getFieldDecorator('transportsKeys', { initialValue: transports })
-    const transportsKeys = getFieldValue('transportsKeys')
+  return (
+    <Row>
+      <Col>
+        {transports?.map((data, index) => (
+          <Transport
+            key={index}
+            index={index}
+            removeTransport={removeTransport}
+            form={form}
+            data={data}
+          />
+        ))}
+      </Col>
 
-    return (
-      <Row>
-        <Col>
-          {transportsKeys.map((x, index) => (
-            <Transport
-              key={index.toString()}
-              index={x}
-              removeTransport={this.removeTransport}
-              {...this.props}
-            />
-          ))}
-        </Col>
-
-        <Col xs={{ span: 16, offset: 4 }} md={{ span: 8, offset: 8 }}>
-          <Button block type="dashed" onClick={this.addTransport}>
-            <i className="fa fa-plus mr-3" />
-            Adicionar transporte
-          </Button>
-        </Col>
-      </Row>
-    )
-  }
+      <Col xs={{ span: 16, offset: 4 }} md={{ span: 8, offset: 8 }}>
+        <Button block type="dashed" onClick={addTransport}>
+          <i className="fa fa-plus mr-3" />
+          Adicionar transporte
+        </Button>
+      </Col>
+    </Row>
+  )
 }
+
 export default ExcursionTransport
