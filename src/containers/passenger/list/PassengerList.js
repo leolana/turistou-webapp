@@ -13,6 +13,8 @@ import SwapPassengerForm from 'containers/passenger/box/swapForm/SwapPassengerFo
 import PaymentUpdateForm from 'components/PaymentUpdateForm/PaymentUpdateForm'
 import DeletePassengerForm from 'containers/passenger/box/deleteForm/DeletePassengerForm'
 
+import style from './style.module.scss'
+
 const statusesEnum = {
   booked: 'BOOKED',
   waiting: 'WAITING',
@@ -234,7 +236,7 @@ const PassengerList = (props) => {
               }}
             />
           ) : (
-            'Pago'
+            <span className={style.paid}>Pago</span>
           )
         },
       },
