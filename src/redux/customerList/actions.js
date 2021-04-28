@@ -8,6 +8,11 @@ const actions = {
   GET_CUSTOMERS_FAILURE: 'customerList/GET_CUSTOMERS_FAILURE',
 }
 
+export const setCustomerListState = (payload) => ({
+  type: actions.SET_STATE,
+  payload,
+})
+
 const customerFragment = gql`
   fragment CustomerFragment on Customer {
     id
@@ -24,20 +29,21 @@ const customerFragment = gql`
   }
 `
 
-// TODO: add filter by company
+export const FETCH_CUSTOMERS = gql`
+  {
+    customers {
+      ...CustomerFragment
+    }
+  }
+  ${customerFragment}
+`
+
 export const fetchCustomers = () => ({
   type: actions.GET_CUSTOMERS,
   payload: { loading: true },
   request: () =>
     query({
-      query: gql`
-        {
-          customers {
-            ...CustomerFragment
-          }
-        }
-        ${customerFragment}
-      `,
+      query: FETCH_CUSTOMERS,
     }),
 })
 

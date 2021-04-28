@@ -1,41 +1,40 @@
 import React, { useEffect, useMemo } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { useQuery } from '@apollo/react-hooks'
 import { Button } from 'antd'
 
-import { fetchCustomers } from 'redux/customerList/actions'
+import { FETCH_CUSTOMERS } from 'redux/customerList/actions'
 import SkeletonTable from 'components/SkeletonTable/SkeletonTable'
 
 const CustomerList = () => {
-  const dispatch = useDispatch()
-  const { /* filter, */ payload: customers, isLoading } = useSelector((state) => state.customerList)
+  const { filter } = useSelector((state) => state.customerList)
+
+  const { loading: isLoading, data: { customers } = {}, refetch: getCustomers } = useQuery(
+    FETCH_CUSTOMERS,
+  )
 
   useEffect(() => {
-    dispatch(fetchCustomers())
-  }, [dispatch])
+    getCustomers()
+  }, [getCustomers])
 
-  // FIXME: filters
-  // const filterCustomers = useCallback(() => {
-  //   const { query } = filter
+  const filteredData = useMemo(() => {
+    const { query } = filter
 
-  //   let filteredData = customers
-  //   if (query) {
-  //     const lowerQuery = query.toLowerCase()
-  //     filteredData = filteredData.filter(customer => {
-  //       const { name, city } = customer
-  //       const customData = `${name.toLowerCase()} ${city.toLowerCase()}`
+    let filteredData = customers
+    if (query) {
+      const lowerQuery = query.toLowerCase()
+      filteredData = filteredData.filter((customer) => {
+        const { name = '', city = '' } = customer
+        const customData = `${name.toLowerCase()} ${city.toLowerCase()}`
 
-  //       if (customData.includes(lowerQuery)) return true
+        if (customData.includes(lowerQuery)) return true
 
-  //       return lowerQuery.split(' ').every(q => customData.includes(q.trim()))
-  //     })
-  //   }
-  //   return filteredData
-  // }, [customers, filter])
-
-  // FIXME: filters
-  // const filteredData = useMemo(() => filterCustomers(), [])
-  // console.log('filteredData', filteredData)
+        return lowerQuery.split(' ').every((q) => customData.includes(q.trim()))
+      })
+    }
+    return filteredData
+  }, [customers, filter])
 
   const tableColumns = useMemo(
     () => [
@@ -69,7 +68,9 @@ const CustomerList = () => {
     [],
   )
 
-  return <SkeletonTable isLoading={isLoading} tableData={customers} tableColumns={tableColumns} />
+  return (
+    <SkeletonTable isLoading={isLoading} tableData={filteredData} tableColumns={tableColumns} />
+  )
 }
 
 export default CustomerList
