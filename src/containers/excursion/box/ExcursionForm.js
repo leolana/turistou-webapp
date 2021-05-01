@@ -8,7 +8,7 @@ import {
   SAVE_EXCURSION,
   GET_EXCURSION_BY_ID,
   setExcursionState,
-  sequelizeExcursionDetail,
+  serializeExcursionDetail,
 } from 'redux/excursionDetail/actions'
 import FormStepButtonsActions from 'components/Step/FormStepButtonsActions'
 import SkeletonForm from 'components/SkeletonForm/SkeletonForm'
@@ -35,7 +35,7 @@ const ExcursionForm = ({ form, formSteps }) => {
 
   const saveForm = useCallback(
     (payload) => {
-      const input = sequelizeExcursionDetail({ ...payload, id: excursionId })
+      const input = serializeExcursionDetail({ ...payload, id: excursionId })
       save({ mutation: SAVE_EXCURSION, variables: { input } })
     },
     [save, excursionId],

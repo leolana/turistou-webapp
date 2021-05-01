@@ -1,7 +1,6 @@
 // @flow
 import gql from 'graphql-tag'
 import { DateTime } from 'luxon'
-
 import { query } from 'core/api/apollo'
 
 export const actions = {
@@ -95,7 +94,7 @@ export const getExcursionByIdFailure = () => ({
   isLoading: false,
 })
 
-export const sequelizeExcursionDetail = (form) => {
+export const serializeExcursionDetail = (form) => {
   const {
     departureDate,
     departureTime,

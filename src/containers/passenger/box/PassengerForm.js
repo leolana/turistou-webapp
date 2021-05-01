@@ -7,7 +7,7 @@ import FormStepButtonsActions from 'components/Step/FormStepButtonsActions'
 import SkeletonForm from 'components/SkeletonForm/SkeletonForm'
 import passengerActions from 'redux/passengerDetail/actions'
 
-const PassengerForm = ({ form, formSteps, passengerStatus }) => {
+const PassengerForm = ({ form, formSteps }) => {
   const dispatch = useDispatch()
   const history = useHistory()
   const { current: currentStep } = useSelector((state) => state.step)

@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Link, useParams } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
+import { useQuery } from '@apollo/react-hooks'
 import { Row, Button, Col, Dropdown, Menu } from 'antd'
 
 import { fetchCustomers } from 'redux/customerList/actions'
-import { fetchPassengers } from 'redux/passengerList/actions'
-import { getExcursionById } from 'redux/excursionDetail/actions'
+import { FETCH_PASSENGERS, setPassengerListState } from 'redux/passengerList/actions'
 import PassengerList from './PassengerList'
 import PassengerFilter from './PassengerFilter'
 
@@ -42,15 +42,28 @@ const Passenger = () => {
     fullPay: false,
   })
 
+  const {
+    loading,
+    data: { passengers = [] } = {},
+    refetch: getPassengers,
+  } = useQuery(FETCH_PASSENGERS, { variables: { filter } })
+
   useEffect(() => {
-    dispatch(fetchPassengers(filter))
-  }, [filter, dispatch])
+    getPassengers()
+  }, [getPassengers])
+
+  useEffect(() => {
+    dispatch(
+      setPassengerListState({
+        payload: passengers,
+        isLoading: loading,
+      }),
+    )
+  }, [dispatch, loading, passengers])
+
   useEffect(() => {
     dispatch(fetchCustomers())
   }, [dispatch])
-  useEffect(() => {
-    dispatch(getExcursionById(excursionId))
-  }, [excursionId, dispatch])
 
   return (
     <div>

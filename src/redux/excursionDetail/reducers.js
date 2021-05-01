@@ -1,5 +1,5 @@
 import moment from 'moment'
-import actions from './actions'
+import { actions } from './actions'
 
 const initialState = {
   isLoading: false,
