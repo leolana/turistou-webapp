@@ -5,7 +5,6 @@ import { Helmet } from 'react-helmet'
 import { useQuery } from '@apollo/react-hooks'
 import { Row, Button, Col, Dropdown, Menu } from 'antd'
 
-import { fetchCustomers } from 'redux/customerList/actions'
 import { FETCH_PASSENGERS, setPassengerListState } from 'redux/passengerList/actions'
 import PassengerList from './PassengerList'
 import PassengerFilter from './PassengerFilter'
@@ -60,10 +59,6 @@ const Passenger = () => {
       }),
     )
   }, [dispatch, loading, passengers])
-
-  useEffect(() => {
-    dispatch(fetchCustomers())
-  }, [dispatch])
 
   return (
     <div>

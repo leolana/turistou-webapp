@@ -62,7 +62,7 @@ export const saveCustomerSuccess = (payload) => ({
 })
 
 export const saveCustomerFailure = (payload) => ({
-  type: actions.GET_CUSTOMERS_FAILURE,
+  type: actions.SAVE_CUSTOMER_FAILURE,
   payload: { ...payload },
   isLoading: false,
 })
