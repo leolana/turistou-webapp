@@ -6,7 +6,7 @@ import passengerStatusActions from 'redux/passengerStatus/actions'
 
 const DeletePassengerForm = ({ form, formId, onSubmit }) => {
   const dispatch = useDispatch()
-  const { payload: passengerStatus } = useSelector((state) => state.passengerStatus, [dispatch])
+  const { payload: passengerStatus } = useSelector((state) => state.passengerStatus)
   const storagePassengerStatus = useCallback(
     (payload) => dispatch({ type: passengerStatusActions.SET_PAYLOAD, payload }),
     [dispatch],

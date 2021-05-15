@@ -13,6 +13,8 @@ import SwapPassengerForm from 'containers/passenger/box/swapForm/SwapPassengerFo
 import PaymentUpdateForm from 'components/PaymentUpdateForm/PaymentUpdateForm'
 import DeletePassengerForm from 'containers/passenger/box/deleteForm/DeletePassengerForm'
 
+import style from './style.module.scss'
+
 const statusesEnum = {
   booked: 'BOOKED',
   waiting: 'WAITING',
@@ -196,18 +198,18 @@ const PassengerList = (props) => {
         title: 'Situação',
         dataIndex: 'status',
         key: 'status',
+        className: 'text-center',
         render: (_, row) => {
-          const { id, passengerId, status, operation } = row
+          const { id, passengerId, status, method } = row
 
           const payload = {
             passengerId,
             paymentId: id,
           }
 
-          return (
+          return method === 'PAYMENT_BANK_SLIP' ? (
             <PaymentSelect
               status={status}
-              disabled={operation === 'CHARGE_BACK'}
               onChange={(statusModified) => {
                 if (statusModified === 'paid') {
                   return setToPaid(payload)
@@ -218,12 +220,23 @@ const PassengerList = (props) => {
                 }
 
                 if (statusModified === 'canceled') {
-                  return setPaymentStatusToCanceled(payload)
+                  return Modal.confirm({
+                    okCancel: true,
+                    cancelText: 'Não',
+                    okText: 'Sim',
+                    title: 'Cancelar pagamento?',
+                    content: 'Deseja cancelar esse pagamento? Você não poderá reverter essa ação.',
+                    onOk: () => {
+                      setPaymentStatusToCanceled(payload)
+                    },
+                  })
                 }
 
                 throw Error(`ERROR: status payment not found: ${statusModified}`)
               }}
             />
+          ) : (
+            <span className={style.paid}>Pago</span>
           )
         },
       },
@@ -252,23 +265,27 @@ const PassengerList = (props) => {
   const contentForPaymentsUpdate = () => {
     const content = (
       <Row>
-        <Col sm={12}>
+        <Col sm={8}>
+          <div>
+            Valor pago anteriormente: <span>{paymentStatus.previousPaid}</span>
+          </div>
+        </Col>
+        <Col sm={8}>
+          <div>
+            Total pago: <span>{paymentStatus.amountPaid}</span>
+          </div>
+        </Col>
+        <Col sm={8}>
+          <div>
+            Valor faltante: <span>{paymentStatus.remaining}</span>
+          </div>
+        </Col>
+        <Col sm={24}>
           <PaymentUpdateForm
             formId="paymentUpdateForm"
             onSubmit={addPayment}
             remaining={paymentStatus.remaining}
           />
-        </Col>
-        <Col sm={12} className="pl-4">
-          <div>
-            Valor pago anteriormente: <span>{paymentStatus.previousPaid}</span>
-          </div>
-          <div>
-            Total pago: <span>{paymentStatus.amountPaid}</span>
-          </div>
-          <div>
-            Valor faltante: <span>{paymentStatus.remaining}</span>
-          </div>
         </Col>
       </Row>
     )
@@ -533,6 +550,8 @@ const PassengerList = (props) => {
     return { ...passenger, ...passengerPresenterModified }
   })
 
+  const filteredPayments = payments.filter((payment) => payment.status !== 'CANCELED')
+
   // TODO:
   const filteredData = passengersList // this.filterData(passengersList)
 
@@ -594,7 +613,7 @@ const PassengerList = (props) => {
           className="utils__scrollTable"
           scroll={{ x: '100%' }}
           columns={columnsForPayments()}
-          dataSource={payments}
+          dataSource={filteredPayments}
           pagination={false}
           loading={isPaymentsLoading}
         />
