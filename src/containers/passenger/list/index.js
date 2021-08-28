@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Link, useParams } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
-import { useQuery } from '@apollo/react-hooks'
+import { useQuery } from 'react-apollo'
 import { Row, Button, Col, Dropdown, Menu } from 'antd'
 
 import { FETCH_PASSENGERS, setPassengerListState } from 'redux/passengerList/actions'
@@ -48,8 +48,8 @@ const Passenger = () => {
   } = useQuery(FETCH_PASSENGERS, { variables: { filter } })
 
   useEffect(() => {
-    getPassengers()
-  }, [getPassengers])
+    getPassengers({ variables: { filter } })
+  }, [getPassengers, filter])
 
   useEffect(() => {
     dispatch(

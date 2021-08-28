@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory, useParams } from 'react-router'
-import { useMutation, useQuery } from '@apollo/react-hooks'
+import { useLazyQuery, useMutation } from 'react-apollo'
 import { Form } from 'antd'
 
 import {
@@ -19,10 +19,12 @@ const ExcursionForm = ({ form, formSteps }) => {
   const { excursionId } = useParams()
 
   const [save, { loading: saving, error }] = useMutation(SAVE_EXCURSION)
-  const {
-    loading: getting,
-    data: { excursion: excursionDetail } = {},
-  } = useQuery(GET_EXCURSION_BY_ID, { variables: { id: excursionId } })
+  const [getExcursion, { loading: getting, data: { excursion: excursionDetail } = {} }] =
+    useLazyQuery(GET_EXCURSION_BY_ID, { variables: { id: excursionId } })
+
+  useEffect(() => {
+    if (excursionId) getExcursion()
+  }, [getExcursion, excursionId])
 
   const { current } = useSelector((state) => state.step)
 
