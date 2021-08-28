@@ -13,13 +13,6 @@ export default function reducer(state = initialState, action) {
         payload: { ...state.payload, ...action.payload },
       }
 
-    case actions.SAVE_CUSTOMER:
-      return {
-        ...state,
-        isLoading: true,
-        payload: action.payload,
-      }
-
     default:
       return state
   }

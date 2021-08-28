@@ -1,81 +1,117 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import { Form } from 'antd'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useHistory, useParams } from 'react-router'
+import { useLazyQuery, useMutation } from 'react-apollo'
+import { Form, notification } from 'antd'
 
 import FormStepButtonsActions from 'components/Step/FormStepButtonsActions'
+import {
+  GET_CUSTOMER_BY_ID,
+  SAVE_CUSTOMER,
+  serializeCustomerDetail,
+  setCustomerState,
+} from 'redux/customerDetail/actions'
 import SkeletonForm from 'components/SkeletonForm/SkeletonForm'
-import actions from 'redux/customerDetail/actions'
-import { push } from 'connected-react-router'
 
-@Form.create()
-class CustomerForm extends Component {
-  onSaveFormAndAddNew = () => {
-    const { form, saveForm, resetForm } = this.props
+const CustomerForm = ({ form, formSteps }) => {
+  const dispatch = useDispatch()
+  const history = useHistory()
+  const { customerId } = useParams()
 
+  const [saveCustomer, { loading: saving, error }] = useMutation(SAVE_CUSTOMER)
+  const [getCustomer, { loading: getting, data: { customer: customerDetail } = {} }] = useLazyQuery(
+    GET_CUSTOMER_BY_ID,
+    { variables: { id: customerId } },
+  )
+
+  useEffect(() => {
+    if (customerId) getCustomer()
+  }, [getCustomer, customerId])
+
+  const initialValues = useMemo(() => {
+    return customerDetail?.id ? customerDetail : {}
+  }, [customerDetail])
+
+  const saveForm = useCallback(
+    async (payload) => {
+      const input = serializeCustomerDetail({ ...payload, id: customerId })
+      await saveCustomer({ mutation: SAVE_CUSTOMER, variables: { input } })
+      notification.success({
+        message: 'Sucesso',
+        description: 'Novo cliente cadastrado com sucesso!',
+      })
+    },
+    [saveCustomer, customerId],
+  )
+  const { current } = useSelector((state) => state.step)
+  const isLoading = useMemo(() => saving || getting, [saving, getting])
+  const [waitSavingAndRedirectTo, setWaitSavingAndRedirectTo] = useState(false)
+
+  const onSaveFormAndAddNew = useCallback(() => {
     form.validateFields(async (error, values) => {
       if (!error) {
         await saveForm(values)
-        resetForm()
+        setWaitSavingAndRedirectTo('/clientes')
+        form.resetFields()
       }
     })
-  }
+  }, [form, saveForm, setWaitSavingAndRedirectTo])
 
-  onSubmit = event => {
-    event.preventDefault()
-    const { form, saveForm, redirectToCustomerList } = this.props
-    form.validateFields(async (error, values) => {
-      if (!error) {
+  const onSubmit = useCallback(
+    (event) => {
+      event.preventDefault()
+      form.validateFields(async (error, values) => {
+        if (error) {
+          // TODO: tratar erro
+          return
+        }
         await saveForm(values)
-        redirectToCustomerList()
-      }
-    })
-  }
+        setWaitSavingAndRedirectTo('/clientes/lista')
+      })
+    },
+    [form, saveForm, setWaitSavingAndRedirectTo],
+  )
 
-  saveStepHandler = (fields, doSuccess) => {
-    const { form, saveStep } = this.props
-    form.validateFields(fields, { first: true }, (error, values) => {
-      if (!error) {
-        saveStep(values)
+  const saveStepHandler = useCallback(
+    (fields, doSuccess) => {
+      form.validateFields(fields, { first: true }, (error, values) => {
+        if (error) {
+          // TODO: tratar erro
+          return
+        }
+        dispatch(setCustomerState(values))
 
         doSuccess()
-      }
-    })
-  }
+      })
+    },
+    [form, dispatch],
+  )
 
-  render() {
-    const { currentStep, formSteps, form, isLoading } = this.props
-
-    return (
-      <SkeletonForm isLoading={isLoading}>
-        <Form layout="vertical" className="customer-form" onSubmit={this.onSubmit}>
-          {formSteps.map((x, i) => (
-            <div key={x.title} style={{ display: currentStep === i ? 'block' : 'none' }}>
-              <x.component form={form} />
-              <div className="form-actions">
-                <FormStepButtonsActions
-                  lastStep={formSteps.length - 1}
-                  validationFields={x.fields}
-                  onSaveStep={this.saveStepHandler}
-                  onSaveFormAndAddNew={this.onSaveFormAndAddNew}
-                />
-              </div>
+  useEffect(() => {
+    if (error) {
+      // TODO: tratar erro
+      return
+    }
+    if (waitSavingAndRedirectTo && !saving) history.push(waitSavingAndRedirectTo)
+  }, [waitSavingAndRedirectTo, saving, error, history])
+  return (
+    <SkeletonForm isLoading={isLoading}>
+      <Form layout="vertical" className="customer-form" onSubmit={onSubmit}>
+        {formSteps.map((x, i) => (
+          <div key={x.title} hidden={current !== i}>
+            <x.component form={form} initialValues={initialValues} />
+            <div className="form-actions">
+              <FormStepButtonsActions
+                lastStep={formSteps.length - 1}
+                validationFields={x.fields}
+                onSaveStep={saveStepHandler}
+                onSaveFormAndAddNew={onSaveFormAndAddNew}
+              />
             </div>
-          ))}
-        </Form>
-      </SkeletonForm>
-    )
-  }
+          </div>
+        ))}
+      </Form>
+    </SkeletonForm>
+  )
 }
-
-const mapStateToProps = ({ step }) => ({
-  currentStep: step.current,
-})
-
-const mapDispatchToProps = dispatch => ({
-  saveStep: values => dispatch({ type: actions.SET_STATE, payload: values }),
-  saveForm: values => dispatch({ type: actions.SAVE_CUSTOMER, payload: values }),
-  resetForm: () => dispatch(push('/clientes')),
-  redirectToCustomerList: () => dispatch(push('/clientes/list')),
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(CustomerForm)
+export default Form.create()(CustomerForm)
