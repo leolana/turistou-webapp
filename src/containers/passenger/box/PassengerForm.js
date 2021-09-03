@@ -15,15 +15,15 @@ const PassengerForm = ({ form, formSteps, passengerStatus }) => {
 
   const onSaveFormAndAddNew = useCallback(() => {
     saveAndRedirectTo(`${history.location.pathname}`)
-  }, [saveAndRedirectTo, history])
+  }, [saveAndRedirectTo, history.location.pathname])
 
   const onSubmit = useCallback(
     (event) => {
       event.preventDefault()
-
-      saveAndRedirectTo(`${history.location.pathname}/list`)
+      const passengersRoute = history.location.pathname.replace('/booked', '')
+      saveAndRedirectTo(`${passengersRoute}/list`)
     },
-    [saveAndRedirectTo, history],
+    [history.location.pathname, saveAndRedirectTo],
   )
 
   const saveStepHandler = useCallback(
@@ -49,6 +49,7 @@ const PassengerForm = ({ form, formSteps, passengerStatus }) => {
             type: passengerActions.SAVE_PASSENGER,
             payload: { status: passengerStatus, ...data },
           })
+          form.resetFields()
           history.push(redirect)
         }
       })
