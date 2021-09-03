@@ -1,26 +1,19 @@
 import React from 'react'
-import { Select, Divider } from 'antd'
+import { Select } from 'antd'
 
-export const CustomerSelect = ({ onChange, customerList = [] }, ref) => {
+export const CustomerSelect = ({ value = null, onChange, customerList = [] }, ref) => {
   return (
     <Select
       ref={ref}
       size="default"
+      value={value}
       // TODO: max options show
       showSearch
       filterOption={(q, option) =>
         q.split(' ').every((x) => option.props.children.toLowerCase().includes(x))
       }
       onChange={onChange}
-      dropdownRender={(menu) => (
-        <>
-          {menu}
-          <Divider style={{ margin: '4px 0' }} />
-          <div style={{ padding: '8px', cursor: 'pointer' }}>
-            <i className="fa fa-plus" /> Novo cliente
-          </div>
-        </>
-      )}
+      dropdownRender={(menu) => <>{menu}</>}
     >
       {customerList.map((x) => (
         <Select.Option key={x.id} value={x.id}>

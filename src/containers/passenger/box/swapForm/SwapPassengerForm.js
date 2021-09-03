@@ -36,7 +36,8 @@ const SwapPassengerForm = ({ form, formId, onSubmit }) => {
     <Form id={formId} onSubmit={handleSubmit}>
       <Form.Item label="Trocar passageiro atual pelo(a)">
         {form.getFieldDecorator('customerId', {
-          rules: [{ required: true, message: 'Campo requirido.' }],
+          initialValue: null,
+          rules: [{ required: true, message: 'Campo requerido.' }],
         })(<CustomerSelect onChange={setPassengerToBeSwappedWith} customerList={customers} />)}
       </Form.Item>
     </Form>
