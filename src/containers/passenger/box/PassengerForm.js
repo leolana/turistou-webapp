@@ -7,36 +7,23 @@ import FormStepButtonsActions from 'components/Step/FormStepButtonsActions'
 import SkeletonForm from 'components/SkeletonForm/SkeletonForm'
 import passengerActions from 'redux/passengerDetail/actions'
 
-const PassengerForm = ({ form, formSteps }) => {
+const PassengerForm = ({ form, formSteps, passengerStatus }) => {
   const dispatch = useDispatch()
   const history = useHistory()
   const { current: currentStep } = useSelector((state) => state.step)
   const { isLoading } = useSelector((state) => state.excursionDetail)
 
-  const saveAndRedirectTo = useCallback(
-    (redirect) => {
-      form.validateFields(async (error, values) => {
-        if (!error) {
-          const { keys, ...data } = values
-          await dispatch({ type: passengerActions.SAVE_PASSENGER, payload: data })
-          history.push(redirect)
-        }
-      })
-    },
-    [form, history, dispatch],
-  )
-
   const onSaveFormAndAddNew = useCallback(() => {
     saveAndRedirectTo(`${history.location.pathname}`)
-  }, [saveAndRedirectTo, history])
+  }, [saveAndRedirectTo, history.location.pathname])
 
   const onSubmit = useCallback(
     (event) => {
       event.preventDefault()
-
-      saveAndRedirectTo(`${history.location.pathname}/list`)
+      const passengersRoute = history.location.pathname.replace('/booked', '')
+      saveAndRedirectTo(`${passengersRoute}/list`)
     },
-    [saveAndRedirectTo, history],
+    [history.location.pathname, saveAndRedirectTo],
   )
 
   const saveStepHandler = useCallback(
@@ -51,6 +38,23 @@ const PassengerForm = ({ form, formSteps }) => {
       })
     },
     [form, dispatch],
+  )
+
+  const saveAndRedirectTo = useCallback(
+    (redirect) => {
+      form.validateFields(async (error, values) => {
+        if (!error) {
+          const { keys, ...data } = values
+          await dispatch({
+            type: passengerActions.SAVE_PASSENGER,
+            payload: { status: passengerStatus, ...data },
+          })
+          form.resetFields()
+          history.push(redirect)
+        }
+      })
+    },
+    [form, dispatch, passengerStatus, history],
   )
 
   return (

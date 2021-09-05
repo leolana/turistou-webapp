@@ -4,7 +4,7 @@ import { useQuery } from '@apollo/react-hooks'
 
 import { FETCH_CUSTOMERS, setCustomerListState } from 'redux/customerList/actions'
 
-export const CustomerSelect = ({ onChange }, ref) => {
+export const CustomerSelect = ({ value = null, onChange }, ref) => {
   const { data: { customers = [] } = {} } = useQuery(FETCH_CUSTOMERS)
 
   useEffect(() => {
@@ -15,22 +15,14 @@ export const CustomerSelect = ({ onChange }, ref) => {
     <Select
       ref={ref}
       size="default"
+      value={value}
       // TODO: max options show
       showSearch
       filterOption={(q, option) =>
         q.split(' ').every((x) => option.props.children.toLowerCase().includes(x))
       }
       onChange={onChange}
-      // FIXME: descomentar este botão quando consertar
-      // dropdownRender={(menu) => (
-      //   <>
-      //     {menu}
-      //     <Divider style={{ margin: '4px 0' }} />
-      //     <div style={{ padding: '8px', cursor: 'pointer' }}>
-      //       <i className="fa fa-plus" /> Novo cliente
-      //     </div>
-      //   </>
-      // )}
+      dropdownRender={(menu) => <>{menu}</>}
     >
       {customers.map((x) => (
         <Select.Option key={x.id} value={x.id}>
