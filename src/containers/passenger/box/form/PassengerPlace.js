@@ -5,9 +5,7 @@ import { useSelector } from 'react-redux'
 
 const PassengerPlace = (props) => {
   const { form } = props
-
   const { payload: excursion } = useSelector((state) => state.excursionDetail)
-
   const vacancies =
     excursion && excursion.transports
       ? getVacancies(excursion.passengers, excursion.transports[0])
@@ -95,7 +93,7 @@ const getVacancies = (passengers, transports) => {
     .fill(null)
     .map((_, i) => {
       const number = i + 1
-      const free = !passengers.some((p) => p.spot === number)
+      const free = !passengers.some((p) => p.spot?.number === number)
 
       return { number, free }
     })
