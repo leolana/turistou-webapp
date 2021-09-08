@@ -16,9 +16,13 @@ import 'costom.scss'
 
 const pageTitle = 'Novo passageiro'
 const formSteps = [
-  { title: 'Passageiro', component: PassengerChoice },
-  { title: 'Pagamentos combinados', component: PassengerAgreedPayments },
-  { title: 'Assento', component: PassengerPlace },
+  { title: 'Passageiro', component: PassengerChoice, fields: ['customerId', 'ticketPriceId'] },
+  {
+    title: 'Pagamentos combinados',
+    component: PassengerAgreedPayments,
+    fields: ['paymentType', 'value', 'installmentQuantity', 'paymentFirstDue'],
+  },
+  { title: 'Assento', component: PassengerPlace, fields: ['transportId', 'spot', 'stopPointId'] },
 ]
 
 const ExcursionPassengers = (props) => {
