@@ -46,6 +46,7 @@
     "jwt-decode": "^3.0.0",
     "lodash": "^4.17.20",
     "luxon": "^1.25.0",
+    "moment": "^2.29.1",
     "nprogress": "^0.2.0",
     "peity-react": "^0.0.7",
     "qs": "^6.9.4",
@@ -71,11 +72,8 @@
     "store": "^2.0.12"
   },
   "devDependencies": {
-    "@babel/cli": "^7.13.14",
-    "@babel/core": "^7.13.15",
-    "@babel/plugin-proposal-class-properties": "^7.13.0",
-    "@babel/plugin-proposal-decorators": "^7.13.15",
-    "@babel/preset-flow": "^7.13.13",
+    "@babel/plugin-proposal-decorators": "^7.12.1",
+    "@babel/preset-flow": "^7.12.1",
     "babel-core": "^6.26.3",
     "babel-plugin-import": "^1.13.1",
     "babel-plugin-react-intl": "^8.2.10",
