@@ -1,17 +1,16 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useMemo } from 'react'
+import { useSelector } from 'react-redux'
 import { Row, Col, Form, Select } from 'antd'
 
-import { useSelector } from 'react-redux'
+import PassengerSummaryHeader from './_passengerResume'
 
-const PassengerPlace = (props) => {
-  const { form } = props
-
+const PassengerPlace = ({ form }) => {
   const { payload: excursion } = useSelector((state) => state.excursionDetail)
 
-  const vacancies =
-    excursion && excursion.transports
-      ? getVacancies(excursion.passengers, excursion.transports[0])
-      : []
+  const vacancies = useMemo(() => {
+    if (!excursion || !excursion.transports) return []
+    return getVacancies(excursion.passengers, excursion.transports[0])
+  }, [excursion])
 
   const getStopPoints = useCallback(() => {
     const { stopPoints = [] } = excursion
@@ -32,17 +31,7 @@ const PassengerPlace = (props) => {
 
   return (
     <div>
-      {/* TODO: componentizar este header */}
-      <Row className="mb-5">
-        <Col xs={24} md={12}>
-          <b>Passageiro: </b>
-          <span>Fulano da Silva</span>
-        </Col>
-        <Col xs={24} md={12}>
-          <b>Tipo de passagem: </b>
-          <span>Normal</span>
-        </Col>
-      </Row>
+      <PassengerSummaryHeader />
 
       <Row>
         <Col xs={24} sm={8} lg={6}>

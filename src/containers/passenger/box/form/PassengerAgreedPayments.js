@@ -3,9 +3,10 @@ import { useSelector } from 'react-redux'
 import { Form, Row, Col, Button } from 'antd'
 
 import AgreedPayment from './AgreedPayment'
+import PassengerSummaryHeader from './_passengerResume'
 
 const PassengerAgreedPayments = ({ form }) => {
-  const { customerName, ticket } = useSelector((state) => state.passengerDetail)
+  const { ticket } = useSelector((state) => state.passengerDetail)
 
   const [conditionLastId, setConditionLastId] = useState(1)
   const [keys, setKeys] = useState([1])
@@ -38,16 +39,7 @@ const PassengerAgreedPayments = ({ form }) => {
 
   return (
     <>
-      <Row className="mb-5">
-        <Col xs={24} md={12}>
-          <b>Passageiro: </b>
-          <span>{customerName}</span>
-        </Col>
-        <Col xs={24} md={12}>
-          <b>Tipo de passagem: </b>
-          {ticket && `${ticket.description}(R$ ${ticket.price})`}
-        </Col>
-      </Row>
+      <PassengerSummaryHeader />
       {/* TODO: fix warning */}
       {keys.map((k, i) => (
         <Form.Item key={`payment-condition--${k}`}>
