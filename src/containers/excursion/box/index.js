@@ -1,9 +1,7 @@
-import React, { useEffect, useMemo } from 'react'
-import { useDispatch } from 'react-redux'
+import React, { useMemo } from 'react'
 import { useParams } from 'react-router'
 import { Helmet } from 'react-helmet'
 
-import { getExcursionById } from 'redux/excursionDetail/actions'
 import FormSteps from 'components/Step/FormSteps'
 import ExcursionForm from './ExcursionForm'
 
@@ -31,15 +29,10 @@ const formSteps = [
 
 const ExcursionBox = (props) => {
   const { excursionId } = useParams()
-  const dispatch = useDispatch()
 
   const pageTitle = useMemo(() => (excursionId ? 'Editar excursão' : 'Nova excursão'), [
     excursionId,
   ])
-
-  useEffect(() => {
-    if (excursionId) dispatch(getExcursionById(excursionId))
-  }, [excursionId, dispatch])
 
   return (
     <div>

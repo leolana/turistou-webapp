@@ -2,11 +2,12 @@ import React, { useMemo, useCallback } from 'react'
 import { Select } from 'antd'
 
 const InstallmentSelect = ({ onChange, price, maxInstallment = 10 }, ref) => {
-  const createSelectLabel = (value) => (x) => (
-    <>
-      {x}&times; {`(${value ? (value / x).toFixed(2) : ''})`}
-    </>
-  )
+  const createSelectLabel = (value) => (x) =>
+    (
+      <>
+        {x}&times; {`(${value ? (value / x).toFixed(2) : ''})`}
+      </>
+    )
 
   const selectLabel = useCallback(createSelectLabel(price), [price])
 

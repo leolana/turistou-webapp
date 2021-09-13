@@ -1,12 +1,13 @@
 import gql from 'graphql-tag'
 
-import { query } from 'core/api/apollo'
-
 const actions = {
   SET_STATE: 'passengerList/SET_STATE',
-  GET_PASSENGERS: 'passengerList/GET_PASSENGERS',
-  GET_PASSENGERS_SUCCESS: 'passengerList/GET_PASSENGERS_SUCCESS',
 }
+
+export const setPassengerListState = (payload) => ({
+  type: actions.SET_STATE,
+  payload,
+})
 
 const passengerFragment = gql`
   fragment PassengerFragment on Passenger {
@@ -33,24 +34,14 @@ const passengerFragment = gql`
     amountRefunded
   }
 `
-export const fetchPassengers = (filter) => ({
-  type: actions.GET_PASSENGERS,
-  payload: { isLoading: true },
-  request: () =>
-    query({
-      query: gql`
-        query Passenger($filter: SearchPassengersInput!) {
-          passengers(filter: $filter) {
-            ...PassengerFragment
-          }
-        }
-        ${passengerFragment}
-      `,
-      variables: {
-        filter,
-      },
-    }),
-})
+export const FETCH_PASSENGERS = gql`
+  query Passenger($filter: SearchPassengersInput!) {
+    passengers(filter: $filter) {
+      ...PassengerFragment
+    }
+  }
+  ${passengerFragment}
+`
 
 export const fetchPassengersSuccess = ({ passengers }) => ({
   type: actions.SET_STATE,

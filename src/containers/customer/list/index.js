@@ -1,5 +1,5 @@
-import React, { Component } from 'react'
-import { Button, Row, Col } from 'antd'
+import React from 'react'
+import { Button, Row, Col, Card } from 'antd'
 import { Link } from 'react-router-dom'
 // import Authorize from 'components/LayoutComponents/Authorize'
 import { Helmet } from 'react-helmet'
@@ -16,40 +16,32 @@ const ButtonAdd = () => (
   </Button>
 )
 
-class Customer extends Component {
-  render() {
-    return (
-      <div>
-        <Helmet title={pageTitle} />
-        <div className="row">
-          <div className="col-lg-12">
-            <div className="card">
-              <div className="card-header">
-                <Row>
-                  <Col xs={18}>
-                    <div className="utils__title">
-                      <strong>{pageTitle}</strong>
-                    </div>
-                  </Col>
-                  <Col xs={6}>
-                    <ButtonAdd />
-                  </Col>
-                </Row>
-              </div>
-              <div className="card-body">
-                <CustomerFilter />
-                <CustomerList />
-
-                <div className="form-actions">
-                  <ButtonAdd />
-                </div>
-              </div>
+const Customer = () => {
+  return (
+    <>
+      <Helmet title={pageTitle} />
+      <Card>
+        <Row>
+          <Col xs={18}>
+            <div className="utils__title">
+              <strong>{pageTitle}</strong>
             </div>
+          </Col>
+          <Col xs={6}>
+            <ButtonAdd />
+          </Col>
+        </Row>
+        <>
+          <CustomerFilter />
+          <CustomerList />
+
+          <div className="form-actions">
+            <ButtonAdd />
           </div>
-        </div>
-      </div>
-    )
-  }
+        </>
+      </Card>
+    </>
+  )
 }
 
 export default Customer

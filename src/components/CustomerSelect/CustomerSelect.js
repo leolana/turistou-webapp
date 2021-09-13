@@ -1,7 +1,16 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Select } from 'antd'
+import { useQuery } from '@apollo/react-hooks'
 
-export const CustomerSelect = ({ value = null, onChange, customerList = [] }, ref) => {
+import { FETCH_CUSTOMERS, setCustomerListState } from 'redux/customerList/actions'
+
+export const CustomerSelect = ({ value = null, onChange }, ref) => {
+  const { data: { customers = [] } = {} } = useQuery(FETCH_CUSTOMERS)
+
+  useEffect(() => {
+    setCustomerListState({ payload: customers })
+  }, [customers])
+
   return (
     <Select
       ref={ref}
@@ -15,7 +24,7 @@ export const CustomerSelect = ({ value = null, onChange, customerList = [] }, re
       onChange={onChange}
       dropdownRender={(menu) => <>{menu}</>}
     >
-      {customerList.map((x) => (
+      {customers.map((x) => (
         <Select.Option key={x.id} value={x.id}>
           {`${x.name} - ${x.document.documentNumber} - ${x.address.city}`}
         </Select.Option>
