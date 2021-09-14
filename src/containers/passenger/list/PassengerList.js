@@ -544,7 +544,7 @@ const PassengerList = (props) => {
 
     const passengerPresenterModified = {
       paidColor: getPaidColor(paymentPercent),
-      spot: passenger.spot.number.toString().padStart(2, '0'),
+      spot: passenger.spot?.number?.toString().padStart(2, '0'),
     }
 
     return { ...passenger, ...passengerPresenterModified }
