@@ -15,9 +15,9 @@ const customerFragment = gql`
     name
     cellphone
     document {
-      documentNumber
-      documentDispatcher
-      documentDispatcherState
+      number
+      dispatcher
+      dispatcherState
     }
     address {
       city

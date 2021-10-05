@@ -20,7 +20,7 @@ const passengerFragment = gql`
     customer {
       name
       document {
-        documentNumber
+        number
       }
       address {
         city
