@@ -1,39 +1,32 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
+import React, { useCallback } from 'react'
+import { useDispatch } from 'react-redux'
 import { Input, Form } from 'antd'
+
 import actions from 'redux/customerList/actions'
 
-class CustomerFilter extends Component {
-  constructor() {
-    super()
+const CustomerFilter = () => {
+  const dispatch = useDispatch()
 
-    this.handleChangeQuery = this.handleChangeQuery.bind(this)
-  }
+  const handleChangeQuery = useCallback(
+    (e) => {
+      const query = e.target.value
+      dispatch({
+        type: actions.SET_STATE,
+        payload: { filter: { query } },
+      })
+    },
+    [dispatch],
+  )
 
-  handleChangeQuery(e) {
-    const query = e.target.value
-    const { dispatch } = this.props
-    dispatch({
-      type: actions.SET_STATE,
-      payload: { query },
-    })
-  }
-
-  render() {
-    return (
-      <Form layout="inline" className="mb-1">
-        <Input
-          type="text"
-          addonBefore={<i className="fa fa-search" />}
-          onChange={this.handleChangeQuery}
-        />
-      </Form>
-    )
-  }
+  return (
+    <Form layout="inline" className="mb-1">
+      <Input
+        type="text"
+        addonBefore={<i className="fa fa-search" />}
+        onChange={handleChangeQuery}
+      />
+    </Form>
+  )
 }
 
-const mapStateToProps = state => ({
-  queryFilter: state.excursionList.query,
-})
-
-export default connect(mapStateToProps)(CustomerFilter)
+export default CustomerFilter

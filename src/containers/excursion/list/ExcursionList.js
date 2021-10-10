@@ -1,20 +1,40 @@
-import React, { useCallback, useEffect, useMemo } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Button, Modal } from 'antd'
+import { Button, Modal, notification } from 'antd'
 import { DateTime } from 'luxon'
-import { deleteExcursion, fetchExcursions } from 'redux/excursionList/actions'
+import { useMutation, useQuery } from '@apollo/react-hooks'
+
+import { DELETE_EXCURSION, FETCH_EXCURSIONS } from 'redux/excursionList/actions'
 import SkeletonTable from 'components/SkeletonTable/SkeletonTable'
 import { EXCURSION_STATUS_ENUM } from 'constants/excursionStatus'
 
 const ExcursionList = ({ filter }) => {
-  const dispatch = useDispatch()
+  const { loading, data, refetch: getExcursions } = useQuery(FETCH_EXCURSIONS)
 
-  const { isLoading, payload: excursions } = useSelector((state) => state.excursionList)
+  const [exclude, { loading: deletingLoading, error: deletingError }] =
+    useMutation(DELETE_EXCURSION)
+
+  const excursions = useMemo(() => data?.excursions || [], [data])
+  const [isDeleting, setIsDeleting] = useState(false)
 
   useEffect(() => {
-    dispatch(fetchExcursions())
-  }, [dispatch])
+    if (!deletingLoading && !deletingError) getExcursions()
+  }, [deletingLoading, deletingError, getExcursions])
+
+  useEffect(() => {
+    if (!isDeleting || deletingLoading) return
+
+    if (deletingError)
+      notification.error({
+        message: 'Erro',
+        description: 'Falha ao deletar excursão!',
+      })
+    else
+      notification.success({
+        message: 'Sucesso',
+        description: 'Excursão deletada!',
+      })
+  }, [isDeleting, deletingLoading, deletingError])
 
   const handleRemove = useCallback(
     (id) => {
@@ -24,13 +44,14 @@ const ExcursionList = ({ filter }) => {
         okText: 'Sim',
         okType: 'danger',
         onOk: () => {
-          dispatch(deleteExcursion(id))
+          exclude({ variables: { id } })
+          setIsDeleting(true)
         },
         okCancel: true,
         cancelText: 'Não',
       })
     },
-    [dispatch],
+    [exclude],
   )
 
   const filterTable = useCallback(() => {
@@ -67,9 +88,9 @@ const ExcursionList = ({ filter }) => {
     return filtered
   }, [filter, excursions])
 
-  const tableData = useMemo(
+  const filteredData = useMemo(
     () =>
-      filterTable(excursions).map((excursion) => {
+      filterTable().map((excursion) => {
         const spotsFormatter = (transports = [], passengers) => {
           if (!transports.length)
             return { text: 'Nenhum transporte cadastrado!', style: 'text-danger' }
@@ -100,17 +121,15 @@ const ExcursionList = ({ filter }) => {
           }
         }
 
-        const data = {
+        return {
           id: excursion.id,
           places: spotsFormatter(excursion.transports, excursion.passengers),
           destination: excursion.destination,
           departureDate: DateTime.fromISO(excursion.departureDate),
           regressDate: DateTime.fromISO(excursion.regressDate),
         }
-
-        return data
       }),
-    [excursions, filterTable],
+    [filterTable],
   )
 
   const tableColumns = useMemo(() => {
@@ -169,12 +188,8 @@ const ExcursionList = ({ filter }) => {
       },
     ]
   }, [handleRemove])
-  const props = {
-    isLoading,
-    tableData,
-    tableColumns,
-  }
-  return <SkeletonTable {...props} />
+
+  return <SkeletonTable isLoading={loading} tableData={filteredData} tableColumns={tableColumns} />
 }
 
 export default ExcursionList

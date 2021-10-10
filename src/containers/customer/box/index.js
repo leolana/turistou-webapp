@@ -1,9 +1,8 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { Helmet } from 'react-helmet'
-import { connect } from 'react-redux'
 import FormSteps from 'components/Step/FormSteps'
+import { Card } from 'antd'
 
-import actions from 'redux/customerDetail/actions'
 import CustomerForm from './CustomerForm'
 import CustomerPersonal, { formFields as customerPersonalFormFields } from './form/CustomerPersonal'
 import CustomerAddress, { formFields as customerAddressFormFields } from './form/CustomerAddress'
@@ -28,41 +27,41 @@ const formSteps = [
   },
 ]
 
-@connect(({ user }) => ({ user }))
-class Customers extends Component {
-  onSubmit = event => {
-    event.preventDefault()
-    const { form, dispatch } = this.props
-    form.validateFields((error, values) => {
-      if (!error) {
-        dispatch({
-          type: actions.SAVE_CUSTOMER,
-          payload: values,
-        })
-      }
-    })
-  }
+const Customers = (props) => {
+  // const dispatch = useDispatch()
 
-  render() {
-    return (
-      <div>
-        <Helmet title={pageTitle} />
-        <div className="card">
-          <div className="card-header">
-            <div className="utils__title">
-              <strong>{pageTitle}</strong>
-            </div>
-          </div>
-          <div className="card-header">
-            <FormSteps formSteps={formSteps} {...this.props} />
-          </div>
-          <div className="card-body">
-            <CustomerForm formSteps={formSteps} {...this.props} />
+  // const onSubmit = useCallback(event => {
+  //   event.preventDefault()
+  //   const { form } = props
+  //   form.validateFields((error, values) => {
+  //     if (!error) {
+  //       dispatch({
+  //         type: actions.SAVE_CUSTOMER,
+  //         payload: values,
+  //       })
+  //     }
+  //   })
+  // }, [props, dispatch])
+
+  return (
+    <>
+      <Helmet title={pageTitle} />
+
+      <Card>
+        <div className="card-header">
+          <div className="utils__title">
+            <strong>{pageTitle}</strong>
           </div>
         </div>
-      </div>
-    )
-  }
+        <div className="card-header">
+          <FormSteps formSteps={formSteps} {...props} />
+        </div>
+        <div className="card-body">
+          <CustomerForm formSteps={formSteps} {...props} />
+        </div>
+      </Card>
+    </>
+  )
 }
 
 export default Customers

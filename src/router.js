@@ -67,7 +67,7 @@ const routes = [
     exact: true,
   },
   {
-    path: '/clientes/:id',
+    path: '/clientes/:customerId',
     component: loadable(() => import('containers/customer/box')),
     exact: true,
   },

@@ -1,28 +1,30 @@
-import React from 'react'
-import { Select, Divider } from 'antd'
+import React, { useEffect } from 'react'
+import { Select } from 'antd'
+import { useQuery } from '@apollo/react-hooks'
 
-export const CustomerSelect = ({ onChange, customerList = [] }, ref) => {
+import { FETCH_CUSTOMERS, setCustomerListState } from 'redux/customerList/actions'
+
+export const CustomerSelect = ({ value = null, onChange }, ref) => {
+  const { data: { customers = [] } = {} } = useQuery(FETCH_CUSTOMERS)
+
+  useEffect(() => {
+    setCustomerListState({ payload: customers })
+  }, [customers])
+
   return (
     <Select
       ref={ref}
       size="default"
+      value={value}
       // TODO: max options show
       showSearch
       filterOption={(q, option) =>
         q.split(' ').every((x) => option.props.children.toLowerCase().includes(x))
       }
       onChange={onChange}
-      dropdownRender={(menu) => (
-        <>
-          {menu}
-          <Divider style={{ margin: '4px 0' }} />
-          <div style={{ padding: '8px', cursor: 'pointer' }}>
-            <i className="fa fa-plus" /> Novo cliente
-          </div>
-        </>
-      )}
+      dropdownRender={(menu) => <>{menu}</>}
     >
-      {customerList.map((x) => (
+      {customers.map((x) => (
         <Select.Option key={x.id} value={x.id}>
           {`${x.name} - ${x.document.documentNumber} - ${x.address.city}`}
         </Select.Option>

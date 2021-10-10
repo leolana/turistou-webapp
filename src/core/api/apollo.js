@@ -4,6 +4,7 @@ import { createHttpLink } from 'apollo-link-http'
 import { setContext } from 'apollo-link-context'
 import { onError } from 'apollo-link-error'
 import { InMemoryCache } from 'apollo-cache-inmemory'
+import { notification } from 'antd'
 
 import { getIdToken } from 'core/auth'
 
@@ -17,6 +18,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
   }
 
   if (networkError) {
+    notification.error({ message: 'Houve uma falha na comunicação com o servidor' })
     console.log(`[Network error]: ${networkError}`)
   }
 })
@@ -42,20 +44,20 @@ const apolloClient = new ApolloClient({
   cache: new InMemoryCache(),
 })
 
-export const query = options =>
+export const query = (options) =>
   apolloClient
     .query(options)
-    .then(response => {
+    .then((response) => {
       return { response }
     })
-    .catch(error => ({ error }))
+    .catch((error) => ({ error }))
 
-export const mutate = options =>
+export const mutate = (options) =>
   apolloClient
     .mutate(options)
-    .then(response => {
+    .then((response) => {
       return { response }
     })
-    .catch(error => ({ error }))
+    .catch((error) => ({ error }))
 
 export default apolloClient

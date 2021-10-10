@@ -1,9 +1,15 @@
-import React, { useCallback, useMemo } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory, useParams } from 'react-router'
+import { useLazyQuery, useMutation } from 'react-apollo'
 import { Form } from 'antd'
 
-import { setExcursionState, saveExcursion } from 'redux/excursionDetail/actions'
+import {
+  SAVE_EXCURSION,
+  GET_EXCURSION_BY_ID,
+  setExcursionState,
+  serializeExcursionDetail,
+} from 'redux/excursionDetail/actions'
 import FormStepButtonsActions from 'components/Step/FormStepButtonsActions'
 import SkeletonForm from 'components/SkeletonForm/SkeletonForm'
 
@@ -12,29 +18,41 @@ const ExcursionForm = ({ form, formSteps }) => {
   const history = useHistory()
   const { excursionId } = useParams()
 
-  const { isLoading } = useSelector((state) => state.excursionDetail)
+  const [save, { loading: saving, error }] = useMutation(SAVE_EXCURSION)
+  const [getExcursion, { loading: getting, data: { excursion: excursionDetail } = {} }] =
+    useLazyQuery(GET_EXCURSION_BY_ID, { variables: { id: excursionId } })
+
+  useEffect(() => {
+    if (excursionId) getExcursion()
+  }, [getExcursion, excursionId])
+
   const { current } = useSelector((state) => state.step)
 
-  const { payload: excursionDetail } = useSelector((state) => state.excursionDetail)
   const initialValues = useMemo(() => {
-    return excursionDetail.id ? excursionDetail : {}
+    return excursionDetail?.id ? excursionDetail : {}
   }, [excursionDetail])
+
+  const isLoading = useMemo(() => saving || getting, [saving, getting])
+  const [waitSavingAndRedirectTo, setWaitSavingAndRedirectTo] = useState(false)
 
   const saveForm = useCallback(
     (payload) => {
-      dispatch(saveExcursion({ ...payload, id: excursionId }))
+      const input = serializeExcursionDetail({ ...payload, id: excursionId })
+      save({ mutation: SAVE_EXCURSION, variables: { input } })
     },
-    [dispatch, excursionId],
+    [save, excursionId],
   )
 
   const onSaveFormAndAddNew = useCallback(() => {
     form.validateFields(async (error, values) => {
-      if (!error) {
-        await saveForm(values)
-        history.push('/excursion')
+      if (error) {
+        // TODO: tratar erro
+        return
       }
+      await saveForm(values)
+      setWaitSavingAndRedirectTo('/excursion')
     })
-  }, [form, history, saveForm])
+  }, [form, saveForm, setWaitSavingAndRedirectTo])
 
   const onSubmit = useCallback(
     (event) => {
@@ -45,10 +63,10 @@ const ExcursionForm = ({ form, formSteps }) => {
           return
         }
         await saveForm(values)
-        history.push('/excursion/list')
+        setWaitSavingAndRedirectTo('/excursion/list')
       })
     },
-    [form, history, saveForm],
+    [form, saveForm, setWaitSavingAndRedirectTo],
   )
 
   const saveStepHandler = useCallback(
@@ -65,6 +83,14 @@ const ExcursionForm = ({ form, formSteps }) => {
     },
     [form, dispatch],
   )
+
+  useEffect(() => {
+    if (error)
+      // TODO:
+      return
+
+    if (waitSavingAndRedirectTo && !saving) history.push(waitSavingAndRedirectTo)
+  }, [waitSavingAndRedirectTo, saving, error, history])
 
   return (
     <SkeletonForm isLoading={isLoading}>
