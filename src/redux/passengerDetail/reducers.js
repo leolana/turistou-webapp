@@ -13,12 +13,6 @@ export default function passengerReducer(state = initialState, action) {
       return { ...state, ...action.payload }
     case actions.SET_PAYLOAD:
       return { ...state, payload: action.payload }
-    case actions.SAVE_PASSENGER:
-      return {
-        ...state,
-        payload: action.payload,
-        isLoading: true,
-      }
     default:
       return state
   }
