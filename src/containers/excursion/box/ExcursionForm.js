@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory, useParams } from 'react-router'
-import { useLazyQuery, useMutation } from 'react-apollo'
+import { useQuery, useMutation } from 'react-apollo'
 import { Form } from 'antd'
 
 import {
@@ -9,6 +9,7 @@ import {
   GET_EXCURSION_BY_ID,
   setExcursionState,
   serializeExcursionDetail,
+  clearExcursionState,
 } from 'redux/excursionDetail/actions'
 import FormStepButtonsActions from 'components/Step/FormStepButtonsActions'
 import SkeletonForm from 'components/SkeletonForm/SkeletonForm'
@@ -19,12 +20,17 @@ const ExcursionForm = ({ form, formSteps }) => {
   const { excursionId } = useParams()
 
   const [save, { loading: saving, error }] = useMutation(SAVE_EXCURSION)
-  const [getExcursion, { loading: getting, data: { excursion: excursionDetail } = {} }] =
-    useLazyQuery(GET_EXCURSION_BY_ID, { variables: { id: excursionId } })
+  const { loading: getting, data: { excursion: excursionDetail } = {} } = useQuery(
+    GET_EXCURSION_BY_ID,
+    {
+      variables: { id: excursionId },
+      skip: !excursionId,
+    },
+  )
 
   useEffect(() => {
-    if (excursionId) getExcursion()
-  }, [getExcursion, excursionId])
+    if (!excursionId) dispatch(clearExcursionState())
+  }, [dispatch, excursionId])
 
   const { current } = useSelector((state) => state.step)
 

@@ -4,12 +4,18 @@ import { mutate } from 'core/api/apollo'
 
 const actions = {
   SET_STATE: 'customerDetail/SET_STATE',
+  CLEAR_STATE: 'customerDetail/CLEAR_STATE',
   SAVE_CUSTOMER_FAILURE: 'customerDetail/SAVE_CUSTOMER_FAILURE',
   SAVE_CUSTOMER_SUCCESS: 'customerDetail/SAVE_CUSTOMER_SUCCESS',
 }
 
 export const setCustomerState = (payload) => ({
   type: actions.SET_STATE,
+  payload,
+})
+
+export const clearCustomerState = (payload) => ({
+  type: actions.CLEAR_STATE,
   payload,
 })
 

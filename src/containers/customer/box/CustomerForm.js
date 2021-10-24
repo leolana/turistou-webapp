@@ -1,11 +1,12 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory, useParams } from 'react-router'
-import { useLazyQuery, useMutation } from 'react-apollo'
+import { useQuery, useMutation } from 'react-apollo'
 import { Form, notification } from 'antd'
 
 import FormStepButtonsActions from 'components/Step/FormStepButtonsActions'
 import {
+  clearCustomerState,
   GET_CUSTOMER_BY_ID,
   SAVE_CUSTOMER,
   serializeCustomerDetail,
@@ -19,14 +20,17 @@ const CustomerForm = ({ form, formSteps }) => {
   const { customerId } = useParams()
 
   const [saveCustomer, { loading: saving, error }] = useMutation(SAVE_CUSTOMER)
-  const [getCustomer, { loading: getting, data: { customer: customerDetail } = {} }] = useLazyQuery(
+  const { loading: getting, data: { customer: customerDetail } = {} } = useQuery(
     GET_CUSTOMER_BY_ID,
-    { variables: { id: customerId } },
+    {
+      variables: { id: customerId },
+      skip: !customerId,
+    },
   )
 
   useEffect(() => {
-    if (customerId) getCustomer()
-  }, [getCustomer, customerId])
+    if (!customerId) dispatch(clearCustomerState)
+  }, [dispatch, customerId])
 
   const initialValues = useMemo(() => {
     return customerDetail?.id ? customerDetail : {}
