@@ -9,15 +9,15 @@ const ExcursionPricing = ({ form, initialValues }) => {
   const [setUp, setSetUp] = useState(false)
 
   const addPrice = useCallback(() => {
-    setPrices((prices) => {
-      const last = prices.length ? prices[prices.length - 1] : 0
+    setPrices((prices = []) => {
+      const last = prices.length ? prices[prices.length - 1]?.key : 0
       return [...prices, { key: last + 1 }]
     })
   }, [])
 
   // TODO: pop confirm do delete
-  const removePrice = useCallback((index) => {
-    setPrices((prices) => prices.filter((x) => index !== x))
+  const removePrice = useCallback((key) => {
+    setPrices((prices) => prices.filter((x) => key !== x.key))
   }, [])
 
   useEffect(() => {

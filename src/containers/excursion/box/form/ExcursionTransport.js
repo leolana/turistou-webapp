@@ -7,14 +7,14 @@ const ExcursionTransport = ({ form, initialValues }) => {
 
   const addTransport = useCallback(() => {
     setTransports((transports) => {
-      const last = transports.length ? transports[transports.length - 1].key : 0
+      const last = transports.length ? transports[transports.length - 1]?.key : 0
       return [...transports, { key: last + 1 }]
     })
   }, [])
 
   // TODO: pop confirm do delete
-  const removeTransport = useCallback((index) => {
-    setTransports((transports) => transports.filter((x) => index !== x))
+  const removeTransport = useCallback((key) => {
+    setTransports((transports) => transports.filter((x) => key !== x.key))
   }, [])
 
   useEffect(() => {
