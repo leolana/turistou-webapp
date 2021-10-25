@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { Row, Col, Button, Form, InputNumber, Divider } from 'antd'
+import { Row, Col, Button, Form, InputNumber, Divider, Modal } from 'antd'
 import Price from './Price'
 
 export const formFields = ['ticketPriceDefault']
@@ -15,9 +15,13 @@ const ExcursionPricing = ({ form, initialValues }) => {
     })
   }, [])
 
-  // TODO: pop confirm do delete
   const removePrice = useCallback((key) => {
-    setPrices((prices) => prices.filter((x) => key !== x.key))
+    Modal.confirm({
+      content: `Deseja excluir o preço?`,
+      cancelText: 'Não',
+      okText: 'Sim',
+      onOk: () => setPrices((prices) => prices.filter((x) => key !== x.key)),
+    })
   }, [])
 
   useEffect(() => {

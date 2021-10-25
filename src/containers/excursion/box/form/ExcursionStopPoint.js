@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { Button, Row, Col } from 'antd'
+import { Button, Row, Col, Modal } from 'antd'
 import StopAddress from './StopAddress'
 
 const ExcursionStopPoint = ({ form, initialValues }) => {
@@ -13,14 +13,19 @@ const ExcursionStopPoint = ({ form, initialValues }) => {
     })
   }, [])
 
-  // TODO: pop confirm do delete
   const removeStopPoint = useCallback((key) => {
-    setStopPoints((stopPoints) =>
-      stopPoints.map((x) => {
-        if (key === x.key) x.deleted = true
-        return x
-      }),
-    )
+    Modal.confirm({
+      content: `Deseja excluir o ponto de parada?`,
+      cancelText: 'Não',
+      okText: 'Sim',
+      onOk: () =>
+        setStopPoints((stopPoints) =>
+          stopPoints.map((x) => {
+            if (key === x.key) x.deleted = true
+            return x
+          }),
+        ),
+    })
   }, [])
 
   useEffect(() => {
