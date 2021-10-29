@@ -6,6 +6,7 @@ import { Form } from 'antd'
 import FormStepButtonsActions from 'components/Step/FormStepButtonsActions'
 import SkeletonForm from 'components/SkeletonForm/SkeletonForm'
 import passengerActions from 'redux/passengerDetail/actions'
+import paymentMethods from 'constants/paymentMethods'
 
 const PassengerForm = ({ form, formSteps, passengerStatus }) => {
   const dispatch = useDispatch()
@@ -45,9 +46,10 @@ const PassengerForm = ({ form, formSteps, passengerStatus }) => {
       form.validateFields(async (error, values) => {
         if (!error) {
           const { keys, ...data } = values
+          const paymentConditions = data.paymentConditions?.filter(isPaymentConditionComplete) ?? []
           await dispatch({
             type: passengerActions.SAVE_PASSENGER,
-            payload: { status: passengerStatus, ...data },
+            payload: { status: passengerStatus, ...data, paymentConditions },
           })
           form.resetFields()
           history.push(redirect)
@@ -56,6 +58,18 @@ const PassengerForm = ({ form, formSteps, passengerStatus }) => {
     },
     [form, dispatch, passengerStatus, history],
   )
+
+  const isPaymentConditionComplete = (paymentCondition) => {
+    const hasValueAndType = paymentCondition.value && paymentCondition.paymentType
+    const isCreditOrBankSlip =
+      paymentCondition.paymentType === paymentMethods.CREDIT_CARD ||
+      paymentCondition.paymentType === paymentMethods.PAYMENT_BANK_SLIP
+    const hasInstallmentProperties =
+      paymentCondition.installmentQuantity && paymentCondition.paymentFirstDue
+    return (
+      hasValueAndType && (!isCreditOrBankSlip || (isCreditOrBankSlip && hasInstallmentProperties))
+    )
+  }
 
   return (
     <SkeletonForm isLoading={isLoading} rows={3}>
