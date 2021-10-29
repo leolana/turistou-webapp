@@ -11,9 +11,8 @@ import { EXCURSION_STATUS_ENUM } from 'constants/excursionStatus'
 const ExcursionList = ({ filter }) => {
   const { loading, data, refetch: getExcursions } = useQuery(FETCH_EXCURSIONS)
 
-  const [exclude, { loading: deletingLoading, error: deletingError }] = useMutation(
-    DELETE_EXCURSION,
-  )
+  const [exclude, { loading: deletingLoading, error: deletingError }] =
+    useMutation(DELETE_EXCURSION)
 
   const excursions = useMemo(() => data?.excursions || [], [data])
   const [isDeleting, setIsDeleting] = useState(false)

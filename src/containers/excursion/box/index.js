@@ -30,9 +30,10 @@ const formSteps = [
 const ExcursionBox = (props) => {
   const { excursionId } = useParams()
 
-  const pageTitle = useMemo(() => (excursionId ? 'Editar excursão' : 'Nova excursão'), [
-    excursionId,
-  ])
+  const pageTitle = useMemo(
+    () => (excursionId ? 'Editar excursão' : 'Nova excursão'),
+    [excursionId],
+  )
 
   return (
     <div>

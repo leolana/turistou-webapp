@@ -1,12 +1,9 @@
 import React, { useCallback, useMemo } from 'react'
-import { useSelector } from 'react-redux'
 import { Row, Col, Form, Select } from 'antd'
 
 import PassengerSummaryHeader from './_passengerResume'
 
-const PassengerPlace = ({ form }) => {
-  const { payload: excursion } = useSelector((state) => state.excursionDetail)
-
+const PassengerPlace = ({ form, excursion }) => {
   const vacancies = useMemo(() => {
     if (!excursion || !excursion.transports) return []
     return getVacancies(excursion.passengers, excursion.transports[0])
@@ -90,7 +87,7 @@ const getVacancies = (passengers, transports) => {
     .fill(null)
     .map((_, i) => {
       const number = i + 1
-      const free = !passengers.some((p) => p.spot === number)
+      const free = !passengers.some((p) => p.spot?.number === number)
 
       return { number, free }
     })

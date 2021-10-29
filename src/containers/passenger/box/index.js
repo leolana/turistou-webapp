@@ -1,10 +1,12 @@
 import React, { useEffect } from 'react'
+import { useQuery } from 'react-apollo'
 import { useDispatch } from 'react-redux'
 import { useParams } from 'react-router'
 import { Helmet } from 'react-helmet'
 import { Card } from 'antd'
 
-import { getExcursionById } from 'redux/excursionDetail/actions'
+import { GET_EXCURSION_BY_ID, setExcursionState } from 'redux/excursionDetail/actions'
+
 import FormSteps from 'components/Step/FormSteps'
 import PassengerForm from './PassengerForm'
 
@@ -35,9 +37,18 @@ const ExcursionPassengers = (props) => {
   }
   const passengerStatus = passengerStatuses[status]
 
+  const { data: { excursion = {} } = {}, refetch: getExcursionById } = useQuery(
+    GET_EXCURSION_BY_ID,
+    { variables: { id: excursionId } },
+  )
+
   useEffect(() => {
-    dispatch(getExcursionById(excursionId))
-  }, [excursionId, dispatch])
+    getExcursionById(excursionId)
+  }, [getExcursionById, excursionId])
+
+  useEffect(() => {
+    dispatch(setExcursionState(excursion))
+  }, [dispatch, excursion])
 
   return (
     <div>
@@ -46,7 +57,13 @@ const ExcursionPassengers = (props) => {
       <Card title={pageTitle}>
         <FormSteps formSteps={formSteps} {...props} />
         <br />
-        <PassengerForm formSteps={formSteps} passengerStatus={passengerStatus} {...props} />
+        <PassengerForm
+          formSteps={formSteps}
+          passengerStatus={passengerStatus}
+          getExcursionById={getExcursionById}
+          excursion={excursion}
+          {...props}
+        />
       </Card>
     </div>
   )

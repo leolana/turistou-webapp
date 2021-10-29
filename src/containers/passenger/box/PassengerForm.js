@@ -1,22 +1,32 @@
 import React, { useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useHistory } from 'react-router-dom'
-import { Form } from 'antd'
+import { useMutation } from 'react-apollo'
+import { useHistory, useParams } from 'react-router'
+import { Form, notification } from 'antd'
 
 import FormStepButtonsActions from 'components/Step/FormStepButtonsActions'
 import SkeletonForm from 'components/SkeletonForm/SkeletonForm'
-import passengerActions from 'redux/passengerDetail/actions'
+import passengerActions, { SAVE_PASSENGER } from 'redux/passengerDetail/actions'
 import paymentMethods from 'constants/paymentMethods'
 
-const PassengerForm = ({ form, formSteps, passengerStatus }) => {
+const PassengerForm = ({ form, formSteps, getExcursionById, excursion, passengerStatus }) => {
   const dispatch = useDispatch()
   const history = useHistory()
+  const { excursionId } = useParams()
   const { current: currentStep } = useSelector((state) => state.step)
   const { isLoading } = useSelector((state) => state.excursionDetail)
+  const [save, { loading: saving }] = useMutation(SAVE_PASSENGER)
 
   const onSaveFormAndAddNew = useCallback(() => {
     saveAndRedirectTo(`${history.location.pathname}`)
   }, [saveAndRedirectTo, history.location.pathname])
+
+  const saveForm = useCallback(
+    async (input) => {
+      await save({ mutation: SAVE_PASSENGER, variables: { input } })
+    },
+    [save],
+  )
 
   const onSubmit = useCallback(
     (event) => {
@@ -45,18 +55,28 @@ const PassengerForm = ({ form, formSteps, passengerStatus }) => {
     (redirect) => {
       form.validateFields(async (error, values) => {
         if (!error) {
-          const { keys, ...data } = values
-          const paymentConditions = data.paymentConditions?.filter(isPaymentConditionComplete) ?? []
-          await dispatch({
-            type: passengerActions.SAVE_PASSENGER,
-            payload: { status: passengerStatus, ...data, paymentConditions },
-          })
-          form.resetFields()
-          history.push(redirect)
+          try {
+            const { keys, ...data } = values
+            const paymentConditions =
+              data.paymentConditions?.filter(isPaymentConditionComplete) ?? []
+            await saveForm({ ...data, excursionId, status: passengerStatus, paymentConditions })
+            await getExcursionById(excursionId)
+            form.resetFields()
+            history.push(redirect)
+            notification.success({
+              message: 'Sucesso',
+              description: 'Novo passageiro cadastrado com sucesso!',
+            })
+          } catch (e) {
+            notification.error({
+              message: 'Error',
+              description: 'Houve algum problema ao salvar um novo passageiro!',
+            })
+          }
         }
       })
     },
-    [form, dispatch, passengerStatus, history],
+    [form, saveForm, excursionId, passengerStatus, getExcursionById, history],
   )
 
   const isPaymentConditionComplete = (paymentCondition) => {
@@ -72,11 +92,11 @@ const PassengerForm = ({ form, formSteps, passengerStatus }) => {
   }
 
   return (
-    <SkeletonForm isLoading={isLoading} rows={3}>
+    <SkeletonForm isLoading={isLoading || saving} rows={3}>
       <Form id="passenger-form" hideRequiredMark colon={false} onSubmit={onSubmit}>
         {formSteps.map((x, i) => (
           <div key={x.title} hidden={currentStep !== i}>
-            <x.component form={form} />
+            <x.component form={form} excursion={excursion} />
             <div className="form-actions">
               <FormStepButtonsActions
                 lastStep={formSteps.length - 1}
