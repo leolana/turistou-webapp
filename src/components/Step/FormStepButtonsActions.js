@@ -22,7 +22,7 @@ const FormStepButtonsActions = (props) => {
   return (
     <>
       <Button
-        onClick={() => onSaveStep(validationFields, () => dispatchStep(current - 1))}
+        onClick={() => onSaveStep([], () => dispatchStep(current - 1))}
         disabled={current === 0}
       >
         <FormattedMessage id="back" />

@@ -7,8 +7,9 @@ import { Form, notification } from 'antd'
 import FormStepButtonsActions from 'components/Step/FormStepButtonsActions'
 import SkeletonForm from 'components/SkeletonForm/SkeletonForm'
 import passengerActions, { SAVE_PASSENGER } from 'redux/passengerDetail/actions'
+import paymentMethods from 'constants/paymentMethods'
 
-const PassengerForm = ({ form, formSteps, getExcursionById, excursion }) => {
+const PassengerForm = ({ form, formSteps, getExcursionById, excursion, passengerStatus }) => {
   const dispatch = useDispatch()
   const history = useHistory()
   const { excursionId } = useParams()
@@ -56,7 +57,9 @@ const PassengerForm = ({ form, formSteps, getExcursionById, excursion }) => {
         if (!error) {
           try {
             const { keys, ...data } = values
-            await saveForm({ ...data, excursionId })
+            const paymentConditions =
+              data.paymentConditions?.filter(isPaymentConditionComplete) ?? []
+            await saveForm({ ...data, excursionId, status: passengerStatus, paymentConditions })
             await getExcursionById(excursionId)
             form.resetFields()
             history.push(redirect)
@@ -73,8 +76,20 @@ const PassengerForm = ({ form, formSteps, getExcursionById, excursion }) => {
         }
       })
     },
-    [form, saveForm, excursionId, getExcursionById, history],
+    [form, saveForm, excursionId, passengerStatus, getExcursionById, history],
   )
+
+  const isPaymentConditionComplete = (paymentCondition) => {
+    const hasValueAndType = paymentCondition.value && paymentCondition.paymentType
+    const isCreditOrBankSlip =
+      paymentCondition.paymentType === paymentMethods.CREDIT_CARD ||
+      paymentCondition.paymentType === paymentMethods.PAYMENT_BANK_SLIP
+    const hasInstallmentProperties =
+      paymentCondition.installmentQuantity && paymentCondition.paymentFirstDue
+    return (
+      hasValueAndType && (!isCreditOrBankSlip || (isCreditOrBankSlip && hasInstallmentProperties))
+    )
+  }
 
   return (
     <SkeletonForm isLoading={isLoading || saving} rows={3}>

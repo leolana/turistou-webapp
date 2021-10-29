@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useQuery } from 'react-apollo'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { useParams } from 'react-router'
 import { Helmet } from 'react-helmet'
 import { Card } from 'antd'
@@ -18,9 +18,13 @@ import 'costom.scss'
 
 const pageTitle = 'Novo passageiro'
 const formSteps = [
-  { title: 'Passageiro', component: PassengerChoice },
-  { title: 'Pagamentos combinados', component: PassengerAgreedPayments },
-  { title: 'Assento', component: PassengerPlace },
+  { title: 'Passageiro', component: PassengerChoice, fields: ['customerId', 'ticketPriceId'] },
+  {
+    title: 'Pagamentos combinados',
+    component: PassengerAgreedPayments,
+    fields: ['paymentType', 'value', 'installmentQuantity', 'paymentFirstDue'],
+  },
+  { title: 'Assento', component: PassengerPlace, fields: ['transportId', 'spot', 'stopPointId'] },
 ]
 
 const ExcursionPassengers = (props) => {
