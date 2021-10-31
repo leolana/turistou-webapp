@@ -1,19 +1,17 @@
 import React, { useCallback, useMemo } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Button, Tag, Modal, Row, Col, Table } from 'antd'
+import { Button, Tag, Modal } from 'antd'
 
 import passengerStatusActions from 'redux/passengerStatus/actions'
 import paymentsActions from 'redux/payments/actions'
 import paymentStatusActions from 'redux/paymentStatus/actions'
 
-import paymentMethods from 'constants/paymentMethods'
 import SkeletonTable from 'components/SkeletonTable/SkeletonTable'
-import PaymentSelect from 'components/PaymentSelect/PaymentSelect'
-import PaymentUpdateForm from 'components/PaymentUpdateForm/PaymentUpdateForm'
-import SwapPassengerForm from 'containers/passenger/box/swapForm/SwapPassengerForm'
-import DeletePassengerForm from 'containers/passenger/box/deleteForm/DeletePassengerForm'
 
-import style from './style.module.scss'
+import RemovePassenger from './formModals/delete/DeletePassengerModal'
+import SwapPassenger from './formModals/swap/SwapPassengerModal'
+import AddPayment from './formModals/updatePayment/PaymentUpdateModal'
+import HistoryPayment from './formModals/paymentList/HistoryPaymentModal'
 
 const statusesEnum = {
   booked: 'BOOKED',
@@ -45,7 +43,7 @@ const statuses = [
 const PassengerList = (props) => {
   const dispatch = useDispatch()
   const setPassengerToRemove = useCallback(
-    (id, amountPaid) =>
+    ({ id, amountPaid }) =>
       dispatch({
         type: passengerStatusActions.SET_PASSENGER_TO_REMOVE,
         payload: { id, amountPaid, amountRefunded: 0 },
@@ -62,36 +60,9 @@ const PassengerList = (props) => {
     [dispatch],
   )
 
-  const swapPassengers = useCallback(
-    (id, idOfCustomerToBeSwappedWith) =>
-      dispatch({
-        type: passengerStatusActions.SWAP_PASSENGERS,
-        payload: { id, idOfCustomerToBeSwappedWith },
-      }),
-    [dispatch],
-  )
-
   const setStatusToBooked = useCallback(
     (passengerId) =>
       dispatch({ type: passengerStatusActions.SET_TO_BOOKED, payload: { passengerId } }),
-    [dispatch],
-  )
-  const setStatusToCanceled = useCallback(
-    (passengerId, amountRefunded) =>
-      dispatch({
-        type: passengerStatusActions.SET_TO_CANCELED,
-        payload: { passengerId, amountRefunded },
-      }),
-    [dispatch],
-  )
-  const closeDeletePassengerModal = useCallback(
-    () =>
-      dispatch({ type: passengerStatusActions.TOGGLE_REMOVE_PASSENGER_VISIBILITY, payload: false }),
-    [dispatch],
-  )
-  const closeSwapPassengerModal = useCallback(
-    () =>
-      dispatch({ type: passengerStatusActions.TOGGLE_SWAP_PASSENGER_VISIBILITY, payload: false }),
     [dispatch],
   )
   const clearPassengerStatus = useCallback(
@@ -107,31 +78,9 @@ const PassengerList = (props) => {
       dispatch({ type: paymentStatusActions.GET_PAYMENT_STATUS, payload: { passengerId } }),
     [dispatch],
   )
-  const setToPaid = useCallback(
-    ({ passengerId, paymentId }) =>
-      dispatch({ type: paymentsActions.SET_TO_PAID, payload: { passengerId, paymentId } }),
-    [dispatch],
-  )
-  const setToPending = useCallback(
-    ({ passengerId, paymentId }) =>
-      dispatch({ type: paymentsActions.SET_TO_UNPAID, payload: { passengerId, paymentId } }),
-    [dispatch],
-  )
-  const setPaymentStatusToCanceled = useCallback(
-    ({ passengerId, paymentId }) =>
-      dispatch({ type: paymentsActions.SET_TO_CANCELED, payload: { passengerId, paymentId } }),
-    [dispatch],
-  )
-  const closePaymentsListModal = useCallback(
-    () => dispatch({ type: paymentsActions.TOGGLE_VISIBILITY, payload: false }),
-    [dispatch],
-  )
+
   const clearPayments = useCallback(
     () => dispatch({ type: paymentsActions.SET_STATE, payload: [] }),
-    [dispatch],
-  )
-  const addPayment = useCallback(
-    (values) => dispatch({ type: paymentStatusActions.PAYMENT_INSERT, payload: { values } }),
     [dispatch],
   )
   const clearPaymentStatus = useCallback(
@@ -142,184 +91,12 @@ const PassengerList = (props) => {
   const { isLoading: isPassengerLoading, payload: passengers } = useSelector(
     (state) => state.passengerList,
   )
-  const {
-    payload: payments = [],
-    isVisible: isPaymentListVisible = false,
-    isLoading: isPaymentsLoading,
-  } = useSelector((state) => state.payments)
-  const {
-    isVisible: isPaymentFormVisible,
-    payload: paymentStatus = {
-      amountPaid: 0,
-      remaining: 0,
-      previousPaid: 0,
-    },
-  } = useSelector((state) => state.paymentStatus)
-  const {
-    isRemovePassengerVisible,
-    isSwapPassengerVisible,
-    payload: passengerStatus,
-  } = useSelector((state) => state.passengerStatus)
-
-  const columnsForPayments = () => {
-    const columns = [
-      {
-        title: 'Data',
-        dataIndex: 'payDate',
-        key: 'payDate',
-        width: '30%',
-        render: (x) => x && new Date(x).toLocaleDateString(),
-      },
-      {
-        title: 'Valor',
-        dataIndex: 'value',
-        key: 'value',
-        width: '20%',
-        className: 'text-left',
-        render: (x) => `R$ ${x}`,
-      },
-      {
-        title: 'Forma de pagamento',
-        dataIndex: 'method',
-        key: 'method',
-        width: '20%',
-        render: (x, row) => {
-          let text
-          if (row.operation === 'CHARGE_BACK') {
-            text = 'Devolução'
-          } else {
-            text = paymentMethods[x] || 'Não especificado'
-          }
-
-          return text
-        },
-      },
-      {
-        title: 'Situação',
-        dataIndex: 'status',
-        key: 'status',
-        className: 'text-center',
-        render: (_, row) => {
-          const { id, passengerId, status, method } = row
-
-          const payload = {
-            passengerId,
-            paymentId: id,
-          }
-
-          return method === 'PAYMENT_BANK_SLIP' ? (
-            <PaymentSelect
-              status={status}
-              onChange={(statusModified) => {
-                if (statusModified === 'paid') {
-                  return setToPaid(payload)
-                }
-
-                if (statusModified === 'pending') {
-                  return setToPending(payload)
-                }
-
-                if (statusModified === 'canceled') {
-                  return Modal.confirm({
-                    okCancel: true,
-                    cancelText: 'Não',
-                    okText: 'Sim',
-                    title: 'Cancelar pagamento?',
-                    content: 'Deseja cancelar esse pagamento? Você não poderá reverter essa ação.',
-                    onOk: () => {
-                      setPaymentStatusToCanceled(payload)
-                    },
-                  })
-                }
-
-                throw Error(`ERROR: status payment not found: ${statusModified}`)
-              }}
-            />
-          ) : (
-            <span className={style.paid}>Pago</span>
-          )
-        },
-      },
-    ]
-
-    return columns
-  }
-
-  const swap = useCallback(
-    ({ customerId }) => {
-      swapPassengers(passengerStatus.id, customerId)
-    },
-    [passengerStatus, swapPassengers],
-  )
 
   const book = useCallback(
     (id) => {
       setStatusToBooked(id)
     },
     [setStatusToBooked],
-  )
-
-  const remove = useCallback(
-    ({ amountRefunded }) => {
-      setStatusToCanceled(passengerStatus.id, amountRefunded)
-    },
-    [passengerStatus, setStatusToCanceled],
-  )
-
-  /* CHECK IF THIS IS A TO DO
-  const update = (id) => {
-    console.log('update: ', id, paymentValue)
-  } */
-
-  const contentForPaymentsUpdate = useMemo(
-    () => (
-      <Row>
-        <Col sm={8}>
-          <div>
-            Valor pago anteriormente: <span>{paymentStatus.previousPaid}</span>
-          </div>
-        </Col>
-        <Col sm={8}>
-          <div>
-            Total pago: <span>{paymentStatus.amountPaid}</span>
-          </div>
-        </Col>
-        <Col sm={8}>
-          <div>
-            Valor faltante: <span>{paymentStatus.remaining}</span>
-          </div>
-        </Col>
-        <Col sm={24}>
-          <PaymentUpdateForm
-            formId="paymentUpdateForm"
-            onSubmit={addPayment}
-            remaining={paymentStatus.remaining}
-          />
-        </Col>
-      </Row>
-    ),
-    [paymentStatus, addPayment],
-  )
-
-  const handleRemove = useCallback(
-    ({ id, amountPaid }) => {
-      setPassengerToRemove(id, amountPaid)
-    },
-    [setPassengerToRemove],
-  )
-
-  const handleHistory = useCallback(
-    (id) => {
-      getPayments(id)
-    },
-    [getPayments],
-  )
-
-  const handleUpdate = useCallback(
-    (id) => {
-      getPaymentStatus(id)
-    },
-    [getPaymentStatus],
   )
 
   const handleBook = useCallback(
@@ -336,13 +113,6 @@ const PassengerList = (props) => {
     [book],
   )
 
-  const handleSwapPassenger = useCallback(
-    (id) => {
-      setPassengerToSwap(id)
-    },
-    [setPassengerToSwap],
-  )
-
   const renderActionsButtons = useCallback(
     (passenger) => {
       const bookedActions = (
@@ -353,7 +123,7 @@ const PassengerList = (props) => {
             type="primary"
             title="Atualizar pagamento"
             onClick={() => {
-              handleUpdate(passenger.id)
+              getPaymentStatus(passenger.id)
             }}
           >
             <i className="fa fa-dollar" />
@@ -364,7 +134,7 @@ const PassengerList = (props) => {
             type="primary"
             title="Histórico de pagamento"
             onClick={() => {
-              handleHistory(passenger.id)
+              getPayments(passenger.id)
             }}
           >
             <i className="fa fa-calendar" />
@@ -375,7 +145,7 @@ const PassengerList = (props) => {
             type="primary"
             title="Trocar passageiro"
             onClick={() => {
-              handleSwapPassenger(passenger.id)
+              setPassengerToSwap(passenger.id)
             }}
           >
             <i className="fa fa-exchange" />
@@ -385,7 +155,7 @@ const PassengerList = (props) => {
             size="small"
             type="danger"
             title="Passageiro desistiu"
-            onClick={() => handleRemove(passenger)}
+            onClick={() => setPassengerToRemove(passenger)}
           >
             <i className="fa fa-times" />
           </Button>
@@ -410,7 +180,7 @@ const PassengerList = (props) => {
             size="small"
             type="danger"
             title="Remover passageiro"
-            onClick={() => handleRemove(passenger)}
+            onClick={() => setPassengerToRemove(passenger)}
           >
             <i className="fa fa-times" />
           </Button>
@@ -447,10 +217,10 @@ const PassengerList = (props) => {
 
       throw new Error(`Status ${passenger.status} not defined in statusesEnum`)
     },
-    [handleBook, handleHistory, handleRemove, handleSwapPassenger, handleUpdate],
+    [getPaymentStatus, getPayments, setPassengerToSwap, setPassengerToRemove, handleBook],
   )
 
-  /* CHECK IF THIS IS A TO DO
+  /* TODO: (Mi) fazer o filtro funcionar 
   const filterData = (passengers) => {
     const {
       filter: { status, query, startPay, fullPay },
@@ -576,10 +346,10 @@ const PassengerList = (props) => {
     return { ...passenger, ...passengerPresenterModified }
   })
 
-  const filteredPayments = payments.filter((payment) => payment.status !== 'CANCELED')
-
-  // TODO:
-  const filteredData = passengersList // this.filterData(passengersList)
+  const filteredData = useMemo(
+    () => passengersList /* TODO: .filterData(passengersList) */,
+    [passengersList],
+  )
 
   return (
     <>
@@ -588,79 +358,14 @@ const PassengerList = (props) => {
         tableColumns={tableColumns}
         tableData={filteredData}
       />
-      <Modal
-        title="Removendo o passageiro da excursão"
-        width={700}
-        visible={isRemovePassengerVisible}
-        cancelText="Cancelar"
-        afterClose={clearPassengerStatus}
-        okText="Remover"
-        okType="danger"
-        okCancel
-        onCancel={closeDeletePassengerModal}
-        footer={[
-          <Button onClick={closeDeletePassengerModal} type="default" key="cancel" htmlType="button">
-            Cancelar
-          </Button>,
-          <Button type="danger" form="deletePassengerForm" key="submit" htmlType="submit">
-            Remover
-          </Button>,
-        ]}
-      >
-        <DeletePassengerForm formId="deletePassengerForm" onSubmit={remove} />
-      </Modal>
-      <Modal
-        title="Troca de passageiro"
-        width={700}
-        visible={isSwapPassengerVisible}
-        afterClose={clearPassengerStatus}
-        onCancel={closeSwapPassengerModal}
-        footer={[
-          <Button onClick={closeSwapPassengerModal} type="default" key="cancel" htmlType="button">
-            Cancelar
-          </Button>,
-          <Button type="primary" form="swapPassengerForm" key="submit" htmlType="submit">
-            Trocar passageiro
-          </Button>,
-        ]}
-      >
-        <SwapPassengerForm formId="swapPassengerForm" onSubmit={swap} />
-      </Modal>
-      <Modal
-        title="Datas de pagamento"
-        width={700}
-        visible={isPaymentListVisible}
-        onCancel={closePaymentsListModal}
-        onOk={closePaymentsListModal}
-        afterClose={clearPayments}
-      >
-        <Table
-          rowKey={(record) => `${record.id}${record.payDate}${record.operation}`}
-          className="utils__scrollTable"
-          scroll={{ x: '100%' }}
-          columns={columnsForPayments()}
-          dataSource={filteredPayments}
-          pagination={false}
-          loading={isPaymentsLoading}
-        />
-      </Modal>
 
-      <Modal
-        title="Atualizar pagamento"
-        width={700}
-        visible={isPaymentFormVisible}
-        onCancel={clearPaymentStatus}
-        footer={[
-          <Button onClick={clearPaymentStatus} type="default" key="cancel" htmlType="button">
-            Cancelar
-          </Button>,
-          <Button type="primary" form="paymentUpdateForm" key="submit" htmlType="submit">
-            Atualizar
-          </Button>,
-        ]}
-      >
-        {contentForPaymentsUpdate}
-      </Modal>
+      <RemovePassenger afterClose={clearPassengerStatus} />
+
+      <SwapPassenger afterClose={clearPassengerStatus} />
+
+      <HistoryPayment afterClose={clearPayments} />
+
+      <AddPayment afterClose={clearPaymentStatus} />
     </>
   )
 }
