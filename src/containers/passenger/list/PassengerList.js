@@ -1,16 +1,16 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Button, Tag, Modal, Row, Col, Table } from 'antd'
-import paymentMethods from 'constants/paymentMethods'
 
 import passengerStatusActions from 'redux/passengerStatus/actions'
 import paymentsActions from 'redux/payments/actions'
 import paymentStatusActions from 'redux/paymentStatus/actions'
-import SkeletonTable from 'components/SkeletonTable/SkeletonTable'
 
+import paymentMethods from 'constants/paymentMethods'
+import SkeletonTable from 'components/SkeletonTable/SkeletonTable'
 import PaymentSelect from 'components/PaymentSelect/PaymentSelect'
-import SwapPassengerForm from 'containers/passenger/box/swapForm/SwapPassengerForm'
 import PaymentUpdateForm from 'components/PaymentUpdateForm/PaymentUpdateForm'
+import SwapPassengerForm from 'containers/passenger/box/swapForm/SwapPassengerForm'
 import DeletePassengerForm from 'containers/passenger/box/deleteForm/DeletePassengerForm'
 
 import style from './style.module.scss'
@@ -245,25 +245,34 @@ const PassengerList = (props) => {
     return columns
   }
 
-  const swap = ({ customerId }) => {
-    swapPassengers(passengerStatus.id, customerId)
-  }
+  const swap = useCallback(
+    ({ customerId }) => {
+      swapPassengers(passengerStatus.id, customerId)
+    },
+    [passengerStatus, swapPassengers],
+  )
 
-  const book = (id) => {
-    setStatusToBooked(id)
-  }
+  const book = useCallback(
+    (id) => {
+      setStatusToBooked(id)
+    },
+    [setStatusToBooked],
+  )
 
-  const remove = ({ amountRefunded }) => {
-    setStatusToCanceled(passengerStatus.id, amountRefunded)
-  }
+  const remove = useCallback(
+    ({ amountRefunded }) => {
+      setStatusToCanceled(passengerStatus.id, amountRefunded)
+    },
+    [passengerStatus, setStatusToCanceled],
+  )
 
   /* CHECK IF THIS IS A TO DO
   const update = (id) => {
     console.log('update: ', id, paymentValue)
   } */
 
-  const contentForPaymentsUpdate = () => {
-    const content = (
+  const contentForPaymentsUpdate = useMemo(
+    () => (
       <Row>
         <Col sm={8}>
           <div>
@@ -288,141 +297,158 @@ const PassengerList = (props) => {
           />
         </Col>
       </Row>
-    )
+    ),
+    [paymentStatus, addPayment],
+  )
 
-    return content
-  }
+  const handleRemove = useCallback(
+    ({ id, amountPaid }) => {
+      setPassengerToRemove(id, amountPaid)
+    },
+    [setPassengerToRemove],
+  )
 
-  const handleRemove = ({ id, amountPaid }) => {
-    setPassengerToRemove(id, amountPaid)
-  }
+  const handleHistory = useCallback(
+    (id) => {
+      getPayments(id)
+    },
+    [getPayments],
+  )
 
-  const handleHistory = (id) => {
-    getPayments(id)
-  }
+  const handleUpdate = useCallback(
+    (id) => {
+      getPaymentStatus(id)
+    },
+    [getPaymentStatus],
+  )
 
-  const handleUpdate = (id) => {
-    getPaymentStatus(id)
-  }
+  const handleBook = useCallback(
+    (id) => {
+      Modal.confirm({
+        okCancel: true,
+        cancelText: 'Não',
+        okText: 'Sim',
+        title: 'Confirmar reserva',
+        content: 'Deseja confirmar o passageiro à excursão?',
+        onOk: () => book(id),
+      })
+    },
+    [book],
+  )
 
-  const handleBook = (id) => {
-    Modal.confirm({
-      okCancel: true,
-      cancelText: 'Não',
-      okText: 'Sim',
-      title: 'Confirmar reserva',
-      content: 'Deseja confirmar o passageiro à excursão?',
-      onOk: () => book(id),
-    })
-  }
+  const handleSwapPassenger = useCallback(
+    (id) => {
+      setPassengerToSwap(id)
+    },
+    [setPassengerToSwap],
+  )
 
-  const handleSwapPassenger = (id) => {
-    setPassengerToSwap(id)
-  }
+  const renderActionsButtons = useCallback(
+    (passenger) => {
+      const bookedActions = (
+        <div className="table-action-buttons">
+          <Button
+            ghost
+            size="small"
+            type="primary"
+            title="Atualizar pagamento"
+            onClick={() => {
+              handleUpdate(passenger.id)
+            }}
+          >
+            <i className="fa fa-dollar" />
+          </Button>
+          <Button
+            ghost
+            size="small"
+            type="primary"
+            title="Histórico de pagamento"
+            onClick={() => {
+              handleHistory(passenger.id)
+            }}
+          >
+            <i className="fa fa-calendar" />
+          </Button>
+          <Button
+            ghost
+            size="small"
+            type="primary"
+            title="Trocar passageiro"
+            onClick={() => {
+              handleSwapPassenger(passenger.id)
+            }}
+          >
+            <i className="fa fa-exchange" />
+          </Button>
+          <Button
+            ghost
+            size="small"
+            type="danger"
+            title="Passageiro desistiu"
+            onClick={() => handleRemove(passenger)}
+          >
+            <i className="fa fa-times" />
+          </Button>
+        </div>
+      )
 
-  const renderActionsButtons = (passenger) => {
-    const bookedActions = (
-      <div className="table-action-buttons">
-        <Button
-          ghost
-          size="small"
-          type="primary"
-          title="Atualizar pagamento"
-          onClick={() => {
-            handleUpdate(passenger.id)
-          }}
-        >
-          <i className="fa fa-dollar" />
-        </Button>
-        <Button
-          ghost
-          size="small"
-          type="primary"
-          title="Histórico de pagamento"
-          onClick={() => {
-            handleHistory(passenger.id)
-          }}
-        >
-          <i className="fa fa-calendar" />
-        </Button>
-        <Button
-          ghost
-          size="small"
-          type="primary"
-          title="Trocar passageiro"
-          onClick={() => {
-            handleSwapPassenger(passenger.id)
-          }}
-        >
-          <i className="fa fa-exchange" />
-        </Button>
-        <Button
-          ghost
-          size="small"
-          type="danger"
-          title="Passageiro desistiu"
-          onClick={() => handleRemove(passenger)}
-        >
-          <i className="fa fa-times" />
-        </Button>
-      </div>
-    )
+      const waitingActions = (
+        <div className="table-action-buttons">
+          <Button
+            ghost
+            size="small"
+            type="primary"
+            title="Reservar passageiro"
+            onClick={() => {
+              handleBook(passenger.id)
+            }}
+          >
+            <i className="fa fa-check" />
+          </Button>
+          <Button
+            ghost
+            size="small"
+            type="danger"
+            title="Remover passageiro"
+            onClick={() => handleRemove(passenger)}
+          >
+            <i className="fa fa-times" />
+          </Button>
+        </div>
+      )
 
-    const waitingActions = (
-      <div className="table-action-buttons">
-        <Button
-          ghost
-          size="small"
-          type="primary"
-          title="Reservar passageiro"
-          onClick={() => {
-            handleBook(passenger.id)
-          }}
-        >
-          <i className="fa fa-check" />
-        </Button>
-        <Button
-          ghost
-          size="small"
-          type="danger"
-          title="Remover passageiro"
-          onClick={() => handleRemove(passenger)}
-        >
-          <i className="fa fa-times" />
-        </Button>
-      </div>
-    )
+      const canceledActions = (
+        <div className="table-action-buttons">
+          <Button
+            ghost
+            size="small"
+            type="primary"
+            title="Reservar passageiro"
+            onClick={() => {
+              handleBook(passenger.id)
+            }}
+          >
+            <i className="fa fa-check" />
+          </Button>
+        </div>
+      )
 
-    const canceledActions = (
-      <div className="table-action-buttons">
-        <Button
-          ghost
-          size="small"
-          type="primary"
-          title="Reservar passageiro"
-          onClick={() => {
-            handleBook(passenger.id)
-          }}
-        >
-          <i className="fa fa-check" />
-        </Button>
-      </div>
-    )
+      if (statusesEnum.booked === passenger.status) {
+        return bookedActions
+      }
 
-    if (statusesEnum.booked === passenger.status) {
-      return bookedActions
-    }
+      if (statusesEnum.waiting === passenger.status) {
+        return waitingActions
+      }
 
-    if (statusesEnum.waiting === passenger.status) {
-      return waitingActions
-    }
+      if (statusesEnum.canceled === passenger.status) {
+        return canceledActions
+      }
 
-    if (statusesEnum.canceled === passenger.status) {
-      return canceledActions
-    }
-
-    throw new Error(`Status ${passenger.status} not defined in statusesEnum`)
-  }
+      throw new Error(`Status ${passenger.status} not defined in statusesEnum`)
+    },
+    [handleBook, handleHistory, handleRemove, handleSwapPassenger, handleUpdate],
+  )
 
   /* CHECK IF THIS IS A TO DO
   const filterData = (passengers) => {
@@ -430,7 +456,7 @@ const PassengerList = (props) => {
       filter: { status, query, startPay, fullPay },
     } = props
     let filteredData = passengers
-
+  
     if (status) filteredData = filteredData.filter((x) => x.status === status)
     if (fullPay) filteredData = filteredData.filter((x) => x.paid === x.total)
     else if (startPay) filteredData = filteredData.filter((x) => x.paid > 0)
@@ -439,7 +465,7 @@ const PassengerList = (props) => {
         const queryPart = query.toLowerCase().split(' ')
         return queryPart.every((q) => x.customer.name.toLowerCase().includes(q))
       })
-
+  
     return filteredData
   } */
 
@@ -556,7 +582,7 @@ const PassengerList = (props) => {
   const filteredData = passengersList // this.filterData(passengersList)
 
   return (
-    <React.Fragment>
+    <>
       <SkeletonTable
         isLoading={isPassengerLoading}
         tableColumns={tableColumns}
@@ -633,9 +659,9 @@ const PassengerList = (props) => {
           </Button>,
         ]}
       >
-        {contentForPaymentsUpdate()}
+        {contentForPaymentsUpdate}
       </Modal>
-    </React.Fragment>
+    </>
   )
 }
 
