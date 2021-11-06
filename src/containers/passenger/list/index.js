@@ -41,15 +41,9 @@ const Passenger = () => {
     fullPay: false,
   })
 
-  const {
-    loading,
-    data: { passengers = [] } = {},
-    refetch: getPassengers,
-  } = useQuery(FETCH_PASSENGERS, { variables: { filter } })
-
-  useEffect(() => {
-    getPassengers({ variables: { filter } })
-  }, [getPassengers, filter])
+  const { loading, data: { passengers = [] } = {} } = useQuery(FETCH_PASSENGERS, {
+    variables: { filter },
+  })
 
   useEffect(() => {
     dispatch(
