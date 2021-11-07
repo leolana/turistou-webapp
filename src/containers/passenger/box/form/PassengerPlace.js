@@ -6,8 +6,10 @@ import PassengerSummaryHeader from './_passengerResume'
 const PassengerPlace = ({ form, excursion }) => {
   const vacancies = useMemo(() => {
     if (!excursion || !excursion.transports) return []
-    return getVacancies(excursion.passengers, excursion.transports[0])
-  }, [excursion])
+    const transportId = form.getFieldValue('transportId')
+    const transport = excursion.transports.find(({ id }) => id === transportId)
+    return transport ? getVacancies(excursion.passengers, transport) : []
+  }, [excursion, form])
 
   const getStopPoints = useCallback(() => {
     const { stopPoints = [] } = excursion
@@ -82,12 +84,14 @@ const PassengerPlace = ({ form, excursion }) => {
   )
 }
 
-const getVacancies = (passengers, transports) => {
-  return Array(transports.capacity)
+const getVacancies = (passengers, transport) => {
+  return Array(transport.capacity)
     .fill(null)
     .map((_, i) => {
       const number = i + 1
-      const free = !passengers.some((p) => p.spot?.number === number)
+      const free = !passengers.some(
+        (p) => p.spot?.number === number && p.spot?.transportId === transport.id,
+      )
 
       return { number, free }
     })
