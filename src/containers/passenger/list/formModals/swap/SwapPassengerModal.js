@@ -1,32 +1,48 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Button, Modal } from 'antd'
+import { useMutation } from 'react-apollo'
+import { Button, Modal, notification } from 'antd'
 
-import passengerStatusActions from 'redux/passengerStatus/actions'
+import passengerStatusActions, {
+  clearPassengerStatus,
+  SWAP_PASSENGERS,
+} from 'redux/passengerStatus/actions'
 
 import SwapPassengerForm from './SwapPassengerForm'
 
-function SwapPassenger({ afterClose }) {
+function SwapPassenger({ afterClose, getPassengers }) {
   const dispatch = useDispatch()
+  const [saveSwapPassengers, { loading, error, called }] = useMutation(SWAP_PASSENGERS)
 
   const { isSwapPassengerVisible, payload: passengerStatus } = useSelector(
     (state) => state.passengerStatus,
   )
 
-  const swapPassengers = useCallback(
-    ({ customerId: idOfCustomerToBeSwappedWith }) => {
-      dispatch({
-        type: passengerStatusActions.SWAP_PASSENGERS,
-        payload: { id: passengerStatus.id, idOfCustomerToBeSwappedWith },
+  useEffect(() => {
+    if (error) {
+      notification.error({
+        title: 'Falha',
+        message: 'Houve uma falha ao fazer a troca de passageiro',
       })
-    },
-    [passengerStatus, dispatch],
-  )
+    }
+    if (called && !loading) {
+      dispatch(clearPassengerStatus({}))
+      getPassengers()
+    }
+  }, [error, loading, called, getPassengers, dispatch])
 
   const closeSwapPassengerModal = useCallback(
     () =>
       dispatch({ type: passengerStatusActions.TOGGLE_SWAP_PASSENGER_VISIBILITY, payload: false }),
     [dispatch],
+  )
+
+  const swapPassengers = useCallback(
+    ({ customerId: idOfCustomerToBeSwappedWith }) => {
+      const input = { id: passengerStatus.id, idOfCustomerToBeSwappedWith }
+      saveSwapPassengers({ variables: { input } })
+    },
+    [passengerStatus, saveSwapPassengers],
   )
 
   return (
@@ -37,7 +53,7 @@ function SwapPassenger({ afterClose }) {
       afterClose={afterClose}
       onCancel={closeSwapPassengerModal}
       footer={[
-        <Button onClick={closeSwapPassengerModal} type="default" key="cancel" htmlType="button">
+        <Button onClick={closeSwapPassengerModal} key="cancel">
           Cancelar
         </Button>,
         <Button type="primary" form="swapPassengerForm" key="submit" htmlType="submit">

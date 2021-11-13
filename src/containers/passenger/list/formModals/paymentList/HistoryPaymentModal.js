@@ -1,15 +1,23 @@
-import { Modal, Table } from 'antd'
 import React, { useCallback, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useMutation } from 'react-apollo'
+import { Modal, Table } from 'antd'
 
-import paymentsActions from 'redux/payments/actions'
+import paymentsActions, {
+  SET_STATUS_TO_CANCELED,
+  SET_TO_PAID,
+  SET_TO_PENDING,
+} from 'redux/payments/actions'
 import paymentMethods from 'constants/paymentMethods'
 import PaymentSelect from 'components/PaymentSelect/PaymentSelect'
 
 import style from './style.module.scss'
 
-function HistoryPayment({ afterClose }) {
+function HistoryPayment({ afterClose, getPassengers }) {
   const dispatch = useDispatch()
+  const [saveAsPaid, { loading: loadingPaying }] = useMutation(SET_TO_PAID)
+  const [saveAsPending, { loading: loadingPending }] = useMutation(SET_TO_PENDING)
+  const [saveAsCanceled, { loading: loadingCencelling }] = useMutation(SET_STATUS_TO_CANCELED)
 
   const {
     payload: payments = [],
@@ -17,25 +25,36 @@ function HistoryPayment({ afterClose }) {
     isLoading: isPaymentsLoading,
   } = useSelector((state) => state.payments)
 
+  const isHistoryLoading = useMemo(
+    () => loadingPaying || isPaymentsLoading || loadingPending || loadingCencelling,
+    [isPaymentsLoading, loadingPaying, loadingPending, loadingCencelling],
+  )
+
   const closePaymentsListModal = useCallback(
     () => dispatch({ type: paymentsActions.TOGGLE_VISIBILITY, payload: false }),
     [dispatch],
   )
 
   const setToPaid = useCallback(
-    ({ passengerId, paymentId }) =>
-      dispatch({ type: paymentsActions.SET_TO_PAID, payload: { passengerId, paymentId } }),
-    [dispatch],
+    ({ passengerId, paymentId }) => {
+      saveAsPaid({ variables: { input: { passengerId, paymentId } } })
+      getPassengers()
+    },
+    [getPassengers, saveAsPaid],
   )
   const setToPending = useCallback(
-    ({ passengerId, paymentId }) =>
-      dispatch({ type: paymentsActions.SET_TO_UNPAID, payload: { passengerId, paymentId } }),
-    [dispatch],
+    ({ passengerId, paymentId }) => {
+      saveAsPending({ variables: { input: { passengerId, paymentId } } })
+      getPassengers()
+    },
+    [getPassengers, saveAsPending],
   )
   const setPaymentStatusToCanceled = useCallback(
-    ({ passengerId, paymentId }) =>
-      dispatch({ type: paymentsActions.SET_TO_CANCELED, payload: { passengerId, paymentId } }),
-    [dispatch],
+    ({ passengerId, paymentId }) => {
+      saveAsCanceled({ variables: { input: { passengerId, paymentId } } })
+      getPassengers()
+    },
+    [getPassengers, saveAsCanceled],
   )
 
   const columnsForPayments = () => {
@@ -143,7 +162,7 @@ function HistoryPayment({ afterClose }) {
         columns={columnsForPayments()}
         dataSource={filteredPayments}
         pagination={false}
-        loading={isPaymentsLoading}
+        loading={isHistoryLoading}
       />
     </Modal>
   )

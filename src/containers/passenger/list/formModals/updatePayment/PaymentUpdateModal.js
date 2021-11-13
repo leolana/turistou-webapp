@@ -1,17 +1,18 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Button, Col, Modal, Row } from 'antd'
+import { useMutation } from 'react-apollo'
+import { Button, Col, Modal, notification, Row } from 'antd'
 
-import paymentStatusActions from 'redux/paymentStatus/actions'
+import { clearPaymentStatus, PAYMENT_INSERT } from 'redux/paymentStatus/actions'
 
 import PaymentUpdateForm from './PaymentUpdateForm'
 
-function AddPayment({ afterClose }) {
+function AddPayment({ afterClose, getPassengers }) {
   const dispatch = useDispatch()
-
-  const { isVisible } = useSelector((state) => state.paymentStatus)
+  const [insertPayment, { loading, error, called }] = useMutation(PAYMENT_INSERT)
 
   const {
+    isVisible,
     payload: paymentStatus = {
       amountPaid: 0,
       remaining: 0,
@@ -19,9 +20,25 @@ function AddPayment({ afterClose }) {
     },
   } = useSelector((state) => state.paymentStatus)
 
+  useEffect(() => {
+    if (error) {
+      notification.error({
+        title: 'Falha',
+        message: 'Houve uma falha ao adicionar pagamento do passageiro',
+      })
+    }
+    if (called && !loading) {
+      dispatch(clearPaymentStatus())
+      getPassengers()
+    }
+  }, [error, loading, called, getPassengers, dispatch])
+
   const addPayment = useCallback(
-    (values) => dispatch({ type: paymentStatusActions.PAYMENT_INSERT, payload: { values } }),
-    [dispatch],
+    (values) => {
+      const input = { passengerId: paymentStatus.passengerId, payment: values }
+      insertPayment({ variables: { input } })
+    },
+    [paymentStatus.passengerId, insertPayment],
   )
 
   return (
@@ -31,7 +48,7 @@ function AddPayment({ afterClose }) {
       visible={isVisible}
       onCancel={afterClose}
       footer={[
-        <Button onClick={afterClose} type="default" key="cancel" htmlType="button">
+        <Button onClick={afterClose} key="cancel">
           Cancelar
         </Button>,
         <Button type="primary" form="paymentUpdateForm" key="submit" htmlType="submit">
@@ -41,19 +58,13 @@ function AddPayment({ afterClose }) {
     >
       <Row>
         <Col sm={8}>
-          <div>
-            Valor pago anteriormente: <span>{paymentStatus.previousPaid}</span>
-          </div>
+          Valor pago anteriormente: <span>{paymentStatus.previousPaid}</span>
         </Col>
         <Col sm={8}>
-          <div>
-            Total pago: <span>{paymentStatus.amountPaid}</span>
-          </div>
+          Total pago: <span>{paymentStatus.amountPaid}</span>
         </Col>
         <Col sm={8}>
-          <div>
-            Valor faltante: <span>{paymentStatus.remaining}</span>
-          </div>
+          Valor faltante: <span>{paymentStatus.remaining}</span>
         </Col>
         <Col sm={24}>
           <PaymentUpdateForm

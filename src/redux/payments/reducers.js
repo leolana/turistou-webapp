@@ -4,6 +4,7 @@ const initialState = {
   isLoading: true,
   payload: [],
   isVisible: false,
+  passengerId: null,
 }
 
 export default function paymentsReducer(state = initialState, action) {
@@ -21,7 +22,7 @@ export default function paymentsReducer(state = initialState, action) {
       }
 
     case actions.SET_STATE:
-      return { ...state, isLoading: false, payload: action.payload }
+      return { ...state, isLoading: false, ...action.payload }
 
     default:
       return state

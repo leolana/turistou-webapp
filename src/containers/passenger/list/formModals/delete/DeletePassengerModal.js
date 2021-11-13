@@ -1,17 +1,36 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Button, Modal } from 'antd'
+import { useMutation } from 'react-apollo'
+import { Button, Modal, notification } from 'antd'
 
-import passengerStatusActions from 'redux/passengerStatus/actions'
+import passengerStatusActions, {
+  clearPassengerStatus,
+  SET_PASSENGER_STATUS,
+} from 'redux/passengerStatus/actions'
+import { PASSENGER_STATUS_ENUM } from 'constants/passengerStatus'
 
 import DeletePassengerForm from './DeletePassengerForm'
 
-function RemovePassenger({ afterClose }) {
+function RemovePassenger({ afterClose, getPassengers }) {
   const dispatch = useDispatch()
+  const [savePassengerStatus, { loading, error, called }] = useMutation(SET_PASSENGER_STATUS)
 
   const { isRemovePassengerVisible, payload: passengerStatus } = useSelector(
     (state) => state.passengerStatus,
   )
+
+  useEffect(() => {
+    if (error) {
+      notification.error({
+        title: 'Falha',
+        message: 'Houve uma falha ao remover passageiro da excursão',
+      })
+    }
+    if (called && !loading) {
+      dispatch(clearPassengerStatus({}))
+      getPassengers()
+    }
+  }, [error, loading, called, getPassengers, dispatch])
 
   const closeDeletePassengerModal = useCallback(
     () =>
@@ -21,13 +40,14 @@ function RemovePassenger({ afterClose }) {
 
   const setStatusToCanceled = useCallback(
     ({ amountRefunded }) => {
-      const passengerId = passengerStatus.id
-      dispatch({
-        type: passengerStatusActions.SET_TO_CANCELED,
-        payload: { passengerId, amountRefunded },
-      })
+      const input = {
+        status: PASSENGER_STATUS_ENUM.canceled,
+        id: passengerStatus.id,
+        amountRefunded,
+      }
+      savePassengerStatus({ variables: { input } })
     },
-    [passengerStatus, dispatch],
+    [passengerStatus.id, savePassengerStatus],
   )
 
   return (

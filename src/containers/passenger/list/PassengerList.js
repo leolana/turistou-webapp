@@ -11,7 +11,7 @@ import AddPayment from './formModals/updatePayment/PaymentUpdateModal'
 import HistoryPayment from './formModals/paymentList/HistoryPaymentModal'
 import PassengerTable from './PassengerTable'
 
-const PassengerList = ({ filter }) => {
+const PassengerList = ({ filter, getPassengers }) => {
   const dispatch = useDispatch()
 
   const clearPassengerStatus = useCallback(
@@ -33,13 +33,10 @@ const PassengerList = ({ filter }) => {
     <>
       <PassengerTable filter={filter} />
 
-      <RemovePassenger afterClose={clearPassengerStatus} />
-
-      <SwapPassenger afterClose={clearPassengerStatus} />
-
-      <HistoryPayment afterClose={clearPayments} />
-
-      <AddPayment afterClose={clearPaymentStatus} />
+      <RemovePassenger afterClose={clearPassengerStatus} getPassengers={getPassengers} />
+      <SwapPassenger afterClose={clearPassengerStatus} getPassengers={getPassengers} />
+      <HistoryPayment afterClose={clearPayments} getPassengers={getPassengers} />
+      <AddPayment afterClose={clearPaymentStatus} getPassengers={getPassengers} />
     </>
   )
 }

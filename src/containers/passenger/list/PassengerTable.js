@@ -1,19 +1,23 @@
-import React, { useCallback, useMemo } from 'react'
+import React, { useCallback, useEffect, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useLazyQuery } from 'react-apollo'
 import { Button, Modal, Tag } from 'antd'
 
 import passengerStatusActions from 'redux/passengerStatus/actions'
-import paymentsActions from 'redux/payments/actions'
+import paymentsActions, { FETCH_PAYMENTS, setPassengerEditing } from 'redux/payments/actions'
 import paymentStatusActions from 'redux/paymentStatus/actions'
 import SkeletonTable from 'components/SkeletonTable/SkeletonTable'
 import { PASSENGER_STATUS, PASSENGER_STATUS_ENUM } from 'constants/passengerStatus'
 
 function PassengerTable({ filter }) {
   const dispatch = useDispatch()
+  const [fetchPayments, { data: { payments } = {}, loading: isPaymentsLoading }] =
+    useLazyQuery(FETCH_PAYMENTS)
 
   const { isLoading: isPassengerLoading, payload: passengers } = useSelector(
     (state) => state.passengerList,
   )
+  const { passengerId } = useSelector((state) => state.payments)
 
   const tableColumns = useMemo(() => {
     const { status } = filter
@@ -196,6 +200,18 @@ function PassengerTable({ filter }) {
     }
   }, [filter, getPaymentStatus, getPayments, handleBook, setPassengerToRemove, setPassengerToSwap])
 
+  useEffect(() => {
+    dispatch({ type: paymentsActions.TOGGLE_LOADING, payload: isPaymentsLoading })
+  }, [dispatch, isPaymentsLoading])
+
+  useEffect(() => {
+    if (isPaymentsLoading || !payments?.length || !passengerId) return
+
+    const historyPayment = payments.map((p) => ({ ...p, passengerId }))
+
+    dispatch({ type: paymentsActions.SET_STATE, payload: { payload: historyPayment } })
+  }, [isPaymentsLoading, payments, passengerId, dispatch])
+
   const setPassengerToRemove = useCallback(
     ({ id, amountPaid }) =>
       dispatch({
@@ -221,9 +237,14 @@ function PassengerTable({ filter }) {
   )
 
   const getPayments = useCallback(
-    (passengerId) => dispatch({ type: paymentsActions.GET_PAYMENTS, payload: { passengerId } }),
-    [dispatch],
+    (passengerId) => {
+      fetchPayments({ variables: { passengerId } })
+      dispatch({ type: paymentsActions.TOGGLE_VISIBILITY, payload: true })
+      dispatch(setPassengerEditing(passengerId))
+    },
+    [fetchPayments, dispatch],
   )
+
   const getPaymentStatus = useCallback(
     (passengerId) =>
       dispatch({ type: paymentStatusActions.GET_PAYMENT_STATUS, payload: { passengerId } }),
