@@ -42,14 +42,10 @@ const Passenger = () => {
   })
 
   const {
-    loading,
     data: { passengers = [] } = {},
+    loading,
     refetch: getPassengers,
   } = useQuery(FETCH_PASSENGERS, { variables: { filter } })
-
-  useEffect(() => {
-    getPassengers({ variables: { filter } })
-  }, [getPassengers, filter])
 
   useEffect(() => {
     dispatch(
@@ -78,7 +74,7 @@ const Passenger = () => {
         </div>
         <div className="card-body">
           <PassengerFilter setFilter={setFilter} />
-          <PassengerList id={id} filter={filter} />
+          <PassengerList id={id} filter={filter} getPassengers={getPassengers} />
 
           <div className="form-actions">
             <DropdownAdd placement="topRight" />

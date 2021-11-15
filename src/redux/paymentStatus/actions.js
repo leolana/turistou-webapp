@@ -12,6 +12,14 @@ const actions = {
   CLEAR_PAYMENT_STATUS: 'paymentForm/CLEAR_PAYMENT_STATUS',
 }
 
+export const PAYMENT_INSERT = gql`
+  mutation Passenger($input: PaymentInsertInput!) {
+    paymentInsert(paymentInsertInput: $input) {
+      id
+    }
+  }
+`
+
 export const paymentInsert = ({ passengerId, payment }) => ({
   type: actions.PAYMENT_INSERT,
   request: () =>
@@ -52,24 +60,24 @@ export const fetchPaymentStatus = ({ passengerId }) => ({
     }),
 })
 
-export const setStateSuccess = payload => ({
+export const setStateSuccess = (payload) => ({
   type: actions.SET_STATE,
   payload,
   isLoading: false,
 })
 
-export const setStateFailure = payload => ({
+export const setStateFailure = (payload) => ({
   type: actions.SET_STATE_FAILURE,
   payload: { ...payload },
   isLoading: false,
 })
 
-export const toggleVisibility = payload => ({
+export const toggleVisibility = (payload) => ({
   type: actions.TOGGLE_VISIBILITY,
   payload,
 })
 
-export const toggleLoading = payload => ({
+export const toggleLoading = (payload) => ({
   type: actions.TOGGLE_LOADING,
   payload,
 })

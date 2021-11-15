@@ -16,6 +16,23 @@ const actions = {
   SWAP_PASSENGERS: 'passengerStatus/SWAP_PASSENGERS',
 }
 
+export const SET_PASSENGER_STATUS = gql`
+  mutation setPassengerStatus($input: SetPassengerStatusInput!) {
+    setPassengerStatus(SetPassengerStatusInput: $input) {
+      id
+      status
+    }
+  }
+`
+
+export const SWAP_PASSENGERS = gql`
+  mutation swapPassengers($input: SwapPassengersInput!) {
+    swapPassengers(SwapPassengersInput: $input) {
+      id
+    }
+  }
+`
+
 const statusActions = {
   booked: actions.SET_TO_BOOKED,
   canceled: actions.SET_TO_CANCELED,
@@ -27,13 +44,7 @@ export const swapPassengersStatus = (passengerId, idOfCustomerToBeSwappedWith) =
     payload: { loading: true },
     request: () =>
       mutate({
-        mutation: gql`
-          mutation swapPassengers($input: SwapPassengersInput!) {
-            swapPassengers(SwapPassengersInput: $input) {
-              id
-            }
-          }
-        `,
+        mutation: SWAP_PASSENGERS,
         variables: {
           input: {
             id: passengerId,
@@ -50,14 +61,7 @@ const setPassengerStatus = (status) => (passengerId, amountRefunded) => {
     payload: { loading: true },
     request: () =>
       mutate({
-        mutation: gql`
-          mutation setPassengerStatus($input: SetPassengerStatusInput!) {
-            setPassengerStatus(SetPassengerStatusInput: $input) {
-              id
-              status
-            }
-          }
-        `,
+        mutation: SET_PASSENGER_STATUS,
         variables: {
           input: {
             id: passengerId,
