@@ -8,6 +8,7 @@ import FormStepButtonsActions from 'components/Step/FormStepButtonsActions'
 import {
   clearCustomerState,
   GET_CUSTOMER_BY_ID,
+  parseCustomerDetail,
   SAVE_CUSTOMER,
   serializeCustomerDetail,
   setCustomerState,
@@ -22,19 +23,17 @@ const CustomerForm = ({ form, formSteps }) => {
   const [saveCustomer, { loading: saving, error }] = useMutation(SAVE_CUSTOMER)
   const { loading: getting, data: { customer: customerDetail } = {} } = useQuery(
     GET_CUSTOMER_BY_ID,
-    {
-      variables: { id: customerId },
-      skip: !customerId,
-    },
+    { variables: { id: customerId }, skip: !customerId },
   )
 
   useEffect(() => {
     if (!customerId) dispatch(clearCustomerState)
   }, [dispatch, customerId])
 
-  const initialValues = useMemo(() => {
-    return customerDetail?.id ? customerDetail : {}
-  }, [customerDetail])
+  const initialValues = useMemo(
+    () => (customerDetail?.id ? parseCustomerDetail(customerDetail) : {}),
+    [customerDetail],
+  )
 
   const saveForm = useCallback(
     async (payload) => {

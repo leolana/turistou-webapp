@@ -19,30 +19,58 @@ export const clearCustomerState = (payload) => ({
   payload,
 })
 
+const customerFragment = gql`
+  fragment CustomerFragment on Customer {
+    id
+    name
+    email
+    cpf
+    document {
+      number
+      dispatcher
+      dispatcherState
+    }
+    birthDate
+    gender
+    address {
+      addressLine
+      zipcode
+      area
+      number
+      complement
+      state
+      city
+    }
+    cellphone
+    telephone
+    occupation
+    healthPlan
+    allergy
+    contactName
+    contactPhone
+    foodRestriction
+    howHearAbout
+    notes
+    active
+  }
+`
+
 export const SAVE_CUSTOMER = gql`
   mutation saveCustomer($input: SaveCustomerInput!) {
     saveCustomer(input: $input) {
-      id
+      ...CustomerFragment
     }
   }
+  ${customerFragment}
 `
 
 export const GET_CUSTOMER_BY_ID = gql`
   query Customer($id: String!) {
     customer(id: $id) {
-      id
-      name
-      email
-      cpf
-      document
-      birthDate
-      gender
-      cellphone
-      telephone
-      address
-      active
+      ...CustomerFragment
     }
   }
+  ${customerFragment}
 `
 
 export const saveCustomer = (form) => {
@@ -66,13 +94,19 @@ export const serializeCustomerDetail = (form) => {
     state,
     cpf,
     documentNumber,
+    documentDispatcher,
+    documentDispatcherState,
     ...rest
   } = form
 
   const payload = {
     ...rest,
     cpf: cpf?.replace(/\D/g, ''),
-    documentNumber: documentNumber?.replace(/\D/g, ''),
+    document: {
+      number: documentNumber?.replace(/\D/g, ''),
+      dispatcher: documentDispatcher,
+      dispatcherState: documentDispatcherState,
+    },
     address: {
       zipcode: zipcode?.replace(/\D/g, ''),
       addressLine,
@@ -86,6 +120,20 @@ export const serializeCustomerDetail = (form) => {
   }
 
   return payload
+}
+
+export const parseCustomerDetail = (data) => {
+  const { address, document, ...rest } = data
+
+  const customer = {
+    ...rest,
+    ...address,
+    documentNumber: document?.number,
+    documentDispatcher: document?.dispatcher,
+    documentDispatcherState: document?.dispatcherState,
+  }
+
+  return customer
 }
 
 export default actions

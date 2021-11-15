@@ -10,9 +10,11 @@ import SkeletonTable from 'components/SkeletonTable/SkeletonTable'
 const CustomerList = () => {
   const { filter } = useSelector((state) => state.customerList)
 
-  const { loading: isLoading, data: { customers } = {}, refetch: getCustomers } = useQuery(
-    FETCH_CUSTOMERS,
-  )
+  const {
+    loading: isLoading,
+    data: { customers } = {},
+    refetch: getCustomers,
+  } = useQuery(FETCH_CUSTOMERS)
 
   useEffect(() => {
     getCustomers()

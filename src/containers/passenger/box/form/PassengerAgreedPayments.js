@@ -48,9 +48,9 @@ const PassengerAgreedPayments = ({ form }) => {
           })(<AgreedPayment onRemove={() => handleRemovePayment(k)} />)}
         </Form.Item>
       ))}
-      Valor total: R$ {paymentTotal.toFixed(2)}
+      Valor total: R$ {paymentTotal ? paymentTotal.toFixed(2) : ''}
       <br />
-      Valor em aberto / faltante: R$ {(ticket.price - paymentTotal).toFixed(2)}
+      Valor em aberto / faltante: R$ {paymentTotal ? (ticket.price - paymentTotal).toFixed(2) : ''}
       <Row type="flex" justify="center">
         <Col xs={16} md={8}>
           <Button block type="dashed" onClick={handleAddPayment}>

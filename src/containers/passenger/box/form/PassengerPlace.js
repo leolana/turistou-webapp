@@ -1,12 +1,9 @@
 import React, { useCallback, useMemo } from 'react'
-import { useSelector } from 'react-redux'
 import { Row, Col, Form, Select } from 'antd'
 
 import PassengerSummaryHeader from './_passengerResume'
 
-const PassengerPlace = ({ form }) => {
-  const { payload: excursion } = useSelector((state) => state.excursionDetail)
-
+const PassengerPlace = ({ form, excursion }) => {
   const vacancies = useMemo(() => {
     if (!excursion || !excursion.transports) return []
     return getVacancies(excursion.passengers, excursion.transports[0])
@@ -36,7 +33,9 @@ const PassengerPlace = ({ form }) => {
       <Row>
         <Col xs={24} sm={8} lg={6}>
           <Form.Item label="Transporte">
-            {form.getFieldDecorator('transportId', { rules: [{ required: false }] })(
+            {form.getFieldDecorator('transportId', {
+              rules: [{ required: true, message: 'Por favor, selecione o transporte.' }],
+            })(
               <Select>
                 {getTransports().map((x) => (
                   <Select.Option key={x.value} value={x.value}>
@@ -49,7 +48,9 @@ const PassengerPlace = ({ form }) => {
         </Col>
         <Col xs={24} sm={8} lg={6}>
           <Form.Item label="Escolha do assento">
-            {form.getFieldDecorator('spot', { rules: [{ required: false }] })(
+            {form.getFieldDecorator('spot', {
+              rules: [{ required: true, message: 'Por favor, selecione o assento.' }],
+            })(
               <Select>
                 {vacancies.map((x) => (
                   <Select.Option key={x.number} value={x.number} disabled={!x.free}>
@@ -63,7 +64,9 @@ const PassengerPlace = ({ form }) => {
 
         <Col xs={24} sm={16} lg={12}>
           <Form.Item label="Ponto de embarque">
-            {form.getFieldDecorator('stopPointId', { rules: [{ required: false }] })(
+            {form.getFieldDecorator('stopPointId', {
+              rules: [{ required: true, message: 'Por favor, selecione o ponto de embarque.' }],
+            })(
               <Select>
                 {getStopPoints().map((x) => (
                   <Select.Option key={x.value} value={x.value}>
@@ -84,7 +87,7 @@ const getVacancies = (passengers, transports) => {
     .fill(null)
     .map((_, i) => {
       const number = i + 1
-      const free = !passengers.some((p) => p.spot === number)
+      const free = !passengers.some((p) => p.spot?.number === number)
 
       return { number, free }
     })
