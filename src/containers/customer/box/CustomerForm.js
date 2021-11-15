@@ -6,6 +6,7 @@ import { Form, notification } from 'antd'
 
 import FormStepButtonsActions from 'components/Step/FormStepButtonsActions'
 import {
+  clearCustomerState,
   GET_CUSTOMER_BY_ID,
   parseCustomerDetail,
   SAVE_CUSTOMER,
@@ -24,6 +25,10 @@ const CustomerForm = ({ form, formSteps }) => {
     GET_CUSTOMER_BY_ID,
     { variables: { id: customerId }, skip: !customerId },
   )
+
+  useEffect(() => {
+    if (!customerId) dispatch(clearCustomerState)
+  }, [dispatch, customerId])
 
   const initialValues = useMemo(
     () => (customerDetail?.id ? parseCustomerDetail(customerDetail) : {}),
