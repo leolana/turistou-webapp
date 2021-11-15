@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { Row, Col, Button } from 'antd'
+import { Row, Col, Button, Modal } from 'antd'
 import Transport from './Transport'
 
 const ExcursionTransport = ({ form, initialValues }) => {
@@ -7,14 +7,18 @@ const ExcursionTransport = ({ form, initialValues }) => {
 
   const addTransport = useCallback(() => {
     setTransports((transports) => {
-      const last = transports.length ? transports[transports.length - 1].key : 0
+      const last = transports.length ? transports[transports.length - 1]?.key : 0
       return [...transports, { key: last + 1 }]
     })
   }, [])
 
-  // TODO: pop confirm do delete
-  const removeTransport = useCallback((index) => {
-    setTransports((transports) => transports.filter((x) => index !== x))
+  const removeTransport = useCallback((key) => {
+    Modal.confirm({
+      content: `Deseja excluir o transporte?`,
+      cancelText: 'Não',
+      okText: 'Sim',
+      onOk: () => setTransports((transports) => transports.filter((x) => key !== x.key)),
+    })
   }, [])
 
   useEffect(() => {
