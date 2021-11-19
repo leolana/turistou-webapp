@@ -3,6 +3,12 @@ import { Row, Col, Form, Select } from 'antd'
 
 import PassengerSummaryHeader from './_passengerResume'
 
+const statusesEnum = {
+  BOOKED: 'BOOKED',
+  WAITING: 'WAITING',
+  CANCELED: 'CANCELED',
+}
+
 const PassengerPlace = ({ form, excursion }) => {
   const vacancies = useMemo(() => {
     if (!excursion || !excursion.transports) return []
@@ -90,7 +96,10 @@ const getVacancies = (passengers, transport) => {
     .map((_, i) => {
       const number = i + 1
       const free = !passengers.some(
-        (p) => p.spot?.number === number && p.spot?.transportId === transport.id,
+        (p) =>
+          p.spot?.number === number &&
+          p.spot?.transportId === transport.id &&
+          p.status === statusesEnum.BOOKED,
       )
 
       return { number, free }
