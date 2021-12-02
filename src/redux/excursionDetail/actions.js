@@ -56,6 +56,7 @@ export const GET_EXCURSION_BY_ID = gql`
       }
       passengers {
         id
+        status
         spot {
           number
           transportId
