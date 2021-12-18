@@ -284,26 +284,6 @@ function PassengerTable({ filter }) {
     return 'text-danger'
   }, [])
 
-  /* TODO: (Mi) fazer o filtro funcionar 
-    const filterData = (passengers) => {
-      const {
-        filter: { status, query, startPay, fullPay },
-      } = props
-      let filteredData = passengers
-    
-      if (status) filteredData = filteredData.filter((x) => x.status === status)
-      if (fullPay) filteredData = filteredData.filter((x) => x.paid === x.total)
-      else if (startPay) filteredData = filteredData.filter((x) => x.paid > 0)
-      if (query)
-        filteredData = filteredData.filter((x) => {
-          const queryPart = query.toLowerCase().split(' ')
-          return queryPart.every((q) => x.customer.name.toLowerCase().includes(q))
-        })
-    
-      return filteredData
-    }
-  */
-
   const passengersList = useMemo(
     () =>
       passengers.map((passenger) => {
@@ -319,10 +299,23 @@ function PassengerTable({ filter }) {
     [passengers, getPaidColor],
   )
 
-  const filteredData = useMemo(
-    () => passengersList /* TODO: filterData(passengersList) */,
-    [passengersList],
-  )
+  const filteredData = useMemo(() => {
+    if (!passengersList) return []
+
+    const { status, query, startPay, fullPay } = filter
+    let filteredData = passengersList
+
+    if (status) filteredData = filteredData.filter((x) => x.status === status)
+    if (fullPay) filteredData = filteredData.filter((x) => x.paid === x.total)
+    else if (startPay) filteredData = filteredData.filter((x) => x.paid > 0)
+    if (query)
+      filteredData = filteredData.filter((x) => {
+        const queryPart = query.toLowerCase().split(' ')
+        return queryPart.every((q) => x.customer.name.toLowerCase().includes(q))
+      })
+
+    return filteredData
+  }, [filter, passengersList])
 
   return (
     <SkeletonTable
