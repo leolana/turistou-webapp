@@ -41,9 +41,10 @@ const PassengerPlace = ({ form, excursion }) => {
       <Row>
         <Col xs={24} sm={8} lg={6}>
           <Form.Item label="Transporte">
-            {form.getFieldDecorator('transportId', {
-              rules: [{ required: true, message: 'Por favor, selecione o transporte.' }],
-            })(
+            {form.getFieldDecorator(
+              'transportId',
+              {},
+            )(
               <Select>
                 {getTransports().map((x) => (
                   <Select.Option key={x.value} value={x.value}>
@@ -56,9 +57,10 @@ const PassengerPlace = ({ form, excursion }) => {
         </Col>
         <Col xs={24} sm={8} lg={6}>
           <Form.Item label="Escolha do assento">
-            {form.getFieldDecorator('spot', {
-              rules: [{ required: true, message: 'Por favor, selecione o assento.' }],
-            })(
+            {form.getFieldDecorator(
+              'spot',
+              {},
+            )(
               <Select>
                 {vacancies.map((x) => (
                   <Select.Option key={x.number} value={x.number} disabled={!x.free}>
@@ -72,9 +74,10 @@ const PassengerPlace = ({ form, excursion }) => {
 
         <Col xs={24} sm={16} lg={12}>
           <Form.Item label="Ponto de embarque">
-            {form.getFieldDecorator('stopPointId', {
-              rules: [{ required: true, message: 'Por favor, selecione o ponto de embarque.' }],
-            })(
+            {form.getFieldDecorator(
+              'stopPointId',
+              {},
+            )(
               <Select>
                 {getStopPoints().map((x) => (
                   <Select.Option key={x.value} value={x.value}>
