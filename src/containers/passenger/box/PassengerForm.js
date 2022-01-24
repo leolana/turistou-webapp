@@ -31,10 +31,9 @@ const PassengerForm = ({ form, formSteps, getExcursionById, excursion, passenger
   const onSubmit = useCallback(
     (event) => {
       event.preventDefault()
-      const passengersRoute = history.location.pathname.replace('/booked', '')
-      saveAndRedirectTo(`${passengersRoute}/list`)
+      saveAndRedirectTo(`./list`)
     },
-    [history.location.pathname, saveAndRedirectTo],
+    [saveAndRedirectTo],
   )
 
   const saveStepHandler = useCallback(
