@@ -31,7 +31,7 @@ const PassengerList = ({ filter, getPassengers }) => {
 
   return (
     <>
-      <PassengerTable filter={filter} />
+      <PassengerTable filter={filter} getPassengers={getPassengers} />
 
       <RemovePassenger afterClose={clearPassengerStatus} getPassengers={getPassengers} />
       <SwapPassenger afterClose={clearPassengerStatus} getPassengers={getPassengers} />

@@ -1,18 +1,20 @@
 import React, { useCallback, useEffect, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useLazyQuery } from 'react-apollo'
-import { Button, Modal, Tag } from 'antd'
+import { useLazyQuery, useMutation } from 'react-apollo'
+import { Button, Modal, notification, Tag } from 'antd'
 
-import passengerStatusActions from 'redux/passengerStatus/actions'
+import passengerStatusActions, { SET_PASSENGER_STATUS } from 'redux/passengerStatus/actions'
 import paymentsActions, { FETCH_PAYMENTS, setPassengerEditing } from 'redux/payments/actions'
 import paymentStatusActions from 'redux/paymentStatus/actions'
 import SkeletonTable from 'components/SkeletonTable/SkeletonTable'
 import { PASSENGER_STATUS, PASSENGER_STATUS_ENUM } from 'constants/passengerStatus'
 
-function PassengerTable({ filter }) {
+function PassengerTable({ filter, getPassengers }) {
   const dispatch = useDispatch()
   const [fetchPayments, { data: { payments } = {}, loading: isPaymentsLoading }] =
     useLazyQuery(FETCH_PAYMENTS)
+
+  const [changePassengerStatus, statusMutation] = useMutation(SET_PASSENGER_STATUS)
 
   const { isLoading: isPassengerLoading, payload: passengers } = useSelector(
     (state) => state.passengerList,
@@ -154,7 +156,7 @@ function PassengerTable({ filter }) {
             type="primary"
             title="Reservar passageiro"
             onClick={() => {
-              handleBook(passenger.id)
+              setPassengerToBook(passenger.id)
             }}
           >
             <i className="fa fa-check" />
@@ -179,7 +181,7 @@ function PassengerTable({ filter }) {
             type="primary"
             title="Reservar passageiro"
             onClick={() => {
-              handleBook(passenger.id)
+              setPassengerToBook(passenger.id)
             }}
           >
             <i className="fa fa-check" />
@@ -198,7 +200,14 @@ function PassengerTable({ filter }) {
           throw new Error(`Status ${passenger.status} not defined in statusesEnum`)
       }
     }
-  }, [filter, getPaymentStatus, getPayments, handleBook, setPassengerToRemove, setPassengerToSwap])
+  }, [
+    filter,
+    getPaymentStatus,
+    getPayments,
+    setPassengerToBook,
+    setPassengerToRemove,
+    setPassengerToSwap,
+  ])
 
   useEffect(() => {
     dispatch({ type: paymentsActions.TOGGLE_LOADING, payload: isPaymentsLoading })
@@ -211,6 +220,18 @@ function PassengerTable({ filter }) {
 
     dispatch({ type: paymentsActions.SET_STATE, payload: { payload: historyPayment } })
   }, [isPaymentsLoading, payments, passengerId, dispatch])
+
+  useEffect(() => {
+    if (statusMutation.error) {
+      notification.error({
+        title: 'Falha',
+        message: 'Houve uma falha ao mover passageiro para reservados',
+      })
+    }
+    if (statusMutation.called && !statusMutation.loading) {
+      getPassengers()
+    }
+  }, [statusMutation, getPassengers])
 
   const setPassengerToRemove = useCallback(
     ({ id, amountPaid }) =>
@@ -230,12 +251,6 @@ function PassengerTable({ filter }) {
     [dispatch],
   )
 
-  const setStatusToBooked = useCallback(
-    (passengerId) =>
-      dispatch({ type: passengerStatusActions.SET_TO_BOOKED, payload: { passengerId } }),
-    [dispatch],
-  )
-
   const getPayments = useCallback(
     (passengerId) => {
       fetchPayments({ variables: { passengerId } })
@@ -251,7 +266,7 @@ function PassengerTable({ filter }) {
     [dispatch],
   )
 
-  const handleBook = useCallback(
+  const setPassengerToBook = useCallback(
     (id) => {
       Modal.confirm({
         okCancel: true,
@@ -259,17 +274,15 @@ function PassengerTable({ filter }) {
         okText: 'Sim',
         title: 'Confirmar reserva',
         content: 'Deseja confirmar o passageiro à excursão?',
-        onOk: () => book(id),
+        onOk: () => {
+          const input = { id, status: PASSENGER_STATUS_ENUM.booked, amountRefunded: 0 }
+          changePassengerStatus({
+            variables: { input },
+          })
+        },
       })
     },
-    [book],
-  )
-
-  const book = useCallback(
-    (id) => {
-      setStatusToBooked(id)
-    },
-    [setStatusToBooked],
+    [changePassengerStatus],
   )
 
   const getPaidColor = useCallback((paymentPercent) => {
