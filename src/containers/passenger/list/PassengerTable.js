@@ -11,6 +11,7 @@ import { PASSENGER_STATUS, PASSENGER_STATUS_ENUM } from 'constants/passengerStat
 
 function PassengerTable({ filter, getPassengers }) {
   const dispatch = useDispatch()
+
   const [fetchPayments, { data: { payments } = {}, loading: isPaymentsLoading }] =
     useLazyQuery(FETCH_PAYMENTS)
 
@@ -109,7 +110,7 @@ function PassengerTable({ filter, getPassengers }) {
             type="primary"
             title="Atualizar pagamento"
             onClick={() => {
-              getPaymentStatus(passenger.id)
+              handlePaymentStatus(passenger.id)
             }}
           >
             <i className="fa fa-dollar" />
@@ -202,7 +203,7 @@ function PassengerTable({ filter, getPassengers }) {
     }
   }, [
     filter,
-    getPaymentStatus,
+    handlePaymentStatus,
     getPayments,
     setPassengerToBook,
     setPassengerToRemove,
@@ -260,9 +261,10 @@ function PassengerTable({ filter, getPassengers }) {
     [fetchPayments, dispatch],
   )
 
-  const getPaymentStatus = useCallback(
-    (passengerId) =>
-      dispatch({ type: paymentStatusActions.GET_PAYMENT_STATUS, payload: { passengerId } }),
+  const handlePaymentStatus = useCallback(
+    (passengerId) => {
+      dispatch({ type: paymentStatusActions.SET_STATE, payload: { isVisible: true, passengerId } })
+    },
     [dispatch],
   )
 

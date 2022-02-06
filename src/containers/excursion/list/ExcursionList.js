@@ -9,7 +9,11 @@ import SkeletonTable from 'components/SkeletonTable/SkeletonTable'
 import { EXCURSION_STATUS_ENUM } from 'constants/excursionStatus'
 
 const ExcursionList = ({ filter }) => {
-  const { loading, data, refetch: getExcursions } = useQuery(FETCH_EXCURSIONS)
+  const {
+    loading,
+    data,
+    refetch: getExcursions,
+  } = useQuery(FETCH_EXCURSIONS, { fetchPolicy: 'cache-and-network' })
 
   const [exclude, { loading: deletingLoading, error: deletingError }] =
     useMutation(DELETE_EXCURSION)

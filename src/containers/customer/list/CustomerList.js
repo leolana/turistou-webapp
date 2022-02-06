@@ -14,7 +14,7 @@ const CustomerList = () => {
     loading: isLoading,
     data: { customers } = {},
     refetch: getCustomers,
-  } = useQuery(FETCH_CUSTOMERS)
+  } = useQuery(FETCH_CUSTOMERS, { fetchPolicy: 'cache-and-network' })
 
   useEffect(() => {
     getCustomers()

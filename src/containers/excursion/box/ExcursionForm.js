@@ -25,6 +25,7 @@ const ExcursionForm = ({ form, formSteps }) => {
     {
       variables: { id: excursionId },
       skip: !excursionId,
+      fetchPolicy: 'cache-and-network',
     },
   )
 
