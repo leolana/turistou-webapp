@@ -132,7 +132,7 @@ const ExcursionList = ({ filter }) => {
     [filterTable],
   )
 
-  const tableColumns = useMemo(() => {
+  const actionsColumn = useMemo(() => {
     const renderActionsButtons = (id) => (
       <div className="table-action-buttons">
         <Link to={`${id}/passenger/booked`}>
@@ -156,12 +156,16 @@ const ExcursionList = ({ filter }) => {
       </div>
     )
 
+    return {
+      dataIndex: 'id',
+      key: 'id',
+      width: 150,
+      render: renderActionsButtons,
+    }
+  }, [handleRemove])
+
+  const tableColumns = useMemo(() => {
     return [
-      {
-        dataIndex: 'id',
-        key: 'id',
-        render: renderActionsButtons,
-      },
       {
         title: 'Destino',
         dataIndex: 'destination',
@@ -187,9 +191,16 @@ const ExcursionList = ({ filter }) => {
         render: (x) => x.toFormat('dd/MM/yyyy'),
       },
     ]
-  }, [handleRemove])
+  }, [])
 
-  return <SkeletonTable isLoading={loading} tableData={filteredData} tableColumns={tableColumns} />
+  return (
+    <SkeletonTable
+      isLoading={loading}
+      tableData={filteredData}
+      tableColumns={tableColumns}
+      actionsColumn={actionsColumn}
+    />
+  )
 }
 
 export default ExcursionList

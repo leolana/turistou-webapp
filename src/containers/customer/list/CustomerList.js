@@ -38,19 +38,25 @@ const CustomerList = () => {
     return filteredData
   }, [customers, filter])
 
+  const actionsColumn = useMemo(
+    () => ({
+      dataIndex: 'id',
+      key: 'actions',
+      style: 'width:auto; text-align:right',
+      width: 50,
+      render: (id) => (
+        <Link to={`./${id}`}>
+          <Button ghost type="primary" size="small">
+            <i className="fa fa-pencil" />
+          </Button>
+        </Link>
+      ),
+    }),
+    [],
+  )
+
   const tableColumns = useMemo(
     () => [
-      {
-        dataIndex: 'id',
-        key: 'actions',
-        render: (id) => (
-          <Link to={`./${id}`}>
-            <Button ghost type="primary" size="small">
-              <i className="fa fa-pencil" />
-            </Button>
-          </Link>
-        ),
-      },
       {
         title: 'Nome',
         dataIndex: 'name',
@@ -71,7 +77,12 @@ const CustomerList = () => {
   )
 
   return (
-    <SkeletonTable isLoading={isLoading} tableData={filteredData} tableColumns={tableColumns} />
+    <SkeletonTable
+      isLoading={isLoading}
+      tableData={filteredData}
+      tableColumns={tableColumns}
+      actionsColumn={actionsColumn}
+    />
   )
 }
 
