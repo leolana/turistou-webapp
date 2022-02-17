@@ -23,6 +23,7 @@ const excursionFragment = gql`
         number
         transportId
       }
+      status
     }
     ticketPriceDefault
     ticketPrices {
