@@ -45,7 +45,7 @@ const Passenger = () => {
     data: { passengers = [] } = {},
     loading,
     refetch: getPassengers,
-  } = useQuery(FETCH_PASSENGERS, { variables: { filter } })
+  } = useQuery(FETCH_PASSENGERS, { variables: { filter }, fetchPolicy: 'cache-and-network' })
 
   useEffect(() => {
     dispatch(

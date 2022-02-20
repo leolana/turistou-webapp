@@ -4,6 +4,7 @@ const initialState = {
   isLoading: true,
   payload: {},
   isVisible: false,
+  passengerId: null,
 }
 
 export default function paymentStatusReducer(state = initialState, action) {
@@ -12,6 +13,7 @@ export default function paymentStatusReducer(state = initialState, action) {
       return {
         isVisible: false,
         isLoading: false,
+        passengerId: null,
         payload: {},
       }
 
@@ -31,7 +33,7 @@ export default function paymentStatusReducer(state = initialState, action) {
       return {
         ...state,
         isLoading: false,
-        payload: action.payload,
+        ...action.payload,
       }
 
     default:

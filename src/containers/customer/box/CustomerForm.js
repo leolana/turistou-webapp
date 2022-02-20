@@ -23,7 +23,7 @@ const CustomerForm = ({ form, formSteps }) => {
   const [saveCustomer, { loading: saving, error }] = useMutation(SAVE_CUSTOMER)
   const { loading: getting, data: { customer: customerDetail } = {} } = useQuery(
     GET_CUSTOMER_BY_ID,
-    { variables: { id: customerId }, skip: !customerId },
+    { variables: { id: customerId }, skip: !customerId, fetchPolicy: 'cache-and-network' },
   )
 
   useEffect(() => {

@@ -36,10 +36,9 @@ const ExcursionPassengers = (props) => {
     waiting: 'WAITING',
   }
   const passengerStatus = passengerStatuses[status]
-
   const { data: { excursion = {} } = {}, refetch: getExcursionById } = useQuery(
     GET_EXCURSION_BY_ID,
-    { variables: { id: excursionId } },
+    { variables: { id: excursionId }, fetchPolicy: 'cache-and-network' },
   )
 
   useEffect(() => {
