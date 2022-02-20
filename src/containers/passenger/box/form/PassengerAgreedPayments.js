@@ -31,7 +31,7 @@ const PassengerAgreedPayments = ({ form }) => {
 
     if (Array.isArray(paymentConditions))
       return paymentConditions.reduce((total, payment) => {
-        return total + (payment?.value || 0)
+        return total + (+payment?.value || 0)
       }, 0)
 
     return 0
