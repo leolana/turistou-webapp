@@ -19,82 +19,13 @@ function PassengerTable({ filter }) {
   )
   const { passengerId } = useSelector((state) => state.payments)
 
-  const tableColumns = useMemo(() => {
+  const actionsColumn = useMemo(() => {
     const { status } = filter
-    const allColumns = {
-      actions: {
-        dataIndex: 'id',
-        key: 'id',
-        render: (id, row) => renderActionsButtons({ id, status, amountPaid: row.amountPaid }),
-      },
-      status: {
-        title: 'Situação',
-        dataIndex: 'status',
-        key: 'status',
-        className: 'text-center',
-        render: () => {
-          const { description, type } = PASSENGER_STATUS.find((s) => s.value === status)
-          return <Tag className={`text-white bg-${type} mr-0`}>{description}</Tag>
-        },
-      },
-      name: {
-        title: 'Nome',
-        dataIndex: 'customer.name',
-        key: 'name',
-      },
-      telephone: {
-        title: 'Telefone',
-        dataIndex: 'customer.telephone',
-        key: 'telephone',
-      },
-      amountRefunded: {
-        title: 'Valor devolvido',
-        dataIndex: 'amountRefunded',
-        key: 'amountRefunded',
-        render: (value) => <span>R$ {value}</span>,
-      },
-      value: {
-        title: 'Valor pago / Valor total',
-        dataIndex: 'value',
-        key: 'value',
-        className: 'text-center',
-        render: (_, row) => {
-          if (row.status !== PASSENGER_STATUS_ENUM.waiting)
-            return (
-              <span className={row.paidColor}>
-                R$ {row.amountPaid} / R$ {row.ticketPrice?.price}
-              </span>
-            )
-          return ''
-        },
-      },
-      ticketType: {
-        title: 'Tipo de passagem',
-        dataIndex: 'ticketPrice.description',
-        key: 'ticketType',
-      },
-      spot: {
-        title: 'Poltrona',
-        dataIndex: 'spot',
-        key: 'spot',
-      },
-    }
-
-    switch (status) {
-      case PASSENGER_STATUS_ENUM.booked:
-        return [
-          allColumns.actions,
-          allColumns.name,
-          allColumns.value,
-          allColumns.ticketType,
-          allColumns.spot,
-        ]
-      case PASSENGER_STATUS_ENUM.waiting:
-        return [allColumns.actions, allColumns.name, allColumns.telephone]
-      case PASSENGER_STATUS_ENUM.canceled:
-        return [allColumns.actions, allColumns.name, allColumns.amountRefunded]
-      default:
-        return [allColumns.status, allColumns.name]
+    return {
+      dataIndex: 'id',
+      key: 'id',
+      width: 150,
+      render: (id, row) => renderActionsButtons({ id, status, amountPaid: row.amountPaid }),
     }
 
     // TODO: (Mi) Refatorar e componentizar
@@ -199,6 +130,74 @@ function PassengerTable({ filter }) {
       }
     }
   }, [filter, getPaymentStatus, getPayments, handleBook, setPassengerToRemove, setPassengerToSwap])
+
+  const tableColumns = useMemo(() => {
+    const { status } = filter
+    const allColumns = {
+      status: {
+        title: 'Situação',
+        dataIndex: 'status',
+        key: 'status',
+        className: 'text-center',
+        render: () => {
+          const { description, type } = PASSENGER_STATUS.find((s) => s.value === status)
+          return <Tag className={`text-white bg-${type} mr-0`}>{description}</Tag>
+        },
+      },
+      name: {
+        title: 'Nome',
+        dataIndex: 'customer.name',
+        key: 'name',
+      },
+      telephone: {
+        title: 'Telefone',
+        dataIndex: 'customer.telephone',
+        key: 'telephone',
+      },
+      amountRefunded: {
+        title: 'Valor devolvido',
+        dataIndex: 'amountRefunded',
+        key: 'amountRefunded',
+        render: (value) => <span>R$ {value}</span>,
+      },
+      value: {
+        title: 'Valor pago / Valor total',
+        dataIndex: 'value',
+        key: 'value',
+        className: 'text-center',
+        render: (_, row) => {
+          if (row.status !== PASSENGER_STATUS_ENUM.waiting)
+            return (
+              <span className={row.paidColor}>
+                R$ {row.amountPaid} / R$ {row.ticketPrice?.price}
+              </span>
+            )
+          return ''
+        },
+      },
+      ticketType: {
+        title: 'Tipo de passagem',
+        dataIndex: 'ticketPrice.description',
+        key: 'ticketType',
+      },
+      spot: {
+        title: 'Poltrona',
+        dataIndex: 'spot',
+        key: 'spot',
+      },
+    }
+
+    switch (status) {
+      case PASSENGER_STATUS_ENUM.booked:
+        return [allColumns.name, allColumns.value, allColumns.ticketType, allColumns.spot]
+      case PASSENGER_STATUS_ENUM.waiting:
+        return [allColumns.name, allColumns.telephone]
+      case PASSENGER_STATUS_ENUM.canceled:
+        return [allColumns.name, allColumns.amountRefunded]
+      default:
+        return [allColumns.status, allColumns.name]
+    }
+  }, [filter])
 
   useEffect(() => {
     dispatch({ type: paymentsActions.TOGGLE_LOADING, payload: isPaymentsLoading })
@@ -321,6 +320,7 @@ function PassengerTable({ filter }) {
     <SkeletonTable
       isLoading={isPassengerLoading}
       tableColumns={tableColumns}
+      actionsColumn={actionsColumn}
       tableData={filteredData}
     />
   )

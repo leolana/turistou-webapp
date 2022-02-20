@@ -1,12 +1,13 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Button, Modal, notification } from 'antd'
+import { Button, Modal, notification, Tooltip } from 'antd'
 import { DateTime } from 'luxon'
 import { useMutation, useQuery } from '@apollo/react-hooks'
 
 import { DELETE_EXCURSION, FETCH_EXCURSIONS } from 'redux/excursionList/actions'
 import SkeletonTable from 'components/SkeletonTable/SkeletonTable'
 import { EXCURSION_STATUS_ENUM } from 'constants/excursionStatus'
+import { PASSENGER_STATUS_ENUM } from 'constants/passengerStatus'
 
 const ExcursionList = ({ filter }) => {
   const { loading, data, refetch: getExcursions } = useQuery(FETCH_EXCURSIONS)
@@ -91,39 +92,43 @@ const ExcursionList = ({ filter }) => {
   const filteredData = useMemo(
     () =>
       filterTable().map((excursion) => {
-        const spotsFormatter = (transports = [], passengers) => {
+        const countSpots = (transports = []) => {
           if (!transports.length)
             return { text: 'Nenhum transporte cadastrado!', style: 'text-danger' }
 
-          // FIXME: when has more transports
-          const { capacity } = transports[0]
-          const places = passengers.length
+          return { text: transports.reduce((acc, t) => acc + t.capacity, 0) }
+        }
 
-          const text = `${places} / ${capacity}`
+        const countPassengers = (transports = [], passengers) => {
+          const totalPassengers = passengers.filter(
+            (x) => x.status === PASSENGER_STATUS_ENUM.booked,
+          ).length
+          const capacity = countSpots(transports.reduce((a, { capacity }) => a + capacity, 0))
 
-          if (places / capacity > 0.75) {
+          if (totalPassengers / capacity > 0.75) {
             return {
-              text,
+              text: totalPassengers,
               style: 'text-success',
             }
           }
 
-          if (places / capacity > 0.33) {
+          if (totalPassengers / capacity > 0.33) {
             return {
-              text,
+              text: totalPassengers,
               style: 'text-warning',
             }
           }
 
           return {
-            text,
+            text: totalPassengers,
             style: 'text-danger',
           }
         }
 
         return {
           id: excursion.id,
-          places: spotsFormatter(excursion.transports, excursion.passengers),
+          passengersAmount: countPassengers(excursion.transports, excursion.passengers),
+          capacity: countSpots(excursion.transports),
           destination: excursion.destination,
           departureDate: DateTime.fromISO(excursion.departureDate),
           regressDate: DateTime.fromISO(excursion.regressDate),
@@ -132,7 +137,7 @@ const ExcursionList = ({ filter }) => {
     [filterTable],
   )
 
-  const tableColumns = useMemo(() => {
+  const actionsColumn = useMemo(() => {
     const renderActionsButtons = (id) => (
       <div className="table-action-buttons">
         <Link to={`${id}/passenger/booked`}>
@@ -156,21 +161,47 @@ const ExcursionList = ({ filter }) => {
       </div>
     )
 
+    return {
+      dataIndex: 'id',
+      key: 'id',
+      width: 150,
+      render: renderActionsButtons,
+    }
+  }, [handleRemove])
+
+  const tableColumns = useMemo(() => {
     return [
-      {
-        dataIndex: 'id',
-        key: 'id',
-        render: renderActionsButtons,
-      },
       {
         title: 'Destino',
         dataIndex: 'destination',
+        width: 250,
         key: 'destination',
       },
       {
-        title: 'Vagas',
-        dataIndex: 'places',
-        key: 'places',
+        title: (
+          <>
+            Capacidade&nbsp;&nbsp;
+            <Tooltip placement="top" title="Número máximo de passagens disponíveis.">
+              <i className="fa fa-question-circle" />
+            </Tooltip>
+          </>
+        ),
+        dataIndex: 'capacity',
+        key: 'capacity',
+        className: 'text-center',
+        render: (key) => <span className={key.style}>{key.text}</span>,
+      },
+      {
+        title: (
+          <>
+            Reservados&nbsp;&nbsp;
+            <Tooltip placement="top" title="Passagens já reservadas.">
+              <i className="fa fa-question-circle" />
+            </Tooltip>
+          </>
+        ),
+        dataIndex: 'passengersAmount',
+        key: 'passengersAmount',
         className: 'text-center',
         render: (key) => <span className={key.style}>{key.text}</span>,
       },
@@ -187,9 +218,16 @@ const ExcursionList = ({ filter }) => {
         render: (x) => x.toFormat('dd/MM/yyyy'),
       },
     ]
-  }, [handleRemove])
+  }, [])
 
-  return <SkeletonTable isLoading={loading} tableData={filteredData} tableColumns={tableColumns} />
+  return (
+    <SkeletonTable
+      isLoading={loading}
+      tableData={filteredData}
+      tableColumns={tableColumns}
+      actionsColumn={actionsColumn}
+    />
+  )
 }
 
 export default ExcursionList
