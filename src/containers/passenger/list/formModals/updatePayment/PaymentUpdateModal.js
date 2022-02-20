@@ -10,12 +10,8 @@ import PaymentUpdateForm from './PaymentUpdateForm'
 function AddPayment({ afterClose, getPassengers }) {
   const dispatch = useDispatch()
 
-  const [insertPayment, { loading, error }] = useMutation(PAYMENT_INSERT, {
-    fetchPolicy: 'cache-and-network',
-  })
-  const [fetchPaymentStatus, { data: { paymentStatus } = {} }] = useLazyQuery(GET_PAYMENT_STATUS, {
-    fetchPolicy: 'cache-and-network',
-  })
+  const [insertPayment, { loading, error }] = useMutation(PAYMENT_INSERT)
+  const [fetchPaymentStatus, { data: { paymentStatus } = {} }] = useLazyQuery(GET_PAYMENT_STATUS)
 
   const { passengerId, isVisible } = useSelector((state) => state.paymentStatus)
 
