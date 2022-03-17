@@ -2,7 +2,7 @@ import React, { useCallback } from 'react'
 import { useDispatch } from 'react-redux'
 
 import passengerStatusActions from 'redux/passengerStatus/actions'
-import paymentsActions from 'redux/payments/actions'
+import { actions as paymentsActions } from 'redux/payments/actions'
 import paymentStatusActions from 'redux/paymentStatus/actions'
 
 import RemovePassenger from './formModals/delete/DeletePassengerModal'
