@@ -2,7 +2,7 @@ import gql from 'graphql-tag'
 
 import { query, mutate } from 'core/api/apollo'
 
-const actions = {
+export const actions = {
   SET_STATE: 'payments/SET_STATE',
   SET_STATE_FAILURE: 'payments/SET_STATE_FAILURE',
   GET_PAYMENTS: 'payments/GET_PAYMENTS',
@@ -156,5 +156,3 @@ export const toggleLoading = (payload) => ({
   type: actions.TOGGLE_LOADING,
   payload,
 })
-
-export default actions

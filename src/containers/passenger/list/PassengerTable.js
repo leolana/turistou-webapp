@@ -4,7 +4,11 @@ import { useLazyQuery, useMutation } from 'react-apollo'
 import { Button, Modal, notification, Tag } from 'antd'
 
 import passengerStatusActions, { SET_PASSENGER_STATUS } from 'redux/passengerStatus/actions'
-import paymentsActions, { FETCH_PAYMENTS, setPassengerEditing } from 'redux/payments/actions'
+import {
+  actions as paymentsActions,
+  FETCH_PAYMENTS,
+  setPassengerEditing,
+} from 'redux/payments/actions'
 import paymentStatusActions from 'redux/paymentStatus/actions'
 import SkeletonTable from 'components/SkeletonTable/SkeletonTable'
 import { PASSENGER_STATUS, PASSENGER_STATUS_ENUM } from 'constants/passengerStatus'

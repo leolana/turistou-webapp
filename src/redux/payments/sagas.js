@@ -1,6 +1,7 @@
 import { all, put, takeEvery, call, select } from 'redux-saga/effects'
 
-import actions, {
+import {
+  actions,
   fetchPayments,
   toggleVisibility,
   setStateSuccess,
@@ -11,7 +12,7 @@ import actions, {
   setStatusToCanceled,
 } from './actions'
 
-const getPaymentsFromState = state => state.payments
+const getPaymentsFromState = (state) => state.payments
 
 export function* getPayments({ payload }) {
   yield put(toggleLoading(true))
@@ -26,7 +27,7 @@ export function* getPayments({ payload }) {
   if (result.response.data) {
     yield put(
       setStateSuccess(
-        result.response.data.payments.map(p => ({
+        result.response.data.payments.map((p) => ({
           ...p,
           passengerId: payload.passengerId,
         })),
@@ -47,7 +48,7 @@ export function* setPayDayToPaid({ payload }) {
   if (result.response.data.setPayDateToPaid) {
     const statePayments = yield select(getPaymentsFromState)
 
-    const parsedPayments = statePayments.payload.map(p => {
+    const parsedPayments = statePayments.payload.map((p) => {
       if (p.id === result.response.data.setPayDateToPaid.id) {
         return {
           ...p,
@@ -75,7 +76,7 @@ export function* setPayDateToPending({ payload }) {
   if (result.response.data.setPayDateToPending) {
     const statePayments = yield select(getPaymentsFromState)
 
-    const parsedPayments = statePayments.payload.map(p => {
+    const parsedPayments = statePayments.payload.map((p) => {
       if (p.id === result.response.data.setPayDateToPending.id) {
         return {
           ...p,
@@ -103,7 +104,7 @@ export function* setStatusPaymentToCanceled({ payload }) {
   if (result.response.data.setStatusPaymentToCanceled) {
     const statePayments = yield select(getPaymentsFromState)
 
-    const parsedPayments = statePayments.payload.map(p => {
+    const parsedPayments = statePayments.payload.map((p) => {
       if (p.id === result.response.data.setStatusPaymentToCanceled.id) {
         return {
           ...p,
