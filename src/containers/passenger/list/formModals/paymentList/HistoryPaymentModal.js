@@ -3,7 +3,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useMutation } from 'react-apollo'
 import { Modal, Table } from 'antd'
 
-import paymentsActions, {
+import {
+  actions as paymentsActions,
   SET_STATUS_TO_CANCELED,
   SET_TO_PAID,
   SET_TO_PENDING,
